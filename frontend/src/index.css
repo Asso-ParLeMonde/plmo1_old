@@ -1,0 +1,22 @@
+@font-face {
+    font-family: 'littledays';
+    src: local('littledays'), url(./fonts/littledays.woff) format('woff');
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Alegreya Sans', sans-serif!important;
+    font-weight: bold!important;
+}
+
+.plm-logo-title {
+    font-family: 'littledays', 'Alegreya Sans', sans-serif!important;
+    font-size: 1.8rem!important;
+    font-weight: bold!important;
+    position: absolute;
+    top: 0.25rem;
+    left: 65px;
+}
+.tab-label > svg{
+    margin-left: 0.6rem;
+    margin-bottom: -0.4rem;
+}

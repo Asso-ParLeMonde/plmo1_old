@@ -1,0 +1,32 @@
+version: '3.7'
+services:
+  plmo1:
+    build:
+      context: ./
+      dockerfile: Dockerfile.development
+    ports:
+      - "5000:5000"
+    links:
+      - mariaDB
+    environment:
+      - PRODUCTION=false
+      - DEBUG=true
+      - DB_HOST=mariaDB
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASS=password
+    restart: always
+    volumes:
+      - ./src:/usr/src/app/src
+      - ./dist:/usr/src/app/dist
+
+  mariaDB:
+    image: mariadb:10.4
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    ports:
+      - "3306:3306"
+      - "33060:33060"
+    volumes:
+      - ./mariaDB:/var/lib/mysql

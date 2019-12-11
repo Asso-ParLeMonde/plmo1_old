@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="288px" height="206px" viewBox="0 0 288 206" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Pelico</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-2.5%" y="-2.5%" width="105.0%" height="107.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="App-icons" transform="translate(-469.000000, -154.000000)">
+            <g id="Pelico" filter="url(#filter-1)" transform="translate(472.000000, 155.000000)">
+                <g id="base" transform="translate(0.789708, 0.849963)">
+                    <g id="corps" transform="translate(0.210292, 0.150037)">
+                        <path d="M1.98951966e-13,142.276951 C5.6161226,123.2973 13.2991048,104.085612 23.0489467,84.6418879 C27.3843462,75.995972 34.9637549,55.8154552 46.5486483,35.9507902 C50.3713565,29.3959766 59.9824649,19.1810844 74.6843674,12.0136371 C80.9405303,8.96364288 92.989786,5.04901857 105.822521,2.83684059 C114.670896,1.31150868 123.425404,0.196062229 129.789708,0.0442534334 C134.76066,-0.0743194918 138.44575,-0.333321926 138.44575,5.04669713 C138.44575,10.1897068 138.44575,72.5413444 138.44575,192.10161 C103.772283,199.820967 75.7108174,199.820967 54.2613543,192.10161 C32.8118913,184.382253 14.7247732,167.774033 1.98951966e-13,142.276951 Z" id="Path" fill="#000000"></path>
+                        <path d="M138.44575,192.10161 L79.6948822,74.8499631 C67.1793567,51.4923877 68.946381,36.2886987 84.9959551,29.2388958 C101.045529,22.1890929 119.046878,13.9856664 139,4.62861616" id="Path-2" fill="#FFFFFF"></path>
+                        <circle id="Oval" fill="#000000" cx="108.289708" cy="53.3499631" r="15.5"></circle>
+                    </g>
+                </g>
+                <path d="M140,96.6072315 L281.357604,96.6072315 C275.888704,64.6672384 267.578191,43.3683817 256.426063,32.7106614 C244.233376,21.0585127 232.326226,14.0118322 215.53003,9.52048184 C203.451074,6.29053502 178.089648,4.99324646 139.44575,5.62861616 L140,96.6072315 Z" id="Path-3" fill="#FCA34B"></path>
+                <path d="M139.894893,78.6119558 L254.44575,78.6119558 C250.013961,59.2871531 243.279435,46.4006067 234.242172,39.9523166 C224.36168,32.9023628 214.712576,28.6388769 201.101573,25.9214543 C191.313244,23.9672246 170.761303,23.1823201 139.44575,23.5667407 L139.894893,78.6119558 Z" id="Path-3" fill="#FCD74B"></path>
+            </g>
+        </g>
+    </g>
+</svg>

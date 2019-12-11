@@ -1,0 +1,40 @@
+{
+  "defaultSeverity": "error",
+  "extends": [
+    "tslint:recommended"
+  ],
+  "jsRules": {},
+  "rules": {
+    "ban": [
+      true,
+      {"name": ["*", "forEach"], "message": "Use a regular for loop instead."}
+    ],
+    "ban-ts-ignore": true,
+    "max-line-length": [true, {"limit": 200, "ignore-pattern": "^import [^,]+ from" }],
+    "no-any": [true],
+    "no-default-export": true,
+    "no-floating-promises": true,
+    "no-for-in": true,
+    "prefer-for-of": true,
+    "quotemark": [true, "single", "jsx-double"],
+    "variable-name": {
+      "options": ["ban-keywords", "check-format", "allow-pascal-case", "allow-snake-case"]
+    },
+    "whitespace": [
+      true,
+      "check-branch",
+      "check-decl",
+      "check-operator",
+      "check-module",
+      "check-separator",
+      "check-rest-spread",
+      "check-type",
+      "check-typecast",
+      "check-type-operator",
+      "check-preblock",
+      "check-postbrace"
+    ]
+  },
+  "rulesDirectory": []
+}
+
