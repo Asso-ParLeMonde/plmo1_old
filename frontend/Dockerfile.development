@@ -1,0 +1,18 @@
+# DEV Dockerfile
+FROM node:12.13-alpine
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package.json .
+COPY yarn.lock .
+
+RUN yarn install
+
+COPY .eslintrc.js .
+COPY src src
+COPY public public
+
+EXPOSE 3000
+CMD [ "yarn", "start" ]
