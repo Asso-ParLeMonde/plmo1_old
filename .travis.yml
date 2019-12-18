@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - '0.12'
+  - '12.13'
 before_install:
   - cd backend
   - npm install -g typescript@1.0
