@@ -39,6 +39,9 @@ async function main() {
     /* --- Public images --- */
     app.use('/images', express.static(path.join(__dirname, 'images')));
 
+    /* --- Public videos --- */
+    app.use('/videos', express.static(path.join(__dirname, 'videos')));
+
     /* --- 404 Errors --- */
     app.use((_, res: Response) => {
         res.status(404).send('Error 404 - Not found.');

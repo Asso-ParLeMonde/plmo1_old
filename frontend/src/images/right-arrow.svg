@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="21px" viewBox="0 0 12 21" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Path</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Scénarios" transform="translate(-337.000000, -634.000000)" fill="#79C3A5">
+            <g id="Content" transform="translate(16.000000, 89.000000)">
+                <g id="Scenar-1" transform="translate(0.000000, 489.000000)">
+                    <path d="M324.62132,66.5 L332.56066,58.5606602 C333.146447,57.9748737 333.146447,57.0251263 332.56066,56.4393398 C331.974874,55.8535534 331.025126,55.8535534 330.43934,56.4393398 L321.43934,65.4393398 C320.853553,66.0251263 320.853553,66.9748737 321.43934,67.5606602 L330.43934,76.5606602 C331.025126,77.1464466 331.974874,77.1464466 332.56066,76.5606602 C333.146447,75.9748737 333.146447,75.0251263 332.56066,74.4393398 L324.62132,66.5 Z" id="Path" transform="translate(327.000000, 66.500000) scale(-1, 1) translate(-327.000000, -66.500000) "></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,47 @@
+.video-thumbnail {
+    width: 290px;
+    margin: 0 0.5rem;
+    outline: none;
+}
+.video-thumbnail > p {
+    white-space: normal;
+    margin: 0;
+}
+.video-thumbnail-container {
+    width: 290px;
+    height: 170px;
+    border: 1px solid rgb(68, 68, 68);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+.video-thumbnail-container:hover, .video-thumbnail:focus > .video-thumbnail-container {
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 5px 8px 0 rgba(0,0,0,0.14), 0 1px 14px 0 rgba(0,0,0,0.12);
+}
+.button-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.video-thumbnail-container:hover .button-container, .video-thumbnail:focus > .video-thumbnail-container .button-container {
+    display: flex;
+}
+.duration-container {
+    position: absolute;
+    background-color: #e0e0e0;
+    opacity: 0.85;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.1rem 0.4rem;
+    border-radius: 5px;
+}
+.duration-container > p {
+    padding: 0;
+    margin: 0;
+}
