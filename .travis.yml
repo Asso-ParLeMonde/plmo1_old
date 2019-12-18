@@ -5,4 +5,8 @@ before_install:
   - cd backend
   - npm install -g typescript@1.0
 script:
-  - npm test
+  - npm run build
+deploy:
+  provider: heroku
+  api_key: heroku-api-key
+  app: par-le-monde-1
