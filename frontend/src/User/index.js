@@ -39,8 +39,8 @@ function User() {
     <div>
       <Navbar title={"Par le monde"} tabs={tabs} />
       <main>
-        <ThemesServiceProvider isPublished={true}>
-          <Container maxWidth="lg">
+        <Container maxWidth="lg">
+          <ThemesServiceProvider isPublished={true}>
             <Switch>
               <Route exact path="/themes" component={Theme}/>
               <Route path="/themes/:themeId" component={Scenario}/>
@@ -49,8 +49,8 @@ function User() {
                 404 not found!
               </Route>
             </Switch>
-          </Container>
-        </ThemesServiceProvider>
+          </ThemesServiceProvider>
+        </Container>
       </main>
     </div>
   );

@@ -1,0 +1,16 @@
+.video-container {
+    display: flex;
+    flex-direction: row;
+    overflow: auto;
+    white-space: nowrap;
+    margin: 0.25rem 0 0.5rem -0.5rem;
+    /*background:*/
+    /*        linear-gradient(to right, white 30%, rgba(255,255,255,0)),*/
+    /*        linear-gradient(to right, rgba(255,255,255,0), white 70%) 100% 0,*/
+    /*        radial-gradient(farthest-side at 100% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 100% 0,*/
+    /*        radial-gradient(farthest-side at 0% 50%, rgba(0,0,0,.2), rgba(0,0,0,0)) 0 100%;*/
+    /*background-repeat: no-repeat;*/
+    /*background-color: white;*/
+    /*background-size: 40px 100%;*/
+    /*background-attachment: local, local, scroll, scroll;*/
+}

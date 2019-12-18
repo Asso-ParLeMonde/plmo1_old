@@ -18,7 +18,7 @@ function ThemesServiceProvider({ children, isPublished }) {
 }
 
 ThemesServiceProvider.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.any,
   isPublished: PropTypes.bool,
 };
 

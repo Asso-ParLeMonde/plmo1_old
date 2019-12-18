@@ -23,6 +23,9 @@ const theme = createMuiTheme({
       contrastText: '#ffffff',
     },
     // error: will use the default color
+    background: {
+      default: "#fff",
+    }
   },
   typography: {
     fontFamily: [
@@ -30,6 +33,24 @@ const theme = createMuiTheme({
       "Arial",
       "sans-serif",
     ].join(','),
+    h1: {
+      fontSize: "2rem",
+      fontFamily: "'Alegreya Sans', sans-serif",
+      fontWeight: "bold",
+      margin: "1.2rem 0 1rem 0",
+    },
+    h2: {
+      fontSize: "1.8rem",
+      fontFamily: "'Alegreya Sans', sans-serif",
+      fontWeight: "bold",
+      margin : 0,
+    },
+    h3: {
+      fontSize: "1.1rem",
+      fontFamily: "'Alegreya Sans', sans-serif",
+      fontWeight: "normal",
+      margin : 0,
+    }
   },
 });
 
