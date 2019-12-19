@@ -128,7 +128,7 @@ function ThemeForm(props) {
         {!!props.theme.image && (
           <img
             src={URL.createObjectURL(props.theme.image)}
-            alt="your image"
+            alt="your theme"
             className={classes.imagePreview}
           />
         )}

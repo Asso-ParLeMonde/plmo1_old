@@ -29,7 +29,7 @@ function Scenario(props) {
   }
 
   // Get scenarios
-  const [scenarios, setScenarios] = useState([]);
+  const [, setScenarios] = useState([]);
   const getScenarios = useAxios({
     method: "GET",
     url: `${process.env.REACT_APP_BASE_APP}/themes/${themeID}/scenarios`,
