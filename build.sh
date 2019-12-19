@@ -5,5 +5,5 @@ rm -rf ./backend/dist/public
 mkdir ./backend/dist
 mkdir ./backend/dist/public
 mv ./frontend/build ./backend/dist/public
-cd ./backend && npm install && npm run build
+cd ./backend && npm install && npm install -g typescript@1.0 && tsc
 cd ..
