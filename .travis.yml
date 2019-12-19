@@ -4,6 +4,7 @@ node_js:
 before_install:
   - cd frontend
   - npm install
+  - echo REACT_APP_BASE_APP=/back >> .env.production
   - npm run build
   - cd ../backend
   - npm install -g typescript@1.0
