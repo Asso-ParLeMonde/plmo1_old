@@ -1,4 +1,5 @@
 import mysql from 'mysql';
+import path from 'path';
 import { Connection, createConnection, EntityManager } from 'typeorm';
 import { logger } from './logger';
 import { sleep } from './utils';
@@ -9,7 +10,7 @@ const DBConfig = {
     charset: 'utf8mb4_unicode_ci',
     database: process.env.DB_DB || 'PLMO',
     entities: [
-        'dist/entities/**/*.js',
+        path.join(__dirname, '../entities/*.js'),
     ],
     extra: process.env.DB_TYPE && process.env.DB_TYPE === 'postgres' ? {
         ssl: true,
@@ -17,12 +18,12 @@ const DBConfig = {
     host: process.env.DB_HOST,
     logging: true,
     migrations: [
-        'dist/migration/**/*.js',
+        path.join(__dirname, '../migration/**/*.js'),
     ],
     password: process.env.DB_PASS,
     port: parseInt(process.env.DB_PORT || '3306', 10),
     subscribers: [
-        'dist/subscriber/**/*.js',
+        path.join(__dirname, '../subscriber/**/*.js'),
     ],
     synchronize: true,
     timezone: 'utc',

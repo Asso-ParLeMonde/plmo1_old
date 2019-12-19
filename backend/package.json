@@ -9,8 +9,7 @@
     "prebuild": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json",
     "build": "./node_modules/typescript/bin/tsc",
     "node-start": "node dist/app.js",
-    "start-docker": "./node_modules/nodemon/bin/nodemon.js",
-    "start": "node ./dist/app.js",
+    "start": "./node_modules/nodemon/bin/nodemon.js",
     "start-dev": "yarn build && yarn node-start",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --fix"
   },
