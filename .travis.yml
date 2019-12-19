@@ -11,6 +11,8 @@ script:
   - npm run build
   - cd ..
 deploy:
+  on:
+    branch: master
   provider: heroku
   app: par-le-monde-1
   api_key:

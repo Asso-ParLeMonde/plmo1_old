@@ -15,9 +15,18 @@ export class ScenarioRepository extends Repository<Scenario> {
         }
         scenario.theme = theme;
         if (scenario.id === undefined || scenario.id === null) {
-            const sequenceResult: Array<{ ID: string }> = await this.manager.query('SELECT NEXT VALUE FOR SCENARIO_SEQUENCE AS ID');
-            scenario.id = parseInt(sequenceResult[0].ID, 10);
+            scenario.id = await this.getNextID();
         }
         return await this.manager.save(scenario);
+    }
+
+    public async getNextID(): Promise<number> {
+        let sequenceResult: Array<{ id: string }>;
+        if (process.env.DB_TYPE && process.env.DB_TYPE === 'postgres') {
+            sequenceResult = await this.manager.query('SELECT nextval(\'scenario_sequence\') as id');
+        } else {
+            sequenceResult = await this.manager.query('SELECT NEXT VALUE FOR SCENARIO_SEQUENCE AS id');
+        }
+        return parseInt(sequenceResult[0].id, 10);
     }
 }
