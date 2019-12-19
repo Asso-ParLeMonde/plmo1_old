@@ -67,7 +67,7 @@ function ThemeModal(props) {
         axiosRequest(
           {
             method: "PUT",
-            url: `http://localhost:5000/themes/${props.theme.id}`,
+            url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
             body: {
               names: theme.names,
               image: theme.image,
@@ -81,7 +81,7 @@ function ThemeModal(props) {
       axiosRequest(
         {
           method: "PUT",
-          url: `http://localhost:5000/themes/new`,
+          url: `${process.env.REACT_APP_BASE_APP}/themes/new`,
           body: {
             names: theme.names,
             image: theme.image,

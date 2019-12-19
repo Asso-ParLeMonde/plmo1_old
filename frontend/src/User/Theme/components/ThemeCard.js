@@ -34,7 +34,7 @@ function ThemeCard(props) {
               component="img"
               alt="theme picture"
               height="100%"
-              image={`http://localhost:5000/${props.theme.image.path}`}
+              image={`${process.env.REACT_APP_BASE_APP}/${props.theme.image.path}`}
               title="Contemplative Reptile"
             />
           ) : (

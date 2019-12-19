@@ -32,7 +32,7 @@ function Scenario(props) {
   const [scenarios, setScenarios] = useState([]);
   const getScenarios = useAxios({
     method: "GET",
-    url: `http://localhost:5000/themes/${themeID}/scenarios`,
+    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeID}/scenarios`,
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -64,7 +64,7 @@ function Scenario(props) {
             <VideoThumbnail
               title="Le burger du Canada présenté par la classe !"
               duration={102334}
-              thumbnailLink="http://localhost:5000/videos/test1/test1.png"/>
+              thumbnailLink={`${process.env.REACT_APP_BASE_APP}/videos/test1/test1.png`}/>
           </div>
           <Typography color="inherit" variant="h2">
             C'est à votre tour, sélectionnez un scénario à filmer

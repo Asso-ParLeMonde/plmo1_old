@@ -7,10 +7,13 @@ const dbType: 'mariadb' = 'mariadb';
 
 const DBConfig = {
     charset: 'utf8mb4_unicode_ci',
-    database: 'PLMO',
+    database: process.env.DB_DB || 'PLMO',
     entities: [
         'dist/entities/**/*.js',
     ],
+    extra: process.env.DB_TYPE && process.env.DB_TYPE === 'postgres' ? {
+        ssl: true,
+    } : { },
     host: process.env.DB_HOST,
     logging: true,
     migrations: [
@@ -23,7 +26,7 @@ const DBConfig = {
     ],
     synchronize: true,
     timezone: 'utc',
-    type: dbType,
+    type: (process.env.DB_TYPE || dbType) as ('mariadb' | 'postgres' | 'mysql'),
     username: process.env.DB_USER,
 };
 

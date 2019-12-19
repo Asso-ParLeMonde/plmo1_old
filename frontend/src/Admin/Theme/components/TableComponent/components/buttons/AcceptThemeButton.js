@@ -21,7 +21,7 @@ function AcceptThemeButton(props) {
     axiosRequest(
       {
         method: "PUT",
-        url: `http://localhost:5000/themes/${props.theme.id}`,
+        url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
         body: {
           names: props.theme.names,
           image: props.theme.image,

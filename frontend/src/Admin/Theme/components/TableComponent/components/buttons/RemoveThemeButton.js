@@ -21,7 +21,7 @@ function RemoveThemeButton(props) {
     axiosRequest(
       {
         method: "DELETE",
-        url: `http://localhost:5000/themes/${props.themeId}`
+        url: `${process.env.REACT_APP_BASE_APP}/themes/${props.themeId}`
       },
       setRes
     );
