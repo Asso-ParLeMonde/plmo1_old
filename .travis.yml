@@ -6,6 +6,10 @@ before_install:
   - npm install
   - echo REACT_APP_BASE_APP=/back >> .env.production
   - npm run build
+  - rm -rf ../backend/dist/public
+  - mkdir ../backend/dist
+  - mkdir ../backend/dist/public
+  - mv build ../backend/dist/public
   - cd ../backend
   - npm install -g typescript@1.0
 script:
