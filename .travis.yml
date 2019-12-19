@@ -15,6 +15,7 @@ before_install:
 script:
   - npm run build
 deploy:
+  skip_cleanup: true
   provider: heroku
   app: par-le-monde-1
   api_key:
