@@ -124,7 +124,11 @@ export class ThemeRepository extends Repository<Theme> {
             return;
         }
         await deleteImage(theme.image.uuid, theme.image.localPath);
-        await this.query('UPDATE `PLMO`.`theme` SET imageId = NULL WHERE `theme`.`id` = ?', [themeID]);
+        if (process.env.DB_TYPE && process.env.DB_TYPE === 'postgres') {
+            await this.query(`UPDATE "theme" SET "imageId" = NULL WHERE "theme"."id" = ?`, [themeID]);
+        } else {
+            await this.query('UPDATE `PLMO`.`theme` SET imageId = NULL WHERE `theme`.`id` = ?', [themeID]);
+        }
         await getRepository(Image).delete(theme.image.id);
     }
 }
