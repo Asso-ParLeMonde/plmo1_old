@@ -94,7 +94,8 @@ function ThemeModal(props) {
           });
         }
 
-        if (request.error === false && request.complete === true) {
+        if (request.error === false && request.complete === true && theme.image !== undefined
+          && theme.image !== null  && theme.image.path === undefined) {
           const bodyFormData = new FormData();
           bodyFormData.append('image', theme.image);
 
@@ -150,7 +151,8 @@ function ThemeModal(props) {
           data: bodyFormData,
         });
 
-        if (requestImage.error === true && requestImage.complete === true) {
+        if (requestImage.error === true && requestImage.complete === true && theme.image !== undefined
+          && theme.image !== null && theme.image.path === undefined) {
           return setRes({
             error: true,
             complete: true,
