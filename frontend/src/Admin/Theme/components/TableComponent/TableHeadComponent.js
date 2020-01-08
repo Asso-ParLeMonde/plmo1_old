@@ -5,7 +5,7 @@ import TableRow from "@material-ui/core/TableRow";
 
 function TableHeadComponent(props) {
   return (
-    <TableHead>
+    <TableHead className="thead">
       <TableRow>
         <TableCell>Id</TableCell>
         <TableCell>Name</TableCell>
