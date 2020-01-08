@@ -20,7 +20,7 @@ function AcceptThemeButton(props) {
     const request = axiosRequest({
       method: "PUT",
       url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
-      body: {
+      data: {
         names: props.theme.names,
         image: props.theme.image,
         isPublished: true

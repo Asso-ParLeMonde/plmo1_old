@@ -22,14 +22,14 @@ const useStyles = makeStyles(() => ({
 }));
 
 const DEFAULT_THEME = {
-  id: null,
+  id: undefined,
   names: {
-    fr: null,
-    en: null
+    en: undefined,
+    fr: undefined,
   },
-  description: null,
-  image: null,
-  published: true
+  description: undefined,
+  image: undefined,
+  published: undefined
 };
 
 function ThemeModal(props) {
@@ -42,25 +42,28 @@ function ThemeModal(props) {
     message: ""
   });
 
-  function handleNameChange(event) {
-    if (event.target.id === undefined) {
-      return setTheme({ ...theme, description: event.target.value });
+  function handleChange(enumCase, event) {
+    switch (enumCase) {
+      default:
+      case 'DESCRIPTION':
+        setTheme({...theme, description: event.target.value})
+        break;
+      case 'NAME':
+        setTheme({
+          ...theme,
+          names: {
+            ...theme.names,
+            [event.target.id]: event.target.value
+          }
+        });
+        break;
+      case 'IMAGE':
+        setTheme({
+          ...theme,
+          image: event.target.files[0]
+        });
+        break;
     }
-
-    setTheme({
-      ...theme,
-      names: {
-        ...theme.names,
-        [event.target.id]: event.target.value
-      }
-    });
-  }
-
-  function handleImageChange(event) {
-    setTheme({
-      ...theme,
-      image: event.target.files[0]
-    });
   }
 
   function handleConfirmation(event) {
@@ -69,12 +72,13 @@ function ThemeModal(props) {
     let request = null;
     let requestImage = null;
 
+    console.log(theme)
     if (props.theme) {
       if (props.theme.id) {
         request = axiosRequest({
           method: "PUT",
           url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
-          body: {
+          data: {
             names: theme.names,
             description: theme.description,
             isPublished: true
@@ -93,7 +97,7 @@ function ThemeModal(props) {
           requestImage = axiosRequest({
             method: "PUT",
             url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}/image`,
-            body: {
+            data: {
               image: theme.image
             }
           });
@@ -117,10 +121,10 @@ function ThemeModal(props) {
       request = axiosRequest({
         method: "POST",
         url: `${process.env.REACT_APP_BASE_APP}/themes`,
-        body: {
+        data: {
           names: theme.names,
           description: theme.description,
-          isPublished: false
+          isPublished: true
         }
       });
 
@@ -136,7 +140,7 @@ function ThemeModal(props) {
         requestImage = axiosRequest({
           method: "PUT",
           url: `${process.env.REACT_APP_BASE_APP}/themes/${request.id}/image`,
-          body: {
+          data: {
             image: theme.image
           }
         });
@@ -191,8 +195,7 @@ function ThemeModal(props) {
         <DialogContent className={classes.dialogContent}>
           <ThemeForm
             theme={theme}
-            handleNameChange={handleNameChange}
-            handleImageChange={handleImageChange}
+            handleChange={handleChange}
           />
         </DialogContent>
         <DialogActions>

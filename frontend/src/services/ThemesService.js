@@ -7,7 +7,7 @@ const ThemesServiceContext = React.createContext(undefined, undefined);
 function ThemesServiceProvider({ children, isPublished }) {
   const getThemes = useAxios({
     method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes?isPublished=${isPublished}`
+    url: `${process.env.REACT_APP_BASE_APP}/themes?published=${isPublished}`
   });
 
   return (
