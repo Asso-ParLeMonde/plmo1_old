@@ -3,7 +3,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-function TableHeadComponent(props) {
+function TableHeadComponent() {
   return (
     <TableHead className="thead">
       <TableRow>

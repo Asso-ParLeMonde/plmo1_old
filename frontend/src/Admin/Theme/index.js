@@ -26,8 +26,9 @@ function Theme() {
         fr: "Maison",
         en: "Home"
       },
+      description: "theme 1",
       isPublished: false,
-      icon: null
+      image: null
     },
     {
       id: 2,
@@ -35,8 +36,9 @@ function Theme() {
         fr: "Sport",
         en: "Sport"
       },
+      description: "theme 2",
       isPublished: true,
-      icon: null
+      image: null
     },
     {
       id: 3,
@@ -44,8 +46,9 @@ function Theme() {
         fr: "Science Fiction",
         en: "Science Fiction"
       },
+      description: "theme 3",
       isPublished: true,
-      icon: null
+      image: null
     }
   ];
 
