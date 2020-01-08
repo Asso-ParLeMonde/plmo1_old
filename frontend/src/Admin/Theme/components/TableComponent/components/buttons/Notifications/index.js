@@ -6,8 +6,6 @@ import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContentWrapper from "./SnackBarContentWrapper";
 
 function Notifications(props) {
-  const errorMessage = "Requete rejete";
-  const successMessage = "Requete valide";
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -37,7 +35,7 @@ function Notifications(props) {
       <SnackbarContentWrapper
         onClose={handleClose}
         variant={props.res.error ? "error" : "success"}
-        message={props.res.error ? errorMessage : successMessage}
+        message={props.res.message}
       />
     </Snackbar>
   );
