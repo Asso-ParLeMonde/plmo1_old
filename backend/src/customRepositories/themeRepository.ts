@@ -1,5 +1,3 @@
-import fs from 'fs-extra';
-import path from 'path';
 import {
     DeleteResult,
     EntityRepository,
@@ -12,6 +10,7 @@ import {
 import { Image } from '../entities/image';
 import { Label } from '../entities/label';
 import { Theme } from '../entities/theme';
+import { deleteImage } from '../fileUpload';
 import { LabelRepository } from './labelRepository';
 
 @EntityRepository(Theme)
@@ -121,10 +120,7 @@ export class ThemeRepository extends Repository<Theme> {
         if (theme.image === null || theme.image === undefined) {
             return;
         }
-        const filePath = theme.image.path.slice(0, -5);
-        await fs.remove(path.join(__dirname, '..', `${filePath}.jpeg`));
-        await fs.remove(path.join(__dirname, '..', `${filePath}_sm.jpeg`));
-        await fs.remove(path.join(__dirname, '..', `${filePath}_md.jpeg`));
+        await deleteImage(theme.image.uuid, theme.image.localPath);
         await this.query('UPDATE `PLMO`.`theme` SET imageId = NULL WHERE `theme`.`id` = ?', [themeID]);
         await getRepository(Image).delete(theme.image.id);
     }
