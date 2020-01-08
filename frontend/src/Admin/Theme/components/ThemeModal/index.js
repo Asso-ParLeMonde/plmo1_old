@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,7 @@ import ThemeForm from "../ThemeForm";
 import "./themeModal.css";
 import Notifications from "../TableComponent/components/buttons/Notifications";
 import { axiosRequest } from "../../../component/axiosRequest";
+import {ThemesServiceContext} from "../../../../services/ThemesService";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -35,6 +36,7 @@ const DEFAULT_THEME = {
 function ThemeModal(props) {
   const classes = useStyles();
   const [theme, setTheme] = useState(props.theme || DEFAULT_THEME);
+  const updateThemes = useContext(ThemesServiceContext).updateThemes;
 
   const [res, setRes] = useState({
     error: false,
@@ -46,7 +48,7 @@ function ThemeModal(props) {
     switch (enumCase) {
       default:
       case 'DESCRIPTION':
-        setTheme({...theme, description: event.target.value})
+        setTheme({...theme, description: event.target.value});
         break;
       case 'NAME':
         setTheme({
@@ -165,6 +167,7 @@ function ThemeModal(props) {
     }
 
     props.setIsOpen(false);
+    updateThemes().catch();
     props.history.push("/admin/themes");
   }
 

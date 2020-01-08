@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import "./buttonShape.css";
@@ -6,18 +6,21 @@ import "./buttonShape.css";
 import Button from "@material-ui/core/Button";
 import Notifications from "./Notifications";
 import { axiosRequest } from "../../../../../component/axiosRequest";
+import {ThemesServiceContext} from "../../../../../../services/ThemesService";
 
 function RemoveThemeButton(props) {
+  const updateThemes = useContext(ThemesServiceContext).updateThemes;
+
   const [res, setRes] = useState({
     complete: false,
     error: false,
     message: ""
   });
 
-  function handleRemove(event) {
+  async function handleRemove(event) {
     event.preventDefault();
 
-    const request = axiosRequest({
+    const request = await axiosRequest({
       method: "DELETE",
       url: `${process.env.REACT_APP_BASE_APP}/themes/${props.themeId}`
     });
@@ -38,7 +41,8 @@ function RemoveThemeButton(props) {
       });
     }
 
-    props.history.push("/admin/themes/delete");
+    updateThemes().catch();
+    props.history.push("/admin/themes");
   }
 
   return (
@@ -53,6 +57,8 @@ function RemoveThemeButton(props) {
 
 RemoveThemeButton.propTypes = {
   themeId: PropTypes.number,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 
