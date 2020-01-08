@@ -88,9 +88,7 @@ function ThemeModal(props) {
             method: "PUT",
             url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}/image`,
             body: {
-              imageID: undefined,
-              image: theme.image,
-              isPublished: true
+              image: theme.image
             }
           });
 
@@ -132,9 +130,7 @@ function ThemeModal(props) {
           method: "PUT",
           url: `${process.env.REACT_APP_BASE_APP}/themes/${request.id}/image`,
           body: {
-            imageID: undefined,
-            image: theme.image,
-            isPublished: true
+            image: theme.image
           }
         });
 
