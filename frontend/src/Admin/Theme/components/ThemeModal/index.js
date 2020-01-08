@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,8 +10,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ThemeForm from "../ThemeForm";
 
 import "./themeModal.css";
-import { axiosRequest } from "../TableComponent/components/buttons/axiosRequest";
 import Notifications from "../TableComponent/components/buttons/Notifications";
+import { axiosRequest } from "../../../component/axiosRequest";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -21,25 +21,24 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const DEFAULT_THEME = {
+  id: null,
+  names: {
+    fr: null,
+    en: null
+  },
+  image: null,
+  published: true
+};
+
 function ThemeModal(props) {
   const classes = useStyles();
-  const [theme, setTheme] = useState(
-    props.theme || {
-      id: null,
-      names: {
-        fr: null,
-        en: null
-      },
-      image: null,
-      published: true
-    }
-  );
+  const [theme, setTheme] = useState(props.theme || DEFAULT_THEME);
 
   const [res, setRes] = useState({
-    data: null,
+    error: false,
     complete: false,
-    pending: false,
-    error: false
+    message: ""
   });
 
   function handleNameChange(event) {
@@ -62,40 +61,101 @@ function ThemeModal(props) {
   function handleConfirmation(event) {
     event.preventDefault();
 
+    let request = null;
+    let requestImage = null;
+
     if (props.theme) {
       if (props.theme.id) {
-        axiosRequest(
-          {
+        request = axiosRequest({
+          method: "PUT",
+          url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
+          body: {
+            names: theme.names,
+            isPublished: true
+          }
+        });
+
+        if (request.error === true && request.complete === true) {
+          return setRes({
+            error: true,
+            complete: true,
+            message: "Erreur lors de la modification du theme"
+          });
+        }
+
+        if (request.error === false && request.complete === true) {
+          requestImage = axiosRequest({
             method: "PUT",
-            url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
+            url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}/image`,
             body: {
-              names: theme.names,
+              imageID: undefined,
               image: theme.image,
               isPublished: true
             }
-          },
-          setRes
-        );
-      }
-    } else {
-      axiosRequest(
-        {
-          method: "PUT",
-          url: `${process.env.REACT_APP_BASE_APP}/themes/new`,
-          body: {
-            names: theme.names,
-            image: theme.image,
-            isPublished: false
+          });
+
+          if (requestImage.error === true && requestImage.complete === true) {
+            return setRes({
+              error: true,
+              complete: true,
+              message: "Erreur lors de la modification de l'image du theme"
+            });
           }
-        },
-        setRes
-      );
+        }
+      }
+
+      setRes({
+        error: false,
+        complete: true,
+        message: "Success lors de la modification du theme"
+      });
+    } else {
+      request = axiosRequest({
+        method: "POST",
+        url: `${process.env.REACT_APP_BASE_APP}/themes`,
+        body: {
+          names: theme.names,
+          isPublished: false
+        }
+      });
+
+      if (request.error === true && request.complete === true) {
+        return setRes({
+          error: true,
+          complete: true,
+          message: "Erreur lors de la creation du theme"
+        });
+      }
+
+      if (request.error === false && request.complete === true) {
+        requestImage = axiosRequest({
+          method: "PUT",
+          url: `${process.env.REACT_APP_BASE_APP}/themes/${request.id}/image`,
+          body: {
+            imageID: undefined,
+            image: theme.image,
+            isPublished: true
+          }
+        });
+
+        if (requestImage.error === true && requestImage.complete === true) {
+          return setRes({
+            error: true,
+            complete: true,
+            message: "Erreur lors de la creation de l'image du theme"
+          });
+        }
+      }
+
+      setRes({
+        error: false,
+        complete: true,
+        message: "Success lors de la creation du theme"
+      });
     }
 
-    if (!res.error && res.complete) {
-      props.setIsOpen(false);
-      props.history.push("/admin/themes");
-    }
+    props.setIsOpen(false);
+    props.history.push("/admin/themes");
   }
 
   function handleCloseModal(event) {
