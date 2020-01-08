@@ -66,16 +66,15 @@ function ThemeModal(props) {
     }
   }
 
-  function handleConfirmation(event) {
+  async function handleConfirmation(event) {
     event.preventDefault();
 
     let request = null;
     let requestImage = null;
 
-    console.log(theme)
     if (props.theme) {
       if (props.theme.id) {
-        request = axiosRequest({
+        request = await axiosRequest({
           method: "PUT",
           url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
           data: {
@@ -94,12 +93,14 @@ function ThemeModal(props) {
         }
 
         if (request.error === false && request.complete === true) {
-          requestImage = axiosRequest({
-            method: "PUT",
+          const bodyFormData = new FormData();
+          bodyFormData.append('image', theme.image);
+
+          requestImage = await axiosRequest({
+            method: "POST",
+            headers: {'Content-Type': 'multipart/form-data' },
             url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}/image`,
-            data: {
-              image: theme.image
-            }
+            data: bodyFormData,
           });
 
           if (requestImage.error === true && requestImage.complete === true) {
@@ -118,7 +119,7 @@ function ThemeModal(props) {
         message: "Success lors de la modification du theme"
       });
     } else {
-      request = axiosRequest({
+      request = await axiosRequest({
         method: "POST",
         url: `${process.env.REACT_APP_BASE_APP}/themes`,
         data: {
@@ -137,12 +138,14 @@ function ThemeModal(props) {
       }
 
       if (request.error === false && request.complete === true) {
-        requestImage = axiosRequest({
-          method: "PUT",
-          url: `${process.env.REACT_APP_BASE_APP}/themes/${request.id}/image`,
-          data: {
-            image: theme.image
-          }
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', theme.image);
+
+        requestImage = await axiosRequest({
+          method: "POST",
+          headers: {'Content-Type': 'multipart/form-data' },
+          url: `${process.env.REACT_APP_BASE_APP}/themes/${request.data.id}/image`,
+          data: bodyFormData,
         });
 
         if (requestImage.error === true && requestImage.complete === true) {
