@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import "./buttonShape.css";
@@ -6,18 +6,21 @@ import "./buttonShape.css";
 import { Button } from "@material-ui/core";
 import Notifications from "./Notifications";
 import { axiosRequest } from "../../../../../component/axiosRequest";
+import {ThemesServiceContext} from "../../../../../../services/ThemesService";
 
 function AcceptThemeButton(props) {
+  const updateThemes = useContext(ThemesServiceContext).updateThemes;
+
   const [res, setRes] = useState({
     error: false,
     complete: false,
     message: ""
   });
 
-  function handleAcceptation(event) {
+  async function handleAcceptation(event) {
     event.preventDefault();
 
-    const request = axiosRequest({
+    const request = await axiosRequest({
       method: "PUT",
       url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
       data: {
@@ -43,6 +46,7 @@ function AcceptThemeButton(props) {
       });
     }
 
+    updateThemes().catch();
     props.history.push("/admin/themes");
   }
 
@@ -58,7 +62,10 @@ function AcceptThemeButton(props) {
 
 AcceptThemeButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default withRouter(AcceptThemeButton);

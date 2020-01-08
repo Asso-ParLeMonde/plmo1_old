@@ -18,7 +18,7 @@ function Scenario(props) {
   // Get theme
   const themeID = parseInt(props.match.params.themeId) || 0;
   let theme;
-  const themesRequest = useContext(ThemesServiceContext);
+  const themesRequest = useContext(ThemesServiceContext).getThemes;
   if (themesRequest.complete && !themesRequest.error) {
     const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === themeID ? i2 : i1, -1);
     if (themeIndex === -1) {
