@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {axiosRequest} from "../Admin/component/axiosRequest";
 
@@ -13,17 +13,17 @@ function ThemesServiceProvider({ children, isPublished }) {
     complete: null
   });
 
-  const updateThemes = async () => {
+  const updateThemes = useCallback(async () => {
     const themesRequest = await axiosRequest({
       method: "GET",
       url: `${process.env.REACT_APP_BASE_APP}/themes?published=${isPublished}`
     });
     setGetThemes(themesRequest);
-  };
+  }, [isPublished]);
 
   useEffect(() => {
     updateThemes().catch();
-  }, [isPublished]);
+  }, [updateThemes]);
 
   return (
     <ThemesServiceContext.Provider value={{getThemes, updateThemes}}>

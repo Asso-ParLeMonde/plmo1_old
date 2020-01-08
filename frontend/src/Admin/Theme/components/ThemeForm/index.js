@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -134,17 +132,6 @@ function ThemeForm(props) {
           <Button variant="outlined" disabled>Ajouter une langue</Button>
         </div>
       )}
-
-      <span className={classes.title}>Description</span>
-      <div>
-        <TextField
-          autoFocus
-          type="text"
-          value={props.theme.description || ""}
-          onChange={(e) => props.handleChange("DESCRIPTION", e)}
-          fullWidth
-        />
-      </div>
     </React.Fragment>
   );
 }

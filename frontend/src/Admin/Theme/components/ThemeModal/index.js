@@ -27,7 +27,6 @@ const DEFAULT_THEME = {
   names: {
     fr: '',
   },
-  description: undefined,
   image: undefined,
   published: undefined
 };
