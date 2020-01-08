@@ -31,7 +31,7 @@ const useStyles = makeStyles(() => ({
     marginRight: 4,
     width: 100
   },
-  textfieldNames: {
+  textFieldNames: {
     margin: "0px 0px 0px 4px"
   }
 }));
@@ -75,17 +75,17 @@ function NamesInputs(props) {
         autoFocus
         type="text"
         value={props.theme.names[languageSelected] || ""}
-        onChange={props.handleNameChange}
+        onChange={(e) => props.handleChange("NAME", e)}
         fullWidth
-        className={classes.textfieldNames}
+        className={classes.textFieldNames}
       />
     </div>
   );
 }
 
-ThemeForm.propTypes = {
+NamesInputs.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleNameChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired
 };
 
 function ThemeForm(props) {
@@ -104,7 +104,7 @@ function ThemeForm(props) {
         <NamesInputs
           key={i}
           theme={props.theme}
-          handleNameChange={props.handleNameChange}
+          handleChange={props.handleChange}
         />
       );
     }
@@ -121,7 +121,7 @@ function ThemeForm(props) {
           <input
             type="file"
             style={{ display: "none" }}
-            onChange={props.handleImageChange}
+            onChange={(e) => props.handleChange("IMAGE", e)}
             accept="image/*"
           />
         </Button>
@@ -149,7 +149,7 @@ function ThemeForm(props) {
           autoFocus
           type="text"
           value={props.theme.description || ""}
-          onChange={props.handleNameChange}
+          onChange={(e) => props.handleChange("DESCRIPTION", e)}
           fullWidth
         />
       </div>
@@ -159,8 +159,7 @@ function ThemeForm(props) {
 
 ThemeForm.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleNameChange: PropTypes.func.isRequired,
-  handleImageChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default ThemeForm;

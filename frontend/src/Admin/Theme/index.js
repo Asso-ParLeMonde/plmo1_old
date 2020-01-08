@@ -19,39 +19,6 @@ function Theme() {
     themes = themesRequest.data;
   }
 
-  themes = [
-    {
-      id: 1,
-      names: {
-        fr: "Maison",
-        en: "Home"
-      },
-      description: "theme 1",
-      isPublished: false,
-      image: null
-    },
-    {
-      id: 2,
-      names: {
-        fr: "Sport",
-        en: "Sport"
-      },
-      description: "theme 2",
-      isPublished: true,
-      image: null
-    },
-    {
-      id: 3,
-      names: {
-        fr: "Science Fiction",
-        en: "Science Fiction"
-      },
-      description: "theme 3",
-      isPublished: true,
-      image: null
-    }
-  ];
-
   return (
     <React.Fragment>
       <div className="tableContainer">
