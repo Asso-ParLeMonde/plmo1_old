@@ -11,11 +11,7 @@ import AcceptThemeButton from "./components/buttons/AcceptThemeButton";
 
 function TableBodyComponent(props) {
   const rowBackgroundColor = index => {
-    if (index % 2 === 1) {
-      return "tbodyDarkRow";
-    }
-
-    return "";
+    return index % 2 === 1 ? "tbodyDarkRow" : "";
   };
 
   return (
