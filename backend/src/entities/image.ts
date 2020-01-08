@@ -7,4 +7,10 @@ export class Image {
 
     @Column({ type: 'varchar', length: 200, unique: true })
     public path: string;
+
+    @Column({ type: 'varchar', length: 50, unique: true })
+    public uuid: string;
+
+    @Column({ type: 'varchar', length: 150 })
+    public localPath: string;
 }

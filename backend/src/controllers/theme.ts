@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import fs from 'fs-extra';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { ThemeRepository } from '../customRepositories/themeRepository';
 import { Image } from '../entities/image';
 import { Theme } from '../entities/theme';
+import { deleteImage } from '../fileUpload';
 import { Controller, del, get, oneImage, post, put } from './controller';
 
 export class ThemesController extends Controller {
@@ -78,10 +78,7 @@ export class ThemesController extends Controller {
         const theme: Theme | undefined = await getRepository(Theme).findOne(id, { relations: ['image'] });
         if (theme === undefined) {
             await getRepository(Image).delete(req.imageID);
-            const filePath = req.file.path;
-            await fs.remove(`${filePath}.jpeg`);
-            await fs.remove(`${filePath}_sm.jpeg`);
-            await fs.remove(`${filePath}_md.jpeg`);
+            await deleteImage(req.image.uuid, req.image.localPath);
             next();
             return;
         }
@@ -92,7 +89,7 @@ export class ThemesController extends Controller {
 
         theme.image = req.image;
         await getRepository(Theme).save(theme);
-        res.sendJSON(theme);
+        res.sendJSON(theme.image);
     }
 
     @del({ path: '/:id/image' })

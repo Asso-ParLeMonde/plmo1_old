@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
@@ -7,6 +7,8 @@ import CardMedia from "@material-ui/core/CardMedia";
 
 import "./ThemeCard.css";
 import {Typography} from "@material-ui/core";
+
+// import { ReactComponent as DefaultImage } from '../../../images/classe_default.png';
 
 const colors = [
   "rgb(96, 105, 243)",
@@ -17,8 +19,19 @@ const colors = [
   "rgb(162, 220, 174)",
 ];
 
-
 function ThemeCard(props) {
+  const img = useRef(null);
+
+  useEffect(() => {
+    if (props.theme.image !== undefined && props.theme.image !== null) {
+      const image = new Image();
+      image.onload = () => {
+        img.current.src = image.src;
+      };
+      image.src = props.theme.image.path;
+    }
+  }, [props.theme.image]);
+
   return (
     <a className="theme-card-button"
        href={`/themes/${props.themeID}`}
@@ -31,10 +44,11 @@ function ThemeCard(props) {
         {
           props.theme.image ? (
             <CardMedia
+              ref={img}
               component="img"
               alt="theme picture"
-              height="100%"
-              image={`${process.env.REACT_APP_BASE_APP}/${props.theme.image.path}`}
+              //image={props.theme.image.path}
+              image="/classe_default.png"
               title="Contemplative Reptile"
             />
           ) : (
