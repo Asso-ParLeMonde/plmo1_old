@@ -10,10 +10,14 @@ import ModifyThemeButton from "./components/buttons/ModifyThemeButton";
 import AcceptThemeButton from "./components/buttons/AcceptThemeButton";
 
 function TableBodyComponent(props) {
+  const rowBackgroundColor = index => {
+    return index % 2 === 1 ? "tbodyDarkRow" : "";
+  };
+
   return (
     <TableBody>
-      {props.themes.map(theme => (
-        <TableRow key={theme.id}>
+      {props.themes.map((theme, index) => (
+        <TableRow key={theme.id} className={rowBackgroundColor(index)}>
           <TableCell>{theme.id}</TableCell>
           <TableCell component="th" scope="row">
             {theme.names.fr}

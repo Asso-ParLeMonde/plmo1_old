@@ -1,17 +1,32 @@
-import React from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import PropTypes from "prop-types";
-import useAxios from "./useAxios";
+import {axiosRequest} from "../Admin/component/axiosRequest";
 
 const ThemesServiceContext = React.createContext(undefined, undefined);
 
+
 function ThemesServiceProvider({ children, isPublished }) {
-  const getThemes = useAxios({
-    method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes?isPublished=${isPublished}`
+  const [getThemes, setGetThemes] = useState({
+    data: null,
+    pendint: null,
+    error: null,
+    complete: null
   });
 
+  const updateThemes = useCallback(async () => {
+    const themesRequest = await axiosRequest({
+      method: "GET",
+      url: `${process.env.REACT_APP_BASE_APP}/themes?published=${isPublished}`
+    });
+    setGetThemes(themesRequest);
+  }, [isPublished]);
+
+  useEffect(() => {
+    updateThemes().catch();
+  }, [updateThemes]);
+
   return (
-    <ThemesServiceContext.Provider value={getThemes}>
+    <ThemesServiceContext.Provider value={{getThemes, updateThemes}}>
       {children}
     </ThemesServiceContext.Provider>
   );

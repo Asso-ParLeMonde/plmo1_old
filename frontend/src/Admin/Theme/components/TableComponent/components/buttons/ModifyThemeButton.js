@@ -35,7 +35,10 @@ function ModifyThemeButton(props) {
 
 ModifyThemeButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default withRouter(ModifyThemeButton);

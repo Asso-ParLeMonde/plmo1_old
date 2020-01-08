@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Select from "@material-ui/core/Select";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -25,13 +23,14 @@ const useStyles = makeStyles(() => ({
   },
   containerNames: {
     display: "flex",
-    marginBottom: 16
+    marginBottom: 16,
+    alignItems: "center"
   },
   selectNames: {
     marginRight: 4,
     width: 100
   },
-  textfieldNames: {
+  textFieldNames: {
     margin: "0px 0px 0px 4px"
   }
 }));
@@ -49,64 +48,55 @@ const LANGUAGES = [
 
 function NamesInputs(props) {
   const classes = useStyles();
-  const [languageSelected, setLanguageSelected] = useState("");
-
-  function handleLanguageSelection(event) {
-    setLanguageSelected(event.target.value);
-  }
 
   return (
     <div className={classes.containerNames}>
-      <Select
-        fullWidth
-        className={classes.selectNames}
-        value={languageSelected}
-        onChange={handleLanguageSelection}
-      >
-        {LANGUAGES.map(language => (
-          <MenuItem key={language.value} value={language.value}>
-            {language.label}
-          </MenuItem>
-        ))}
-      </Select>
+      <div>
+        {props.language.label}
+      </div>
 
       <TextField
-        id={languageSelected}
+        id={props.language.value}
         autoFocus
         type="text"
-        value={props.theme.names[languageSelected] || ""}
-        onChange={props.handleNameChange}
+        value={props.theme.names[props.language.value] || ""}
+        onChange={(e) => props.handleChange("NAME", e)}
         fullWidth
-        className={classes.textfieldNames}
+        className={classes.textFieldNames}
       />
     </div>
   );
 }
 
-ThemeForm.propTypes = {
+NamesInputs.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleNameChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };
 
 function ThemeForm(props) {
   const classes = useStyles();
-  const [nbLanguage, setNumberLanguage] = useState(1);
+  const [nbLanguage] = useState(Object.keys(props.theme.names).length);
 
-  function handleIncrement() {
-    setNumberLanguage(nbLanguage + 1);
-  }
+  // function handleIncrement() {
+  //   setNumberLanguage(nbLanguage + 1);
+  // }
 
   function namesInputs() {
     let inputs = [];
+    const languages = Object.keys(props.theme.names);
 
-    for (let i = 0; i < nbLanguage; i++) {
-      inputs.push(
-        <NamesInputs
-          key={i}
-          theme={props.theme}
-          handleNameChange={props.handleNameChange}
-        />
-      );
+    for (let i = 0; i < LANGUAGES.length; i += 1 ) {
+      if (languages.indexOf(LANGUAGES[i].value) !== -1) {
+        inputs.push(
+          <NamesInputs
+            key={i}
+            language={LANGUAGES[i]}
+            theme={props.theme}
+            handleChange={props.handleChange}
+          />
+        );
+      }
     }
 
     return inputs;
@@ -121,13 +111,13 @@ function ThemeForm(props) {
           <input
             type="file"
             style={{ display: "none" }}
-            onChange={props.handleImageChange}
+            onChange={(e) => props.handleChange("IMAGE", e)}
             accept="image/*"
           />
         </Button>
         {!!props.theme.image && (
           <img
-            src={URL.createObjectURL(props.theme.image)}
+            src={(props.theme.image || {}).path || URL.createObjectURL(props.theme.image)}
             alt="your theme"
             className={classes.imagePreview}
           />
@@ -138,8 +128,8 @@ function ThemeForm(props) {
       {namesInputs()}
 
       {LANGUAGES.length > nbLanguage && (
-        <div className={classes.buttonContainer} onClick={handleIncrement}>
-          <Button variant="outlined">Ajouter une langue</Button>
+        <div className={classes.buttonContainer}>
+          <Button variant="outlined" disabled>Ajouter une langue</Button>
         </div>
       )}
     </React.Fragment>
@@ -148,8 +138,7 @@ function ThemeForm(props) {
 
 ThemeForm.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleNameChange: PropTypes.func.isRequired,
-  handleImageChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default ThemeForm;

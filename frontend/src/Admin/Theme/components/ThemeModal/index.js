@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useContext, useState} from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,8 +10,9 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ThemeForm from "../ThemeForm";
 
 import "./themeModal.css";
-import { axiosRequest } from "../TableComponent/components/buttons/axiosRequest";
 import Notifications from "../TableComponent/components/buttons/Notifications";
+import { axiosRequest } from "../../../component/axiosRequest";
+import {ThemesServiceContext} from "../../../../services/ThemesService";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -21,98 +22,161 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
+const DEFAULT_THEME = {
+  id: undefined,
+  names: {
+    fr: '',
+  },
+  image: undefined,
+  published: undefined
+};
+
 function ThemeModal(props) {
   const classes = useStyles();
-  const [theme, setTheme] = useState(
-    props.theme || {
-      id: null,
-      names: {
-        fr: null,
-        en: null
-      },
-      image: null,
-      published: true
-    }
-  );
+  const [theme, setTheme] = useState(props.theme || DEFAULT_THEME);
+  const updateThemes = useContext(ThemesServiceContext).updateThemes;
 
   const [res, setRes] = useState({
-    data: null,
+    error: false,
     complete: false,
-    pending: false,
-    error: false
+    message: ""
   });
 
-  function handleNameChange(event) {
-    setTheme({
-      ...theme,
-      names: {
-        ...theme.names,
-        [event.target.id]: event.target.value
-      }
-    });
+  function handleChange(enumCase, event) {
+    switch (enumCase) {
+      default:
+      case 'DESCRIPTION':
+        setTheme({...theme, description: event.target.value});
+        break;
+      case 'NAME':
+        setTheme({
+          ...theme,
+          names: {
+            ...theme.names,
+            [event.target.id]: event.target.value
+          }
+        });
+        break;
+      case 'IMAGE':
+        setTheme({
+          ...theme,
+          image: event.target.files[0]
+        });
+        break;
+    }
   }
 
-  function handleImageChange(event) {
-    setTheme({
-      ...theme,
-      image: event.target.files[0]
-    });
-  }
-
-  function handleConfirmation(event) {
+  async function handleConfirmation(event) {
     event.preventDefault();
+
+    let request = null;
+    let requestImage = null;
 
     if (props.theme) {
       if (props.theme.id) {
-        axiosRequest(
-          {
-            method: "PUT",
-            url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
-            body: {
-              names: theme.names,
-              image: theme.image,
-              isPublished: true
-            }
-          },
-          setRes
-        );
-      }
-    } else {
-      axiosRequest(
-        {
+        request = await axiosRequest({
           method: "PUT",
-          url: `${process.env.REACT_APP_BASE_APP}/themes/new`,
-          body: {
+          url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
+          data: {
             names: theme.names,
-            image: theme.image,
-            isPublished: false
+            description: theme.description,
+            isPublished: true
           }
-        },
-        setRes
-      );
+        });
+
+        if (request.error === true && request.complete === true) {
+          return setRes({
+            error: true,
+            complete: true,
+            message: "Erreur lors de la modification du theme"
+          });
+        }
+
+        if (request.error === false && request.complete === true && theme.image !== undefined
+          && theme.image !== null  && theme.image.path === undefined) {
+          const bodyFormData = new FormData();
+          bodyFormData.append('image', theme.image);
+
+          requestImage = await axiosRequest({
+            method: "POST",
+            headers: {'Content-Type': 'multipart/form-data' },
+            url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}/image`,
+            data: bodyFormData,
+          });
+
+          if (requestImage.error === true && requestImage.complete === true) {
+            return setRes({
+              error: true,
+              complete: true,
+              message: "Erreur lors de la modification de l'image du theme"
+            });
+          }
+        }
+      }
+
+      setRes({
+        error: false,
+        complete: true,
+        message: "Success lors de la modification du theme"
+      });
+    } else {
+      request = await axiosRequest({
+        method: "POST",
+        url: `${process.env.REACT_APP_BASE_APP}/themes`,
+        data: {
+          names: theme.names,
+          description: theme.description,
+          isPublished: true
+        }
+      });
+
+      if (request.error === true && request.complete === true) {
+        return setRes({
+          error: true,
+          complete: true,
+          message: "Erreur lors de la creation du theme"
+        });
+      }
+
+      if (request.error === false && request.complete === true) {
+        const bodyFormData = new FormData();
+        bodyFormData.append('image', theme.image);
+
+        requestImage = await axiosRequest({
+          method: "POST",
+          headers: {'Content-Type': 'multipart/form-data' },
+          url: `${process.env.REACT_APP_BASE_APP}/themes/${request.data.id}/image`,
+          data: bodyFormData,
+        });
+
+        if (requestImage.error === true && requestImage.complete === true && theme.image !== undefined
+          && theme.image !== null && theme.image.path === undefined) {
+          return setRes({
+            error: true,
+            complete: true,
+            message: "Erreur lors de la creation de l'image du theme"
+          });
+        }
+      }
+
+      setRes({
+        error: false,
+        complete: true,
+        message: "Success lors de la creation du theme"
+      });
     }
 
-    if (!res.error && res.complete) {
-      props.setIsOpen(false);
-      props.history.push("/admin/themes");
-    }
+    updateThemes().catch();
+    handleCloseModal();
   }
 
   function handleCloseModal(event) {
-    event.preventDefault();
+    if (event !== undefined) {
+      event.preventDefault();
+    }
 
     props.setIsOpen(false);
-    setTheme(
-      props.theme || {
-        id: null,
-        names: {
-          fr: null,
-          en: null
-        },
-        image: null,
-        published: true
-      }
-    );
+    setTheme(props.theme || DEFAULT_THEME);
     props.history.push("/admin/themes");
   }
 
@@ -128,8 +192,7 @@ function ThemeModal(props) {
         <DialogContent className={classes.dialogContent}>
           <ThemeForm
             theme={theme}
-            handleNameChange={handleNameChange}
-            handleImageChange={handleImageChange}
+            handleChange={handleChange}
           />
         </DialogContent>
         <DialogActions>

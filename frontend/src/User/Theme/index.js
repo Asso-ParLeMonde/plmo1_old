@@ -28,7 +28,7 @@ function Theme() {
   const classes = useStyles();
   let themes = [];
 
-  const themesRequest = useContext(ThemesServiceContext);
+  const themesRequest = useContext(ThemesServiceContext).getThemes;
   if (themesRequest.complete && !themesRequest.error) {
     themes = themesRequest.data;
   }
