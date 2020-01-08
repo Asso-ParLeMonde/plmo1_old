@@ -27,6 +27,7 @@ const DEFAULT_THEME = {
     fr: null,
     en: null
   },
+  description: null,
   image: null,
   published: true
 };
@@ -42,6 +43,10 @@ function ThemeModal(props) {
   });
 
   function handleNameChange(event) {
+    if (event.target.id === undefined) {
+      return setTheme({ ...theme, description: event.target.value });
+    }
+
     setTheme({
       ...theme,
       names: {
@@ -71,6 +76,7 @@ function ThemeModal(props) {
           url: `${process.env.REACT_APP_BASE_APP}/themes/${props.theme.id}`,
           body: {
             names: theme.names,
+            description: theme.description,
             isPublished: true
           }
         });
@@ -113,6 +119,7 @@ function ThemeModal(props) {
         url: `${process.env.REACT_APP_BASE_APP}/themes`,
         body: {
           names: theme.names,
+          description: theme.description,
           isPublished: false
         }
       });

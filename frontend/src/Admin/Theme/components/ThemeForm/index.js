@@ -142,6 +142,17 @@ function ThemeForm(props) {
           <Button variant="outlined">Ajouter une langue</Button>
         </div>
       )}
+
+      <span className={classes.title}>Description</span>
+      <div>
+        <TextField
+          autoFocus
+          type="text"
+          value={props.theme.description || ""}
+          onChange={props.handleNameChange}
+          fullWidth
+        />
+      </div>
     </React.Fragment>
   );
 }
