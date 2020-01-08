@@ -25,6 +25,9 @@ export class ThemeRepository extends Repository<Theme> {
             let error = false;
             const promises: Array<Promise<Label | Theme>> = [];
             for (const lang of Object.keys(labels)) {
+                if (labels[lang].length === 0) {
+                    continue;
+                }
                 theme.names[lang] = labels[lang];
                 if (!theme.labelID) {
                     try {

@@ -25,7 +25,8 @@ const useStyles = makeStyles(() => ({
   },
   containerNames: {
     display: "flex",
-    marginBottom: 16
+    marginBottom: 16,
+    alignItems: "center"
   },
   selectNames: {
     marginRight: 4,
@@ -49,32 +50,18 @@ const LANGUAGES = [
 
 function NamesInputs(props) {
   const classes = useStyles();
-  const [languageSelected, setLanguageSelected] = useState("");
-
-  function handleLanguageSelection(event) {
-    setLanguageSelected(event.target.value);
-  }
 
   return (
     <div className={classes.containerNames}>
-      <Select
-        fullWidth
-        className={classes.selectNames}
-        value={languageSelected}
-        onChange={handleLanguageSelection}
-      >
-        {LANGUAGES.map(language => (
-          <MenuItem key={language.value} value={language.value}>
-            {language.label}
-          </MenuItem>
-        ))}
-      </Select>
+      <div>
+        {props.language.label}
+      </div>
 
       <TextField
-        id={languageSelected}
+        id={props.language.value}
         autoFocus
         type="text"
-        value={props.theme.names[languageSelected] || ""}
+        value={props.theme.names[props.language.value] || ""}
         onChange={(e) => props.handleChange("NAME", e)}
         fullWidth
         className={classes.textFieldNames}
@@ -85,28 +72,33 @@ function NamesInputs(props) {
 
 NamesInputs.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
+  language: PropTypes.string.isRequired,
 };
 
 function ThemeForm(props) {
   const classes = useStyles();
-  const [nbLanguage, setNumberLanguage] = useState(1);
+  const [nbLanguage] = useState(Object.keys(props.theme.names).length);
 
-  function handleIncrement() {
-    setNumberLanguage(nbLanguage + 1);
-  }
+  // function handleIncrement() {
+  //   setNumberLanguage(nbLanguage + 1);
+  // }
 
   function namesInputs() {
     let inputs = [];
+    const languages = Object.keys(props.theme.names);
 
-    for (let i = 0; i < nbLanguage; i++) {
-      inputs.push(
-        <NamesInputs
-          key={i}
-          theme={props.theme}
-          handleChange={props.handleChange}
-        />
-      );
+    for (let i = 0; i < LANGUAGES.length; i += 1 ) {
+      if (languages.indexOf(LANGUAGES[i].value) !== -1) {
+        inputs.push(
+          <NamesInputs
+            key={i}
+            language={LANGUAGES[i]}
+            theme={props.theme}
+            handleChange={props.handleChange}
+          />
+        );
+      }
     }
 
     return inputs;
@@ -138,8 +130,8 @@ function ThemeForm(props) {
       {namesInputs()}
 
       {LANGUAGES.length > nbLanguage && (
-        <div className={classes.buttonContainer} onClick={handleIncrement}>
-          <Button variant="outlined">Ajouter une langue</Button>
+        <div className={classes.buttonContainer}>
+          <Button variant="outlined" disabled>Ajouter une langue</Button>
         </div>
       )}
 

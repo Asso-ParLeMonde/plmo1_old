@@ -25,8 +25,7 @@ const useStyles = makeStyles(() => ({
 const DEFAULT_THEME = {
   id: undefined,
   names: {
-    en: undefined,
-    fr: undefined,
+    fr: '',
   },
   description: undefined,
   image: undefined,
@@ -168,26 +167,17 @@ function ThemeModal(props) {
       });
     }
 
-    props.setIsOpen(false);
     updateThemes().catch();
-    props.history.push("/admin/themes");
+    handleCloseModal();
   }
 
   function handleCloseModal(event) {
-    event.preventDefault();
+    if (event !== undefined) {
+      event.preventDefault();
+    }
 
     props.setIsOpen(false);
-    setTheme(
-      props.theme || {
-        id: null,
-        names: {
-          fr: null,
-          en: null
-        },
-        image: null,
-        published: true
-      }
-    );
+    setTheme(props.theme || DEFAULT_THEME);
     props.history.push("/admin/themes");
   }
 
