@@ -15,7 +15,8 @@
 .theme-card-paper {
     width: 100%;
     overflow: hidden;
-    border-radius: 18px!important;
+    border-radius: 10px!important;
+    box-shadow: none!important;
 }
 .theme-card-title {
     margin: 0.1rem 0 0 0;
@@ -24,7 +25,7 @@
     color: inherit;
 }
 .theme-card-button:hover > div, .theme-card-button:focus > div {
-    box-shadow: 0 3px 5px -1px rgba(0,0,0,0.2), 0 5px 8px 0 rgba(0,0,0,0.14), 0 1px 14px 0 rgba(0,0,0,0.12);
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,0.18), 0 5px 6px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12)!important;
 }
 .theme-card-button:focus > .theme-card-title {
     text-decoration: underline;

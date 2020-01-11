@@ -27,7 +27,7 @@ function Admin() {
 
   return (
     <React.Fragment>
-      <Navbar title={"Administrateur : Par le monde"} tabs={tabs} />
+      <Navbar title={"Administrateur : Par le monde"} tabs={tabs} homeLink="/admin" />
       <main>
         <ThemesServiceProvider>
           <Container maxWidth="lg" className={classes.container}>

@@ -1,7 +1,9 @@
 import React from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
+import Hidden from '@material-ui/core/Hidden';
 import Container from "@material-ui/core/Container";
 import Navbar from "../components/Navbar";
+import BottomNavBar from "../components/BottomNavBar";
 import {ThemesServiceProvider} from "../services/ThemesService";
 import Theme from "./Theme";
 import Scenario from "./Scenario";
@@ -36,8 +38,10 @@ const tabs = [
 
 function User() {
   return (
-    <div>
-      <Navbar title={"Par le monde"} tabs={tabs} />
+    <React.Fragment>
+      <Hidden smDown>
+        <Navbar title={"Par le monde"} tabs={tabs} homeLink="/" />
+      </Hidden>
       <main>
         <Container maxWidth="lg">
           <ThemesServiceProvider isPublished={true}>
@@ -52,7 +56,10 @@ function User() {
           </ThemesServiceProvider>
         </Container>
       </main>
-    </div>
+      <Hidden mdUp>
+        <BottomNavBar tabs={tabs}/>
+      </Hidden>
+    </React.Fragment>
   );
 }
 

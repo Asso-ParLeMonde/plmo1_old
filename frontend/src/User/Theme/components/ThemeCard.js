@@ -46,10 +46,8 @@ function ThemeCard(props) {
             <CardMedia
               ref={img}
               component="img"
-              alt="theme picture"
-              //image={props.theme.image.path}
+              alt={`picture of ${props.theme.names.fr} thene`}
               image="/classe_default.png"
-              title="Contemplative Reptile"
             />
           ) : (
             <div className="theme-card-default" style={{backgroundColor: colors[props.themeID % 6]}}/>

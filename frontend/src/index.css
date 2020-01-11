@@ -20,3 +20,6 @@ p {
     margin-left: 0.6rem;
     margin-bottom: -0.4rem;
 }
+.MuiBottomNavigationAction-label.Mui-selected {
+    font-size: 0.75rem!important;
+}
