@@ -35,32 +35,26 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const LANGUAGES = [
-  {
-    value: "fr",
-    label: "FR"
-  },
+const OTHER_LANGUAGES = [
   {
     value: "en",
     label: "EN"
   }
 ];
 
-function NamesInputs(props) {
+function OtherNamesInputs(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.containerNames}>
-      <div>
-        {props.language.label}
-      </div>
+      <div>{props.language.label}</div>
 
       <TextField
         id={props.language.value}
         autoFocus
         type="text"
         value={props.theme.names[props.language.value] || ""}
-        onChange={(e) => props.handleChange("NAME", e)}
+        onChange={e => props.handleChange("NAME", e)}
         fullWidth
         className={classes.textFieldNames}
       />
@@ -71,32 +65,58 @@ function NamesInputs(props) {
 NamesInputs.propTypes = {
   theme: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
-  language: PropTypes.string.isRequired,
+  language: PropTypes.object.isRequired
+};
+
+function NamesInputs(props) {
+  const classes = useStyles();
+
+  return (
+    <div className={classes.containerNames}>
+      <div>{props.language.label}</div>
+
+      <TextField
+        id={props.language.value}
+        autoFocus
+        type="text"
+        value={props.theme.names[props.language.value] || ""}
+        onChange={e => props.handleChange("NAME", e)}
+        fullWidth
+        className={classes.textFieldNames}
+      />
+    </div>
+  );
+}
+
+NamesInputs.propTypes = {
+  theme: PropTypes.object.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  language: PropTypes.object.isRequired
 };
 
 function ThemeForm(props) {
   const classes = useStyles();
-  const [nbLanguage] = useState(Object.keys(props.theme.names).length);
+  const [nbLanguage, setNumberLanguage] = useState(
+    Object.keys(props.theme.names).length - 1
+  );
 
-  // function handleIncrement() {
-  //   setNumberLanguage(nbLanguage + 1);
-  // }
+  function handleIncrement() {
+    setNumberLanguage(nbLanguage + 1);
+  }
 
   function namesInputs() {
     let inputs = [];
-    const languages = Object.keys(props.theme.names);
 
-    for (let i = 0; i < LANGUAGES.length; i += 1 ) {
-      if (languages.indexOf(LANGUAGES[i].value) !== -1) {
-        inputs.push(
-          <NamesInputs
-            key={i}
-            language={LANGUAGES[i]}
-            theme={props.theme}
-            handleChange={props.handleChange}
-          />
-        );
-      }
+    for (let i = 0; i < nbLanguage; i += 1) {
+      console.log("in");
+      inputs.push(
+        <OtherNamesInputs
+          key={i}
+          language={OTHER_LANGUAGES[i]}
+          theme={props.theme}
+          handleChange={props.handleChange}
+        />
+      );
     }
 
     return inputs;
@@ -111,13 +131,16 @@ function ThemeForm(props) {
           <input
             type="file"
             style={{ display: "none" }}
-            onChange={(e) => props.handleChange("IMAGE", e)}
+            onChange={e => props.handleChange("IMAGE", e)}
             accept="image/*"
           />
         </Button>
         {!!props.theme.image && (
           <img
-            src={(props.theme.image || {}).path || URL.createObjectURL(props.theme.image)}
+            src={
+              (props.theme.image || {}).path ||
+              URL.createObjectURL(props.theme.image)
+            }
             alt="your theme"
             className={classes.imagePreview}
           />
@@ -125,11 +148,21 @@ function ThemeForm(props) {
       </div>
 
       <span className={classes.title}>Noms</span>
+      <NamesInputs
+        theme={props.theme}
+        handleChange={props.handleChange}
+        language={{
+          value: "fr",
+          label: "FR"
+        }}
+      />
       {namesInputs()}
 
-      {LANGUAGES.length > nbLanguage && (
+      {OTHER_LANGUAGES.length > nbLanguage && (
         <div className={classes.buttonContainer}>
-          <Button variant="outlined" disabled>Ajouter une langue</Button>
+          <Button variant="outlined" onClick={handleIncrement}>
+            Ajouter une langue
+          </Button>
         </div>
       )}
     </React.Fragment>
@@ -138,7 +171,7 @@ function ThemeForm(props) {
 
 ThemeForm.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired
 };
 
 export default ThemeForm;
