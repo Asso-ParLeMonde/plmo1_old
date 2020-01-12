@@ -1,9 +1,8 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import {axiosRequest} from "../Admin/component/axiosRequest";
+import { axiosRequest } from "../Admin/components/axiosRequest";
 
 const ThemesServiceContext = React.createContext(undefined, undefined);
-
 
 function ThemesServiceProvider({ children, isPublished }) {
   const [getThemes, setGetThemes] = useState({
@@ -26,7 +25,7 @@ function ThemesServiceProvider({ children, isPublished }) {
   }, [updateThemes]);
 
   return (
-    <ThemesServiceContext.Provider value={{getThemes, updateThemes}}>
+    <ThemesServiceContext.Provider value={{ getThemes, updateThemes }}>
       {children}
     </ThemesServiceContext.Provider>
   );
@@ -34,11 +33,11 @@ function ThemesServiceProvider({ children, isPublished }) {
 
 ThemesServiceProvider.propTypes = {
   children: PropTypes.any,
-  isPublished: PropTypes.bool,
+  isPublished: PropTypes.bool
 };
 
 ThemesServiceProvider.defaultProps = {
-  isPublished: null,
+  isPublished: null
 };
 
 export { ThemesServiceContext, ThemesServiceProvider };
