@@ -5,12 +5,12 @@ import ClearIcon from "@material-ui/icons/Clear";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import "./theme.css";
-import Accordion from "./components/Accordion";
 import AddThemeButton from "./components/AddThemeButton";
 import { ThemesServiceContext } from "../../services/ThemesService";
+import Accordion from "../components/Accordion";
+import AccordionContainer from "../components/Accordion/AccordionContainer";
 
-function Theme() {
+function Themes() {
   let themes = [];
 
   // eslint-disable-next-line
@@ -21,10 +21,11 @@ function Theme() {
 
   return (
     <React.Fragment>
-      <div className="tableContainer">
+      <AccordionContainer>
         <Accordion
+          type="THEME"
           title={"Liste des themes"}
-          themes={themes.filter(theme => theme.isPublished === true)}
+          elements={themes.filter(theme => theme.isPublished === true)}
           validIcon={<EditIcon />}
           invalidIcon={<DeleteIcon />}
         />
@@ -33,20 +34,21 @@ function Theme() {
           modalTitle={"Creation d'un nouveau theme"}
           link={"new"}
         />
-      </div>
+      </AccordionContainer>
 
-      <div className="tableContainer">
+      <AccordionContainer>
         <Accordion
+          type="THEME"
           title={"Themes en attente de validation"}
-          themes={themes.filter(theme => theme.isPublished === false)}
+          elements={themes.filter(theme => theme.isPublished === false)}
           validIcon={<CheckIcon />}
           invalidIcon={<ClearIcon />}
         />
-      </div>
+      </AccordionContainer>
     </React.Fragment>
   );
 }
 
-Theme.propTypes = {};
+Themes.propTypes = {};
 
-export default Theme;
+export default Themes;

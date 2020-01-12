@@ -27,7 +27,8 @@ function TableComponent(props) {
       <Table className={classes.table} aria-label="simple table">
         <TableHeadComponent />
         <TableBodyComponent
-          themes={props.themes}
+          type={props.type}
+          elements={props.elements}
           validIcon={props.validIcon}
           invalidIcon={props.invalidIcon}
         />
@@ -37,7 +38,8 @@ function TableComponent(props) {
 }
 
 TableComponent.propTypes = {
-  themes: PropTypes.array.isRequired,
+  type: PropTypes.oneOf("THEME").isRequired,
+  elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object,
   invalidIcon: PropTypes.object
 };

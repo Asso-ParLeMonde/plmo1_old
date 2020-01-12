@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
-import "./buttonShape.css";
 
 import { Button } from "@material-ui/core";
 
-import ThemeModal from "../../../ThemeModal";
+import ThemeModal from "../ThemeModal";
 
 function ModifyThemeButton(props) {
   const [isOpen, setIsOpen] = useState(false);

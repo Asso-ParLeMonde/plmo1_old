@@ -1,12 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { makeStyles } from "@material-ui/core/styles";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import TableComponent from "../TableComponent";
-import PropTypes from "prop-types";
+import TableComponent from "../TableComponents";
 
 const useStyles = makeStyles(theme => ({
   heading: {
@@ -29,7 +30,8 @@ function Accordion(props) {
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         <TableComponent
-          themes={props.themes}
+          type={props.type}
+          elements={props.elements}
           validIcon={props.validIcon}
           invalidIcon={props.invalidIcon}
         />
@@ -39,8 +41,9 @@ function Accordion(props) {
 }
 
 Accordion.propTypes = {
+  type: PropTypes.oneOf("THEME").isRequired,
   title: PropTypes.string.isRequired,
-  themes: PropTypes.array.isRequired,
+  elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired
 };
