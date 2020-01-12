@@ -24,11 +24,13 @@ async function handleRequest(
           isPublished: true
         }
       });
+      break;
     case "DELETE":
       request = await axiosRequest({
         method: "DELETE",
         url: `${process.env.REACT_APP_BASE_APP}/themes/${theme.id}`
       });
+      break;
   }
 
   if (request.error === true && request.complete === true) {
