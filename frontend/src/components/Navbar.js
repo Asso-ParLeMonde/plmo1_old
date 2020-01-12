@@ -68,8 +68,10 @@ function Navbar(props) {
           <Toolbar variant="dense" style={{padding: 0}}>
             <Grid container alignItems="center" justify="space-between">
               <Grid item>
-                <Logo style={{height: "36px", width: "auto"}}/>
-                <Typography variant="h6" className='plm-logo-title'>{props.title}</Typography>
+                <a href={props.homeLink} style={{ color: "white" }}>
+                  <Logo style={{height: "36px", width: "auto"}}/>
+                  <Typography variant="h6" className='plm-logo-title'>{props.title}</Typography>
+                </a>
               </Grid>
               <Grid item>
                 <StyledTabs value={value} aria-label="simple tabs example">
@@ -100,7 +102,8 @@ Navbar.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   title: PropTypes.string.isRequired,
-  tabs: PropTypes.array.isRequired
+  tabs: PropTypes.array.isRequired,
+  homeLink: PropTypes.string.isRequired,
 };
 
 export default withRouter(Navbar);
