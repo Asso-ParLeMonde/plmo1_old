@@ -1,11 +1,23 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { makeStyles } from "@material-ui/core";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
+const useStyles = makeStyles(theme => ({
+  thead: {
+    backgroundColor: theme.palette.primary.main
+  },
+  th: {
+    color: "white"
+  }
+}));
+
 function TableHeadComponent(props) {
+  const classes = useStyles();
+
   function typedHeader() {
     let titles = [];
 
@@ -24,7 +36,7 @@ function TableHeadComponent(props) {
   }
 
   return (
-    <TableHead className="thead">
+    <TableHead className={classes.thead}>
       <TableRow>
         {typedHeader().map((title, index) => {
           return <TableCell key={index}>{title}</TableCell>;
