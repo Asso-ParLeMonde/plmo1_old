@@ -39,9 +39,15 @@ function TableHeadComponent(props) {
     <TableHead className={classes.thead}>
       <TableRow>
         {typedHeader().map((title, index) => {
-          return <TableCell key={index}>{title}</TableCell>;
+          return (
+            <TableCell key={index} className={classes.th}>
+              {title}
+            </TableCell>
+          );
         })}
-        <TableCell align="center">Actions</TableCell>
+        <TableCell align="center" className={classes.th}>
+          Actions
+        </TableCell>
       </TableRow>
     </TableHead>
   );

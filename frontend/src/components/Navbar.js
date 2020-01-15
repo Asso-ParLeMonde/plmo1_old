@@ -6,7 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Grid from "@material-ui/core/Grid";
 
 import ElevationScroll from "./ElevationScroll";
@@ -47,7 +47,14 @@ const StyledTab = withStyles(theme => ({
   },
 }))(LinkTab);
 
+const useStyles = makeStyles(theme => ({
+  appBar: {
+    zIndex: theme.zIndex.drawer + 1,
+  },
+}));
+
 function Navbar(props) {
+  const classes = useStyles();
   const [value, setValue] = React.useState(0);
 
   useEffect(() => {
@@ -63,7 +70,7 @@ function Navbar(props) {
     <React.Fragment>
       <CssBaseline />
       <ElevationScroll {...props}>
-        <AppBar position="fixed">
+        <AppBar position="fixed" className={classes.appBar}>
           <Container maxWidth="lg">
           <Toolbar variant="dense" style={{padding: 0}}>
             <Grid container alignItems="center" justify="space-between">
