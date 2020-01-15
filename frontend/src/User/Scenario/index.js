@@ -62,9 +62,9 @@ function Scenario(props) {
           </Typography>
           <div className="video-container">
             <VideoThumbnail
-              title="Le burger du Canada présenté par la classe !"
+              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               duration={102334}
-              thumbnailLink={`${process.env.REACT_APP_BASE_APP}/videos/test1/test1.png`}/>
+              thumbnailLink="/thumbnail_default.png"/>
           </div>
           <Typography color="inherit" variant="h2">
             C'est à votre tour, sélectionnez un scénario à filmer
