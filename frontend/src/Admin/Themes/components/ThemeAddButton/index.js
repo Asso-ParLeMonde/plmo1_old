@@ -29,15 +29,17 @@ function AddThemeButton(props) {
 
   return (
     <React.Fragment>
-      <a
+      <Button
+        component="a"
+        variant="contained"
+        color="primary"
         href={`/admin/themes/${props.link}`}
         onClick={handleOpenModal}
         className={classes.link}
+        startIcon={<AddCircleIcon />}
       >
-        <Button variant="contained" color="primary">
-          <AddCircleIcon />
-        </Button>
-      </a>
+        Ajouter un thème
+      </Button>
       <ThemeModal
         theme={props.newTheme}
         isOpen={isOpen}

@@ -92,11 +92,14 @@ function TableBodyComponent(props) {
           {typedBody().map(info => {
             return <TableCell>{getInfo(el, info)}</TableCell>;
           })}
-          <TableCell align="center" style={{ width: 125 }}>
+          <TableCell
+            align="center"
+            style={{ width: 100, padding: "0 16px 0 0" }}
+          >
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-around"
+                justifyContent: "flex-end"
               }}
             >
               {typedActionButtons(el)}

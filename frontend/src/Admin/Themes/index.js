@@ -7,8 +7,7 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import AddThemeButton from "./components/ThemeAddButton";
 import { ThemesServiceContext } from "../../services/ThemesService";
-import Accordion from "../components/Accordion";
-import AccordionContainer from "../components/Accordion/AccordionContainer";
+import TableCard from "../components/TableCard";
 
 function Themes() {
   let themes = [];
@@ -21,30 +20,26 @@ function Themes() {
 
   return (
     <React.Fragment>
-      <AccordionContainer>
-        <Accordion
-          type="THEME"
-          title={"Liste des themes"}
-          elements={themes.filter(theme => theme.isPublished === true)}
-          validIcon={<EditIcon />}
-          invalidIcon={<DeleteIcon />}
-        />
-
+      <TableCard
+        type="THEME"
+        title="Liste des thèmes"
+        elements={themes.filter(theme => theme.isPublished === true)}
+        validIcon={<EditIcon />}
+        invalidIcon={<DeleteIcon />}
+      >
         <AddThemeButton
           modalTitle={"Creation d'un nouveau theme"}
           link={"new"}
         />
-      </AccordionContainer>
+      </TableCard>
 
-      <AccordionContainer>
-        <Accordion
-          type="THEME"
-          title={"Themes en attente de validation"}
-          elements={themes.filter(theme => theme.isPublished === false)}
-          validIcon={<CheckIcon />}
-          invalidIcon={<ClearIcon />}
-        />
-      </AccordionContainer>
+      <TableCard
+        type="THEME"
+        title={"Thèmes en attente de validation"}
+        elements={themes.filter(theme => theme.isPublished === false)}
+        validIcon={<CheckIcon />}
+        invalidIcon={<ClearIcon />}
+      />
     </React.Fragment>
   );
 }
