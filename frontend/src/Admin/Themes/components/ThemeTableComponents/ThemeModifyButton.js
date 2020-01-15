@@ -6,7 +6,7 @@ import { Button } from "@material-ui/core";
 
 import ThemeModal from "../ThemeModal";
 
-function ModifyThemeButton(props) {
+function ThemeModifyButton(props) {
   const [isOpen, setIsOpen] = useState(false);
 
   function handleOpenModal(event) {
@@ -32,7 +32,7 @@ function ModifyThemeButton(props) {
   );
 }
 
-ModifyThemeButton.propTypes = {
+ThemeModifyButton.propTypes = {
   icon: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
@@ -40,4 +40,4 @@ ModifyThemeButton.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(ModifyThemeButton);
+export default withRouter(ThemeModifyButton);

@@ -30,7 +30,6 @@ async function postTheme(newTheme, setRes) {
     url: `${process.env.REACT_APP_BASE_APP}/themes`,
     data: {
       names: newTheme.names,
-      description: newTheme.description,
       isPublished: true
     }
   });
@@ -54,7 +53,6 @@ async function putTheme(inheritedTheme, newTheme, setRes) {
     url: `${process.env.REACT_APP_BASE_APP}/themes/${inheritedTheme.id}`,
     data: {
       names: newTheme.names,
-      description: newTheme.description,
       isPublished: true
     }
   });

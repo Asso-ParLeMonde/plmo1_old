@@ -41,7 +41,7 @@ function Accordion(props) {
 }
 
 Accordion.propTypes = {
-  type: PropTypes.oneOf(["THEME"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
   title: PropTypes.string.isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,

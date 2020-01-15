@@ -1,22 +1,19 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import { ThemesServiceContext } from "../../../../services/ThemesService";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
-import { updateTheme } from "../themeRequest";
+import { ScenariosServiceContext } from "../../../../services/ScenariosService";
+import { updateScenario } from "../scenarioRequest";
 
-const DEFAULT_THEME = {
-  id: undefined,
-  names: {
-    fr: ""
-  },
-  image: undefined,
-  published: undefined
+const DEFAULT_SCENARIO = {
+  // TODO: create default scenario
 };
 
-function ThemeModal(props) {
-  const [newTheme, setNewTheme] = useState(props.theme || DEFAULT_THEME);
-  const updateThemes = useContext(ThemesServiceContext).updateThemes;
+function ScenarioModal(props) {
+  const [newScenario, setNewScenario] = useState(
+    props.scenario || DEFAULT_SCENARIO
+  );
+  const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
     error: false,
@@ -29,19 +26,16 @@ function ThemeModal(props) {
       default:
         break;
       case "NAME":
-        setNewTheme({
-          ...newTheme,
+        setNewScenario({
+          ...newScenario,
           names: {
-            ...newTheme.names,
+            ...newScenario.names,
             [event.target.id]: event.target.value
           }
         });
         break;
-      case "IMAGE":
-        setNewTheme({
-          ...newTheme,
-          image: event.target.files[0]
-        });
+      case "DESCRIPTION":
+        setNewScenario({ ...newScenario, description: event.target.value });
         break;
     }
   }
@@ -50,21 +44,21 @@ function ThemeModal(props) {
     event.preventDefault();
 
     let error = false;
-    if (props.theme) {
-      error = await updateTheme("PUT", props.theme, newTheme, setRes);
+    if (props.scenario) {
+      error = await updateScenario("PUT", props.scenario, newScenario, setRes);
     } else {
-      error = await updateTheme("POST", props.theme, newTheme, setRes);
+      error = await updateScenario("POST", props.scenario, newScenario, setRes);
     }
 
     if (error === false) {
       setRes({
         error: false,
         complete: true,
-        message: "Success lors dans la creation du theme"
+        message: "Success lors dans la creation du scenario"
       });
     }
 
-    updateThemes().catch();
+    updateScenarios().catch();
     handleCloseModal();
   }
 
@@ -72,17 +66,17 @@ function ThemeModal(props) {
     event.preventDefault();
 
     props.setIsOpen(false);
-    setNewTheme(props.theme || DEFAULT_THEME);
+    setNewScenario(props.scenario || DEFAULT_SCENARIO);
     props.history.push("/admin/themes");
   }
 
   return (
     <ModalContainer
-      newElement={newTheme}
+      newElement={newScenario}
       handleChange={handleChange}
       isOpen={props.isOpen}
       modalTitle={props.modalTitle}
-      formDescription={"THEME"}
+      formDescription={"SCENARIO"}
       handleCloseModal={handleCloseModal}
       handleConfirmation={handleConfirmation}
       res={res}
@@ -91,7 +85,7 @@ function ThemeModal(props) {
   );
 }
 
-ThemeModal.propTypes = {
+ScenarioModal.propTypes = {
   theme: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
@@ -99,4 +93,4 @@ ThemeModal.propTypes = {
   history: PropTypes.object.isRequired
 };
 
-export default ThemeModal;
+export default ScenarioModal;

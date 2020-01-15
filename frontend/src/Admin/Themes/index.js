@@ -5,7 +5,7 @@ import ClearIcon from "@material-ui/icons/Clear";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import AddThemeButton from "./components/AddThemeButton";
+import AddThemeButton from "./components/ThemeAddButton";
 import { ThemesServiceContext } from "../../services/ThemesService";
 import Accordion from "../components/Accordion";
 import AccordionContainer from "../components/Accordion/AccordionContainer";

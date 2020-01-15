@@ -8,6 +8,7 @@ import Scenarios from "./Scenarios";
 import Themes from "./Themes";
 import Navbar from "../components/Navbar";
 import { ThemesServiceProvider } from "../services/ThemesService";
+import { ScenariosServiceProvider } from "../services/ScenariosService";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -35,12 +36,14 @@ function Admin() {
       <Navbar title={"Administrateur : Par le monde"} tabs={tabs} />
       <main>
         <ThemesServiceProvider>
-          <Container maxWidth="lg" className={classes.container}>
-            <Switch>
-              <Route path="/admin/themes" component={Themes} />
-              <Route path="/admin/scenarios" component={Scenarios} />
-            </Switch>
-          </Container>
+          <ScenariosServiceProvider>
+            <Container maxWidth="lg" className={classes.container}>
+              <Switch>
+                <Route path="/admin/themes" component={Themes} />
+                <Route path="/admin/scenarios" component={Scenarios} />
+              </Switch>
+            </Container>
+          </ScenariosServiceProvider>
         </ThemesServiceProvider>
       </main>
     </React.Fragment>

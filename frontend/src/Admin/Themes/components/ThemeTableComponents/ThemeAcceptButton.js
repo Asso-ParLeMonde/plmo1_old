@@ -3,26 +3,26 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
-import { handleRequest } from "./ButtonRequests";
+import { handleRequest } from "./ThemeButtonRequests";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 
-function RemoveThemeButton(props) {
+function ThemeAcceptButton(props) {
   const updateThemes = useContext(ThemesServiceContext).updateThemes;
 
   const [res, setRes] = useState({
-    complete: false,
     error: false,
+    complete: false,
     message: ""
   });
 
-  async function handleRemove(event) {
+  async function handleAcceptation(event) {
     event.preventDefault();
     await handleRequest(
-      "DELETE",
+      "PUT",
       props.theme,
       setRes,
-      "Success lors de la suppression du theme",
-      "Erreur lors de la suppression du theme",
+      "Success lors de la validation du theme",
+      "Erreur lors de la validation du theme",
       props.history,
       updateThemes
     );
@@ -30,8 +30,8 @@ function RemoveThemeButton(props) {
 
   return (
     <DefaultButton
-      href={`/admin/themes/delete`}
-      handleAction={handleRemove}
+      href={`/admin/themes/${props.theme.id}`}
+      handleAction={handleAcceptation}
       icon={props.icon}
       res={res}
       setRes={setRes}
@@ -39,11 +39,12 @@ function RemoveThemeButton(props) {
   );
 }
 
-RemoveThemeButton.propTypes = {
-  themeId: PropTypes.number,
+ThemeAcceptButton.propTypes = {
+  icon: PropTypes.object.isRequired,
+  theme: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(RemoveThemeButton);
+export default withRouter(ThemeAcceptButton);
