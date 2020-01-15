@@ -11,6 +11,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import "./formComponents.css";
 import Notifications from "../Notifications";
 import ThemeForm from "../../Themes/components/ThemeForm";
+import ScenarioForm from "../../Scenarios/components/ScenarioForm";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -33,7 +34,12 @@ function ModalContainer(props) {
           />
         );
       default:
-        return <div />;
+        return (
+          <ScenarioForm
+            scenario={props.newElement}
+            handleChange={props.handleChange}
+          />
+        );
     }
   }
 

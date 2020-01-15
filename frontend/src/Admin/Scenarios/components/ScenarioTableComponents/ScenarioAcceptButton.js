@@ -2,12 +2,12 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import { ThemesServiceContext } from "../../../../services/ThemesService";
-import { handleRequest } from "./ButtonRequests";
+import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
+import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
 
-function AcceptThemeButton(props) {
-  const updateThemes = useContext(ThemesServiceContext).updateThemes;
+function ScenarioAcceptButton(props) {
+  const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
     error: false,
@@ -19,18 +19,18 @@ function AcceptThemeButton(props) {
     event.preventDefault();
     await handleRequest(
       "PUT",
-      props.theme,
+      props.scenario,
       setRes,
-      "Success lors de la validation du theme",
-      "Erreur lors de la validation du theme",
+      "Success lors de la validation du scenario",
+      "Erreur lors de la validation du scenario",
       props.history,
-      updateThemes
+      updateScenarios
     );
   }
 
   return (
     <DefaultButton
-      href={`/admin/themes/${props.theme.id}`}
+      href={`/admin/scenarios/${props.scenario.id}`}
       handleAction={handleAcceptation}
       icon={props.icon}
       res={res}
@@ -39,12 +39,12 @@ function AcceptThemeButton(props) {
   );
 }
 
-AcceptThemeButton.propTypes = {
+ScenarioAcceptButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  scenario: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired
 };
 
-export default withRouter(AcceptThemeButton);
+export default withRouter(ScenarioAcceptButton);

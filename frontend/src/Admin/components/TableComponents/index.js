@@ -25,7 +25,7 @@ function TableComponent(props) {
   return (
     <Paper className={classes.root}>
       <Table className={classes.table} aria-label="simple table">
-        <TableHeadComponent />
+        <TableHeadComponent type={props.type} />
         <TableBodyComponent
           type={props.type}
           elements={props.elements}
@@ -38,7 +38,7 @@ function TableComponent(props) {
 }
 
 TableComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object,
   invalidIcon: PropTypes.object

@@ -5,42 +5,84 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
 
-import ModifyThemeButton from "../../Themes/components/TableSpecialComponents/ModifyThemeButton";
-import AcceptThemeButton from "../../Themes/components/TableSpecialComponents/AcceptThemeButton";
-import RemoveThemeButton from "../../Themes/components/TableSpecialComponents/RemoveThemeButton";
+import ThemeModifyButton from "../../Themes/components/ThemeTableComponents/ThemeModifyButton";
+import ThemeAcceptButton from "../../Themes/components/ThemeTableComponents/ThemeAcceptButton";
+import ThemeRemoveButton from "../../Themes/components/ThemeTableComponents/ThemeRemoveButton";
+import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioModifyButton";
+import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
+import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
 
 function TableBodyComponent(props) {
   const rowBackgroundColor = index => {
     return index % 2 === 1 ? "tbodyDarkRow" : "";
   };
 
-  function buttons(type, element) {
-    switch (type) {
+  function typedActionButtons(element) {
+    switch (props.type) {
       default:
         return <div />;
       case "THEME":
         return (
           <React.Fragment>
             {element.isPublished && (
-              <ModifyThemeButton icon={props.validIcon} theme={element} />
+              <ThemeModifyButton icon={props.validIcon} theme={element} />
             )}
             {!element.isPublished && (
-              <AcceptThemeButton icon={props.validIcon} theme={element} />
+              <ThemeAcceptButton icon={props.validIcon} theme={element} />
             )}
-            <RemoveThemeButton icon={props.invalidIcon} theme={element} />
+            <ThemeRemoveButton icon={props.invalidIcon} theme={element} />
+          </React.Fragment>
+        );
+      case "SCENARIO":
+        return (
+          <React.Fragment>
+            {element.isStandard && (
+              <ScenarioModifyButton icon={props.validIcon} theme={element} />
+            )}
+            {!element.isStandard && (
+              <ScenarioAcceptButton icon={props.validIcon} theme={element} />
+            )}
+            <ScenarioRemoveButton icon={props.invalidIcon} theme={element} />
           </React.Fragment>
         );
     }
+  }
+
+  function typedBody() {
+    let information = [];
+
+    switch (props.type) {
+      default:
+        break;
+      case "THEME":
+        information = ["id", "names.fr"];
+        break;
+      case "SCENARIO":
+        information = ["id", "name", "theme.names.fr", "description"];
+        break;
+    }
+
+    return information;
+  }
+
+  function getInfo(el, info) {
+    const splitedInfo = info.split(".");
+    let finalInfo = el;
+
+    splitedInfo.forEach(element => {
+      finalInfo = finalInfo[element];
+    });
+
+    return finalInfo;
   }
 
   return (
     <TableBody>
       {props.elements.map((el, index) => (
         <TableRow key={el.id} className={rowBackgroundColor(index)}>
-          <TableCell>{el.id}</TableCell>
-          <TableCell component="th" scope="row">
-            {el.names.fr}
-          </TableCell>
+          {typedBody().map(info => {
+            return <TableCell>{getInfo(el, info)}</TableCell>;
+          })}
           <TableCell align="center" style={{ width: 125 }}>
             <div
               style={{
@@ -48,7 +90,7 @@ function TableBodyComponent(props) {
                 justifyContent: "space-around"
               }}
             >
-              {buttons("THEME", el)}
+              {typedActionButtons(el)}
             </div>
           </TableCell>
         </TableRow>
@@ -58,7 +100,7 @@ function TableBodyComponent(props) {
 }
 
 TableBodyComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired
