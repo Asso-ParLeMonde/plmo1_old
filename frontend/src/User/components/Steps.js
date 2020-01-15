@@ -28,7 +28,12 @@ const StyleMobileStepper = withStyles((theme) => ({
 function Steps(props) {
   const handleBack = () => {
     if (props.activeStep === 0) {
-      props.history.push("/themes");
+      if (props.location.pathname.indexOf('new') !== -1) {
+        const themeID = parseInt(props.match.params.themeId) || 0;
+        props.history.push(`/themes/${themeID}`);
+      } else {
+        props.history.push("/themes");
+      }
     }
   };
 

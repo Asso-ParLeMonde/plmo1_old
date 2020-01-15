@@ -1,18 +1,15 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
+import { withRouter, Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
-import { withRouter } from 'react-router-dom';
 
-import {Typography, Breadcrumbs, Link, Hidden} from "@material-ui/core";
-import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+
 import {ThemesServiceContext} from "../../services/ThemesService";
-
-import Inverted from "../../components/Inverted";
-import VideoThumbnail from "../../components/VideoThumbnail";
-import useAxios from "../../services/useAxios";
 import Steps from "../components/Steps";
-import ScenarioCard from "./components/ScenarioCard";
+import NewScenario from "./New";
+import AllScenarios from "./All";
 
-import "./scenario.css";
 
 function Scenario(props) {
   // Get theme
@@ -28,70 +25,35 @@ function Scenario(props) {
     }
   }
 
-  // Get scenarios
-  const [scenarios, setScenarios] = useState([]);
-  const language = 'fr';
-  const getScenarios = useAxios({
-    method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeID}/scenarios?languageCode=${language}`,
-  });
-  useEffect(() => {
-    if (getScenarios.complete && !getScenarios.error) {
-      setScenarios(getScenarios.data);
-    }
-  }, [getScenarios]);
-
   return (
     <div>
-      {theme !== undefined && (
-        <div>
-          <Hidden smDown>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-              <Link color="inherit" href="/themes" onClick={(event) => {
-                event.preventDefault();
-                props.history.push("/themes");
-              }}>
-                Tout les thèmes
-              </Link>
-              <Typography color="textPrimary">{theme.names.fr}</Typography>
-            </Breadcrumbs>
-          </Hidden>
+      {
+        theme !== undefined && (
+          <React.Fragment>
+            <Hidden smDown>
+              <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                <Link color="inherit" href="/themes" onClick={(event) => {
+                  event.preventDefault();
+                  props.history.push("/themes");
+                }}>
+                  Tout les thèmes
+                </Link>
+                <Typography color="textPrimary">{theme.names.fr}</Typography>
+              </Breadcrumbs>
+            </Hidden>
 
-          <Steps activeStep={0}/>
+            <Steps activeStep={0}/>
 
-          <Typography color="primary" variant="h1">
-            <Inverted round>1</Inverted> Quel <Inverted>scénario</Inverted> choisir ?
-          </Typography>
-          <Typography color="inherit" variant="h2">
-            Voici quelques vidéos qui peuvent vous inspirer
-          </Typography>
-          <div className="video-container">
-            <VideoThumbnail
-              title="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              duration={102334}
-              thumbnailLink="/thumbnail_default.png"/>
-          </div>
 
-          <Typography color="inherit" variant="h2">
-            C'est à votre tour, sélectionnez un scénario à filmer
-          </Typography>
-          <div className="scenarios-container">
-            {scenarios.map((scenario, index) => (
-              <ScenarioCard
-                key={index}
-                stepNumber={0}
-                title={scenario.name}
-                description={scenario.description}/>
-            ))}
-            <ScenarioCard
-              stepNumber={0}
-              title="Nouveau scénario"
-              description="Cliquez ici pour créer votre propre scénario !"/>
-          </div>
-        </div>
-      )}
+            <Switch>
+              <Route path="/themes/:themeId/new" render={(props) => <NewScenario {...props} theme={theme} themeID={themeID} />}/>
+              <Route path="/themes/:themeId/" render={(props) => <AllScenarios {...props} theme={theme} themeID={themeID} />}/>
+            </Switch>
+          </React.Fragment>
+        )
+      }
     </div>
-  );
+  )
 }
 
 Scenario.propTypes = {
