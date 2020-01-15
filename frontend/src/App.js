@@ -40,9 +40,9 @@ const theme = createMuiTheme({
       margin: "1.2rem 0 1rem 0",
     },
     h2: {
-      fontSize: "1.8rem",
+      fontSize: "1.5rem",
       fontFamily: "'Alegreya Sans', sans-serif",
-      fontWeight: "bold",
+      fontWeight: "normal",
       margin : 0,
     },
     h3: {

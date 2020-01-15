@@ -23,3 +23,6 @@ p {
 .MuiBottomNavigationAction-label.Mui-selected {
     font-size: 0.75rem!important;
 }
+.MuiMobileStepper-dots {
+    margin: auto;
+}

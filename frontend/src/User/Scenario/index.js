@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 
-import {Typography, Breadcrumbs, Link} from "@material-ui/core";
+import {Typography, Breadcrumbs, Link, Hidden} from "@material-ui/core";
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
 import {ThemesServiceContext} from "../../services/ThemesService";
 
@@ -29,10 +29,11 @@ function Scenario(props) {
   }
 
   // Get scenarios
-  const [, setScenarios] = useState([]);
+  const [scenarios, setScenarios] = useState([]);
+  const language = 'fr';
   const getScenarios = useAxios({
     method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeID}/scenarios`,
+    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeID}/scenarios?languageCode=${language}`,
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -44,16 +45,20 @@ function Scenario(props) {
     <div>
       {theme !== undefined && (
         <div>
-          <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-            <Link color="inherit" href="/themes" onClick={(event) => {
-              event.preventDefault();
-              props.history.push("/themes");
-            }}>
-              Tout les thèmes
-            </Link>
-            <Typography color="textPrimary">{theme.names.fr}</Typography>
-          </Breadcrumbs>
+          <Hidden smDown>
+            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+              <Link color="inherit" href="/themes" onClick={(event) => {
+                event.preventDefault();
+                props.history.push("/themes");
+              }}>
+                Tout les thèmes
+              </Link>
+              <Typography color="textPrimary">{theme.names.fr}</Typography>
+            </Breadcrumbs>
+          </Hidden>
+
           <Steps activeStep={0}/>
+
           <Typography color="primary" variant="h1">
             <Inverted round>1</Inverted> Quel <Inverted>scénario</Inverted> choisir ?
           </Typography>
@@ -66,14 +71,22 @@ function Scenario(props) {
               duration={102334}
               thumbnailLink="/thumbnail_default.png"/>
           </div>
+
           <Typography color="inherit" variant="h2">
             C'est à votre tour, sélectionnez un scénario à filmer
           </Typography>
           <div className="scenarios-container">
+            {scenarios.map((scenario, index) => (
+              <ScenarioCard
+                key={index}
+                stepNumber={0}
+                title={scenario.name}
+                description={scenario.description}/>
+            ))}
             <ScenarioCard
-              stepNumber={7}
-              title="Présentation du plat régional et de son historique"
-              description="Vous souhaitez présenter la recette typique de votre en racontant son histoire..."/>
+              stepNumber={0}
+              title="Nouveau scénario"
+              description="Cliquez ici pour créer votre propre scénario !"/>
           </div>
         </div>
       )}

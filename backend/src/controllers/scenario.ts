@@ -45,7 +45,7 @@ export class ScenarioController extends Controller {
         scenario.description = req.body.description || '';
         scenario.languageCode = req.body.languageCode || 'fr';
         scenario.name = req.body.name || '';
-        scenario.id = req.body.id || '';
+        scenario.id = req.body.id || null;
         await getCustomRepository(ScenarioRepository).saveScenario(scenario, parseInt(req.params.themeId, 10) || 0); // 0 because there is no theme with this id
         res.sendJSON(scenario);
     }
