@@ -5,8 +5,7 @@ import Container from "@material-ui/core/Container";
 import Navbar from "../components/Navbar";
 import BottomNavBar from "../components/BottomNavBar";
 import {ThemesServiceProvider} from "../services/ThemesService";
-import Theme from "./Theme";
-import Scenario from "./Scenario";
+import Creer from "./Creer";
 
 import { ReactComponent as CreateLogo } from '../images/create.svg';
 import { ReactComponent as MoviesLogo } from '../images/movies.svg';
@@ -16,7 +15,7 @@ import { ReactComponent as SettingsLogo } from '../images/settings.svg';
 const tabs = [
   {
     label: "Créer",
-    path: "/themes",
+    path: "/creer",
     icon: <CreateLogo/>,
   },
   {
@@ -46,9 +45,8 @@ function User() {
         <Container maxWidth="lg">
           <ThemesServiceProvider isPublished={true}>
             <Switch>
-              <Route exact path="/themes" component={Theme}/>
-              <Route path="/themes/:themeId" component={Scenario}/>
-              <Redirect exact from="/" to="/themes"/>
+              <Route path="/creer" component={Creer}/>
+              <Redirect exact from="/" to="/creer"/>
               <Route path="*">
                 404 not found!
               </Route>

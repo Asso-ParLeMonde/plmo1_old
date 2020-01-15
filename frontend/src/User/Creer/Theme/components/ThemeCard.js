@@ -34,10 +34,10 @@ function ThemeCard(props) {
 
   return (
     <a className="theme-card-button"
-       href={`/themes/${props.themeID}`}
+       href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
        onClick={(event) => {
          event.preventDefault();
-         props.history.push(`/themes/${props.themeID}`);
+         props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
        }}
     >
       <Paper className="theme-card-paper">
@@ -46,11 +46,11 @@ function ThemeCard(props) {
             <CardMedia
               ref={img}
               component="img"
-              alt={`picture of ${props.theme.names.fr} thene`}
+              alt={`picture of ${props.theme.names.fr} theme`}
               image="/classe_default.png"
             />
           ) : (
-            <div className="theme-card-default" style={{backgroundColor: colors[props.themeID % 6]}}/>
+            <div className="theme-card-default" style={{backgroundColor: colors[props.themeId % 6]}}/>
           )
         }
       </Paper>
@@ -60,7 +60,7 @@ function ThemeCard(props) {
 }
 
 ThemeCard.propTypes = {
-  themeID: PropTypes.number,
+  themeId: PropTypes.number,
   theme: PropTypes.object,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
@@ -68,7 +68,7 @@ ThemeCard.propTypes = {
 };
 
 ThemeCard.defaultProps = {
-  themeID: 0,
+  themeId: 0,
   theme: {
     image: null,
   },

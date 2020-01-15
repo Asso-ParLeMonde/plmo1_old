@@ -14,7 +14,7 @@ NewScenario.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeID: PropTypes.number.isRequired,
+  themeId: PropTypes.number.isRequired,
   theme: PropTypes.object.isRequired,
 };
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
+import qs from "query-string";
 import { Stepper, Step, StepLabel, MobileStepper, Hidden, withStyles, Button } from "@material-ui/core";
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import "./steps.css";
@@ -29,10 +30,10 @@ function Steps(props) {
   const handleBack = () => {
     if (props.activeStep === 0) {
       if (props.location.pathname.indexOf('new') !== -1) {
-        const themeID = parseInt(props.match.params.themeId) || 0;
-        props.history.push(`/themes/${themeID}`);
+        const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || 0;
+        props.history.push(`/creer/1-choix-du-scenario?themeId=${themeId}`);
       } else {
-        props.history.push("/themes");
+        props.history.push("/creer");
       }
     }
   };
@@ -40,8 +41,15 @@ function Steps(props) {
   return <div>
     <Hidden smDown>
       <Stepper activeStep={props.activeStep} alternativeLabel>
-        {steps.map(label => (
-          <Step key={label}>
+        {steps.map((label, index) => (
+          <Step key={label} style={{cursor: "pointer"}} onClick={(event) => {
+            event.preventDefault();
+            if (index < props.activeStep) {
+              handleBack();
+            } else if (index === props.activeStep && props.location.pathname.indexOf('new') !== -1 ) {
+              handleBack();
+            }
+          }}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}

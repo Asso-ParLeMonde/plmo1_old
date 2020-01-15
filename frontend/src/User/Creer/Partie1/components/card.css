@@ -6,6 +6,9 @@
     padding: 0.25rem 1rem 0.25rem 0.5rem;
     margin: 0.25rem 0 1rem;
     outline: none;
+    display: block;
+    text-decoration: none;
+    color: unset;
 }
 .card-container:hover, .card-container:focus {
     box-shadow: 0 2px 2px -1px rgba(0,0,0,0.1), 0 5px 6px 0 rgba(0,0,0,0.1), 0 1px 5px 0 rgba(0,0,0,0.1);

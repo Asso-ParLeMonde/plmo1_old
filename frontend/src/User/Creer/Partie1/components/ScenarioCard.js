@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ReactComponent as Arrow } from '../../../images/right-arrow.svg';
+import { ReactComponent as Arrow } from '../../../../images/right-arrow.svg';
 
 import {Typography, makeStyles} from "@material-ui/core";
 
@@ -13,10 +13,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ScenarioCard({title, description, stepNumber}) {
+function ScenarioCard({title, description, stepNumber, path, history}) {
   const classes = useStyles();
 
-  return <div className={[classes.greenBorder, "card-container"].join(" ")} tabIndex="0">
+  return <a className={[classes.greenBorder, "card-container"].join(" ")} tabIndex="0" href={path} onClick={(event) => {
+    event.preventDefault();
+    history.push(path);
+  }}>
     <div>
       <Typography color="primary" variant="h3">{title}</Typography>
     </div>
@@ -29,13 +32,15 @@ function ScenarioCard({title, description, stepNumber}) {
     <div className="arrow">
       <Arrow />
     </div>
-  </div>
+  </a>
 }
 
 ScenarioCard.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  stepNumber: PropTypes.number
+  stepNumber: PropTypes.number,
+  history: PropTypes.object.isRequired,
+  path: PropTypes.string.isRequired,
 };
 
 ScenarioCard.defaultProps = {
