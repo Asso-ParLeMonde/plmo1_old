@@ -1,22 +1,28 @@
 @font-face {
-    font-family: 'littledays';
-    src: local('littledays'), url(./fonts/littledays.woff) format('woff');
+  font-family: "littledays";
+  src: local("littledays"), url(./fonts/littledays.woff) format("woff");
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 p {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 .plm-logo-title {
-    font-family: 'littledays', 'Alegreya Sans', sans-serif!important;
-    font-size: 1.8rem!important;
-    font-weight: bold!important;
-    position: absolute;
-    top: 0.25rem;
-    left: 65px;
+  font-family: "littledays", "Alegreya Sans", sans-serif !important;
+  font-size: 1.8rem !important;
+  font-weight: bold !important;
+  position: absolute;
+  top: 0.25rem;
+  left: 65px;
 }
-.tab-label > svg{
-    margin-left: 0.6rem;
-    margin-bottom: -0.4rem;
+.tab-label > svg {
+  margin-left: 0.6rem;
+  margin-bottom: -0.4rem;
 }

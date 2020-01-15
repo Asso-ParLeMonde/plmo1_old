@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { makeStyles } from "@material-ui/core";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableRow from "@material-ui/core/TableRow";
@@ -12,9 +13,17 @@ import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableCompon
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
 
+const useStyles = makeStyles(theme => ({
+  th: {
+    backgroundColor: theme.palette.primary.light
+  }
+}));
+
 function TableBodyComponent(props) {
+  const classes = useStyles();
+
   const rowBackgroundColor = index => {
-    return index % 2 === 1 ? "tbodyDarkRow" : "";
+    return index % 2 === 1 ? classes.trow : "";
   };
 
   function typedActionButtons(element) {
@@ -83,11 +92,14 @@ function TableBodyComponent(props) {
           {typedBody().map(info => {
             return <TableCell>{getInfo(el, info)}</TableCell>;
           })}
-          <TableCell align="center" style={{ width: 125 }}>
+          <TableCell
+            align="center"
+            style={{ width: 100, padding: "0 16px 0 0" }}
+          >
             <div
               style={{
                 display: "flex",
-                justifyContent: "space-around"
+                justifyContent: "flex-end"
               }}
             >
               {typedActionButtons(el)}

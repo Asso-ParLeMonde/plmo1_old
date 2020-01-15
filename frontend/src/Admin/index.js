@@ -7,6 +7,7 @@ import Container from "@material-ui/core/Container";
 import Scenarios from "./Scenarios";
 import Themes from "./Themes";
 import Navbar from "../components/Navbar";
+import AdminDrawer from "./components/AdminDrawer";
 import { ThemesServiceProvider } from "../services/ThemesService";
 import { ScenariosServiceProvider } from "../services/ScenariosService";
 
@@ -19,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 const tabs = [
   {
-    label: "Themes",
+    label: "Thèmes",
     path: "/admin/themes"
   },
   {
@@ -32,21 +33,46 @@ function Admin() {
   const classes = useStyles();
 
   return (
-    <React.Fragment>
-      <Navbar title={"Administrateur : Par le monde"} tabs={tabs} />
-      <main>
-        <ThemesServiceProvider>
-          <ScenariosServiceProvider>
-            <Container maxWidth="lg" className={classes.container}>
-              <Switch>
-                <Route path="/admin/themes" component={Themes} />
-                <Route path="/admin/scenarios" component={Scenarios} />
-              </Switch>
-            </Container>
-          </ScenariosServiceProvider>
-        </ThemesServiceProvider>
-      </main>
-    </React.Fragment>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+        backgroundColor: "#eee"
+      }}
+    >
+      <Navbar
+        title={"Administrateur : Par le monde"}
+        tabs={[
+          {
+            label: "App",
+            path: "/"
+          }
+        ]}
+      />
+      <div
+        style={{
+          backgroundColor: "#eee",
+          flex: 1,
+          display: "flex",
+          height: "100%"
+        }}
+      >
+        <AdminDrawer tabs={tabs} />
+        <main style={{ flex: 1 }}>
+          <ThemesServiceProvider>
+            <ScenariosServiceProvider>
+              <Container maxWidth="lg" className={classes.container}>
+                <Switch>
+                  <Route path="/admin/themes" component={Themes} />
+                  <Route path="/admin/scenarios" component={Scenarios} />
+                </Switch>
+              </Container>
+            </ScenariosServiceProvider>
+          </ThemesServiceProvider>
+        </main>
+      </div>
+    </div>
   );
 }
 
