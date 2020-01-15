@@ -3,12 +3,15 @@ import PropTypes from "prop-types";
 
 import "./accordionContainer.css";
 
-function AccordionContainer(props) {
-  return <div className="container">{props.children}</div>;
+function AccordionContainer({ children }) {
+  return <div className="container">{children}</div>;
 }
 
 AccordionContainer.propTypes = {
-  children: PropTypes.element
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node
+  ]).isRequired
 };
 
 export default AccordionContainer;
