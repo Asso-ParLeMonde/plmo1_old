@@ -6,7 +6,12 @@ import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import { updateScenario } from "../scenarioRequest";
 
 const DEFAULT_SCENARIO = {
-  // TODO: create default scenario
+  id: null,
+  title: {
+    fr: null
+  },
+  description: null,
+  default: true
 };
 
 function ScenarioModal(props) {
