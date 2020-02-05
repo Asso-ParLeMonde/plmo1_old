@@ -1,25 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { makeStyles } from "@material-ui/core/styles";
 import ChooseDescription from "../../../components/FormComponents/ChooseDescription";
-
-const useStyles = makeStyles(() => ({
-  title: {
-    fontSize: 16
-  },
-  buttonContainer: {
-    display: "flex",
-    justifyContent: "flex-end"
-  }
-}));
+import ChooseNames from "../../../components/FormComponents/ChooseNames";
 
 function ScenarioForm(props) {
-  const classes = useStyles();
-
   return (
     <React.Fragment>
-      <span className={classes.title}>Titre</span>
+      <ChooseNames
+        newElement={props.scenario}
+        handleChange={props.handleChange}
+      />
       <ChooseDescription
         scenario={props.scenario}
         handleChange={props.handleChange}
