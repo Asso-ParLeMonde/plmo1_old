@@ -45,3 +45,6 @@
     padding: 0;
     margin: 0;
 }
+.video-thumbnail-img {
+    object-fit: cover;
+}

@@ -11,7 +11,7 @@ export class ScenarioRepository extends Repository<Scenario> {
     public async saveScenario(scenario: Scenario, themeId: number) {
         const theme: Theme | undefined = await getRepository(Theme).findOne(themeId);
         if (theme === undefined) {
-            throw new Error('haha boloss (je parle d\'Alexandre)');
+            throw new Error('Error, theme not found.');
         }
         scenario.theme = theme;
         if (scenario.id === undefined || scenario.id === null) {

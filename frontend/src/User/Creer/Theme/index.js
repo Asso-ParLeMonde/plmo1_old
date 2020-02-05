@@ -1,11 +1,11 @@
 import React, {useContext} from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography} from "@material-ui/core";
-import {ThemesServiceContext} from "../../services/ThemesService";
+import {ThemesServiceContext} from "../../../services/ThemesService";
 import ThemeCard from "./components/ThemeCard";
 
 import "./theme.css";
-import Inverted from "../../components/Inverted";
+import Inverted from "../../../components/Inverted";
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -31,7 +31,7 @@ function Theme() {
         {
           themes.map(theme => (
             <div key={theme.id}>
-              <ThemeCard theme={theme} themeID={theme.id}/>
+              <ThemeCard theme={theme} themeId={theme.id}/>
             </div>
           ))
         }

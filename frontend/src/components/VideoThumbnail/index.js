@@ -10,7 +10,7 @@ function VideoThumbnail({thumbnailLink, duration, title}) {
 
   return <div className="video-thumbnail" tabIndex="0" >
     <div className="video-thumbnail-container">
-      <img width="100%" height="100%" src={thumbnailLink} alt="thumbnail"/>
+      <img width="100%" height="100%" className="video-thumbnail-img" src={thumbnailLink} alt="thumbnail"/>
       <div className="button-container">
         <Fab aria-label="play" style={{ opacity: 0.85 }} tabIndex="-1" size="small">
           <PlayIcon />
