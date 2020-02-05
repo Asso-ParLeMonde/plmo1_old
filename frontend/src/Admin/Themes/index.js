@@ -5,9 +5,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import AddThemeButton from "./components/ThemeAddButton";
-import { ThemesServiceContext } from "../../services/ThemesService";
+import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
+import { ThemesServiceContext } from "../../services/ThemesService";
 
 function Themes() {
   let themes = [];
@@ -27,9 +27,11 @@ function Themes() {
         validIcon={<EditIcon />}
         invalidIcon={<DeleteIcon />}
       >
-        <AddThemeButton
-          modalTitle={"Creation d'un nouveau theme"}
-          link={"new"}
+        <AddButton
+          buttonTitle="Ajouter un thème"
+          type="THEME"
+          link="/admin/themes/new"
+          modalTitle="Creation d'un nouveau theme"
         />
       </TableCard>
 
