@@ -1,11 +1,95 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React, {useState, useContext, useEffect} from "react";
+import {Route, Switch, withRouter} from "react-router-dom";
+import useAxios from "../../../services/useAxios";
 import PropTypes from "prop-types";
+import qs from "query-string";
 
-function Partie2() {
+import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+
+import {ThemesServiceContext} from "../../../services/ThemesService";
+import Steps from "../../components/Steps";
+import NewQuestion from "./NewQuestion";
+import AllQuestions from "./AllQuestions";
+
+function Partie2(props) {
+  // Get theme
+  const params = qs.parse(props.location.search, { ignoreQueryPrefix: true });
+  const themeId = parseInt(params.themeId) || 0;
+  let theme;
+  const themesRequest = useContext(ThemesServiceContext).getThemes;
+  if (themesRequest.complete && !themesRequest.error) {
+    const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === themeId ? i2 : i1, -1);
+    if (themeIndex === -1) {
+      props.history.push("/");
+    } else {
+      theme = themesRequest.data[themeIndex];
+    }
+  }
+
+  // Get scenario
+  const scenarioId = parseInt(params.scenarioId) || 0;
+  const [ scenario, setScenario ] = useState(null);
+  const scenarioRequest = useAxios({
+    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeId}/scenarios/${scenarioId}_fr`,
+    method: "GET",
+  });
+  useEffect(() => {
+    if (scenarioRequest.complete && !scenarioRequest.error) {
+      setScenario(scenarioRequest.data);
+    }
+    if (scenarioRequest.complete && scenarioRequest.error) {
+      props.history.push("/");
+    }
+    // eslint-disable-next-line
+  }, [scenarioRequest]);
+
+  const isNewQuestion = false;
+
   return (
     <div>
-      Partie 2
+      {
+        theme !== undefined && scenario !== null && (
+          <React.Fragment>
+            <Hidden smDown>
+              <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                <Link color="inherit" href="/creer" onClick={(event) => {
+                  event.preventDefault();
+                  props.history.push("/creer");
+                }}>
+                  Tout les thèmes
+                </Link>
+                {
+                  isNewQuestion && (
+                    <Link color="inherit" href={`/creer/2-choix-des-questions?themeId=${themeId}&scenarioId=${scenarioId}`} onClick={(event) => {
+                      event.preventDefault();
+                      props.history.push(`/creer/2-choix-des-questions?themeId=${themeId}&scenarioId=${scenarioId}`);
+                    }}>
+                      {theme.names.fr}
+                    </Link>
+                  )
+                }
+                <Typography color="textPrimary">{isNewQuestion ? 'Nouvelle question' : theme.names.fr}</Typography>
+              </Breadcrumbs>
+            </Hidden>
+
+            <Steps activeStep={1}/>
+
+            <Switch>
+              <Route path="/creer/2-choix-des-questions/new" render={(props) => <NewQuestion {...props}
+                                                                                             theme={theme}
+                                                                                             themeId={themeId}
+                                                                                             scenario={scenario}
+                                                                                             scenarioId={scenarioId}/>}/>
+              <Route path="/creer/2-choix-des-questions" render={(props) => <AllQuestions {...props}
+                                                                                          theme={theme}
+                                                                                          themeId={themeId}
+                                                                                          scenario={scenario}
+                                                                                          scenarioId={scenarioId}/>}/>
+            </Switch>
+
+          </React.Fragment>
+        )}
     </div>
   )
 }

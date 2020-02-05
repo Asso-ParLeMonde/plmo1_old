@@ -8,8 +8,8 @@ import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import {ThemesServiceContext} from "../../../services/ThemesService";
 import Steps from "../../components/Steps";
-import NewScenario from "./New";
-import AllScenarios from "./All";
+import NewScenario from "./NewScenario";
+import AllScenarios from "./AllScenarios";
 
 
 function Partie1(props) {

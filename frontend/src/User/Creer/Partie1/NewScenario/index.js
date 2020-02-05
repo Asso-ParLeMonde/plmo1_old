@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {Typography} from "@material-ui/core";
+import {Hidden, Typography} from "@material-ui/core";
 import {withRouter} from 'react-router-dom';
 import axios from "axios";
 
@@ -105,16 +105,28 @@ function NewScenario(props) {
           </div>
         </Typography>
         <Typography color="inherit" variant="h2" style={{marginTop: "1rem"}}>
-          <div style={{width: "100%", textAlign: "right"}}>
+          <Hidden smDown>
+            <div style={{width: "100%", textAlign: "right"}}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSubmit}
+                endIcon={<ArrowForwardIcon />}
+                >
+                  Suivant
+              </Button>
+            </div>
+          </Hidden>
+          <Hidden mdUp>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
+              style={{ width: "100%", marginTop: "2rem" }}
               onClick={handleSubmit}
-              endIcon={<ArrowForwardIcon />}
-              >
-                Suivant
+            >
+              Suivant
             </Button>
-          </div>
+          </Hidden>
         </Typography>
       </div>
     </div>
