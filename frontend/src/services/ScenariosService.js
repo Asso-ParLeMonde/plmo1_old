@@ -4,7 +4,7 @@ import { axiosRequest } from "../Admin/components/axiosRequest";
 
 const ScenariosServiceContext = React.createContext(undefined, undefined);
 
-function ScenariosServiceProvider({ children, isPublished }) {
+function ScenariosServiceProvider({ children, isDefault }) {
   const [getScenarios, setGetScenarios] = useState({
     data: null,
     pendint: null,
@@ -15,10 +15,10 @@ function ScenariosServiceProvider({ children, isPublished }) {
   const updateScenarios = useCallback(async () => {
     const scenariosRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/scenarios?published=${isPublished}`
+      url: `${process.env.REACT_APP_BASE_APP}/scenarios?default=${isDefault}`
     });
     setGetScenarios(scenariosRequest);
-  }, [isPublished]);
+  }, [isDefault]);
 
   useEffect(() => {
     updateScenarios().catch();
@@ -33,11 +33,11 @@ function ScenariosServiceProvider({ children, isPublished }) {
 
 ScenariosServiceProvider.propTypes = {
   children: PropTypes.any,
-  isPublished: PropTypes.bool
+  isDefault: PropTypes.bool
 };
 
 ScenariosServiceProvider.defaultProps = {
-  isPublished: null
+  isDefault: null
 };
 
 export { ScenariosServiceContext, ScenariosServiceProvider };

@@ -5,10 +5,9 @@ import ClearIcon from "@material-ui/icons/Clear";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import Accordion from "../components/Accordion";
-import AccordionContainer from "../components/Accordion/AccordionContainer";
 import { ScenariosServiceContext } from "../../services/ScenariosService";
-import AddScenarioButton from "./components/ScenarioAddButton";
+import TableCard from "../components/TableCard";
+import AddButton from "../components/Buttons/AddButton";
 
 function Scenarios() {
   let scenarios = [];
@@ -21,30 +20,28 @@ function Scenarios() {
 
   return (
     <React.Fragment>
-      <AccordionContainer>
-        <Accordion
+      <TableCard
+        type="SCENARIO"
+        title={"Liste des scenarios par default"}
+        elements={scenarios.filter(scenario => scenario.isDefault === true)}
+        validIcon={<EditIcon />}
+        invalidIcon={<DeleteIcon />}
+      >
+        <AddButton
+          buttonTitle="Ajouter un scenario"
           type="SCENARIO"
-          title={"Liste des scenarios par default"}
-          elements={scenarios.filter(scenario => scenario.isDefault === true)}
-          validIcon={<EditIcon />}
-          invalidIcon={<DeleteIcon />}
+          link="/admin/scenarios/new"
+          modalTitle="Creation d'un nouveau scenario par default"
         />
+      </TableCard>
 
-        <AddScenarioButton
-          modalTitle={"Creation d'un nouveau scenario"}
-          link={"new"}
-        />
-      </AccordionContainer>
-
-      <AccordionContainer>
-        <Accordion
-          type="SCENARIO"
-          title={"Autres scenarios existant"}
-          elements={scenarios.filter(scenario => scenario.isDefault === false)}
-          validIcon={<CheckIcon />}
-          invalidIcon={<ClearIcon />}
-        />
-      </AccordionContainer>
+      <TableCard
+        type="SCENARIO"
+        title={"Autres scenarios existant"}
+        elements={scenarios.filter(scenario => scenario.isDefault === false)}
+        validIcon={<CheckIcon />}
+        invalidIcon={<ClearIcon />}
+      />
     </React.Fragment>
   );
 }

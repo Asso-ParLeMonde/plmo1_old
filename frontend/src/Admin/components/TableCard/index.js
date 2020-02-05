@@ -8,7 +8,11 @@ function TableCard(props) {
   return (
     <Card style={{ marginBottom: "2rem" }}>
       <CardContent>
-        <Typography variant="h5" component="h2" style={{ marginBottom: "1rem" }}>
+        <Typography
+          variant="h5"
+          component="h2"
+          style={{ marginBottom: "1rem" }}
+        >
           {props.title}
         </Typography>
         <TableComponent
@@ -22,12 +26,12 @@ function TableCard(props) {
         {props.children}
       </CardActions>
     </Card>
-  )
+  );
 }
 
 TableCard.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.oneOf(["THEME"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
   title: PropTypes.string.isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,

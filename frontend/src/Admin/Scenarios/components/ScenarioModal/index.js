@@ -67,7 +67,7 @@ function ScenarioModal(props) {
 
     props.setIsOpen(false);
     setNewScenario(props.scenario || DEFAULT_SCENARIO);
-    props.history.push("/admin/themes");
+    props.history.push("/admin/scenarios");
   }
 
   return (
