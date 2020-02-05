@@ -7,7 +7,7 @@ import { updateScenario } from "../scenarioRequest";
 
 const DEFAULT_SCENARIO = {
   id: null,
-  title: {
+  names: {
     fr: null
   },
   description: null,
