@@ -86,7 +86,6 @@ function ThemeModal(props) {
       handleCloseModal={handleCloseModal}
       handleConfirmation={handleConfirmation}
       res={res}
-      setRes={setRes}
     />
   );
 }

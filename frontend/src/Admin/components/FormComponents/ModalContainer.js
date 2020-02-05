@@ -9,7 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import "./formComponents.css";
-import Notifications from "../Notifications";
+import Notifications from "../../../components/Notifications";
 import ThemeForm from "../../Themes/components/ThemeForm";
 import ScenarioForm from "../../Scenarios/components/ScenarioForm";
 
@@ -69,7 +69,7 @@ function ModalContainer(props) {
           </Button>
         </DialogActions>
       </Dialog>
-      <Notifications res={props.res} setRes={props.setRes} />
+      <Notifications res={props.res} />
     </React.Fragment>
   );
 }
@@ -82,8 +82,7 @@ ModalContainer.propTypes = {
   formDescription: PropTypes.string.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
   handleConfirmation: PropTypes.func.isRequired,
-  res: PropTypes.object.isRequired,
-  setRes: PropTypes.func.isRequired
+  res: PropTypes.object.isRequired
 };
 
 export default ModalContainer;
