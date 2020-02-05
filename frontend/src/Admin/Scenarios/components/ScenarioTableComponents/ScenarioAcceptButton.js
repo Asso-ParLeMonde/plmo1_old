@@ -34,7 +34,6 @@ function ScenarioAcceptButton(props) {
       handleAction={handleAcceptation}
       icon={props.icon}
       res={res}
-      setRes={setRes}
     />
   );
 }

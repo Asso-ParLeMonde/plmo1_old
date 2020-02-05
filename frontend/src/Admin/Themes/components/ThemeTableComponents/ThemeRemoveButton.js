@@ -34,7 +34,6 @@ function ThemeRemoveButton(props) {
       handleAction={handleRemove}
       icon={props.icon}
       res={res}
-      setRes={setRes}
     />
   );
 }

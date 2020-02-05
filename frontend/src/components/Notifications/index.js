@@ -42,8 +42,7 @@ function Notifications(props) {
 }
 
 Notifications.propTypes = {
-  res: PropTypes.object.isRequired,
-  setRes: PropTypes.func.isRequired
+  res: PropTypes.object.isRequired
 };
 
 export default Notifications;

@@ -80,7 +80,6 @@ function ScenarioModal(props) {
       handleCloseModal={handleCloseModal}
       handleConfirmation={handleConfirmation}
       res={res}
-      setRes={setRes}
     />
   );
 }
