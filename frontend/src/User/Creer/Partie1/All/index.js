@@ -44,6 +44,12 @@ function Scenarios(props) {
           C'est à votre tour, sélectionnez un scénario à filmer
         </Typography>
         <div className="scenarios-container">
+          <ScenarioCard
+            stepNumber={0}
+            title="Nouveau scénario"
+            history={props.history}
+            path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
+            description="Cliquez ici pour créer votre propre scénario !"/>
           {scenarios.map((scenario, index) => (
             <ScenarioCard
               key={index}
@@ -53,12 +59,6 @@ function Scenarios(props) {
               history={props.history}
               description={scenario.description}/>
           ))}
-          <ScenarioCard
-            stepNumber={0}
-            title="Nouveau scénario"
-            history={props.history}
-            path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
-            description="Cliquez ici pour créer votre propre scénario !"/>
         </div>
       </div>
     </div>
