@@ -1,9 +1,21 @@
-import { EntityRepository, getRepository, Repository } from "typeorm";
+import { EntityRepository, getRepository, Repository, SelectQueryBuilder } from "typeorm";
 import { Scenario } from "../entities/scenario";
 import { Theme } from "../entities/theme";
 
 @EntityRepository(Scenario)
 export class ScenarioRepository extends Repository<Scenario> {
+  public async findAll(params: { isDefault: boolean | null }) {
+    let entitiesQuery: SelectQueryBuilder<Scenario> = this.manager
+      .createQueryBuilder()
+      .select("scenario")
+      .from(Scenario, "scenario");
+    if (params.isDefault !== null) {
+      entitiesQuery = entitiesQuery.where("scenario.isDefault = :isDefault", params);
+    }
+    const entities: Scenario[] = await entitiesQuery.getMany();
+    return entities;
+  }
+
   public async saveScenario(scenario: Scenario, themeId: number): Promise<Scenario> {
     const theme: Theme | undefined = await getRepository(Theme).findOne(themeId);
     if (theme === undefined) {
