@@ -44,8 +44,6 @@ function Partie2(props) {
     // eslint-disable-next-line
   }, [scenarioRequest]);
 
-  const isNewQuestion = false;
-
   return (
     <div>
       {
@@ -59,17 +57,7 @@ function Partie2(props) {
                 }}>
                   Tout les thèmes
                 </Link>
-                {
-                  isNewQuestion && (
-                    <Link color="inherit" href={`/creer/2-choix-des-questions?themeId=${themeId}&scenarioId=${scenarioId}`} onClick={(event) => {
-                      event.preventDefault();
-                      props.history.push(`/creer/2-choix-des-questions?themeId=${themeId}&scenarioId=${scenarioId}`);
-                    }}>
-                      {theme.names.fr}
-                    </Link>
-                  )
-                }
-                <Typography color="textPrimary">{isNewQuestion ? 'Nouvelle question' : theme.names.fr}</Typography>
+                <Typography color="textPrimary">{theme.names.fr}</Typography>
               </Breadcrumbs>
             </Hidden>
 
