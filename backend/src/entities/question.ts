@@ -1,5 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Scenario } from './scenario';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Question {
@@ -7,8 +6,15 @@ export class Question {
     @PrimaryGeneratedColumn()
     public id: number;
 
-    @Column({ type: 'varchar' })
-    public name: string;
+    @Column({ type: 'varchar', length: 280 })
+    public question: string;
 
-    public scenario: Scenario;
+    @Column()
+    public isDefault: boolean;
+
+    @Column()
+    public scenarioId: number;
+
+    @PrimaryColumn({ type: 'varchar', length: 2 })
+    public languageCode: string;
 }
