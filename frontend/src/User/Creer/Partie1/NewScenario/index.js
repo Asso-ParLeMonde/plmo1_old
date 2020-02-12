@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import PropTypes from "prop-types";
-import {Typography} from "@material-ui/core";
+import {Hidden, Typography} from "@material-ui/core";
 import {withRouter} from 'react-router-dom';
 import axios from "axios";
 
@@ -59,6 +59,11 @@ function NewScenario(props) {
     }
   };
 
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+  };
+
   return (
     <div>
       <div>
@@ -79,6 +84,8 @@ function NewScenario(props) {
             fullWidth
             style={{ marginTop: "0.5rem" }}
             variant = "outlined"
+            color="secondary"
+            autoComplete="off"
             />
           </div>
         </Typography>
@@ -96,6 +103,8 @@ function NewScenario(props) {
             fullWidth
             style={{ marginTop: "0.5rem" }}
             variant = "outlined"
+            color="secondary"
+            autoComplete="off"
             />
             <FormHelperText
               id="component-helper-text"
@@ -105,16 +114,38 @@ function NewScenario(props) {
           </div>
         </Typography>
         <Typography color="inherit" variant="h2" style={{marginTop: "1rem"}}>
-          <div style={{width: "100%", textAlign: "right"}}>
+          <Hidden smDown>
+            <div style={{width: "100%", textAlign: "right"}}>
+              <Button
+                as="a"
+                variant="outlined"
+                color="secondary"
+                style={{ marginRight: "1rem" }}
+                href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
+                onClick={handleBack}
+              >
+                Annuler
+              </Button>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSubmit}
+                endIcon={<ArrowForwardIcon />}
+                >
+                  Suivant
+              </Button>
+            </div>
+          </Hidden>
+          <Hidden mdUp>
             <Button
               variant="contained"
-              color="primary"
+              color="secondary"
+              style={{ width: "100%", marginTop: "2rem" }}
               onClick={handleSubmit}
-              endIcon={<ArrowForwardIcon />}
-              >
-                Suivant
+            >
+              Suivant
             </Button>
-          </div>
+          </Hidden>
         </Typography>
       </div>
     </div>

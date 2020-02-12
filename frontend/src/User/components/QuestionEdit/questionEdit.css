@@ -1,0 +1,30 @@
+.question-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 1rem 0;
+    padding: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: white;
+}
+.question-container.sortable-ghost {
+    opacity: 0.3;
+}
+.question-index {
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0.25rem 0.4rem 0.25rem 0;
+    cursor: grab;
+    touch-action: none;
+}
+.question-content {
+    flex: 1;
+    align-self: center;
+    padding: 0.4rem;
+}
+.question-actions {
+    align-self: center;
+    padding: 0.2rem 0.25rem;
+}

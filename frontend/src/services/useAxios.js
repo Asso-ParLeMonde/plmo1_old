@@ -10,6 +10,8 @@ function useAxios(req) {
   });
 
   useEffect(() => {
+    // eslint-disable-next-line no-console
+    console.log(req.url);
     setRes({
       data: null,
       pending: true,

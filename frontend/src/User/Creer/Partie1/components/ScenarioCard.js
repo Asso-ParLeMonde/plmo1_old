@@ -15,11 +15,12 @@ const useStyles = makeStyles(theme => ({
 
 function ScenarioCard({title, description, stepNumber, path, history}) {
   const classes = useStyles();
-
-  return <a className={[classes.greenBorder, "card-container"].join(" ")} tabIndex="0" href={path} onClick={(event) => {
+  const handleClick = (event) => {
     event.preventDefault();
     history.push(path);
-  }}>
+  };
+
+  return <a className={[classes.greenBorder, "card-container"].join(" ")} tabIndex="0" href={path} onClick={handleClick}>
     <div>
       <Typography color="primary" variant="h3">{title}</Typography>
     </div>
