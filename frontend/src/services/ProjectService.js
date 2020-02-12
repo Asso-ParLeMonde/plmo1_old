@@ -7,36 +7,48 @@ import useAxios from "./useAxios";
 
 const ProjectServiceContext = React.createContext(undefined, undefined);
 
+const getInitialState = () => {
+  const lastProject = JSON.parse(localStorage.getItem("lastProject")) || {};
+  const initialProject = {
+    ...{
+      themeId: null,
+      themeName: '',
+      scenarioId: null,
+      languageCode: 'fr',
+      questions: [],
+    },
+    ...lastProject,
+  };
+  if (initialProject.questions.length > 0) {
+    initialProject.preventDataFetch = true;
+  }
+  return initialProject;
+};
+
 function ProjectService(props) {
   const themesRequest = useContext(ThemesServiceContext).getThemes;
-  const [project, setProject] = useState({
-    themeId: null,
-    themeName: '',
-    scenarioId: null,
-    languageCode: 'fr',
-    questions: []
-  });
+  const [project, setProject] = useState(getInitialState());
 
   const updateProject = updatedProject => {
-    // TODO, update project in a cookie.
-    // eslint-disable-next-line no-console
-    console.log(updatedProject);
-    setProject(previousProject => ({ ...previousProject, ...updatedProject }));
+    setProject(previousProject => {
+      localStorage.setItem("lastProject", JSON.stringify({ ...previousProject, ...updatedProject }));
+      return { ...previousProject, ...updatedProject }
+    });
   };
 
-  useEffect(() => { // update project base on location search and cookies
-    if (project.themeId === null) {
-      const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || null;
+  useEffect(() => { // update project base on location
+    const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || null;
+    const scenarioId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).scenarioId) || null;
+    if (project.themeId !== themeId) {
       updateProject({ themeId });
     }
-    if (project.scenarioId === null) {
-      const scenarioId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).scenarioId) || null;
+    if (project.scenarioId !== scenarioId) {
       updateProject({ scenarioId });
     }
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
+  useEffect(() => { // update theme name when themeId change
     if (project.themeId !== null && themesRequest.complete && !themesRequest.error) {
       const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || 0;
       const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === themeId ? i2 : i1, -1);
@@ -54,11 +66,16 @@ function ProjectService(props) {
     method: "GET",
     url: project.scenarioId === null ? null : `${process.env.REACT_APP_BASE_APP}/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`,
   });
-  useEffect(() => { // Get questions
-    if (getQuestions.complete && !getQuestions.error) {
+  useEffect(() => { // Get questions when scenarioId change
+    if (project.scenarioId !== null && getQuestions.complete && !getQuestions.error) {
+      if (project.preventDataFetch) {
+        updateProject({ preventDataFetch: false });
+        return;
+      }
       updateProject({ questions: getQuestions.data });
     }
-  }, [getQuestions]);
+    // eslint-disable-next-line
+  }, [project.scenarioId, getQuestions]);
 
   return (
     <ProjectServiceContext.Provider value={{ project, updateProject }}>
