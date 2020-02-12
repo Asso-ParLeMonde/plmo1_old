@@ -59,6 +59,11 @@ function NewScenario(props) {
     }
   };
 
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+  };
+
   return (
     <div>
       <div>
@@ -117,10 +122,7 @@ function NewScenario(props) {
                 color="secondary"
                 style={{ marginRight: "1rem" }}
                 href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
-                onClick={(event) => {
-                  event.preventDefault();
-                  props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
-                }}
+                onClick={handleBack}
               >
                 Annuler
               </Button>

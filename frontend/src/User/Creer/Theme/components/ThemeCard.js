@@ -32,13 +32,15 @@ function ThemeCard(props) {
     }
   }, [props.theme.image]);
 
+  const handleSelect = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+  };
+
   return (
     <a className="theme-card-button"
        href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
-       onClick={(event) => {
-         event.preventDefault();
-         props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
-       }}
+       onClick={handleSelect}
     >
       <Paper className="theme-card-paper">
         {

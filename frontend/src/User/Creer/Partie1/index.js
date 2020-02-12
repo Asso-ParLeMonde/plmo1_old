@@ -42,6 +42,16 @@ function Partie1(props) {
 
   const isNewScenario = props.location.pathname.indexOf("new") !== -1;
 
+  const handleHome = (event) => {
+    event.preventDefault();
+    props.history.push("/creer");
+  };
+
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/1-choix-du-scenario?themeId=${themeId}`);
+  };
+
   return (
     <div>
       {
@@ -49,18 +59,12 @@ function Partie1(props) {
           <React.Fragment>
             <Hidden smDown>
               <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                <Link color="inherit" href="/creer" onClick={(event) => {
-                  event.preventDefault();
-                  props.history.push("/creer");
-                }}>
+                <Link color="inherit" href="/creer" onClick={handleHome}>
                   Tout les thèmes
                 </Link>
                 {
                   isNewScenario && (
-                    <Link color="inherit" href={`/creer/1-choix-du-scenario?themeId=${themeId}`} onClick={(event) => {
-                      event.preventDefault();
-                      props.history.push(`/creer/1-choix-du-scenario?themeId=${themeId}`);
-                    }}>
+                    <Link color="inherit" href={`/creer/1-choix-du-scenario?themeId=${themeId}`} onClick={handleBack}>
                       {theme.names.fr}
                     </Link>
                   )

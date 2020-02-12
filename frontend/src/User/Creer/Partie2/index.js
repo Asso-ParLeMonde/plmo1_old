@@ -44,6 +44,11 @@ function Partie2(props) {
     // eslint-disable-next-line
   }, [scenarioRequest]);
 
+  const handleHome = (event) => {
+    event.preventDefault();
+    props.history.push("/creer");
+  };
+
   return (
     <div>
       {
@@ -51,10 +56,7 @@ function Partie2(props) {
           <React.Fragment>
             <Hidden smDown>
               <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                <Link color="inherit" href="/creer" onClick={(event) => {
-                  event.preventDefault();
-                  props.history.push("/creer");
-                }}>
+                <Link color="inherit" href="/creer" onClick={handleHome}>
                   Tout les thèmes
                 </Link>
                 <Typography color="textPrimary">{theme.names.fr}</Typography>

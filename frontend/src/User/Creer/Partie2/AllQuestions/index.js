@@ -8,6 +8,11 @@ import Inverted from "../../../../components/Inverted";
 import QuestionsList from "../../../components/QuestionsList";
 
 function AllQuestions(props) {
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+  };
+
   const [questions, setQuestions] = useState([
     {
       question: "Quel est le plat que vous avez décidez de présenter ? De quoi s’agit-il ?",
@@ -37,10 +42,7 @@ function AllQuestions(props) {
           variant="outlined"
           href={`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
           color="secondary"
-          onClick={(event) => {
-            event.preventDefault();
-            props.history.push(`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
-          }}
+          onClick={handleBack}
           style={{ textTransform: "none", fontWeight: "500", marginTop: "2rem" }}>
           Ajouter une question
         </Button>

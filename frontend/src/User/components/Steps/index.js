@@ -56,7 +56,8 @@ function Steps(props) {
     setParams(qs.parse(props.location.search, { ignoreQueryPrefix: true }));
   }, [props.location]);
 
-  const handleBack = (index) => {
+  const handleBack = index => event => {
+    event.preventDefault();
     if (index < 0) {
       props.history.push('/creer');
     } else if (index < props.activeStep || (index === props.activeStep && isNewPage)) {
@@ -68,10 +69,7 @@ function Steps(props) {
     <Hidden smDown>
       <Stepper activeStep={props.activeStep} alternativeLabel>
         {steps.map((step, index) => (
-          <Step key={step.name} style={{cursor: "pointer"}} onClick={(event) => {
-            event.preventDefault();
-            handleBack(index);
-          }}>
+          <Step key={step.name} style={{cursor: "pointer"}} onClick={handleBack(index)}>
             <StepLabel>{step.name}</StepLabel>
           </Step>
         ))}
@@ -84,7 +82,7 @@ function Steps(props) {
         position="top"
         activeStep={props.activeStep}
         backButton={
-          <Button size="medium" onClick={() => handleBack(isNewPage ? props.activeStep : props.activeStep - 1)} className="back-button">
+          <Button size="medium" onClick={handleBack(isNewPage ? props.activeStep : props.activeStep - 1)} className="back-button">
             <KeyboardArrowLeft />
             Retour
           </Button>

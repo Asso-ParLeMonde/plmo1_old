@@ -10,6 +10,11 @@ import Button from "@material-ui/core/Button";
 import Inverted from "../../../../components/Inverted";
 
 function NewQuestion(props) {
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+  };
+
   return (
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
@@ -47,10 +52,7 @@ function NewQuestion(props) {
               color="secondary"
               style={{ marginRight: "1rem" }}
               href={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
-              onClick={(event) => {
-                event.preventDefault();
-                props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
-              }}
+              onClick={handleBack}
             >
               Annuler
             </Button>
