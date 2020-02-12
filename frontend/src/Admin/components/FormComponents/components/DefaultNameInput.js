@@ -37,8 +37,6 @@ function DefaultNameInput(props) {
     );
   }
 
-  console.log(props.selectedLanguageList);
-
   return (
     <div className={classes.containerNames}>
       <div className={classes.textFieldLanguage}>{props.language.label}</div>
