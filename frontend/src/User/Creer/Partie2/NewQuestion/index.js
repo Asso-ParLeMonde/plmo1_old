@@ -83,9 +83,7 @@ NewQuestion.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
   scenarioId: PropTypes.number.isRequired,
-  scenario: PropTypes.object.isRequired,
 };
 
 export default withRouter(NewQuestion);

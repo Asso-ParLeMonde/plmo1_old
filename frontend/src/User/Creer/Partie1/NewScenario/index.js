@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import PropTypes from "prop-types";
 import {Hidden, Typography} from "@material-ui/core";
 import {withRouter} from 'react-router-dom';
@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import ArrowForwardIcon from '@material-ui/icons/ArrowForwardIos';
+import {ProjectServiceContext} from "../../../../services/ProjectService";
 
 function NewScenario(props) {
   const [ newScenario, setNewScenario ] = useState({
@@ -19,6 +20,7 @@ function NewScenario(props) {
     themeId: props.themeId
   });
   const [ hasError, setHasError ] = useState(false);
+  const { updateProject } = useContext(ProjectServiceContext);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -36,6 +38,7 @@ function NewScenario(props) {
           data: newScenario,
         });
         if (response.status === 200) {
+          updateProject({ scenarioId: response.data.id });
           props.history.push(`/creer/2-choix-des-questions?themeId=${newScenario.themeId}&scenarioId=${response.data.id}`);
         }
       } catch (e) {
@@ -157,7 +160,6 @@ NewScenario.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
 };
 
 export default withRouter(NewScenario);

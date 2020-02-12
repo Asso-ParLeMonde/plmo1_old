@@ -36,12 +36,14 @@ function Scenarios(props) {
               title="Nouveau scénario"
               history={props.history}
               path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
+              scenarioId={0}
               description="Cliquez ici pour créer votre propre scénario !"/>
             {props.scenarios.map((scenario, index) => (
               <ScenarioCard
                 key={index}
                 stepNumber={0}
                 title={scenario.name}
+                scenarioId={scenario.id}
                 path={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${scenario.id}`}
                 history={props.history}
                 description={scenario.description}/>
@@ -58,7 +60,6 @@ Scenarios.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
   scenarios: PropTypes.array,
 };
 

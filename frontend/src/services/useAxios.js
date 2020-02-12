@@ -18,23 +18,25 @@ function useAxios(req) {
       error: false,
       complete: false
     });
-    axios(req)
-      .then(res =>
-        setRes({
-          data: res.data,
-          pending: false,
-          error: false,
-          complete: true
-        })
-      )
-      .catch(() =>
-        setRes({
-          data: null,
-          pending: false,
-          error: true,
-          complete: true
-        })
-      );
+    if (req.url !== null) {
+      axios(req)
+        .then(res =>
+          setRes({
+            data: res.data,
+            pending: false,
+            error: false,
+            complete: true
+          })
+        )
+        .catch(() =>
+          setRes({
+            data: null,
+            pending: false,
+            error: true,
+            complete: true
+          })
+        );
+    }
     // eslint-disable-next-line
   }, [req.url]);
 
