@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import { withRouter, Route, Switch } from "react-router-dom";
 import PropTypes from "prop-types";
 import qs from "query-string";
@@ -7,6 +7,7 @@ import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import {ThemesServiceContext} from "../../../services/ThemesService";
+import useAxios from "../../../services/useAxios";
 import Steps from "../../components/Steps";
 import NewScenario from "./NewScenario";
 import AllScenarios from "./AllScenarios";
@@ -25,6 +26,19 @@ function Partie1(props) {
       theme = themesRequest.data[themeIndex];
     }
   }
+
+  // Get scenarios
+  const [scenarios, setScenarios] = useState([]);
+  const language = 'fr';
+  const getScenarios = useAxios({
+    method: "GET",
+    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeId}/scenarios?languageCode=${language}`,
+  });
+  useEffect(() => {
+    if (getScenarios.complete && !getScenarios.error) {
+      setScenarios(getScenarios.data);
+    }
+  }, [getScenarios]);
 
   const isNewScenario = props.location.pathname.indexOf("new") !== -1;
 
@@ -59,7 +73,15 @@ function Partie1(props) {
 
             <Switch>
               <Route path="/creer/1-choix-du-scenario/new" render={(props) => <NewScenario {...props} theme={theme} themeId={themeId} />}/>
-              <Route path="/creer/1-choix-du-scenario/" render={(props) => <AllScenarios {...props} theme={theme} themeId={themeId} />}/>
+              <Route path="/creer/1-choix-du-scenario/" render={
+                (props) => <AllScenarios
+                  {...props}
+                  theme={theme}
+                  themeId={themeId}
+                  scenarios={scenarios}
+                />
+              }
+              />
             </Switch>
           </React.Fragment>
         )

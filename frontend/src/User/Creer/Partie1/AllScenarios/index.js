@@ -1,29 +1,15 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { withRouter } from 'react-router-dom';
 import {Typography} from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
 import VideoThumbnail from "../../../../components/VideoThumbnail";
-import useAxios from "../../../../services/useAxios";
 import ScenarioCard from "../components/ScenarioCard";
 
 import "./scenarios.css";
 
 function Scenarios(props) {
-  // Get scenarios
-  const [scenarios, setScenarios] = useState([]);
-  const language = 'fr';
-  const getScenarios = useAxios({
-    method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${props.themeId}/scenarios?languageCode=${language}`,
-  });
-  useEffect(() => {
-    if (getScenarios.complete && !getScenarios.error) {
-      setScenarios(getScenarios.data);
-    }
-  }, [getScenarios]);
-
   return (
     <div>
       <div>
@@ -51,7 +37,7 @@ function Scenarios(props) {
               history={props.history}
               path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
               description="Cliquez ici pour créer votre propre scénario !"/>
-            {scenarios.map((scenario, index) => (
+            {props.scenarios.map((scenario, index) => (
               <ScenarioCard
                 key={index}
                 stepNumber={0}
@@ -73,6 +59,11 @@ Scenarios.propTypes = {
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
   theme: PropTypes.object.isRequired,
+  scenarios: PropTypes.array,
+};
+
+Scenarios.defaultProps = {
+  scenarios: [],
 };
 
 export default withRouter(Scenarios);
