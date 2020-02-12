@@ -34,6 +34,7 @@ function AllQuestions(props) {
         </Typography>
         <Button
           component="a"
+          variant="outlined"
           href={`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
           color="secondary"
           onClick={(event) => {

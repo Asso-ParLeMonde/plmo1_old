@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 
 import Inverted from "../../../../components/Inverted";
 
-function NewQuestion() {
+function NewQuestion(props) {
   return (
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
@@ -29,6 +29,8 @@ function NewQuestion() {
               fullWidth
               style={{ marginTop: "0.5rem" }}
               variant = "outlined"
+              color="secondary"
+              autoComplete="off"
             />
             <FormHelperText
               id="component-helper-text"
@@ -40,8 +42,21 @@ function NewQuestion() {
         <Hidden smDown>
           <div style={{width: "100%", textAlign: "right"}}>
             <Button
+              as="a"
+              variant="outlined"
+              color="secondary"
+              style={{ marginRight: "1rem" }}
+              href={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
+              onClick={(event) => {
+                event.preventDefault();
+                props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+              }}
+            >
+              Annuler
+            </Button>
+            <Button
               variant="contained"
-              color="primary"
+              color="secondary"
             >
               Ajouter
             </Button>

@@ -79,6 +79,8 @@ function NewScenario(props) {
             fullWidth
             style={{ marginTop: "0.5rem" }}
             variant = "outlined"
+            color="secondary"
+            autoComplete="off"
             />
           </div>
         </Typography>
@@ -96,6 +98,8 @@ function NewScenario(props) {
             fullWidth
             style={{ marginTop: "0.5rem" }}
             variant = "outlined"
+            color="secondary"
+            autoComplete="off"
             />
             <FormHelperText
               id="component-helper-text"
@@ -108,8 +112,21 @@ function NewScenario(props) {
           <Hidden smDown>
             <div style={{width: "100%", textAlign: "right"}}>
               <Button
+                as="a"
+                variant="outlined"
+                color="secondary"
+                style={{ marginRight: "1rem" }}
+                href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
+                onClick={(event) => {
+                  event.preventDefault();
+                  props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+                }}
+              >
+                Annuler
+              </Button>
+              <Button
                 variant="contained"
-                color="primary"
+                color="secondary"
                 onClick={handleSubmit}
                 endIcon={<ArrowForwardIcon />}
                 >
