@@ -1,13 +1,14 @@
 import React, {useContext} from "react";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router";
+import {Route, Switch, withRouter} from "react-router";
 
 import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
-import NavigateNextIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import {ProjectServiceContext} from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
-
+import AllPlans from "./AllPlans";
+import EditPlan from "./EditPlan";
 
 function Partie3(props) {
   const { project } = useContext(ProjectServiceContext);
@@ -32,6 +33,11 @@ function Partie3(props) {
             </Hidden>
 
             <Steps activeStep={2}/>
+
+            <Switch>
+              <Route path="/creer/3-storyboard-et-plan-de-tournage/edit" component={EditPlan} />
+              <Route path="/creer/3-storyboard-et-plan-de-tournage" component={AllPlans} />
+            </Switch>
 
           </React.Fragment>
         )
