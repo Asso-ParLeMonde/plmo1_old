@@ -24,9 +24,7 @@ function ChooseValue(props) {
         value={props.language.value || ""}
         onChange={props.handleChange}
         required
-        multiline
-        style={{ marginTop: "0.5rem" }}
-        variant="outlined"
+        style={{ marginTop: "0rem" }}
       />
     </React.Fragment>
   );
