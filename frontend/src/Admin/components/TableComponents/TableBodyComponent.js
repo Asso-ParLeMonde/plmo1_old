@@ -89,8 +89,8 @@ function TableBodyComponent(props) {
     <TableBody>
       {props.elements.map((el, index) => (
         <TableRow key={el.id} className={rowBackgroundColor(index)}>
-          {typedBody().map(info => {
-            return <TableCell>{getInfo(el, info)}</TableCell>;
+          {typedBody().map((info, index) => {
+            return <TableCell key={index}>{getInfo(el, info)}</TableCell>;
           })}
           <TableCell
             align="center"
