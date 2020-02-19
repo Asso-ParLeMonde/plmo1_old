@@ -21,6 +21,9 @@ const steps = [{
   name: "Choix des questions",
   back: (params) => `/creer/2-choix-des-questions?themeId=${getThemeId(params)}&scenarioId=${getScenarioId(params)}`,
 }, {
+  name: "Storyboard et plan de tournage",
+  back: (params) => `/creer/3-storyboard-et-plan-de-tournage?themeId=${getThemeId(params)}&scenarioId=${getScenarioId(params)}`,
+}, {
   name: "A votre caméra !",
   back: () => '/creer',
 }, {
@@ -78,7 +81,7 @@ function Steps(props) {
     <Hidden mdUp>
       <StyleMobileStepper
         variant="dots"
-        steps={4}
+        steps={steps.length}
         position="top"
         activeStep={props.activeStep}
         backButton={

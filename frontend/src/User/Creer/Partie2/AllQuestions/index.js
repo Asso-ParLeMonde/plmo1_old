@@ -20,6 +20,11 @@ function AllQuestions(props) {
     props.history.push(`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
   };
 
+  const handleNext = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/3-storyboard-et-plan-de-tournage?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+  };
+
   return (
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
@@ -41,13 +46,27 @@ function AllQuestions(props) {
         <QuestionsList questions={project.questions} setQuestions={setQuestions}/>
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
-            <Button color="secondary" variant="contained" style={{ width: "200px" }}>
+            <Button
+              component="a"
+              href={`/creer/3-storyboard-et-plan-de-tournage?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
+              color="secondary"
+              onClick={handleNext}
+              variant="contained"
+              style={{ width: "200px" }}
+            >
               Suivant
             </Button>
           </div>
         </Hidden>
         <Hidden mdUp>
-          <Button color="secondary" variant="contained" style={{ width: "100%", marginTop: "2rem" }}>
+          <Button
+            component="a"
+            href={`/creer/3-storyboard-et-plan-de-tournage?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
+            color="secondary"
+            onClick={handleNext}
+            variant="contained"
+            style={{ width: "100%", marginTop: "2rem" }}
+          >
             Suivant
           </Button>
         </Hidden>
