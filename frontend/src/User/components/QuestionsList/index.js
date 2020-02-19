@@ -5,11 +5,22 @@ import { ReactSortable } from "react-sortablejs";
 import QuestionEdit from "../QuestionEdit";
 
 function QuestionsList(props) {
+  const handleDelete = index => (event) => {
+    event.preventDefault();
+    const questions = props.questions;
+    questions.splice(index, 1);
+    props.setQuestions(questions);
+  };
+
   return (
     <div className="questions">
       <ReactSortable tag="div"  list={props.questions} setList={props.setQuestions} animation={200} handle=".question-index">
         {props.questions.map((q, index) => (
-          <QuestionEdit key={q.order} index={index} question={q.question}/>
+          <QuestionEdit key={q.id}
+                        index={index}
+                        question={q.question}
+                        handleDelete={handleDelete(index)}
+          />
         ))}
       </ReactSortable>
     </div>

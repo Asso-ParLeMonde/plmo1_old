@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import { ReactComponent as Arrow } from '../../../../images/right-arrow.svg';
-
 import {Typography, makeStyles} from "@material-ui/core";
+import {ProjectServiceContext} from "../../../../services/ProjectService";
 
 import "./card.css";
 
@@ -13,10 +13,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ScenarioCard({title, description, stepNumber, path, history}) {
+function ScenarioCard({title, description, stepNumber, path, scenarioId, history}) {
   const classes = useStyles();
+  const { updateProject } = useContext(ProjectServiceContext);
+
   const handleClick = (event) => {
     event.preventDefault();
+    updateProject({ scenarioId });
     history.push(path);
   };
 
@@ -42,6 +45,7 @@ ScenarioCard.propTypes = {
   stepNumber: PropTypes.number,
   history: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
+  scenarioId: PropTypes.number.isRequired,
 };
 
 ScenarioCard.defaultProps = {

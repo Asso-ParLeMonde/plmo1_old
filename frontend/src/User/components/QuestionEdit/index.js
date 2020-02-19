@@ -38,7 +38,7 @@ function QuestionEdit(props) {
         <p>{props.question}</p>
       </div>
       <div className="question-actions">
-        <StyledDeleteButton aria-label="delete" size="small" color="secondary">
+        <StyledDeleteButton aria-label="delete" size="small" color="secondary" onClick={props.handleDelete}>
           <DeleteIcon />
         </StyledDeleteButton>
       </div>
@@ -49,10 +49,12 @@ function QuestionEdit(props) {
 QuestionEdit.propTypes = {
   question: PropTypes.string.isRequired,
   index: PropTypes.number,
+  handleDelete: PropTypes.func,
 };
 
 QuestionEdit.defaultProps = {
   index: 0,
+  handleDelete: () => {},
 };
 
 export default QuestionEdit;

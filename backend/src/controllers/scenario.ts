@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { getCustomRepository, getRepository } from 'typeorm';
 import { ScenarioRepository } from '../customRepositories/scenarioRepository';
+import { Question } from '../entities/question';
 import { Scenario } from '../entities/scenario';
 import { Controller, del, get, post, put } from './controller';
 
@@ -36,6 +37,12 @@ export class ScenarioController extends Controller {
             next(); // will send 404 error
             return;
         }
+        scenario.questions = await getRepository(Question).find({
+            where: {
+                languageCode: scenario.languageCode,
+                scenarioId: scenario.id,
+            },
+        });
         res.sendJSON(scenario);
     }
 

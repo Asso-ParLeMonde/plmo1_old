@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
@@ -7,8 +7,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 
 import "./ThemeCard.css";
 import {Typography} from "@material-ui/core";
-
-// import { ReactComponent as DefaultImage } from '../../../images/classe_default.png';
+import {ProjectServiceContext} from "../../../../services/ProjectService";
 
 const colors = [
   "rgb(96, 105, 243)",
@@ -21,6 +20,7 @@ const colors = [
 
 function ThemeCard(props) {
   const img = useRef(null);
+  const { updateProject } = useContext(ProjectServiceContext);
 
   useEffect(() => {
     if (props.theme.image !== undefined && props.theme.image !== null) {
@@ -34,6 +34,9 @@ function ThemeCard(props) {
 
   const handleSelect = (event) => {
     event.preventDefault();
+    updateProject({
+      themeId: props.themeId,
+    });
     props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
   };
 
