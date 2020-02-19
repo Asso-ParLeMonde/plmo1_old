@@ -1,0 +1,57 @@
+.plans {
+    margin-top: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
+    grid-gap: 1rem;
+}
+.plans::before {
+    content: '';
+    width: 0;
+    padding-bottom: 100%;
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+.plans > *:first-child {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+.plan-button-container.add {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.plan {
+    width: 100%;
+    height: 100%;
+    border: 1px solid black;
+    cursor: pointer;
+    outline: none;
+    padding: 0.5rem;
+    margin: 0;
+    text-align: left;
+    position: relative;
+}
+.plan > .edit {
+    margin: 0;
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+.add-plan-button {
+    color: white;
+    background-color: #6065fc;
+    margin: 0 4rem;
+}
+.plan:hover > .edit {
+    display: block;
+}
+
+@media only screen and (max-width: 800px){
+    .plans {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}

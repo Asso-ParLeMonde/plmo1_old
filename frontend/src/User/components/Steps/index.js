@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
-import qs from "query-string";
 import { Stepper, Step, StepLabel, MobileStepper, Hidden, withStyles, Button } from "@material-ui/core";
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import "./steps.css";
@@ -46,7 +45,7 @@ function Steps(props) {
   const [ isNewPage, setIsNewPage ] = useState(false);
 
   useEffect(() => {
-    setIsNewPage(props.location.pathname.indexOf('new') !== -1);
+    setIsNewPage(props.location.pathname.indexOf('new') !== -1 || props.location.pathname.indexOf('edit') !== -1);
   }, [props.location]);
 
   const handleBack = index => event => {
