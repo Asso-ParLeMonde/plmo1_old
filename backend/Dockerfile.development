@@ -12,8 +12,10 @@ RUN yarn install
 
 # Bundle app source
 COPY tsconfig.json .
-COPY tslint.json .
+COPY .eslintignore .
+COPY .eslintrc.js .
 COPY nodemon.json .
+COPY .prettierrc.js .
 
 COPY src src
 
