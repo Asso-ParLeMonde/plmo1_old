@@ -2,13 +2,6 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
-import { updateLanguage } from "../languageRequest";
-
-const DEFAULT_LANGUAGE = {
-  id: 1,
-  label: "FR",
-  value: "fr"
-};
 
 function LanguageModal(props) {
   const [newLanguage, setNewLanguage] = useState(props.language || {label: "", value: ""});
