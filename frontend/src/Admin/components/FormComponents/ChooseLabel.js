@@ -14,7 +14,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function ChooseDescription(props) {
+function ChooseLabel(props) {
   const classes = useStyles();
 
   return (
@@ -33,9 +33,9 @@ function ChooseDescription(props) {
   );
 }
 
-ChooseDescription.propTypes = {
+ChooseLabel.propTypes = {
   scenario: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired
 };
 
-export default ChooseDescription;
+export default ChooseLabel;

@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 
 function LanguageRemoveButton(props) {
-  //const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;
+  
 
   const [res] = useState({
     complete: false,

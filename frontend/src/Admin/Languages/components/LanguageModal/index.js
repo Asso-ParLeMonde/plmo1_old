@@ -5,7 +5,6 @@ import ModalContainer from "../../../components/FormComponents/ModalContainer";
 
 function LanguageModal(props) {
   const [newLanguage, setNewLanguage] = useState(props.language || {label: "", value: ""});
-  //const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;
 
   const [res, setRes] = useState({
     error: false,
@@ -37,11 +36,6 @@ function LanguageModal(props) {
     event.preventDefault();
 
     let error = false;
-    /*if (props.language) {
-      error = await updateLanguage("PUT", props.language, newLanguage, setRes);
-    } else {
-      error = await updateLanguage("POST", props.language, newLanguage, setRes);
-    }*/
 
     if (error === false) {
       setRes({
