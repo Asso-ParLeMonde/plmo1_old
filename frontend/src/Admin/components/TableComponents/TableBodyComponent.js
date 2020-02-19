@@ -12,6 +12,7 @@ import ThemeRemoveButton from "../../Themes/components/ThemeTableComponents/Them
 import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioModifyButton";
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
+import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -54,6 +55,12 @@ function TableBodyComponent(props) {
             <ScenarioRemoveButton icon={props.invalidIcon} theme={element} />
           </React.Fragment>
         );
+      case "LANGUAGE":
+        return (
+          <React.Fragment>
+            <LanguageRemoveButton icon={props.invalidIcon} language={element} />
+          </React.Fragment>
+        );
     }
   }
 
@@ -68,6 +75,9 @@ function TableBodyComponent(props) {
         break;
       case "SCENARIO":
         information = ["id", "name", "theme.names.fr", "description"];
+        break;
+      case "LANGUAGE":
+        information = ["id", "label", "value"];
         break;
     }
 
@@ -112,7 +122,7 @@ function TableBodyComponent(props) {
 }
 
 TableBodyComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired

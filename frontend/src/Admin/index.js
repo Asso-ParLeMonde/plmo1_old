@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
+import Languages from "./Languages";
 import Scenarios from "./Scenarios";
 import Themes from "./Themes";
 import Navbar from "../components/Navbar";
@@ -26,6 +27,10 @@ const tabs = [
   {
     label: "Scenarios",
     path: "/admin/scenarios"
+  },
+  {
+    label: "Langues",
+    path: "/admin/languages"
   }
 ];
 
@@ -67,6 +72,7 @@ function Admin() {
                 <Switch>
                   <Route path="/admin/themes" component={Themes} />
                   <Route path="/admin/scenarios" component={Scenarios} />
+                  <Route path="/admin/languages" component={Languages} />
                 </Switch>
               </Container>
             </ScenariosServiceProvider>
