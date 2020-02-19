@@ -4,14 +4,26 @@ import { Theme } from "../entities/theme";
 
 @EntityRepository(Scenario)
 export class ScenarioRepository extends Repository<Scenario> {
-  public async findAll(params: { isDefault: boolean | null }) {
+  public async findAll(params: { isDefault: boolean | null }): Promise<Scenario[]> {
     let entitiesQuery: SelectQueryBuilder<Scenario> = this.manager
       .createQueryBuilder()
       .select("scenario")
-      .from(Scenario, "scenario");
+      .from(Scenario, "scenario")
+      .leftJoinAndSelect("scenario.theme", "theme");
     if (params.isDefault !== null) {
       entitiesQuery = entitiesQuery.where("scenario.isDefault = :isDefault", params);
     }
+    const entities: Scenario[] = await entitiesQuery.getMany();
+    return entities;
+  }
+
+  public async findById(params: { id: number }): Promise<Scenario[]> {
+    const entitiesQuery: SelectQueryBuilder<Scenario> = this.manager
+      .createQueryBuilder()
+      .select("scenario")
+      .from(Scenario, "scenario")
+      .leftJoinAndSelect("scenario.theme", "theme")
+      .where("scenario.id = :id", params);
     const entities: Scenario[] = await entitiesQuery.getMany();
     return entities;
   }
