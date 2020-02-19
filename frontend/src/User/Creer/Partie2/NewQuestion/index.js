@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext, useState} from "react";
 import {withRouter} from 'react-router-dom';
 import PropTypes from "prop-types";
 
@@ -8,10 +8,44 @@ import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 
 import Inverted from "../../../../components/Inverted";
+import {ProjectServiceContext} from "../../../../services/ProjectService";
 
 function NewQuestion(props) {
+  const { project, updateProject } = useContext(ProjectServiceContext);
+  const [ hasError, setHasError ] = useState(false);
+  const [ newQuestion, setNewQuestion ] = useState('');
+
+  const handleChange = (event) => {
+    event.preventDefault();
+    setNewQuestion(event.target.value.slice(0, 280));
+  };
+
   const handleBack = (event) => {
     event.preventDefault();
+    props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (newQuestion.length === 0) {
+      setHasError(true);
+      setTimeout(() => {
+        setHasError(false);
+      }, 1000);
+      return;
+    }
+    const maxId = Math.max(0, ...project.questions.map(q => q.id));
+    updateProject({ questions: [
+        ...project.questions,
+        {
+          id: maxId + 1, 
+          isDefault: false,
+          languageCode: project.languageCode,
+          question: newQuestion,
+          scenarioId: project.scenarioId,
+        },
+      ],
+    });
     props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
   };
 
@@ -27,7 +61,11 @@ function NewQuestion(props) {
         <Typography color="inherit" variant="h2" style={{marginTop: "1rem"}}>
           <div>
             <TextField
+              value={newQuestion}
+              onChange={handleChange}
               required
+              error={hasError}
+              className={hasError ? 'shake' : ''}
               id="scenarioDescription"
               multiline
               placeholder="Ma question"
@@ -59,6 +97,7 @@ function NewQuestion(props) {
             <Button
               variant="contained"
               color="secondary"
+              onClick={handleSubmit}
             >
               Ajouter
             </Button>
@@ -68,6 +107,7 @@ function NewQuestion(props) {
           <Button
             variant="contained"
             color="secondary"
+            onClick={handleSubmit}
             style={{ width: "100%", marginTop: "2rem" }}
           >
             Ajouter
@@ -83,9 +123,7 @@ NewQuestion.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  theme: PropTypes.object.isRequired,
   scenarioId: PropTypes.number.isRequired,
-  scenario: PropTypes.object.isRequired,
 };
 
 export default withRouter(NewQuestion);
