@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
@@ -8,7 +8,7 @@ import DefaultButton from "../../../components/Buttons/DefaultButton";
 function LanguageRemoveButton(props) {
   //const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;
 
-  const [res, setRes] = useState({
+  const [res] = useState({
     complete: false,
     error: false,
     message: ""
