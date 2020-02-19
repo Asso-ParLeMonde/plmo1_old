@@ -26,7 +26,9 @@ function ThemeCard(props) {
     if (props.theme.image !== undefined && props.theme.image !== null) {
       const image = new Image();
       image.onload = () => {
-        img.current.src = image.src;
+        if (img && img.current) {
+          img.current.src = image.src;
+        }
       };
       image.src = props.theme.image.path;
     }
@@ -37,7 +39,7 @@ function ThemeCard(props) {
     updateProject({
       themeId: props.themeId,
     });
-    props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+    props.history.push(`/creer/1-choix-du-scenario`);
   };
 
   return (

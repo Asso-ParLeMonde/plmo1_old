@@ -6,29 +6,21 @@ import { Stepper, Step, StepLabel, MobileStepper, Hidden, withStyles, Button } f
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import "./steps.css";
 
-const getThemeId = (params) => {
-  return parseInt(params.themeId) || 0;
-};
-
-const getScenarioId = (params) => {
-  return parseInt(params.scenarioId) || 0;
-};
-
 const steps = [{
   name: "Choix du scénario",
-  back: (params) => `/creer/1-choix-du-scenario?themeId=${getThemeId(params)}`,
+  back: "/creer/1-choix-du-scenario",
 }, {
   name: "Choix des questions",
-  back: (params) => `/creer/2-choix-des-questions?themeId=${getThemeId(params)}&scenarioId=${getScenarioId(params)}`,
+  back: "/creer/2-choix-des-questions",
 }, {
   name: "Storyboard et plan de tournage",
-  back: (params) => `/creer/3-storyboard-et-plan-de-tournage?themeId=${getThemeId(params)}&scenarioId=${getScenarioId(params)}`,
+  back: "/creer/3-storyboard-et-plan-de-tournage",
 }, {
   name: "A votre caméra !",
-  back: () => '/creer',
+  back: "/creer",
 }, {
   name: "Résultat final",
-  back: () => '/creer',
+  back: "/creer",
 }
 ];
 
@@ -52,11 +44,9 @@ const StyleMobileStepper = withStyles((theme) => ({
 
 function Steps(props) {
   const [ isNewPage, setIsNewPage ] = useState(false);
-  const [ params, setParams ] = useState({});
 
   useEffect(() => {
     setIsNewPage(props.location.pathname.indexOf('new') !== -1);
-    setParams(qs.parse(props.location.search, { ignoreQueryPrefix: true }));
   }, [props.location]);
 
   const handleBack = index => event => {
@@ -64,7 +54,7 @@ function Steps(props) {
     if (index < 0) {
       props.history.push('/creer');
     } else if (index < props.activeStep || (index === props.activeStep && isNewPage)) {
-      props.history.push(steps[index].back(params));
+      props.history.push(steps[index].back);
     }
   };
 

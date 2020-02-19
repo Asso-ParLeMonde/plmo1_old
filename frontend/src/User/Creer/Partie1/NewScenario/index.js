@@ -39,7 +39,7 @@ function NewScenario(props) {
         });
         if (response.status === 200) {
           updateProject({ scenarioId: response.data.id });
-          props.history.push(`/creer/2-choix-des-questions?themeId=${newScenario.themeId}&scenarioId=${response.data.id}`);
+          props.history.push(`/creer/2-choix-des-questions`);
         }
       } catch (e) {
         // TODO afficher notif d'erreur
@@ -64,7 +64,7 @@ function NewScenario(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/1-choix-du-scenario?themeId=${props.themeId}`);
+    props.history.push(`/creer/1-choix-du-scenario`);
   };
 
   return (

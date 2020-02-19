@@ -13,14 +13,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function ScenarioCard({title, description, stepNumber, path, scenarioId, history}) {
+function ScenarioCard({title, description, stepNumber, path, scenarioId, history, shortPath}) {
   const classes = useStyles();
   const { updateProject } = useContext(ProjectServiceContext);
 
   const handleClick = (event) => {
     event.preventDefault();
     updateProject({ scenarioId });
-    history.push(path);
+    history.push(shortPath);
   };
 
   return <a className={[classes.greenBorder, "card-container"].join(" ")} tabIndex="0" href={path} onClick={handleClick}>
@@ -45,6 +45,7 @@ ScenarioCard.propTypes = {
   stepNumber: PropTypes.number,
   history: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
+  shortPath: PropTypes.string.isRequired,
   scenarioId: PropTypes.number.isRequired,
 };
 
