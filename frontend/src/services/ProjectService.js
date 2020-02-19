@@ -46,7 +46,7 @@ function ProjectService(props) {
       updateProject({ scenarioId });
     }
     // eslint-disable-next-line
-  }, []);
+  }, [props.location.search]);
 
   useEffect(() => { // update theme name when themeId change
     if (project.themeId !== null && themesRequest.complete && !themesRequest.error) {
