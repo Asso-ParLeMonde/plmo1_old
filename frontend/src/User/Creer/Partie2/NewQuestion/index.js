@@ -38,7 +38,7 @@ function NewQuestion(props) {
     updateProject({ questions: [
         ...project.questions,
         {
-          id: maxId + 1, 
+          id: maxId + 1,
           isDefault: false,
           languageCode: project.languageCode,
           question: newQuestion,
@@ -78,7 +78,7 @@ function NewQuestion(props) {
             <FormHelperText
               id="component-helper-text"
               style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }} >
-              {0}/280
+              {newQuestion.length}/280
             </FormHelperText>
           </div>
         </Typography>
