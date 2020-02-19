@@ -13,19 +13,19 @@ function ScenarioModifyButton(props) {
     event.preventDefault();
 
     setIsOpen(true);
-    props.history.push(`/admin/scenarios/${props.theme.id}`);
+    props.history.push(`/admin/scenarios/${props.scenario.id}`);
   }
 
   return (
     <React.Fragment>
-      <a href={`/admin/themes/${props.theme.id}`} onClick={handleOpenModal}>
+      <a href={`/admin/themes/${props.scenario.id}`} onClick={handleOpenModal}>
         <Button className="shape">{props.icon}</Button>
       </a>
       <ScenarioModal
-        theme={props.theme}
+        theme={props.scenario}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
-        modalTitle={"Modification du theme"}
+        modalTitle={"Modification du scenario"}
         history={props.history}
       />
     </React.Fragment>
@@ -34,7 +34,7 @@ function ScenarioModifyButton(props) {
 
 ScenarioModifyButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  scenario: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired

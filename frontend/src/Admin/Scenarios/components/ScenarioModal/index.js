@@ -10,8 +10,11 @@ const DEFAULT_SCENARIO = {
   names: {
     fr: null
   },
-  description: null,
-  default: true
+  descriptions: {
+    fr: null
+  },
+  themeId: null,
+  isDefault: true
 };
 
 function ScenarioModal(props) {
@@ -40,7 +43,13 @@ function ScenarioModal(props) {
         });
         break;
       case "DESCRIPTION":
-        setNewScenario({ ...newScenario, description: event.target.value });
+        setNewScenario({
+          ...newScenario,
+          descriptions: {
+            ...newScenario.descriptions,
+            [event.target.id]: event.target.value
+          }
+        });
         break;
     }
   }

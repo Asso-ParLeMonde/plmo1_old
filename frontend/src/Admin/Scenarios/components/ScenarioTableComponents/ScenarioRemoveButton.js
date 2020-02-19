@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
-import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
+import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
 
 function ScenarioRemoveButton(props) {
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
@@ -17,7 +17,7 @@ function ScenarioRemoveButton(props) {
 
   async function handleRemove(event) {
     event.preventDefault();
-    await handleRequest(
+    await handleScenarioButtonRequest(
       "DELETE",
       props.scenario,
       setRes,

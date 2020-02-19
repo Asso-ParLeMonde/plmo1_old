@@ -6,8 +6,9 @@ async function postScenario(newScenario, setRes) {
     url: `${process.env.REACT_APP_BASE_APP}/scenarios`,
     data: {
       names: newScenario.names,
-      description: newScenario.description,
-      isPublished: true
+      descriptions: newScenario.descriptions,
+      themeId: newScenario.themeId,
+      isDefault: true
     }
   });
 
@@ -30,8 +31,9 @@ async function putScenario(inheritedScenario, newScenario, setRes) {
     url: `${process.env.REACT_APP_BASE_APP}/scenarios/${inheritedScenario.id}`,
     data: {
       names: newScenario.names,
-      description: newScenario.description,
-      isPublished: true
+      descriptions: newScenario.descriptions,
+      themeId: newScenario.themeId,
+      isDefault: true
     }
   });
 

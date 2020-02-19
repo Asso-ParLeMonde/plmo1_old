@@ -46,12 +46,12 @@ function TableBodyComponent(props) {
         return (
           <React.Fragment>
             {element.isStandard && (
-              <ScenarioModifyButton icon={props.validIcon} theme={element} />
+              <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
             {!element.isStandard && (
-              <ScenarioAcceptButton icon={props.validIcon} theme={element} />
+              <ScenarioAcceptButton icon={props.validIcon} scenario={element} />
             )}
-            <ScenarioRemoveButton icon={props.invalidIcon} theme={element} />
+            <ScenarioRemoveButton icon={props.invalidIcon} scenario={element} />
           </React.Fragment>
         );
     }
@@ -67,7 +67,7 @@ function TableBodyComponent(props) {
         information = ["id", "names.fr"];
         break;
       case "SCENARIO":
-        information = ["id", "name", "theme.names.fr", "description"];
+        information = ["id", "name", "names.fr", "descriptions.fr"];
         break;
     }
 
