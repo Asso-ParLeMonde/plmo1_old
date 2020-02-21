@@ -5,38 +5,20 @@ import PropTypes from "prop-types";
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
-import { ThemesServiceContext } from "../../../services/ThemesService";
+import {ProjectServiceContext} from "../../../services/ProjectService";
 import useAxios from "../../../services/useAxios";
 import Steps from "../../components/Steps";
 import NewScenario from "./NewScenario";
 import AllScenarios from "./AllScenarios";
 
 function Partie1(props) {
-  // Get theme
-  const themeId =
-    parseInt(
-      qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId
-    ) || 0;
-  let theme;
-  const themesRequest = useContext(ThemesServiceContext).getThemes;
-  if (themesRequest.complete && !themesRequest.error) {
-    const themeIndex = themesRequest.data.reduce(
-      (i1, t, i2) => (t.id === themeId ? i2 : i1),
-      -1
-    );
-    if (themeIndex === -1) {
-      props.history.push("/");
-    } else {
-      theme = themesRequest.data[themeIndex];
-    }
-  }
+  const { project } = useContext(ProjectServiceContext);
 
   // Get scenarios
   const [scenarios, setScenarios] = useState([]);
-  const language = "fr";
   const getScenarios = useAxios({
     method: "GET",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${themeId}/scenarios?languageCode=${language}`
+    url: project.themeId === null ? null : `${process.env.REACT_APP_BASE_APP}/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`,
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -58,44 +40,31 @@ function Partie1(props) {
 
   return (
     <div>
-      {theme !== undefined && (
-        <React.Fragment>
-          <Hidden smDown>
-            <Breadcrumbs
-              separator={<NavigateNextIcon fontSize="small" />}
-              aria-label="breadcrumb"
-            >
-              <Link color="inherit" href="/creer" onClick={handleHome}>
-                Tout les thèmes
-              </Link>
-              {isNewScenario && (
-                <Link
-                  color="inherit"
-                  href={`/creer/1-choix-du-scenario?themeId=${themeId}`}
-                  onClick={handleBack}
-                >
-                  {theme.names.fr}
+      {
+        project.themeId !== null && (
+          <React.Fragment>
+            <Hidden smDown>
+              <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
+                <Link color="inherit" href="/creer" onClick={handleHome}>
+                  Tout les thèmes
                 </Link>
-              )}
-              <Typography color="textPrimary">
-                {isNewScenario ? "Nouveau scénario" : theme.names.fr}
-              </Typography>
-            </Breadcrumbs>
-          </Hidden>
+                {
+                  isNewScenario && (
+                    <Link color="inherit" href={`/creer/1-choix-du-scenario?themeId=${project.themeId}`} onClick={handleBack}>
+                      {project.themeName}
+                    </Link>
+                  )
+                }
+                <Typography color="textPrimary">{isNewScenario ? 'Nouveau scénario' : project.themeName}</Typography>
+              </Breadcrumbs>
+            </Hidden>
 
           <Steps activeStep={0} />
 
-          <Switch>
-            <Route
-              path="/creer/1-choix-du-scenario/new"
-              render={props => (
-                <NewScenario {...props} theme={theme} themeId={themeId} />
-              )}
-            />
-            <Route
-              path="/creer/1-choix-du-scenario/"
-              render={props => (
-                <AllScenarios
+            <Switch>
+              <Route path="/creer/1-choix-du-scenario/new" render={(props) => <NewScenario {...props} themeId={project.themeId} />}/>
+              <Route path="/creer/1-choix-du-scenario/" render={
+                (props) => <AllScenarios
                   {...props}
                   themeId={project.themeId}
                   scenarios={scenarios}
