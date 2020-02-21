@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
-import {ProjectServiceContext} from "../../../services/ProjectService";
+import { ProjectServiceContext } from "../../../services/ProjectService";
 import useAxios from "../../../services/useAxios";
 import Steps from "../../components/Steps";
 import NewScenario from "./NewScenario";
@@ -18,7 +18,10 @@ function Partie1(props) {
   const [scenarios, setScenarios] = useState([]);
   const getScenarios = useAxios({
     method: "GET",
-    url: project.themeId === null ? null : `${process.env.REACT_APP_BASE_APP}/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`,
+    url:
+      project.themeId === null
+        ? null
+        : `${process.env.REACT_APP_BASE_APP}/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -40,31 +43,44 @@ function Partie1(props) {
 
   return (
     <div>
-      {
-        project.themeId !== null && (
-          <React.Fragment>
-            <Hidden smDown>
-              <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="breadcrumb">
-                <Link color="inherit" href="/creer" onClick={handleHome}>
-                  Tout les thèmes
+      {project.themeId !== null && (
+        <React.Fragment>
+          <Hidden smDown>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              aria-label="breadcrumb"
+            >
+              <Link color="inherit" href="/creer" onClick={handleHome}>
+                Tout les thèmes
+              </Link>
+              {isNewScenario && (
+                <Link
+                  color="inherit"
+                  href={`/creer/1-choix-du-scenario?themeId=${project.themeId}`}
+                  onClick={handleBack}
+                >
+                  {project.themeName}
                 </Link>
-                {
-                  isNewScenario && (
-                    <Link color="inherit" href={`/creer/1-choix-du-scenario?themeId=${project.themeId}`} onClick={handleBack}>
-                      {project.themeName}
-                    </Link>
-                  )
-                }
-                <Typography color="textPrimary">{isNewScenario ? 'Nouveau scénario' : project.themeName}</Typography>
-              </Breadcrumbs>
-            </Hidden>
+              )}
+              <Typography color="textPrimary">
+                {isNewScenario ? "Nouveau scénario" : project.themeName}
+              </Typography>
+            </Breadcrumbs>
+          </Hidden>
 
           <Steps activeStep={0} />
 
-            <Switch>
-              <Route path="/creer/1-choix-du-scenario/new" render={(props) => <NewScenario {...props} themeId={project.themeId} />}/>
-              <Route path="/creer/1-choix-du-scenario/" render={
-                (props) => <AllScenarios
+          <Switch>
+            <Route
+              path="/creer/1-choix-du-scenario/new"
+              render={props => (
+                <NewScenario {...props} themeId={project.themeId} />
+              )}
+            />
+            <Route
+              path="/creer/1-choix-du-scenario/"
+              render={props => (
+                <AllScenarios
                   {...props}
                   themeId={project.themeId}
                   scenarios={scenarios}
