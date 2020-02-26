@@ -13,6 +13,9 @@ export class Scenario {
   @Column({ type: "varchar", length: 50 })
   public name: string;
 
+  @Column({ default: false })
+  public isDefault: boolean;
+
   @ManyToOne(
     () => Theme,
     (theme: Theme) => theme.scenarios,

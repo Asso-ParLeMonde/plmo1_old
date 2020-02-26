@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
+import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
 
 function ScenarioAcceptButton(props) {
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
@@ -17,7 +17,7 @@ function ScenarioAcceptButton(props) {
 
   async function handleAcceptation(event) {
     event.preventDefault();
-    await handleRequest(
+    await handleScenarioButtonRequest(
       "PUT",
       props.scenario,
       setRes,

@@ -26,6 +26,11 @@ function DefaultNameInput(props) {
 
   function handleDelete() {
     delete props.newElement.names[props.language.value];
+
+    if (props.newElement.descriptions) {
+      delete props.newElement.descriptions[props.language.value];
+    }
+
     props.setSelectedLanguageList(
       props.selectedLanguageList
         .splice(0, props.selectedLanguageList.indexOf(props.language.value))
