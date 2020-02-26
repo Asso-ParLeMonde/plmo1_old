@@ -11,7 +11,7 @@ interface ScenarioResponse {
   themeId: undefined | number;
 }
 
-const EMPTY_SCENRAIO_RESPONSE = {
+const EMPTY_SCENARIO_RESPONSE = {
   id: undefined,
   names: {},
   descriptions: {},
@@ -26,14 +26,12 @@ function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
       scenarioObject[scenarios[i].id].names[scenarios[i].languageCode] = scenarios[i].name;
       scenarioObject[scenarios[i].id].descriptions[scenarios[i].languageCode] = scenarios[i].description;
     } else {
-      console.log(scenarios[i].id);
       const newScenario: ScenarioResponse = {
-        ...EMPTY_SCENRAIO_RESPONSE,
+        ...EMPTY_SCENARIO_RESPONSE,
         id: scenarios[i].id,
         themeId: scenarios[i].theme.id,
       };
 
-      console.log("hello");
       newScenario.names[scenarios[i].languageCode] = scenarios[i].name;
       newScenario.descriptions[scenarios[i].languageCode] = scenarios[i].description;
 
@@ -52,7 +50,7 @@ function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
   return scenarioResponse;
 }
 
-async function getScenario(req: Request): Promise<Scenario[] | undefined> {
+async function getScenariosById(req: Request): Promise<Scenario[] | undefined> {
   const scenarioId: number = parseInt(req.params.id, 10) || 0;
   return await getCustomRepository(ScenarioRepository).findById({ id: scenarioId });
 }
@@ -78,7 +76,7 @@ export class ScenariosController extends Controller {
 
   @get({ path: "/:id" })
   public async getScenario(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const scenariosById: Scenario[] | undefined = await getScenario(req);
+    const scenariosById: Scenario[] | undefined = await getScenariosById(req);
     if (scenariosById === undefined) {
       next(); // will send 404 error
       return;
@@ -120,7 +118,7 @@ export class ScenariosController extends Controller {
 
   @put({ path: "/:id" })
   public async editScenario(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const scenarios: Scenario[] | undefined = await getScenario(req);
+    const scenarios: Scenario[] | undefined = await getScenariosById(req);
     if (scenarios === undefined) {
       next(); // will send 404 error
       return;
