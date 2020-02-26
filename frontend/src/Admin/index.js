@@ -53,7 +53,7 @@ function Admin() {
       }}
     >
       <Navbar
-        title={"Administrateur : Par le monde"}
+        title={"Administrateur : Par Le monde"}
         tabs={[
           {
             label: "App",
