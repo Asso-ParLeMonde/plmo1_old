@@ -12,6 +12,7 @@ import ThemeRemoveButton from "../../Themes/components/ThemeTableComponents/Them
 import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioModifyButton";
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
+import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -45,13 +46,19 @@ function TableBodyComponent(props) {
       case "SCENARIO":
         return (
           <React.Fragment>
-            {element.isStandard && (
-              <ScenarioModifyButton icon={props.validIcon} theme={element} />
+            {element.isDefault && (
+              <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
-            {!element.isStandard && (
-              <ScenarioAcceptButton icon={props.validIcon} theme={element} />
+            {!element.isDefault && (
+              <ScenarioAcceptButton icon={props.validIcon} scenario={element} />
             )}
-            <ScenarioRemoveButton icon={props.invalidIcon} theme={element} />
+            <ScenarioRemoveButton icon={props.invalidIcon} scenario={element} />
+          </React.Fragment>
+        );
+      case "LANGUAGE":
+        return (
+          <React.Fragment>
+            <LanguageRemoveButton icon={props.invalidIcon} language={element} />
           </React.Fragment>
         );
     }
@@ -67,7 +74,10 @@ function TableBodyComponent(props) {
         information = ["id", "names.fr"];
         break;
       case "SCENARIO":
-        information = ["id", "name", "theme.names.fr", "description"];
+        information = ["id", "name", "names.fr", "descriptions.fr"];
+        break;
+      case "LANGUAGE":
+        information = ["id", "label", "value"];
         break;
     }
 
@@ -89,8 +99,8 @@ function TableBodyComponent(props) {
     <TableBody>
       {props.elements.map((el, index) => (
         <TableRow key={el.id} className={rowBackgroundColor(index)}>
-          {typedBody().map(info => {
-            return <TableCell>{getInfo(el, info)}</TableCell>;
+          {typedBody().map((info, index) => {
+            return <TableCell key={index}>{getInfo(el, info)}</TableCell>;
           })}
           <TableCell
             align="center"
@@ -112,7 +122,7 @@ function TableBodyComponent(props) {
 }
 
 TableBodyComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired

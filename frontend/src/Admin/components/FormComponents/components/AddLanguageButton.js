@@ -42,7 +42,7 @@ function AddLanguage(props) {
   }
 
   function filterLanguage() {
-    return props.LANGUAGES.filter(
+    return props.languageContext.filter(
       l => !props.selectedLanguageList.includes(l.value)
     );
   }
@@ -60,7 +60,9 @@ function AddLanguage(props) {
       <Button
         variant="outlined"
         onClick={handleOpenModal}
-        disabled={!(props.LANGUAGES.length > props.selectedLanguageList.length)}
+        disabled={
+          !(props.languageContext.length > props.selectedLanguageList.length)
+        }
       >
         Ajouter une langue
       </Button>
@@ -117,7 +119,7 @@ function AddLanguage(props) {
 }
 
 AddLanguage.propTypes = {
-  LANGUAGES: PropTypes.array.isRequired,
+  languageContext: PropTypes.array.isRequired,
   selectedLanguageList: PropTypes.array.isRequired,
   setSelectedLanguageList: PropTypes.func.isRequired
 };
