@@ -13,6 +13,7 @@ function ThemesServiceProvider({ children, isPublished }) {
   });
 
   const updateThemes = useCallback(async () => {
+    console.log(process.env);
     const themesRequest = await axiosRequest({
       method: "GET",
       url: `${process.env.REACT_APP_BASE_APP}/themes?published=${isPublished}`

@@ -45,13 +45,13 @@ function TableBodyComponent(props) {
       case "SCENARIO":
         return (
           <React.Fragment>
-            {element.isStandard && (
-              <ScenarioModifyButton icon={props.validIcon} theme={element} />
+            {element.isDefault && (
+              <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
-            {!element.isStandard && (
-              <ScenarioAcceptButton icon={props.validIcon} theme={element} />
+            {!element.isDefault && (
+              <ScenarioAcceptButton icon={props.validIcon} scenario={element} />
             )}
-            <ScenarioRemoveButton icon={props.invalidIcon} theme={element} />
+            <ScenarioRemoveButton icon={props.invalidIcon} scenario={element} />
           </React.Fragment>
         );
     }
@@ -67,7 +67,7 @@ function TableBodyComponent(props) {
         information = ["id", "names.fr"];
         break;
       case "SCENARIO":
-        information = ["id", "name", "theme.names.fr", "description"];
+        information = ["id", "name", "names.fr", "descriptions.fr"];
         break;
     }
 
@@ -89,8 +89,8 @@ function TableBodyComponent(props) {
     <TableBody>
       {props.elements.map((el, index) => (
         <TableRow key={el.id} className={rowBackgroundColor(index)}>
-          {typedBody().map(info => {
-            return <TableCell>{getInfo(el, info)}</TableCell>;
+          {typedBody().map((info, index) => {
+            return <TableCell key={index}>{getInfo(el, info)}</TableCell>;
           })}
           <TableCell
             align="center"

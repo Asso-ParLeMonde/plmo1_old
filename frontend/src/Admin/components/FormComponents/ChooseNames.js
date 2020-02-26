@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import DefaultNameInput from "./components/DefaultNameInput";
 import AddLanguage from "./components/AddLanguageButton";
+import { LANGUAGES } from "./ChooseContainer";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -15,31 +16,13 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const LANGUAGES = [
-  {
-    value: "fr",
-    label: "FR"
-  },
-  {
-    value: "en",
-    label: "EN"
-  },
-  {
-    value: "es",
-    label: "ES"
-  }
-];
-
 function ChooseNames(props) {
   const classes = useStyles();
-  const [selectedLanguageList, setSelectedLanguageList] = useState(
-    Object.keys(props.newElement.names)
-  );
 
   function namesInputs() {
     let inputs = [];
     const languages = LANGUAGES.filter(l =>
-      selectedLanguageList.includes(l.value)
+      props.selectedLanguageList.includes(l.value)
     );
 
     for (let i = 0; i < languages.length; i += 1) {
@@ -49,8 +32,8 @@ function ChooseNames(props) {
           language={languages[i]}
           newElement={props.newElement}
           handleChange={props.handleChange}
-          selectedLanguageList={selectedLanguageList}
-          setSelectedLanguageList={setSelectedLanguageList}
+          selectedLanguageList={props.selectedLanguageList}
+          setSelectedLanguageList={props.setSelectedLanguageList}
         />
       );
     }
@@ -60,19 +43,21 @@ function ChooseNames(props) {
 
   return (
     <React.Fragment>
-      <span className={classes.title}>Noms</span>
+      <div className={classes.title}>Noms</div>
       {namesInputs()}
 
       <AddLanguage
         LANGUAGES={LANGUAGES}
-        selectedLanguageList={selectedLanguageList}
-        setSelectedLanguageList={setSelectedLanguageList}
+        selectedLanguageList={props.selectedLanguageList}
+        setSelectedLanguageList={props.setSelectedLanguageList}
       />
     </React.Fragment>
   );
 }
 
 ChooseNames.propTypes = {
+  selectedLanguageList: PropTypes.array.isRequired,
+  setSelectedLanguageList: PropTypes.func.isRequired,
   newElement: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired
 };
