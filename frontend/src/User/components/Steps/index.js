@@ -1,8 +1,16 @@
 import React, {useEffect, useState} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
-import { Stepper, Step, StepLabel, MobileStepper, Hidden, withStyles, Button } from "@material-ui/core";
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import {
+  Stepper,
+  Step,
+  StepLabel,
+  MobileStepper,
+  Hidden,
+  withStyles,
+  Button
+} from "@material-ui/core";
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import "./steps.css";
 
 const steps = [{
@@ -23,10 +31,10 @@ const steps = [{
 }
 ];
 
-const StyleMobileStepper = withStyles((theme) => ({
+const StyleMobileStepper = withStyles(theme => ({
   root: {
     position: "relative",
-    margin: "1rem 0",
+    margin: "1rem 0"
   },
   dot: {
     backgroundColor: "white",
@@ -34,24 +42,24 @@ const StyleMobileStepper = withStyles((theme) => ({
     border: "1px solid",
     width: "13px",
     height: "13px",
-    margin: "0 4px",
+    margin: "0 4px"
   },
   dotActive: {
-    backgroundColor: (theme.palette.secondary || {}).main,
-  },
+    backgroundColor: (theme.palette.secondary || {}).main
+  }
 }))(MobileStepper);
 
 function Steps(props) {
   const [ isNewPage, setIsNewPage ] = useState(false);
 
   useEffect(() => {
-    setIsNewPage(props.location.pathname.indexOf('new') !== -1 || props.location.pathname.indexOf('edit') !== -1);
+    setIsNewPage(props.location.pathname.indexOf("new") !== -1 || props.location.pathname.indexOf("edit") !== -1);
   }, [props.location]);
 
   const handleBack = index => event => {
     event.preventDefault();
     if (index < 0) {
-      props.history.push('/creer');
+      props.history.push("/creer");
     } else if (index < props.activeStep || (index === props.activeStep && isNewPage)) {
       props.history.push(steps[index].back);
     }
@@ -88,11 +96,11 @@ Steps.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  activeStep: PropTypes.number,
+  activeStep: PropTypes.number
 };
 
 Steps.defaultProps = {
-  activeStep: 0,
+  activeStep: 0
 };
 
 export default withRouter(Steps);

@@ -1,19 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import ChooseDescription from "../../../components/FormComponents/ChooseDescription";
-import ChooseNames from "../../../components/FormComponents/ChooseNames";
+import ChooseContainer from "../../../components/FormComponents/ChooseContainer";
 
 function ScenarioForm(props) {
+  const [selectedLanguageList, setSelectedLanguageList] = useState(
+    Object.keys(props.scenario.names)
+  );
+
   return (
     <React.Fragment>
-      <ChooseNames
+      <ChooseContainer
+        type={"NAMES"}
         newElement={props.scenario}
         handleChange={props.handleChange}
+        selectedLanguageList={selectedLanguageList}
+        setSelectedLanguageList={setSelectedLanguageList}
       />
-      <ChooseDescription
-        scenario={props.scenario}
+      <ChooseContainer
+        type={"DESCRIPTIONS"}
+        newElement={props.scenario}
         handleChange={props.handleChange}
+        selectedLanguageList={selectedLanguageList}
+        setSelectedLanguageList={setSelectedLanguageList}
+      />
+      <ChooseContainer
+        type={"THEMEID"}
+        newElement={props.scenario}
+        handleChange={props.handleChange}
+        selectedLanguageList={selectedLanguageList}
+        setSelectedLanguageList={setSelectedLanguageList}
       />
     </React.Fragment>
   );

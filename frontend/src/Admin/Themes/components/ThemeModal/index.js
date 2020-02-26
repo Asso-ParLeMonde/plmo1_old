@@ -68,9 +68,7 @@ function ThemeModal(props) {
     handleCloseModal();
   }
 
-  function handleCloseModal(event) {
-    event.preventDefault();
-
+  function handleCloseModal() {
     props.setIsOpen(false);
     setNewTheme(props.theme || DEFAULT_THEME);
     props.history.push("/admin/themes");

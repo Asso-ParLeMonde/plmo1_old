@@ -9,6 +9,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import "./formComponents.css";
+import LanguageForm from "../../Languages/components/LanguageForm";
 import Notifications from "../../../components/Notifications";
 import ThemeForm from "../../Themes/components/ThemeForm";
 import ScenarioForm from "../../Scenarios/components/ScenarioForm";
@@ -26,6 +27,8 @@ function ModalContainer(props) {
 
   function showCorrectForm() {
     switch (props.formDescription) {
+      default:
+        return <div />;
       case "THEME":
         return (
           <ThemeForm
@@ -33,13 +36,20 @@ function ModalContainer(props) {
             handleChange={props.handleChange}
           />
         );
-      default:
+      case "SCENARIO":
         return (
           <ScenarioForm
             scenario={props.newElement}
             handleChange={props.handleChange}
           />
         );
+        case "LANGUAGE":
+          return (
+            <LanguageForm
+              language={props.newElement}
+              handleChange={props.handleChange}
+            />
+          );
     }
   }
 

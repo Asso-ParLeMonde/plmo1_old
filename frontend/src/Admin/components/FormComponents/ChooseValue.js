@@ -14,27 +14,25 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-function ChooseDescription(props) {
+function ChooseValue(props) {
   const classes = useStyles();
 
   return (
     <React.Fragment>
-      <span className={classes.title}>Description</span>
+      <span className={classes.title}>Valeur</span>
       <TextField
-        value={props.scenario.description || ""}
-        onChange={e => props.handleChange("DESCRIPTION", e)}
+        value={props.language.value || ""}
+        onChange={props.handleChange}
         required
-        multiline
-        style={{ marginTop: "0.5rem" }}
-        variant="outlined"
+        style={{ marginTop: "0rem" }}
       />
     </React.Fragment>
   );
 }
 
-ChooseDescription.propTypes = {
+ChooseValue.propTypes = {
   scenario: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired
 };
 
-export default ChooseDescription;
+export default ChooseValue;
