@@ -29,7 +29,7 @@ function LanguageRemoveButton(props) {
         message: "Erreur lors de la suppression de la langue"
       });
     }
-  
+
     if (request.error === false && request.complete === true) {
       setRes({
         error: false,
@@ -43,6 +43,7 @@ function LanguageRemoveButton(props) {
 
   return (
     <DefaultButton
+      href={`/admin/languagues/delete`}
       handleAction={handleRemove}
       icon={props.icon}
       res={res}

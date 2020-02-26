@@ -5,21 +5,6 @@ import ChooseNames from "./ChooseNames";
 import ChooseDescriptions from "./ChooseDescriptions";
 import ChooseElement from "./ChooseElement";
 
-export const LANGUAGES = [
-  {
-    value: "fr",
-    label: "FR"
-  },
-  {
-    value: "en",
-    label: "EN"
-  },
-  {
-    value: "es",
-    label: "ES"
-  }
-];
-
 function ChooseContainer(props) {
   switch (props.type) {
     default:

@@ -21,7 +21,6 @@ function ScenarioModal(props) {
   const [newScenario, setNewScenario] = useState(
     props.scenario || DEFAULT_SCENARIO
   );
-  console.log(props.scenario);
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
