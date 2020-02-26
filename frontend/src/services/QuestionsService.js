@@ -15,7 +15,7 @@ function QuestionsServiceProvider({ children, isDefault }) {
   const updateQuestions = useCallback(async () => {
     const questionsRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/questions?default=${isDefault}`
+      url: `${process.env.REACT_APP_BASE_APP}/questions`
     });
     setGetQuestions(questionsRequest);
   }, [isDefault]);

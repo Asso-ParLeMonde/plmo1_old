@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -7,19 +7,26 @@ import EditIcon from "@material-ui/icons/Edit";
 
 import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
-// import { QuestionsServiceContext } from "../../services/QuestionsService";
 import ScenarioSelector from "./components/ScenarioSelector";
 import { Card, CardContent, Typography } from "@material-ui/core";
+import { axiosRequest } from "../components/axiosRequest";
 
 function Questions() {
-  let questions = [];
-  console.log(questions)
+  const [questions, setQuestions] = useState([]);
+  const [selectedScenario, setSelectedScenario] = useState(undefined)
 
-  // eslint-disable-next-line
-  // const questionsRequest = useContext(QuestionsServiceContext).getQuestions;
-  // if (questionsRequest.complete && !questionsRequest.error) {
-  //   questions = questionsRequest.data;
-  // }
+  useEffect(() => {
+    async function getQuestions() {
+      const questionsRequest = await axiosRequest({
+        method: "GET",
+        url: `${process.env.REACT_APP_BASE_APP}/scenario/${selectedScenario?.id}/questions`
+      });
+
+      setQuestions(questionsRequest.data || [])
+    }    
+
+    getQuestions()
+  }, [selectedScenario])
 
   return (
       <React.Fragment>
@@ -32,7 +39,7 @@ function Questions() {
         >
           Scénario associé aux questions
         </Typography>
-        <ScenarioSelector />
+        <ScenarioSelector selectedScenario={selectedScenario} setSelectedScenario={setSelectedScenario} />
       </CardContent>
     </Card>
 

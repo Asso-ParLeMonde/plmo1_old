@@ -74,15 +74,17 @@ function Admin() {
         <main style={{ flex: 1 }}>
           <ThemesServiceProvider>
             <ScenariosServiceProvider>
-              <Container maxWidth="lg" className={classes.container}>
-                <Switch>
-                  <Route path="/admin/themes" component={Themes} />
-                  <Route path="/admin/scenarios" component={Scenarios} />
-                  <Route path="/admin/questions" component={Questions} />
-                  <Route path="/admin/languages" component={Languages} />
-                  <Redirect exact from="/admin" to="admin/themes" />
-                </Switch>
-              </Container>
+              <QuestionsServiceProvider>
+                <Container maxWidth="lg" className={classes.container}>
+                  <Switch>
+                    <Route path="/admin/themes" component={Themes} />
+                    <Route path="/admin/scenarios" component={Scenarios} />
+                    <Route path="/admin/questions" component={Questions} />
+                    <Route path="/admin/languages" component={Languages} />
+                    <Redirect exact from="/admin" to="admin/themes" />
+                  </Switch>
+                </Container>
+              </QuestionsServiceProvider>
             </ScenariosServiceProvider>
           </ThemesServiceProvider>
         </main>
