@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import ChooseNames from "./ChooseNames";
 import ChooseDescriptions from "./ChooseDescriptions";
+import ChooseElement from "./ChooseElement";
 
 export const LANGUAGES = [
   {
@@ -41,11 +42,19 @@ function ChooseContainer(props) {
           handleChange={props.handleChange}
         />
       );
+    case "THEMEID":
+      return (
+        <ChooseElement
+          type={props.type}
+          newElement={props.newElement}
+          handleChange={props.handleChange}
+        />
+      );
   }
 }
 
 ChooseContainer.propTypes = {
-  type: PropTypes.oneOf(["NAMES", "DESCRIPTIONS"]).isRequired,
+  type: PropTypes.oneOf(["NAMES", "DESCRIPTIONS", "THEMEID"]).isRequired,
   newElement: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   selectedLanguageList: PropTypes.array.isRequired,

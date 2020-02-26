@@ -45,10 +45,10 @@ function TableBodyComponent(props) {
       case "SCENARIO":
         return (
           <React.Fragment>
-            {element.isStandard && (
+            {element.isDefault && (
               <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
-            {!element.isStandard && (
+            {!element.isDefault && (
               <ScenarioAcceptButton icon={props.validIcon} scenario={element} />
             )}
             <ScenarioRemoveButton icon={props.invalidIcon} scenario={element} />

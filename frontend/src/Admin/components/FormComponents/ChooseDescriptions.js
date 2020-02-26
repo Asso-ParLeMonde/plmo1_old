@@ -19,7 +19,8 @@ const useStyles = makeStyles(() => ({
     fontWeight: "bold"
   },
   textFieldDescriptions: {
-    marginBottom: "0.5rem"
+    marginTop: "0.5rem",
+    marginBottom: "2rem"
   }
 }));
 
@@ -43,7 +44,6 @@ function ChooseDescriptions(props) {
             onChange={e => props.handleChange("DESCRIPTION", e)}
             required
             multiline
-            style={{ marginTop: "0.5rem" }}
             variant="outlined"
             className={classes.textFieldDescriptions}
           />

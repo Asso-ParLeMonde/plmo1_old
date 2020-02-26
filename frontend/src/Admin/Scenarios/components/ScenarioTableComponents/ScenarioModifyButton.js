@@ -22,7 +22,7 @@ function ScenarioModifyButton(props) {
         <Button className="shape">{props.icon}</Button>
       </a>
       <ScenarioModal
-        theme={props.scenario}
+        scenario={props.scenario}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalTitle={"Modification du scenario"}

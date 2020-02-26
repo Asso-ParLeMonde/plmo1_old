@@ -43,7 +43,7 @@ function ChooseNames(props) {
 
   return (
     <React.Fragment>
-      <span className={classes.title}>Noms</span>
+      <div className={classes.title}>Noms</div>
       {namesInputs()}
 
       <AddLanguage

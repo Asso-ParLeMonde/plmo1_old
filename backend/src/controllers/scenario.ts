@@ -9,17 +9,12 @@ interface ScenarioResponse {
   names: { [key: string]: string };
   descriptions: { [key: string]: string };
   themeId: undefined | number;
+  isDefault: boolean;
 }
-
-const EMPTY_SCENARIO_RESPONSE = {
-  id: undefined,
-  names: {},
-  descriptions: {},
-  themeId: undefined,
-};
 
 function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
   const scenarioObject: { [key: string]: ScenarioResponse } = {};
+  console.log(scenarioObject);
 
   for (let i = 0; i < scenarios.length; i++) {
     if (Object.keys(scenarioObject).includes(scenarios[i].id.toString())) {
@@ -27,9 +22,11 @@ function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
       scenarioObject[scenarios[i].id].descriptions[scenarios[i].languageCode] = scenarios[i].description;
     } else {
       const newScenario: ScenarioResponse = {
-        ...EMPTY_SCENARIO_RESPONSE,
         id: scenarios[i].id,
         themeId: scenarios[i].theme.id,
+        isDefault: scenarios[i].isDefault,
+        names: {},
+        descriptions: {},
       };
 
       newScenario.names[scenarios[i].languageCode] = scenarios[i].name;
@@ -39,7 +36,6 @@ function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
     }
   }
 
-  console.log(scenarioObject);
   const scenarioIdList = Object.keys(scenarioObject);
   const scenarioResponse: ScenarioResponse[] = [];
 
@@ -100,6 +96,7 @@ export class ScenariosController extends Controller {
       scenario.languageCode = languages[i] || "fr";
       scenario.name = labels[languages[i]] || "";
       scenario.id = scenarioId;
+      scenario.isDefault = req.body.isDefault;
 
       scenariosToAdd.push(getCustomRepository(ScenarioRepository).saveScenario(scenario, parseInt(req.body.themeId, 10) || 0)); // 0 because there is no theme with this id
     }
@@ -111,6 +108,7 @@ export class ScenariosController extends Controller {
       names: req.body.names,
       descriptions: req.body.descriptions,
       themeId: req.body.themeId,
+      isDefault: req.body.isDefault,
     };
 
     res.sendJSON(response);
@@ -139,6 +137,7 @@ export class ScenariosController extends Controller {
       scenario.languageCode = languages[i];
       scenario.description = req.body.descriptions[languages[i]];
       scenario.name = req.body.names[languages[i]];
+      scenario.isDefault = req.body.isDefault;
 
       scenariosToModify.push(getCustomRepository(ScenarioRepository).saveScenario(scenario, parseInt(req.body.themeId, 10) || 0)); // 0 because there is no theme with this id
     }
@@ -150,6 +149,7 @@ export class ScenariosController extends Controller {
       names: req.body.names,
       descriptions: req.body.descriptions,
       themeId: req.body.themeId,
+      isDefault: req.body.isDefault,
     };
 
     res.sendJSON(response);

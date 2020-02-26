@@ -18,11 +18,17 @@ async function postScenario(newScenario, setRes) {
       complete: true,
       message: "Erreur lors de la creation du scenario"
     });
-
-    return true;
   }
 
-  return false;
+  if (request.error === false && request.complete === true) {
+    setRes({
+      error: false,
+      complete: true,
+      message: "Success lors dans la creation du scenario"
+    });
+  }
+
+  return;
 }
 
 async function putScenario(inheritedScenario, newScenario, setRes) {
@@ -43,33 +49,17 @@ async function putScenario(inheritedScenario, newScenario, setRes) {
       complete: true,
       message: "Erreur lors de la modification du scenario"
     });
-
-    return true;
   }
 
-  return false;
-}
-
-async function updateScenario(
-  requestType,
-  inheritedScenario,
-  newScenario,
-  setRes
-) {
-  let error = false;
-
-  switch (requestType) {
-    default:
-      break;
-    case "POST":
-      error = await postScenario(newScenario, setRes);
-      break;
-    case "PUT":
-      error = await putScenario(inheritedScenario, newScenario, setRes);
-      break;
+  if (request.error === false && request.complete === true) {
+    setRes({
+      error: false,
+      complete: true,
+      message: "Success lors dans la modification du scenario"
+    });
   }
 
-  return error;
+  return;
 }
 
-export { updateScenario };
+export { postScenario, putScenario };

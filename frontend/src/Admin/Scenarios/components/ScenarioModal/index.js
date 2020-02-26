@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
-import { updateScenario } from "../scenarioRequest";
+import { postScenario, putScenario } from "../scenarioRequest";
 
 const DEFAULT_SCENARIO = {
   id: null,
@@ -21,6 +21,7 @@ function ScenarioModal(props) {
   const [newScenario, setNewScenario] = useState(
     props.scenario || DEFAULT_SCENARIO
   );
+  console.log(props.scenario);
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
@@ -51,34 +52,29 @@ function ScenarioModal(props) {
           }
         });
         break;
+      case "THEMEID":
+        setNewScenario({
+          ...newScenario,
+          themeId: event.target.value
+        });
+        break;
     }
   }
 
   async function handleConfirmation(event) {
     event.preventDefault();
 
-    let error = false;
     if (props.scenario) {
-      error = await updateScenario("PUT", props.scenario, newScenario, setRes);
+      await putScenario(props.scenario, newScenario, setRes);
     } else {
-      error = await updateScenario("POST", props.scenario, newScenario, setRes);
-    }
-
-    if (error === false) {
-      setRes({
-        error: false,
-        complete: true,
-        message: "Success lors dans la creation du scenario"
-      });
+      await postScenario(newScenario, setRes);
     }
 
     updateScenarios().catch();
     handleCloseModal();
   }
 
-  function handleCloseModal(event) {
-    event.preventDefault();
-
+  function handleCloseModal() {
     props.setIsOpen(false);
     setNewScenario(props.scenario || DEFAULT_SCENARIO);
     props.history.push("/admin/scenarios");
@@ -99,7 +95,7 @@ function ScenarioModal(props) {
 }
 
 ScenarioModal.propTypes = {
-  theme: PropTypes.object,
+  scenario: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,

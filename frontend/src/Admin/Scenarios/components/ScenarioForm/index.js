@@ -24,6 +24,13 @@ function ScenarioForm(props) {
         selectedLanguageList={selectedLanguageList}
         setSelectedLanguageList={setSelectedLanguageList}
       />
+      <ChooseContainer
+        type={"THEMEID"}
+        newElement={props.scenario}
+        handleChange={props.handleChange}
+        selectedLanguageList={selectedLanguageList}
+        setSelectedLanguageList={setSelectedLanguageList}
+      />
     </React.Fragment>
   );
 }

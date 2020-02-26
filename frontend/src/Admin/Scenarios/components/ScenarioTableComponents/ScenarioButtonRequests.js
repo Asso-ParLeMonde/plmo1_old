@@ -18,13 +18,13 @@ async function handleScenarioButtonRequest(
       request = await axiosRequest({
         method: "PUT",
         url: `${process.env.REACT_APP_BASE_APP}/scenarios/${scenario.id}`,
-        data: { ...scenario, isStandard: true }
+        data: { ...scenario, isDefault: true }
       });
       break;
     case "DELETE":
       request = await axiosRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}themes/${scenario.themeId}/scenarios/${scenario.id}`
+        url: `${process.env.REACT_APP_BASE_APP}/themes/${scenario.themeId}/scenarios/${scenario.id}`
       });
       break;
   }

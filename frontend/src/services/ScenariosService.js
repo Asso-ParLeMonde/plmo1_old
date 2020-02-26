@@ -15,7 +15,8 @@ function ScenariosServiceProvider({ children, isDefault }) {
   const updateScenarios = useCallback(async () => {
     const scenariosRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/scenarios?isDefault=${isDefault}`
+      // TODO : Search why it is not working with isDefault
+      url: `${process.env.REACT_APP_BASE_APP}/scenarios`
     });
     setGetScenarios(scenariosRequest);
   }, [isDefault]);
