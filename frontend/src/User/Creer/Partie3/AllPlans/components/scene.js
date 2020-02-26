@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {Typography, ButtonBase, IconButton, Tooltip, withStyles} from "@material-ui/core";
+import {Typography, IconButton, Tooltip, withStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
-import DeleteIcon from '@material-ui/icons/Delete';
 import "./scene.css";
+import Plan from "./plan";
 
 const StyledAddButton = withStyles(theme => ({
   root: {
@@ -12,16 +12,6 @@ const StyledAddButton = withStyles(theme => ({
     color: "white",
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
-    }
-  },
-}))(IconButton);
-
-const StyledDeleteButton = withStyles(theme => ({
-  root: {
-    backgroundColor: theme.palette.error.main,
-    color: "white",
-    '&:hover': {
-      backgroundColor: theme.palette.error.light,
     }
   },
 }))(IconButton);
@@ -40,29 +30,14 @@ function Scene(props) {
       </Typography>
       <div className="plans">
         {
-          props.q.plans.map((_, index) => (
-            <div className="plan-button-container" key={index}>
-              <ButtonBase
-                component="a"
-                href={`/creer/3-storyboard-et-plan-de-tournage/edit?question=${props.index}&plan=${index}`}
-                onClick={handleClick(index)}
-                style={{width: "100%", height: "100%"}}
-              >
-                <div className="plan">
-                  <div className="number">{props.q.planStartIndex + index}</div>
-                  <div className="edit">Modifier</div>
-                  {
-                    index !== 0 && (
-                      <div className="delete">
-                        <StyledDeleteButton aria-label="delete" size="small" onClick={props.removePlan(index)}>
-                          <DeleteIcon />
-                        </StyledDeleteButton>
-                      </div>
-                    )
-                  }
-                </div>
-              </ButtonBase>
-            </div>
+          props.q.plans.map((_, planIndex) => (
+            <Plan key={`${props.index}_${planIndex}`}
+                  questionIndex={props.index}
+                  planIndex={planIndex}
+                  showNumber={props.q.planStartIndex + planIndex}
+                  handleClick={handleClick(planIndex)}
+                  handleDelete={props.removePlan(planIndex)}
+            />
           ))
         }
         <div className="plan-button-container add">
