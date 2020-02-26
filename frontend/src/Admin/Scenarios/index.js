@@ -18,8 +18,6 @@ function Scenarios() {
     scenarios = scenariosRequest.data;
   }
 
-  console.log(scenarios);
-
   return (
     <React.Fragment>
       <TableCard
