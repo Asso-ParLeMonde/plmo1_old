@@ -46,7 +46,13 @@
     background-color: #6065fc;
     margin: 0 4rem;
 }
-.plan:hover > .edit {
+.plan > .delete {
+    display: none;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+}
+.plan:hover > .edit, .plan:hover > .delete {
     display: block;
 }
 

@@ -3,14 +3,25 @@ import PropTypes from "prop-types";
 
 import {Typography, ButtonBase, IconButton, Tooltip, withStyles} from "@material-ui/core";
 import AddIcon from '@material-ui/icons/Add';
+import DeleteIcon from '@material-ui/icons/Delete';
 import "./scene.css";
 
-const StyledButton = withStyles(theme => ({
+const StyledAddButton = withStyles(theme => ({
   root: {
     backgroundColor: theme.palette.primary.main,
     color: "white",
     '&:hover': {
       backgroundColor: theme.palette.primary.light,
+    }
+  },
+}))(IconButton);
+
+const StyledDeleteButton = withStyles(theme => ({
+  root: {
+    backgroundColor: theme.palette.error.main,
+    color: "white",
+    '&:hover': {
+      backgroundColor: theme.palette.error.light,
     }
   },
 }))(IconButton);
@@ -40,6 +51,15 @@ function Scene(props) {
                 <div className="plan">
                   <div className="number">{props.q.planStartIndex + index}</div>
                   <div className="edit">Modifier</div>
+                  {
+                    index !== 0 && (
+                      <div className="delete">
+                        <StyledDeleteButton aria-label="delete" size="small" onClick={props.removePlan(index)}>
+                          <DeleteIcon />
+                        </StyledDeleteButton>
+                      </div>
+                    )
+                  }
                 </div>
               </ButtonBase>
             </div>
@@ -47,9 +67,9 @@ function Scene(props) {
         }
         <div className="plan-button-container add">
           <Tooltip title="Ajouter un plan" aria-label="Ajouter un plan">
-            <StyledButton color="primary" aria-label="Ajouter un plan" onClick={props.addPlan}>
+            <StyledAddButton color="primary" aria-label="Ajouter un plan" onClick={props.addPlan}>
               <AddIcon />
-            </StyledButton>
+            </StyledAddButton>
           </Tooltip>
         </div>
       </div>
@@ -62,6 +82,7 @@ Scene.propTypes = {
   index: PropTypes.number.isRequired,
   history: PropTypes.object.isRequired,
   addPlan: PropTypes.func.isRequired,
+  removePlan: PropTypes.func.isRequired,
 };
 
 export default Scene;

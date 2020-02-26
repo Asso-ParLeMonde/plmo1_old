@@ -8,6 +8,7 @@ import {ProjectServiceContext} from "../../../../services/ProjectService";
 
 
 function EditPlans(props) {
+  // eslint-disable-next-line no-unused-vars
   const { project, updateProject } = useContext(ProjectServiceContext);
 
   return (

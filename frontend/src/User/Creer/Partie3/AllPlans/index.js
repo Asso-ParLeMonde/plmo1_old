@@ -1,13 +1,24 @@
-import React, {useContext} from "react";
+import React, {useContext, useState} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
-import {Button, Hidden, Typography} from "@material-ui/core";
+import {
+  Button, Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Hidden,
+  Typography
+} from "@material-ui/core";
 
 import {ProjectServiceContext} from "../../../../services/ProjectService";
 import Inverted from "../../../../components/Inverted";
 import Scene from "./components/scene";
 
-
+/*
+  Returns the user's questions list with their plans.
+  Each question is added a plan list if it has not yet and a planStartIndex to know the plan number.
+ */
 function getQuestions(project) {
   return project.questions.reduce((list, current, index) => {
     let newCurrent;
@@ -20,7 +31,7 @@ function getQuestions(project) {
     if (newCurrent.plans === undefined || newCurrent.plans === null || newCurrent.plans.length === 0) {
       newCurrent.plans = [
         {
-          url: "test",
+          url: "",
         }
       ];
     }
@@ -30,8 +41,14 @@ function getQuestions(project) {
 }
 
 function AllPlans(props) {
+  const [deleteIndexes, setDeleteIndexes] = useState({
+    questionIndex: -1,
+    planIndex: -1,
+    showNumber: 0,
+  });
   const { project, updateProject } = useContext(ProjectServiceContext);
   const questions = getQuestions(project);
+  const showDeleteModal = deleteIndexes.questionIndex !== -1 && deleteIndexes.planIndex !== -1;
 
   const updateQuestion = (index, newQuestion) => {
     const questions = [...project.questions];
@@ -45,12 +62,38 @@ function AllPlans(props) {
     props.history.push(`/creer/4-a-votre-caméra`);
   };
 
-  const addPlan = index => () => {
-    const plans = questions[index].plans || [];
+  const addPlan = questionIndex => (event) => {
+    event.preventDefault();
+    const plans = questions[questionIndex].plans || [];
     plans.push({
-      url: "test",
+      url: "",
     });
-    updateQuestion(index, { plans });
+    updateQuestion(questionIndex, { plans });
+  };
+
+  const removePlan = questionIndex => planIndex => (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDeleteIndexes({
+      questionIndex,
+      planIndex,
+      showNumber: questions[questionIndex].planStartIndex + planIndex,
+    });
+  };
+
+  const handleCloseModal = confirm => () => {
+    const { questionIndex, planIndex, showNumber } = deleteIndexes;
+    setDeleteIndexes({
+      questionIndex: -1,
+      planIndex: -1,
+      showNumber,
+    });
+    if(!confirm) {
+      return;
+    }
+    const plans = questions[questionIndex].plans || [];
+    plans.splice(planIndex, 1);
+    updateQuestion(questionIndex, { plans });
   };
 
   return (
@@ -69,8 +112,33 @@ function AllPlans(props) {
             index={index}
             history={props.history}
             addPlan={addPlan(index)}
+            removePlan={removePlan(index)}
             key={index}/>)
         }
+
+        <Dialog
+          open={showDeleteModal}
+          onClose={handleCloseModal(false)}
+          aria-labelledby="delete-dialog-title"
+          aria-describedby="delete-dialog-description"
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle id="delete-dialog-title">Supprimer le plan ?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="delete-dialog-description">
+              Voulez-vous vraiment supprimer le plan n° {deleteIndexes.showNumber} ?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseModal(false)} color="secondary" variant="outlined">
+              Annuler
+            </Button>
+            <Button onClick={handleCloseModal(true)} color="secondary" variant="contained">
+              Supprimer
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
