@@ -5,8 +5,6 @@ import ChooseLabel from "../../../components/FormComponents/ChooseLabel";
 import ChooseValue from "../../../components/FormComponents/ChooseValue";
 
 function LanguageForm(props) {
-  console.log(props, props.newElement)
-  console.log(props.handleChange("LABEL"));
   return (
     <React.Fragment>
       <ChooseLabel

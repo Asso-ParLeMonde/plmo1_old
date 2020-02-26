@@ -21,7 +21,7 @@ function ChooseLabel(props) {
     <React.Fragment>
       <span className={classes.title}>Languages</span>
       <TextField
-        maxLength= "2"
+        maxLength="2"
         value={props.language.label || ""}
         onChange={props.handleChange}
         required
