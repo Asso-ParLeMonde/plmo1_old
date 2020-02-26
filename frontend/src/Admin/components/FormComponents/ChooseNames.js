@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import DefaultNameInput from "./components/DefaultNameInput";
 import AddLanguage from "./components/AddLanguageButton";
-import { LANGUAGES } from "./ChooseContainer";
+import { LanguagesServiceContext } from "../../../services/LanguagesService";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -18,10 +18,12 @@ const useStyles = makeStyles(() => ({
 
 function ChooseNames(props) {
   const classes = useStyles();
+  const languagesContext = useContext(LanguagesServiceContext).getLanguages
+    .data;
 
   function namesInputs() {
     let inputs = [];
-    const languages = LANGUAGES.filter(l =>
+    const languages = languagesContext.filter(l =>
       props.selectedLanguageList.includes(l.value)
     );
 
@@ -47,7 +49,7 @@ function ChooseNames(props) {
       {namesInputs()}
 
       <AddLanguage
-        LANGUAGES={LANGUAGES}
+        languageContext={languagesContext}
         selectedLanguageList={props.selectedLanguageList}
         setSelectedLanguageList={props.setSelectedLanguageList}
       />

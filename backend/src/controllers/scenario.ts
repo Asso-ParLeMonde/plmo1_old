@@ -14,7 +14,6 @@ interface ScenarioResponse {
 
 function formatedResponse(scenarios: Scenario[]): ScenarioResponse[] {
   const scenarioObject: { [key: string]: ScenarioResponse } = {};
-  console.log(scenarioObject);
 
   for (let i = 0; i < scenarios.length; i++) {
     if (Object.keys(scenarioObject).includes(scenarios[i].id.toString())) {

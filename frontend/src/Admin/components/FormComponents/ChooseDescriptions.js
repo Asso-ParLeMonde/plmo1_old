@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { TextField } from "@material-ui/core";
 
-import { LANGUAGES } from "./ChooseContainer";
+import { LanguagesServiceContext } from "../../../services/LanguagesService";
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -26,10 +26,12 @@ const useStyles = makeStyles(() => ({
 
 function ChooseDescriptions(props) {
   const classes = useStyles();
+  const languagesContext = useContext(LanguagesServiceContext).getLanguages
+    .data;
 
   function descriptionsInputs() {
     let inputs = [];
-    const languages = LANGUAGES.filter(l =>
+    const languages = languagesContext.filter(l =>
       props.selectedLanguageList.includes(l.value)
     );
 

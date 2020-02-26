@@ -20,12 +20,9 @@ function ChooseElement(props) {
   const classes = useStyles();
 
   const themes = useContext(ThemesServiceContext).getThemes.data;
-  console.log(themes);
   const [selectedElement, setSelectedElement] = useState(
     props.newElement.themeId || null
   );
-
-  console.log(selectedElement);
 
   function handleSelection(event) {
     setSelectedElement(event.target.value);
