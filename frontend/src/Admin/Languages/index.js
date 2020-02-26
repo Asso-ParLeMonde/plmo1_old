@@ -1,19 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
+import { LanguagesServiceContext } from "../../services/LanguagesService";
 
 function Languages() {
-  let languages = [
-    {
-      id: 1,
-      label: "FR",
-      value: "fr"
-    }
-  ];
+  let languages = [];
+
+  // eslint-disable-next-line
+  const languagesRequest = useContext(LanguagesServiceContext).getLanguages;
+  if (languagesRequest.complete && !languagesRequest.error) {
+    languages = languagesRequest.data;
+  }
 
   return (
     <TableCard

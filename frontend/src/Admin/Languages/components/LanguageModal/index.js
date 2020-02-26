@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
+import { LanguagesServiceContext } from "../../../../services/LanguagesService";
+import { axiosRequest } from "../../../components/axiosRequest";
 
 function LanguageModal(props) {
   const [newLanguage, setNewLanguage] = useState(
     props.language || { label: "", value: "" }
   );
+  const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;
 
   const [res, setRes] = useState({
     error: false,
@@ -36,9 +39,21 @@ function LanguageModal(props) {
   async function handleConfirmation(event) {
     event.preventDefault();
 
-    let error = false;
+    const request = await axiosRequest({
+      method: "POST",
+      url: `${process.env.REACT_APP_BASE_APP}/languages`,
+      data: newLanguage
+    });
 
-    if (error === false) {
+    if (request.error === true && request.complete === true) {
+      setRes({
+        error: true,
+        complete: true,
+        message: "Erreur lors de la creation de la langue"
+      });
+    }
+
+    if (request.error === false && request.complete === true) {
       setRes({
         error: false,
         complete: true,
@@ -46,13 +61,11 @@ function LanguageModal(props) {
       });
     }
 
-    //updateLanguages().catch();
+    updateLanguages().catch();
     handleCloseModal();
   }
 
-  function handleCloseModal(event) {
-    event.preventDefault();
-
+  function handleCloseModal() {
     props.setIsOpen(false);
     setNewLanguage(props.language || { label: "", value: "" });
     props.history.push("/admin/languages");

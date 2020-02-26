@@ -19,15 +19,13 @@ function ChooseLabel(props) {
 
   return (
     <React.Fragment>
-      <span className={classes.title}>Languages</span>
+      <span className={classes.title}>Langue</span>
       <TextField
         maxLength="2"
         value={props.language.label || ""}
         onChange={props.handleChange}
         required
-        multiline
-        style={{ marginTop: "0.5rem" }}
-        variant="outlined"
+        style={{ marginBottom: "1rem" }}
       />
     </React.Fragment>
   );
