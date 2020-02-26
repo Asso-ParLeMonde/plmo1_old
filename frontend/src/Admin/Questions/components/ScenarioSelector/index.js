@@ -2,8 +2,6 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
 import {
-  FormControl,
-  InputLabel,
   Select,
   MenuItem
 } from "@material-ui/core";

@@ -18,7 +18,7 @@ function QuestionsServiceProvider({ children, isDefault }) {
       url: `${process.env.REACT_APP_BASE_APP}/questions`
     });
     setGetQuestions(questionsRequest);
-  }, [isDefault]);
+  }, []);
 
   useEffect(() => {
     updateQuestions().catch();
