@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -13,7 +13,7 @@ import { axiosRequest } from "../components/axiosRequest";
 
 function Questions() {
   const [questions, setQuestions] = useState([]);
-  const [selectedScenario, setSelectedScenario] = useState(undefined)
+  const [selectedScenario, setSelectedScenario] = useState(undefined);
 
   useEffect(() => {
     async function getQuestions() {
@@ -22,36 +22,39 @@ function Questions() {
         url: `${process.env.REACT_APP_BASE_APP}/scenario/${selectedScenario?.id}/questions`
       });
 
-      setQuestions(questionsRequest.data || [])
-    }    
+      setQuestions(questionsRequest.data || []);
+    }
 
-    getQuestions()
-  }, [selectedScenario])
+    getQuestions();
+  }, [selectedScenario]);
 
   return (
-      <React.Fragment>
+    <React.Fragment>
       <Card style={{ marginBottom: "2rem" }}>
-      <CardContent>
-        <Typography
-          variant="h5"
-          component="h2"
-          style={{ marginBottom: "1rem" }}
-        >
-          Scénario associé aux questions
-        </Typography>
-        <ScenarioSelector selectedScenario={selectedScenario} setSelectedScenario={setSelectedScenario} />
-      </CardContent>
-    </Card>
+        <CardContent>
+          <Typography
+            variant="h5"
+            component="h2"
+            style={{ marginBottom: "1rem" }}
+          >
+            Scénario associé aux questions
+          </Typography>
+          <ScenarioSelector
+            selectedScenario={selectedScenario}
+            setSelectedScenario={setSelectedScenario}
+          />
+        </CardContent>
+      </Card>
 
       <TableCard
         type="QUESTION"
-        title={"Liste des questions par default"}
+        title={"Liste des questions par défault"}
         elements={questions.filter(question => question.isDefault === true)}
         validIcon={<EditIcon />}
         invalidIcon={<DeleteIcon />}
       >
         <AddButton
-          buttonTitle="Ajouter un question"
+          buttonTitle="Ajouter une question"
           type="QUESTION"
           link="/admin/questions/new"
           modalTitle="Creation d'une nouvelle question par default"
@@ -65,7 +68,7 @@ function Questions() {
         validIcon={<CheckIcon />}
         invalidIcon={<ClearIcon />}
       />
-      </React.Fragment>
+    </React.Fragment>
   );
 }
 
