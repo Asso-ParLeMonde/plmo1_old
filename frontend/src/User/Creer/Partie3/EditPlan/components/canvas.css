@@ -1,0 +1,47 @@
+.draw-canvas-container-max-width {
+    width: 50%;
+    max-width: 500px;
+    margin: 1rem auto;
+}
+.draw-canvas-container {
+    width: 100%;
+    height: 0;
+    padding-bottom: 100%;
+    position: relative;
+}
+.draw-canvas {
+    border: 1px solid rgba(0, 0, 0, 0.54);
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.actions-buttons-container {
+    width: 100%;
+    display: inline-flex;
+}
+.actions-buttons-container > button:not(:last-child) {
+    border-right-color: transparent;
+}
+.canvas-colors-container {
+    width: 100%;
+    max-width: 190px;
+    margin: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows: 1fr;
+    grid-gap: 10px;
+}
+.canvas-colors-container::before {
+    content: '';
+    width: 0;
+    padding-bottom: 100%;
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}
+.canvas-colors-container > *:first-child {
+    grid-row: 1 / 1;
+    grid-column: 1 / 1;
+}

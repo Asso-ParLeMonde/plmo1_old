@@ -1,11 +1,18 @@
-import React from "react";
+import React, {useContext} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import {Typography} from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
+import {ProjectServiceContext} from "../../../../services/ProjectService";
 
-function EditPlans() {
+import Canvas from "./components/canvas";
+
+
+function EditPlans(props) {
+  // eslint-disable-next-line no-unused-vars
+  const { project, updateProject } = useContext(ProjectServiceContext);
+
   return (
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
@@ -15,6 +22,8 @@ function EditPlans() {
         <Typography color="inherit" variant="h2">
           Blabla bla...
         </Typography>
+
+        <Canvas/>
       </div>
     </div>
   );
