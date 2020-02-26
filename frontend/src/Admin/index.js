@@ -5,12 +5,14 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import Languages from "./Languages";
+import Questions from "./Questions";
 import Scenarios from "./Scenarios";
 import Themes from "./Themes";
 import Navbar from "../components/Navbar";
 import AdminDrawer from "./components/AdminDrawer";
 import { ThemesServiceProvider } from "../services/ThemesService";
 import { ScenariosServiceProvider } from "../services/ScenariosService";
+import { QuestionsServiceProvider } from "../services/QuestionsService";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -27,6 +29,10 @@ const tabs = [
   {
     label: "Scenarios",
     path: "/admin/scenarios"
+  },
+  {
+    label: "Questions",
+    path: "/admin/questions"
   },
   {
     label: "Langues",
@@ -72,6 +78,7 @@ function Admin() {
                 <Switch>
                   <Route path="/admin/themes" component={Themes} />
                   <Route path="/admin/scenarios" component={Scenarios} />
+                  <Route path="/admin/questions" component={Questions} />
                   <Route path="/admin/languages" component={Languages} />
                   <Redirect exact from="/admin" to="admin/themes" />
                 </Switch>

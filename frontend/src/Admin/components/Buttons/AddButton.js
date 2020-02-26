@@ -7,6 +7,7 @@ import AddCircleIcon from "@material-ui/icons/AddCircle";
 import Button from "@material-ui/core/Button";
 
 import LanguageModal from "../../Languages/components/LanguageModal";
+import QuestionModal from "../../Questions/components/QuestionModal";
 import ScenarioModal from "../../Scenarios/components/ScenarioModal";
 import ThemeModal from "../../Themes/components/ThemeModal";
 
@@ -63,6 +64,16 @@ function AddButton(props) {
             history={props.history}
           />
         );
+      case "QUESTION":
+        return (
+          <QuestionModal
+            question={props.newQuestion}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalTitle={props.modalTitle}
+            history={props.history}
+          />
+        );
     }
   }
 
@@ -88,7 +99,7 @@ function AddButton(props) {
 AddButton.propTypes = {
   buttonTitle: PropTypes.string.isRequired,
   newObject: PropTypes.object,
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"]).isRequired,
   link: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired

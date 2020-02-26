@@ -1,0 +1,49 @@
+import React, { useContext, useState } from "react";
+import { withRouter } from "react-router";
+import PropTypes from "prop-types";
+
+import { QuestionsServiceContext } from "../../../../services/QuestionsService";
+import DefaultButton from "../../../components/Buttons/DefaultButton";
+import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
+
+function QuestionAcceptButton(props) {
+  const updateQuestions = useContext(QuestionsServiceContext).updateQuestions;
+
+  const [res, setRes] = useState({
+    error: false,
+    complete: false,
+    message: ""
+  });
+
+  async function handleAcceptation(event) {
+    event.preventDefault();
+    await handleRequest(
+      "PUT",
+      props.question,
+      setRes,
+      "Success lors de la validation de la question",
+      "Erreur lors de la validation de la question",
+      props.history,
+      updateQuestions
+    );
+  }
+
+  return (
+    <DefaultButton
+      href={`/admin/questions/${props.question.id}`}
+      handleAction={handleAcceptation}
+      icon={props.icon}
+      res={res}
+    />
+  );
+}
+
+QuestionAcceptButton.propTypes = {
+  icon: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired
+};
+
+export default withRouter(QuestionAcceptButton);

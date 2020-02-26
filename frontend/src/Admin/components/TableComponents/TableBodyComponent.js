@@ -12,8 +12,11 @@ import ThemeRemoveButton from "../../Themes/components/ThemeTableComponents/Them
 import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioModifyButton";
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
-import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
 import ScenarioQuestionModal from "../../Scenarios/components/ScenarioTableComponents/ScenarioQuestionsModal";
+import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
+import QuestionModifyButton from "../../Questions/components/QuestionTableComponents/QuestionModifyButton";
+import QuestionAcceptButton from "../../Questions/components/QuestionTableComponents/QuestionAcceptButton";
+import QuestionRemoveButton from "../../Questions/components/QuestionTableComponents/QuestionRemoveButton";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -65,6 +68,18 @@ function TableBodyComponent(props) {
         return (
           <LanguageRemoveButton icon={props.invalidIcon} language={element} />
         );
+      case "QUESTION":
+        return (
+          <React.Fragment>
+            {element.isStandard && (
+              <QuestionModifyButton icon={props.validIcon} theme={element} />
+            )}
+            {!element.isStandard && (
+              <QuestionAcceptButton icon={props.validIcon} theme={element} />
+            )}
+            <QuestionRemoveButton icon={props.invalidIcon} theme={element} />
+          </React.Fragment>
+        );
     }
   }
 
@@ -82,6 +97,9 @@ function TableBodyComponent(props) {
         break;
       case "LANGUAGE":
         information = ["ID", "LABEL", "VALUE"];
+        break;
+      case "QUESTION":
+        information = ["id", "languageCode", "question", "scenario.id"];
         break;
     }
 
@@ -176,7 +194,8 @@ function TableBodyComponent(props) {
 }
 
 TableBodyComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"])
+    .isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired
