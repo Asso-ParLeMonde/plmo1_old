@@ -15,8 +15,6 @@ function Questions() {
   const [questions, setQuestions] = useState([]);
   const [selectedScenario, setSelectedScenario] = useState(undefined);
 
-  console.log(selectedScenario);
-
   useEffect(() => {
     async function getQuestions() {
       const questionsRequest = await axiosRequest({
