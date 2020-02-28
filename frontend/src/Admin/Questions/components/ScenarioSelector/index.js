@@ -31,7 +31,7 @@ function ScenarioSelector(props) {
 }
 
 ScenarioSelector.propTypes = {
-  selectedScenario: PropTypes.object,
+  selectedScenario: PropTypes.number,
   setSelectedScenario: PropTypes.func.isRequired
 };
 
