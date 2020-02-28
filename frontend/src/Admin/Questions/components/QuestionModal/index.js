@@ -5,11 +5,12 @@ import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { QuestionsServiceContext } from "../../../../services/QuestionsService";
 import { updateQuestion } from "../questionRequest";
 
-
 const DEFAULT_QUESTION = {
   id: null,
   question: null,
-  isDefault: true
+  isDefault: true,
+  scenarioId: null,
+  languageCode: null
 };
 
 function QuestionModal(props) {

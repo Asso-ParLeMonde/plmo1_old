@@ -47,7 +47,7 @@ function ModalContainer(props) {
       case "QUESTION":
         return (
           <QuestionForm
-            theme={props.newElement}
+            question={props.newElement}
             handleChange={props.handleChange}
           />
         );
