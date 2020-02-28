@@ -9,7 +9,6 @@ import CreateIcon from '@material-ui/icons/Create';
 
 import Inverted from "../../../../components/Inverted";
 import {ProjectServiceContext} from "../../../../services/ProjectService";
-import Canvas from "./components/canvas";
 import "./edit-plan.css";
 
 const useStyles = makeStyles(theme => ({
