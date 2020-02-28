@@ -1,16 +1,11 @@
-import React, {useContext} from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import {Typography} from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
-import {ProjectServiceContext} from "../../../../services/ProjectService";
 
-
-function EditPlans(props) {
-  // eslint-disable-next-line no-unused-vars
-  const { project, updateProject } = useContext(ProjectServiceContext);
-
+function EditPlans() {
   return (
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
