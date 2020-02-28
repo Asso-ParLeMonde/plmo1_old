@@ -15,11 +15,13 @@ function Questions() {
   const [questions, setQuestions] = useState([]);
   const [selectedScenario, setSelectedScenario] = useState(undefined);
 
+  console.log(selectedScenario);
+
   useEffect(() => {
     async function getQuestions() {
       const questionsRequest = await axiosRequest({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_APP}/scenario/${selectedScenario?.id}/questions`
+        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenario}/questions`
       });
 
       setQuestions(questionsRequest.data || []);

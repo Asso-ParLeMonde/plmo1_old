@@ -5,7 +5,7 @@ import { Select, MenuItem } from "@material-ui/core";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 
 function ScenarioSelector(props) {
-  const scenarios = useContext(ScenariosServiceContext).scenarios || [];
+  const scenarios = useContext(ScenariosServiceContext).getScenarios.data || [];
 
   function handleLanguageSelection(event) {
     props.setSelectedScenario(event.target.value);
@@ -31,7 +31,7 @@ function ScenarioSelector(props) {
 }
 
 ScenarioSelector.propTypes = {
-  selectedScenario: PropTypes.object.isRequired,
+  selectedScenario: PropTypes.object,
   setSelectedScenario: PropTypes.func.isRequired
 };
 
