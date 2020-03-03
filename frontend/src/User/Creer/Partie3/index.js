@@ -9,6 +9,7 @@ import {ProjectServiceContext} from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
 import AllPlans from "./AllPlans";
 import EditPlan from "./EditPlan";
+import DrawPlan from "./DrawPlan";
 
 function Partie3(props) {
   const { project } = useContext(ProjectServiceContext);
@@ -36,6 +37,7 @@ function Partie3(props) {
 
             <Switch>
               <Route path="/creer/3-storyboard-et-plan-de-tournage/edit" component={EditPlan} />
+              <Route path="/creer/3-storyboard-et-plan-de-tournage/draw" component={DrawPlan} />
               <Route path="/creer/3-storyboard-et-plan-de-tournage" component={AllPlans} />
             </Switch>
 

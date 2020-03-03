@@ -53,7 +53,9 @@ function Steps(props) {
   const [ isNewPage, setIsNewPage ] = useState(false);
 
   useEffect(() => {
-    setIsNewPage(props.location.pathname.indexOf("new") !== -1 || props.location.pathname.indexOf("edit") !== -1);
+    setIsNewPage(props.location.pathname.indexOf("new") !== -1
+      || props.location.pathname.indexOf("edit") !== -1
+      || props.location.pathname.indexOf("draw") !== -1);
   }, [props.location]);
 
   const handleBack = index => event => {

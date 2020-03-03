@@ -1,15 +1,18 @@
-import React, {useContext} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
+import qs from "query-string";
 
 import {Typography, Button, makeStyles, Hidden} from "@material-ui/core";
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 import CreateIcon from '@material-ui/icons/Create';
 
-import Inverted from "../../../../components/Inverted";
 import {ProjectServiceContext} from "../../../../services/ProjectService";
+import {getQuestions} from "../../../../util/questions";
+import Inverted from "../../../../components/Inverted";
 import "./edit-plan.css";
+
 
 const useStyles = makeStyles(theme => ({
   verticalLine: {
@@ -29,14 +32,29 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-function EditPlans(props) {
+function EditPlan(props) {
   const classes = useStyles();
-  // eslint-disable-next-line no-unused-vars
-  const { project, updateProject } = useContext(ProjectServiceContext);
+
+  const [planIndex, setPlanIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
+
+  const { project } = useContext(ProjectServiceContext);
+  const questions = getQuestions(project);
+  const question = questions[questionIndex] || {};
+
+  useEffect(() => {
+    setQuestionIndex(parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).question) || 0);
+    setPlanIndex(parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).plan) || 0);
+  }, [props.location.search]);
 
   const handleBack = (event) => {
     event.preventDefault();
     props.history.push("/creer/3-storyboard-et-plan-de-tournage");
+  };
+
+  const handleDraw = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/draw?question=${questionIndex}&plan=${planIndex}`);
   };
 
   return (
@@ -44,6 +62,12 @@ function EditPlans(props) {
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
         <Typography color="primary" variant="h1">
           <Inverted round>3</Inverted> Créez votre plan
+        </Typography>
+        <Typography variant="h2">
+          <span>Question :</span> {question.question}
+        </Typography>
+        <Typography variant="h2">
+          <span>Plan numéro :</span> {question.planStartIndex + planIndex}
         </Typography>
 
         <Hidden smDown>
@@ -73,10 +97,13 @@ function EditPlans(props) {
               <div className={classes.verticalLine} />
             </div>
             <Button
+              component="a"
               variant="outlined"
               color="secondary"
               style={{textTransform: "none"}}
               startIcon={<CreateIcon />}
+              href={`/creer/3-storyboard-et-plan-de-tournage/draw?question=${questionIndex}&plan=${planIndex}`}
+              onClick={handleDraw}
             >Dessiner le plan</Button>
           </div>
 
@@ -86,7 +113,7 @@ function EditPlans(props) {
               variant="contained"
               color="secondary"
               style={{ marginRight: "1rem" }}
-              href={`/creer/3-storyboard-et-plan-de-tournage`}
+              href="/creer/3-storyboard-et-plan-de-tournage"
               onClick={handleBack}
             >
               Retour
@@ -132,10 +159,10 @@ function EditPlans(props) {
   );
 }
 
-EditPlans.propTypes = {
+EditPlan.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
 };
 
-export default withRouter(EditPlans);
+export default withRouter(EditPlan);
