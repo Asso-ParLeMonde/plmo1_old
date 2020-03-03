@@ -36,6 +36,7 @@ function Scenarios(props) {
               title="Nouveau scénario"
               history={props.history}
               path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
+              shortPath={`/creer/1-choix-du-scenario/new`}
               scenarioId={0}
               description="Cliquez ici pour créer votre propre scénario !"/>
             {props.scenarios.map((scenario, index) => (
@@ -45,6 +46,7 @@ function Scenarios(props) {
                 title={scenario.name}
                 scenarioId={scenario.id}
                 path={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${scenario.id}`}
+                shortPath={`/creer/2-choix-des-questions`}
                 history={props.history}
                 description={scenario.description}/>
             ))}

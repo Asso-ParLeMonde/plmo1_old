@@ -22,7 +22,7 @@ function NewQuestion(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+    props.history.push(`/creer/2-choix-des-questions`);
   };
 
   const handleSubmit = (event) => {
@@ -38,7 +38,7 @@ function NewQuestion(props) {
     updateProject({ questions: [
         ...project.questions,
         {
-          id: maxId + 1, 
+          id: maxId + 1,
           isDefault: false,
           languageCode: project.languageCode,
           question: newQuestion,
@@ -46,7 +46,7 @@ function NewQuestion(props) {
         },
       ],
     });
-    props.history.push(`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+    props.history.push(`/creer/2-choix-des-questions`);
   };
 
   return (
@@ -78,7 +78,7 @@ function NewQuestion(props) {
             <FormHelperText
               id="component-helper-text"
               style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }} >
-              {0}/280
+              {newQuestion.length}/280
             </FormHelperText>
           </div>
         </Typography>
@@ -89,7 +89,7 @@ function NewQuestion(props) {
               variant="outlined"
               color="secondary"
               style={{ marginRight: "1rem" }}
-              href={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
+              href={`/creer/2-choix-des-questions`}
               onClick={handleBack}
             >
               Annuler

@@ -17,7 +17,12 @@ function AllQuestions(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`);
+    props.history.push(`/creer/2-choix-des-questions/new`);
+  };
+
+  const handleNext = (event) => {
+    event.preventDefault();
+    props.history.push(`/creer/3-storyboard-et-plan-de-tournage`);
   };
 
   return (
@@ -32,7 +37,7 @@ function AllQuestions(props) {
         <Button
           component="a"
           variant="outlined"
-          href={`/creer/2-choix-des-questions/new?themeId=${props.themeId}&scenarioId=${props.scenarioId}`}
+          href={`/creer/2-choix-des-questions/new`}
           color="secondary"
           onClick={handleBack}
           style={{ textTransform: "none", fontWeight: "500", marginTop: "2rem" }}>
@@ -41,13 +46,27 @@ function AllQuestions(props) {
         <QuestionsList questions={project.questions} setQuestions={setQuestions}/>
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
-            <Button color="secondary" variant="contained" style={{ width: "200px" }}>
+            <Button
+              component="a"
+              href={`/creer/3-storyboard-et-plan-de-tournage`}
+              color="secondary"
+              onClick={handleNext}
+              variant="contained"
+              style={{ width: "200px" }}
+            >
               Suivant
             </Button>
           </div>
         </Hidden>
         <Hidden mdUp>
-          <Button color="secondary" variant="contained" style={{ width: "100%", marginTop: "2rem" }}>
+          <Button
+            component="a"
+            href={`/creer/3-storyboard-et-plan-de-tournage`}
+            color="secondary"
+            onClick={handleNext}
+            variant="contained"
+            style={{ width: "100%", marginTop: "2rem" }}
+          >
             Suivant
           </Button>
         </Hidden>

@@ -39,20 +39,20 @@ function ProjectService(props) {
   useEffect(() => { // update project base on location
     const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || null;
     const scenarioId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).scenarioId) || null;
-    if (project.themeId !== themeId) {
+    if (project.themeId !== themeId && themeId !== null) {
       updateProject({ themeId });
     }
-    if (project.scenarioId !== scenarioId) {
+    if (project.scenarioId !== scenarioId && scenarioId !== null) {
       updateProject({ scenarioId });
     }
     // eslint-disable-next-line
-  }, [props.location.search]);
+  }, []);
 
   useEffect(() => { // update theme name when themeId change
     if (project.themeId !== null && themesRequest.complete && !themesRequest.error) {
-      const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || 0;
-      const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === themeId ? i2 : i1, -1);
+      const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === project.themeId ? i2 : i1, -1);
       if (themeIndex === -1) {
+        updateProject({ themeId: null, scenarioId: null });
         props.history.push("/");
       } else {
         const theme = themesRequest.data[themeIndex];
