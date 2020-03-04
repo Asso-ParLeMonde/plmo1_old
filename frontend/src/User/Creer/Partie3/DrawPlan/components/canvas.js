@@ -2,17 +2,18 @@ import React, {useEffect, useRef, useState} from "react";
 // import PropTypes from "prop-types";
 
 import {
-  IconButton, withStyles, Button, ButtonBase, Tooltip,
-  Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText,
+  IconButton, withStyles, Tooltip,
 } from "@material-ui/core";
 import UndoIcon from '@material-ui/icons/Undo';
 import RedoIcon from '@material-ui/icons/Redo';
 import ClearIcon from '@material-ui/icons/Clear';
 import BorderColorIcon from '@material-ui/icons/BorderColor';
 import AdjustIcon from '@material-ui/icons/Adjust';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 import "./canvas.css";
+import ColorModal from "./ColorModal";
+import SizeModal from "./SizeModal";
+import ClearModal from "./ClearModal";
 
 const ActionButton = withStyles( {
   root: {
@@ -22,13 +23,6 @@ const ActionButton = withStyles( {
   },
 })(IconButton);
 
-const colors = [
-  "#444",
-  "#eda000",
-  "#79c3a5",
-  "#6065fc",
-  "#c36561",
-];
 const sizes = [2, 4, 8];
 
 function Canvas() {
@@ -149,28 +143,13 @@ function Canvas() {
     setShowModalColor(true);
   };
 
-  const handleCloseModalColor = color => () => {
-    setShowModalColor(false);
-    if (color !== undefined) {
-      setColor(color);
-    }
-  };
-
   const handleOpenModalSize = () => {
     setShowModalSize(true);
-  };
-
-  const handleCloseModalSize = size => () => {
-    setShowModalSize(false);
-    if (size !== undefined) {
-      setSize(size);
-    }
   };
 
   const handleOpenModalClear = () => {
     setShowModalClear(true);
   };
-
   const handleCloseModalClear = confirm => () => {
     setShowModalClear(false);
     if (confirm) {
@@ -227,88 +206,10 @@ function Canvas() {
         </div>
       </div>
 
-      {/*Color dialog*/}
-      <Dialog
-        open={showModalColor}
-        onClose={handleCloseModalColor()}
-        aria-labelledby="color-dialog-title"
-        aria-describedby="color-dialog-description"
-      >
-        <DialogTitle id="color-dialog-title">{"Choisissez la couleur du trait"}</DialogTitle>
-        <DialogContent>
-          <div className="canvas-colors-container" id="color-dialog-description">
-            {
-              colors.map(c => <ButtonBase
-                key={c}
-                style={{ backgroundColor: c }}
-                onClick={handleCloseModalColor(c)}
-              />)
-            }
-            <ButtonBase
-              onClick={handleCloseModalColor("white")}
-              style={{ backgroundColor: "white", border: "1px solid #444" }}/>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModalColor()} color="secondary" variant="outlined">
-            Annuler
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <ColorModal open={showModalColor} setOpen={setShowModalColor} setColor={setColor} />
+      <SizeModal open={showModalSize} setOpen={setShowModalSize} setSize={setSize} />
+      <ClearModal open={showModalClear} onClear={handleCloseModalClear} />
 
-      {/*Size dialog*/}
-      <Dialog
-        open={showModalSize}
-        onClose={handleCloseModalSize()}
-        aria-labelledby="size-dialog-title"
-        aria-describedby="size-dialog-description"
-      >
-        <DialogTitle id="size-dialog-title">{"Choisissez l'éppaiseur du trait"}</DialogTitle>
-        <DialogContent>
-          <div className="canvas-colors-container" id="size-dialog-description">
-            <ButtonBase style={{ backgroundColor: "white", border: "1px solid #444" }}
-                        onClick={handleCloseModalSize(0)}>
-              <FiberManualRecordIcon fontSize="small"/>
-            </ButtonBase>
-            <ButtonBase style={{ backgroundColor: "white", border: "1px solid #444" }}
-                        onClick={handleCloseModalSize(1)}>
-              <FiberManualRecordIcon />
-            </ButtonBase>
-            <ButtonBase style={{ backgroundColor: "white", border: "1px solid #444" }}
-                        onClick={handleCloseModalSize(2)}>
-              <FiberManualRecordIcon fontSize="large"/>
-            </ButtonBase>
-          </div>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModalSize()} color="secondary" variant="outlined">
-            Annuler
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/*Clear dialog*/}
-      <Dialog
-        open={showModalClear}
-        onClose={handleCloseModalClear(false)}
-        aria-labelledby="clear-dialog-title"
-        aria-describedby="clear-dialog-description"
-      >
-        <DialogTitle id="size-dialog-title">{"Effacer le canvas ?"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="size-dialog-description">
-            Êtes-vous sûr de vouloir effacer totalement le plan ?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModalClear(false)} color="secondary" variant="outlined">
-            Annuler
-          </Button>
-          <Button onClick={handleCloseModalClear(true)} color="secondary" variant="contained">
-            Oui
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 }
