@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import ChooseNames from "./ChooseNames";
 import ChooseDescriptions from "./ChooseDescriptions";
 import ChooseElement from "./ChooseElement";
-import ChooseLanguages from "./ChooseLanguage";
 
 function ChooseContainer(props) {
   switch (props.type) {
