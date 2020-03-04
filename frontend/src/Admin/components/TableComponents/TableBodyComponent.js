@@ -56,10 +56,12 @@ function TableBodyComponent(props) {
           </React.Fragment>
         );
       case "LANGUAGE":
+        if (element.value === "fr") {
+          return;
+        }
+
         return (
-          <React.Fragment>
-            <LanguageRemoveButton icon={props.invalidIcon} language={element} />
-          </React.Fragment>
+          <LanguageRemoveButton icon={props.invalidIcon} language={element} />
         );
     }
   }

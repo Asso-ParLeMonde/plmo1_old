@@ -17,23 +17,11 @@ function LanguageModal(props) {
     message: ""
   });
 
-  const handleChange = enumCase => event => {
-    switch (enumCase) {
-      default:
-        break;
-      case "LABEL":
-        setNewLanguage({
-          ...newLanguage,
-          label: event.target.value.slice(0, 2)
-        });
-        break;
-      case "VALUE":
-        setNewLanguage({
-          ...newLanguage,
-          value: event.target.value.slice(0, 2)
-        });
-        break;
-    }
+  const handleChange = selectedOption => {
+    setNewLanguage({
+      label: selectedOption.name,
+      value: selectedOption.code
+    });
   };
 
   async function handleConfirmation(event) {

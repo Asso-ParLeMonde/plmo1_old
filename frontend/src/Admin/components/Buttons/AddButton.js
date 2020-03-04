@@ -56,7 +56,7 @@ function AddButton(props) {
       case "LANGUAGE":
         return (
           <LanguageModal
-            scenario={props.newLanguage}
+            language={props.newLanguage}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             modalTitle={props.modalTitle}
