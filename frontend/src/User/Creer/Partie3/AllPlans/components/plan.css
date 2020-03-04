@@ -27,3 +27,11 @@
 .plan:hover > .edit, .plan:hover > .delete {
     display: block;
 }
+@media only screen and (max-width: 800px){
+    .plan > .delete {
+        display: block;
+    }
+    .plan > .delete button {
+        font-size: 0.8rem;
+    }
+}
