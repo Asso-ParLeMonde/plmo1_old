@@ -72,6 +72,7 @@ function AddButton(props) {
             setIsOpen={setIsOpen}
             modalTitle={props.modalTitle}
             history={props.history}
+            scenarioId={props.scenarioId}
           />
         );
     }
@@ -99,10 +100,12 @@ function AddButton(props) {
 AddButton.propTypes = {
   buttonTitle: PropTypes.string.isRequired,
   newObject: PropTypes.object,
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"])
+    .isRequired,
   link: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  scenarioId: PropTypes.number
 };
 
 export default withRouter(AddButton);

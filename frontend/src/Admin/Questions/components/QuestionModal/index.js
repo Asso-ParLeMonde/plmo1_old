@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
@@ -9,8 +9,8 @@ const DEFAULT_QUESTION = {
   id: null,
   question: null,
   isDefault: true,
-  scenarioId: null,
-  languageCode: null
+  scenarioId: 0,
+  languageCode: "fr"
 };
 
 function QuestionModal(props) {
@@ -25,12 +25,22 @@ function QuestionModal(props) {
     message: ""
   });
 
+  useEffect(() => {
+    setNewQuestion({
+      ...newQuestion,
+      scenarioId: props.scenarioId
+    });
+  }, [props.scenarioId]);
+
   function handleChange(enumCase, event) {
     switch (enumCase) {
       default:
         break;
       case "QUESTION":
-        setNewQuestion({ ...newQuestion, description: event.target.value });
+        setNewQuestion({
+          ...newQuestion,
+          question: event.target.value.slice(0, 280)
+        });
         break;
     }
   }
@@ -49,7 +59,7 @@ function QuestionModal(props) {
       setRes({
         error: false,
         complete: true,
-        message: "Success lors de la creation de la Question"
+        message: "Succès lors de la création de la Question"
       });
     }
 
@@ -58,8 +68,6 @@ function QuestionModal(props) {
   }
 
   function handleCloseModal(event) {
-    event.preventDefault();
-
     props.setIsOpen(false);
     setNewQuestion(props.Question || DEFAULT_QUESTION);
     props.history.push("/admin/questions");
@@ -84,7 +92,8 @@ QuestionModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  scenarioId: PropTypes.number.isRequired
 };
 
 export default QuestionModal;

@@ -4,10 +4,7 @@ async function postQuestion(newQuestion, setRes) {
   const request = await axiosRequest({
     method: "POST",
     url: `${process.env.REACT_APP_BASE_APP}/questions`,
-    data: {
-      question: newQuestion.question,
-      isDefault: true
-    }
+    data: newQuestion
   });
 
   if (request.error === true && request.complete === true) {
@@ -28,6 +25,7 @@ async function putQuestion(inheritedQuestion, newQuestion, setRes) {
     method: "PUT",
     url: `${process.env.REACT_APP_BASE_APP}/questions/${inheritedQuestion.id}`,
     data: {
+      scenarioId: newQuestion.scenarioId,
       question: newQuestion.question,
       isDefault: true
     }

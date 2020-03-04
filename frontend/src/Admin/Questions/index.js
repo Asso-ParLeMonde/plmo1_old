@@ -13,20 +13,20 @@ import { axiosRequest } from "../components/axiosRequest";
 
 function Questions() {
   const [questions, setQuestions] = useState([]);
-  const [selectedScenario, setSelectedScenario] = useState(undefined);
+  const [selectedScenarioId, setSelectedScenarioId] = useState(undefined);
 
   useEffect(() => {
     async function getQuestions() {
       const questionsRequest = await axiosRequest({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenario}/questions`
+        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenarioId}/questions`
       });
 
       setQuestions(questionsRequest.data || []);
     }
 
     getQuestions();
-  }, [selectedScenario]);
+  }, [selectedScenarioId]);
 
   return (
     <React.Fragment>
@@ -40,8 +40,8 @@ function Questions() {
             Scénario associé aux questions
           </Typography>
           <ScenarioSelector
-            selectedScenario={selectedScenario}
-            setSelectedScenario={setSelectedScenario}
+            selectedScenario={selectedScenarioId}
+            setSelectedScenario={setSelectedScenarioId}
           />
         </CardContent>
       </Card>
@@ -58,6 +58,7 @@ function Questions() {
           type="QUESTION"
           link="/admin/questions/new"
           modalTitle="Creation d'une nouvelle question par default"
+          scenarioId={selectedScenarioId || 0}
         />
       </TableCard>
 
