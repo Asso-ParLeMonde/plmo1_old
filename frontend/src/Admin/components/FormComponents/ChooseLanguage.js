@@ -7,6 +7,16 @@ import { Autocomplete } from "@material-ui/lab";
 import languages from "../../Languages/components/iso_languages.json";
 
 function ChooseLanguages(props) {
+  function countryToFlag(isoCode) {
+    return typeof String.fromCodePoint !== "undefined"
+      ? isoCode
+          .toUpperCase()
+          .replace(/./g, char =>
+            String.fromCodePoint(char.charCodeAt(0) + 127397)
+          )
+      : isoCode;
+  }
+
   function onTagsChange(_, selectedOption) {
     props.handleChange(selectedOption);
   }
@@ -17,7 +27,14 @@ function ChooseLanguages(props) {
         options={languages}
         getOptionLabel={option => option.name}
         onChange={onTagsChange}
-        renderInput={params => <TextField {...params} fullWidth />}
+        renderOption={option => (
+          <React.Fragment>
+            {`${countryToFlag(option.code)} ${option.name} (${option.code})`}
+          </React.Fragment>
+        )}
+        renderInput={params => (
+          <TextField {...params} label="Choix du pays" fullWidth />
+        )}
       />
     </React.Fragment>
   );
