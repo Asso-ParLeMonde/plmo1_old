@@ -43,13 +43,8 @@ function ModalContainer(props) {
             handleChange={props.handleChange}
           />
         );
-        case "LANGUAGE":
-          return (
-            <LanguageForm
-              language={props.newElement}
-              handleChange={props.handleChange}
-            />
-          );
+      case "LANGUAGE":
+        return <LanguageForm handleChange={props.handleChange} />;
     }
   }
 
