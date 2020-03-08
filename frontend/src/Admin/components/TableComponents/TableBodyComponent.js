@@ -13,6 +13,7 @@ import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableCompon
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
 import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
+import ScenarioQuestionModal from "../../Scenarios/components/ScenarioTableComponents/ScenarioQuestionsModal";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -46,6 +47,7 @@ function TableBodyComponent(props) {
       case "SCENARIO":
         return (
           <React.Fragment>
+            <ScenarioQuestionModal scenario={element} />
             {element.isDefault && (
               <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
