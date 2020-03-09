@@ -57,7 +57,7 @@ function ScenarioQuestionModal(props) {
     };
 
     getScenatioQuestion();
-  }, []);
+  }, [props.scenario.id]);
 
   const handleOpenModal = event => {
     event.preventDefault();
@@ -68,6 +68,7 @@ function ScenarioQuestionModal(props) {
 
   const handleCloseModal = () => {
     setIsOpen(false);
+    setQuestions([]);
     props.history.push("/admin/scenarios");
   };
 
