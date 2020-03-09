@@ -14,7 +14,8 @@ export function getQuestions(project) {
     if (newCurrent.plans === undefined || newCurrent.plans === null || newCurrent.plans.length === 0) {
       newCurrent.plans = [
         {
-          url: "",
+          url: null,
+          description: "",
         }
       ];
     }

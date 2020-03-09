@@ -30,11 +30,13 @@ function Scene(props) {
       </Typography>
       <div className="plans">
         {
-          props.q.plans.map((_, planIndex) => (
+          props.q.plans.map((plan, planIndex) => (
             <Plan key={`${props.index}_${planIndex}`}
+                  plan={plan}
                   questionIndex={props.index}
                   planIndex={planIndex}
                   showNumber={props.q.planStartIndex + planIndex}
+                  canDelete={props.q.plans.length > 1}
                   handleClick={handleClick(planIndex)}
                   handleDelete={props.removePlan(planIndex)}
             />

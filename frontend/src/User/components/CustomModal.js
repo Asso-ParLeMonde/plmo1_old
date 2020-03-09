@@ -10,6 +10,8 @@ function CustomModal(props) {
       onClose={props.onClose}
       aria-labelledby={props.ariaLabelledBy}
       aria-describedby={props.ariaDescribedBy}
+      fullWidth={props.fullWidth}
+      maxWidth={props.maxWidth}
     >
       <DialogTitle id={props.ariaLabelledBy}>{props.title}</DialogTitle>
       <DialogContent>
@@ -41,6 +43,8 @@ CustomModal.propTypes = {
   children: PropTypes.node.isRequired,
   cancelLabel: PropTypes.string.isRequired,
   confirmLabel: PropTypes.string.isRequired,
+  fullWidth: PropTypes.bool,
+  maxWidth: PropTypes.string,
 };
 
 CustomModal.defaultProps = {
@@ -51,6 +55,8 @@ CustomModal.defaultProps = {
   children: <div/>,
   cancelLabel: "Annuler",
   confirmLabel: "Oui",
+  fullWidth: false,
+  maxWidth: "sm",
 };
 
 export default CustomModal;

@@ -1,46 +1,22 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import qs from "query-string";
 
-import {Typography, Button, makeStyles, Hidden} from "@material-ui/core";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import CreateIcon from '@material-ui/icons/Create';
+import {Button, Hidden, Typography, TextField, FormHelperText} from "@material-ui/core";
 
-import {ProjectServiceContext} from "../../../../services/ProjectService";
-import {getQuestions} from "../../../../util/questions";
 import Inverted from "../../../../components/Inverted";
+import EditButtons from "./components/EditButtons";
+
 import "./edit-plan.css";
+import CustomModal from "../../../components/CustomModal";
 
-
-const useStyles = makeStyles(theme => ({
-  verticalLine: {
-    backgroundColor: theme.palette.secondary.main,
-    flex: 1,
-    width: "1px",
-    margin: "0.2rem 0",
-  },
-  horizontalLine: {
-    backgroundColor: theme.palette.secondary.main,
-    flex: 1,
-    height: "1px",
-    margin: "2rem 1rem",
-  },
-  secondaryColor: {
-    color: theme.palette.secondary.main,
-  },
-}));
 
 function EditPlan(props) {
-  const classes = useStyles();
-
+  const [showEditPlan, setshowEditPlan] = useState(false);
   const [planIndex, setPlanIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
-
-  const { project } = useContext(ProjectServiceContext);
-  const questions = getQuestions(project);
-  const question = questions[questionIndex] || {};
+  const question = props.questions[questionIndex] || {};
 
   useEffect(() => {
     setQuestionIndex(parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).question) || 0);
@@ -52,9 +28,16 @@ function EditPlan(props) {
     props.history.push("/creer/3-storyboard-et-plan-de-tournage");
   };
 
-  const handleDraw = (event) => {
+  const handleDescriptionChange = (event) => {
+    if (!event || !event.target) return;
     event.preventDefault();
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/draw?question=${questionIndex}&plan=${planIndex}`);
+    question.plans[planIndex].description = (event.target.value || "").slice(0, 2000);
+    props.updateQuestion(questionIndex, question);
+  };
+
+  const handleEditPlanModal = show => (event) => {
+    event.preventDefault();
+    setshowEditPlan(show);
   };
 
   return (
@@ -70,79 +53,88 @@ function EditPlan(props) {
           <span>Plan numéro :</span> {question.planStartIndex + planIndex}
         </Typography>
 
-        <Hidden smDown>
-          <Typography color="inherit" variant="h2">
-            Pour créer votre plan vous pouvez soit l'importer, soit le prendre en photo ou le dessiner en ligne !
-          </Typography>
-          <div className="edit-plans-container">
-            <Button
-              variant="outlined"
+        <Typography color="inherit" variant="h2" style={{margin: "1rem 0"}}>
+          Description du plan :
+          <div>
+            <TextField
+              value={question.plans[planIndex].description || ""}
+              onChange={handleDescriptionChange}
+              required
+              multiline
+              placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget pellentesque dolor,
+              posuere dapibus metus. In id est eu enim efficitur convallis. Suspendisse volutpat libero eu lectus vulputate,
+              eget pulvinar turpis aliquet. Sed ac cursus est. Phasellus laoreet metus sed pulvinar rutrum."
+              fullWidth
+              style={{ marginTop: "0.5rem" }}
+              variant = "outlined"
               color="secondary"
-              style={{textTransform: "none"}}
-              startIcon={<CloudUploadIcon />}
-            >Importez une image</Button>
-            <div className="or-vertical-divider">
-              <div className={classes.verticalLine} />
-              <span className={classes.secondaryColor}>OU</span>
-              <div className={classes.verticalLine} />
-            </div>
-            <Button
-              variant="outlined" color="secondary"
-              style={{textTransform: "none"}}
-              startIcon={<PhotoCameraIcon />}
-            >Prendre une photo</Button>
-            <div className="or-vertical-divider">
-              <div className={classes.verticalLine} />
-              <span className={classes.secondaryColor}>OU</span>
-              <div className={classes.verticalLine} />
-            </div>
-            <Button
-              component="a"
-              variant="outlined"
-              color="secondary"
-              style={{textTransform: "none"}}
-              startIcon={<CreateIcon />}
-              href={`/creer/3-storyboard-et-plan-de-tournage/draw?question=${questionIndex}&plan=${planIndex}`}
-              onClick={handleDraw}
-            >Dessiner le plan</Button>
+              autoComplete="off"
+            />
+            <FormHelperText
+              id="component-helper-text"
+              style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }}>
+              {(question.plans[planIndex].description || "").length}/2000
+            </FormHelperText>
           </div>
+        </Typography>
 
+        {
+          question.plans[planIndex].url && (
+            <div>
+              <Typography color="inherit" variant="h2" style={{margin: "1rem 0"}}>
+                Dessin du plan :
+              </Typography>
+              <div className="text-center">
+                <img className="plan-img" alt="dessin du plan" src={question.plans[planIndex].url} />
+              </div>
+              <div className="text-center">
+                <Button
+                  className="plan-button"
+                  variant="outlined"
+                  color="secondary"
+                  style={{ display: "inline-block" }}
+                  onClick={handleEditPlanModal(true)}
+                >
+                  Changer le dessin
+                </Button>
+              </div>
+              <CustomModal
+                ariaLabelledBy="edit-drawing-title"
+                ariaDescribedBy="edit-drawing-desc"
+                title="Changer le dessin du plan"
+                onClose={handleEditPlanModal(false)}
+                fullWidth={true}
+                maxWidth="md"
+                open={showEditPlan}>
+                <div id="edit-drawing-desc">
+                  <EditButtons questionIndex={questionIndex} planIndex={planIndex} history={props.history}/>
+                </div>
+              </CustomModal>
+            </div>
+          )
+        }
+
+        {
+          !!question.plans[planIndex].url || (
+            <EditButtons questionIndex={questionIndex} planIndex={planIndex} history={props.history}/>
+          )
+        }
+
+        <Hidden smDown>
           <div style={{width: "100%", textAlign: "right"}}>
             <Button
               as="a"
               variant="contained"
               color="secondary"
-              style={{ marginRight: "1rem" }}
+              style={{ margin: "0 1rem 3rem 0" }}
               href="/creer/3-storyboard-et-plan-de-tournage"
               onClick={handleBack}
             >
-              Retour
+              Continuer
             </Button>
           </div>
         </Hidden>
         <Hidden mdUp>
-          <Typography color="inherit" variant="h2">
-            Pour créer votre plan vous pouvez l'importer ou le prendre en photo !
-          </Typography>
-          <div className="edit-plans-container-mobile">
-            <Button
-              variant="outlined"
-              color="secondary"
-              style={{textTransform: "none"}}
-              startIcon={<CloudUploadIcon />}
-            >Importez une image</Button>
-            <div className="or-horizontal-divider">
-              <div className={classes.horizontalLine} />
-              <span className={classes.secondaryColor}>OU</span>
-              <div className={classes.horizontalLine} />
-            </div>
-            <Button
-              variant="outlined" color="secondary"
-              style={{textTransform: "none"}}
-              startIcon={<PhotoCameraIcon />}
-            >Prendre une photo</Button>
-          </div>
-
           <Button
             as="a"
             variant="contained"
@@ -151,7 +143,7 @@ function EditPlan(props) {
             href={`/creer/3-storyboard-et-plan-de-tournage`}
             onClick={handleBack}
           >
-            Retour
+            Continuer
           </Button>
         </Hidden>
       </div>
@@ -163,6 +155,8 @@ EditPlan.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  questions: PropTypes.array.isRequired,
+  updateQuestion: PropTypes.func.isRequired,
 };
 
 export default withRouter(EditPlan);

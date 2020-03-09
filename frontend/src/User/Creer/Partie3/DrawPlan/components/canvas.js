@@ -1,5 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
-// import PropTypes from "prop-types";
+import React, {useEffect, useRef, useState, forwardRef, useImperativeHandle} from "react";
 
 import {
   IconButton, withStyles, Tooltip,
@@ -25,7 +24,7 @@ const ActionButton = withStyles( {
 
 const sizes = [2, 4, 8];
 
-function Canvas() {
+function Canvas(_, ref) {
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [paths, setPaths] = useState([]);
@@ -159,6 +158,17 @@ function Canvas() {
     }
   };
 
+  useImperativeHandle(ref, () => ({
+    getBlob() {
+      if (ctx === null) return new Promise((_, reject) => { reject() });
+      return new Promise(resolve => {
+        canvasRef.current.toBlob(function(blob) {
+          resolve(blob);
+        });
+      });
+    },
+  }));
+
   return (
     <div>
       <div className="draw-canvas-container-max-width">
@@ -214,4 +224,4 @@ function Canvas() {
   );
 }
 
-export default Canvas;
+export default forwardRef(Canvas);
