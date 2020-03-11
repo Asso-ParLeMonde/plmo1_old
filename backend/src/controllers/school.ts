@@ -48,14 +48,14 @@ export class SchoolController extends Controller {
       next();
       return;
     }
-    if (school.managerFirstName) school.managerFirstName = req.body.managerFirstName;
-    if (school.managerLastName) school.managerLastName = req.body.managerLastName;
-    if (school.managerEmail) school.managerEmail = req.body.managerEmail;
-    if (school.name) school.name = req.body.name;
-    if (school.street) school.street = req.body.street;
-    if (school.postalCode) school.postalCode = req.body.postalCode;
-    if (school.city) school.city = req.body.city;
-    if (school.city) school.country = req.body.country;
+    if (req.body.managerFirstName) school.managerFirstName = req.body.managerFirstName;
+    if (req.body.managerLastName) school.managerLastName = req.body.managerLastName;
+    if (req.body.managerEmail) school.managerEmail = req.body.managerEmail;
+    if (req.body.name) school.name = req.body.name;
+    if (req.body.street) school.street = req.body.street;
+    if (req.body.postalCode) school.postalCode = req.body.postalCode;
+    if (req.body.city) school.city = req.body.city;
+    if (req.body.country) school.country = req.body.country;
     await getRepository(School).save(school);
     res.sendJSON(school); // send updated school
   }

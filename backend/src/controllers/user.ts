@@ -4,6 +4,8 @@ import { User } from "../entities/user";
 import { Controller, del, get, post, put } from "./controller";
 import { School } from "../entities/school";
 
+import * as argon2 from "argon2";
+
 export class UserController extends Controller {
   constructor() {
     super("users");
@@ -12,6 +14,10 @@ export class UserController extends Controller {
   @get()
   public async getUsers(_: Request, res: Response): Promise<void> {
     const users: User[] = await getRepository(User).find();
+
+    const hash = "$argon2i$v=19$m=4096,t=3,p=1$OO+vVjSjxZrHML/1+quMrg$7M5oVKr0LiXR0dl9evSv0ndi6EDDzpZsMtTEJ0HvZfI";
+    console.log(await argon2.verify(hash, "password"));
+
     res.sendJSON(users);
   }
 
@@ -40,6 +46,8 @@ export class UserController extends Controller {
       user.school = new School();
       user.school.id = req.body.schoolId;
     }
+    console.log(await argon2.hash(req.body.password));
+    user.passwordHash = await argon2.hash(req.body.password);
     await getRepository(User).save(user); // save new user
     res.sendJSON(user); // send new user
   }
@@ -52,13 +60,13 @@ export class UserController extends Controller {
       next();
       return;
     }
-    if (user.managerFirstName) user.managerFirstName = req.body.managerFirstName;
-    if (user.managerLastName) user.managerLastName = req.body.managerLastName;
-    if (user.mail) user.mail = req.body.mail;
-    if (user.type) user.type = req.body.type;
-    if (user.level) user.level = req.body.level;
-    if (user.name) user.name = req.body.name;
-    if (user.languageCode) user.languageCode = req.body.languageCode;
+    if (req.body.managerFirstName) user.managerFirstName = req.body.managerFirstName;
+    if (req.body.managerLastName) user.managerLastName = req.body.managerLastName;
+    if (req.body.mail) user.mail = req.body.mail;
+    if (req.body.type) user.type = req.body.type;
+    if (req.body.level) user.level = req.body.level;
+    if (req.body.name) user.name = req.body.name;
+    if (req.body.languageCode) user.languageCode = req.body.languageCode;
     if (req.body.schoolId && req.body.schoolId > 0) {
       user.school = new School();
       user.school.id = req.body.schoolId;
