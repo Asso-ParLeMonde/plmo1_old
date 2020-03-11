@@ -1,5 +1,5 @@
-import React from "react";
-import { Route, Switch } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Route, Switch, withRouter } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -34,8 +34,14 @@ const tabs = [
   }
 ];
 
-function Admin() {
+function Admin(props) {
   const classes = useStyles();
+
+  useEffect(() => {
+    if (props.location.pathname === "/admin") {
+      return props.history.push("admin/themes");
+    }
+  }, [props.history, props.location]);
 
   return (
     <div
@@ -83,6 +89,4 @@ function Admin() {
   );
 }
 
-Admin.propTypes = {};
-
-export default Admin;
+export default withRouter(Admin);
