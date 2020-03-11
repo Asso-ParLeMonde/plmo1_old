@@ -21,6 +21,7 @@ function ImgCroppie(props, ref) {
   }));
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     croppie = new Croppie(document.getElementById("my-croppie-img"), {
       viewport: {
         width: 340,

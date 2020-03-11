@@ -39,4 +39,7 @@
         max-width: unset;
         min-width: unset;
     }
+    .mobile-full-width {
+        width: 100%!important;
+    }
 }

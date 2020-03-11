@@ -10,6 +10,7 @@
     "query-string": "^6.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
+    "react-html5-camera-photo": "^1.5.4",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.2.0",
     "react-sortablejs": "^2.0.10"
