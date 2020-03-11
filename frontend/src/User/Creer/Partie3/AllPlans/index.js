@@ -24,7 +24,7 @@ function AllPlans(props) {
 
   const handleNext = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/4-a-votre-caméra`);
+    props.history.push(`/creer/4-a-votre-camera`);
   };
 
   const addPlan = questionIndex => (event) => {
@@ -110,7 +110,7 @@ function AllPlans(props) {
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
             <Button
               component="a"
-              href={`/creer/4-a-votre-caméra`}
+              href={`/creer/4-a-votre-camera`}
               color="secondary"
               onClick={handleNext}
               variant="contained"
@@ -123,7 +123,7 @@ function AllPlans(props) {
         <Hidden mdUp>
           <Button
             component="a"
-            href={`/creer/4-a-votre-caméra`}
+            href={`/creer/4-a-votre-camera`}
             color="secondary"
             onClick={handleNext}
             variant="contained"

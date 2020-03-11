@@ -8,6 +8,7 @@
     "@material-ui/lab": "^4.0.0-alpha.45",
     "axios": "^0.19.0",
     "croppie": "^2.6.4",
+    "qrcode.react": "^1.0.0",
     "query-string": "^6.9.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
@@ -39,7 +40,6 @@
     ]
   },
   "devDependencies": {
-    "@types/croppie": "^2.5.4",
     "eslint": "^6.5.1",
     "eslint-plugin-react": "^7.16.0",
     "eslint-plugin-react-hooks": "^2.2.0",
