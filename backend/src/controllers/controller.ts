@@ -2,19 +2,24 @@ import { RequestHandler, Router } from "express";
 import multer from "multer";
 import { handleErrors } from "../middlewares/handleErrors";
 import { saveImages } from "../middlewares/saveImages";
+import { authenticate } from "../middlewares/authenticate";
 
 /**
  * GET decorator.
  *
  * @param path: path for the get function
  */
-export function get({ path }: { path: string } = { path: "" }) {
+export function get({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.get(path, handleErrors(method));
+    if (userOnly) {
+      target.router.get(path || "", authenticate, handleErrors(method));
+    } else {
+      target.router.get(path || "", handleErrors(method));
+    }
     return propertyDesciptor;
   };
 }
@@ -24,13 +29,17 @@ export function get({ path }: { path: string } = { path: "" }) {
  *
  * @param path: path for the post function
  */
-export function post({ path }: { path: string } = { path: "" }) {
+export function post({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.post(path, handleErrors(method));
+    if (userOnly) {
+      target.router.post(path || "", authenticate, handleErrors(method));
+    } else {
+      target.router.post(path || "", handleErrors(method));
+    }
     return propertyDesciptor;
   };
 }
@@ -40,13 +49,17 @@ export function post({ path }: { path: string } = { path: "" }) {
  *
  * @param path: path for the put function
  */
-export function put({ path }: { path: string } = { path: "" }) {
+export function put({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.put(path, handleErrors(method));
+    if (userOnly) {
+      target.router.put(path || "", authenticate, handleErrors(method));
+    } else {
+      target.router.put(path || "", handleErrors(method));
+    }
     return propertyDesciptor;
   };
 }
@@ -56,13 +69,17 @@ export function put({ path }: { path: string } = { path: "" }) {
  *
  * @param path: path for the put function
  */
-export function del({ path }: { path: string } = { path: "" }) {
+export function del({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.delete(path, handleErrors(method));
+    if (userOnly) {
+      target.router.delete(path || "", authenticate, handleErrors(method));
+    } else {
+      target.router.delete(path || "", handleErrors(method));
+    }
     return propertyDesciptor;
   };
 }

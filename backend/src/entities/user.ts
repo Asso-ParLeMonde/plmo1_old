@@ -21,14 +21,14 @@ export class User {
   @Column({ type: "varchar", length: 50 })
   public managerFirstName: string;
 
-  @Column({ type: "varchar", length: 150 })
+  @Column({ type: "varchar", length: 150, unique: true })
   public mail: string;
 
   @Column({ type: "varchar", length: 50 })
   public level: string;
 
-  @Column({ type: "varchar", length: 50 })
-  public name: string;
+  @Column({ type: "varchar", length: 50, unique: true })
+  public pseudo: string;
 
   @ManyToOne(
     () => School,
@@ -48,4 +48,9 @@ export class User {
     default: "class",
   })
   type: Type;
+
+  public userWithoutPassword(): User {
+    delete this.passwordHash;
+    return this;
+  }
 }

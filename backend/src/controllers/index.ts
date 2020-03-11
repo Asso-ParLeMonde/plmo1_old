@@ -6,3 +6,4 @@ export { QuestionController } from "./question";
 export { LanguageController } from "./language";
 export { UserController } from "./user";
 export { SchoolController } from "./school";
+export { LoginController } from "./login";
