@@ -48,30 +48,37 @@ function Questions() {
       </Card>
 
       <QuestionsContext.Provider value={updateQuestions}>
-        <TableCard
-          type="QUESTION"
-          title={"Liste des questions par défault"}
-          elements={questions.filter(question => question.isDefault === true)}
-          validIcon={<EditIcon />}
-          invalidIcon={<DeleteIcon />}
-        >
-          <AddButton
-            buttonTitle="Ajouter une question"
-            type="QUESTION"
-            link="/admin/questions/new"
-            modalTitle="Creation d'une nouvelle question par default"
-            scenarioId={selectedScenarioId || 0}
-            disabled={selectedScenarioId ? false : true}
-          />
-        </TableCard>
+        {selectedScenarioId && (
+          <React.Fragment>
+            <TableCard
+              type="QUESTION"
+              title={"Liste des questions par défault"}
+              elements={questions.filter(
+                question => question.isDefault === true
+              )}
+              validIcon={<EditIcon />}
+              invalidIcon={<DeleteIcon />}
+            >
+              <AddButton
+                buttonTitle="Ajouter une question"
+                type="QUESTION"
+                link="/admin/questions/new"
+                modalTitle="Creation d'une nouvelle question par default"
+                scenarioId={selectedScenarioId || 0}
+              />
+            </TableCard>
 
-        <TableCard
-          type="QUESTION"
-          title={"Autres questions existantes"}
-          elements={questions.filter(question => question.isDefault === false)}
-          validIcon={<CheckIcon />}
-          invalidIcon={<ClearIcon />}
-        />
+            <TableCard
+              type="QUESTION"
+              title={"Autres questions existantes"}
+              elements={questions.filter(
+                question => question.isDefault === false
+              )}
+              validIcon={<CheckIcon />}
+              invalidIcon={<ClearIcon />}
+            />
+          </React.Fragment>
+        )}
       </QuestionsContext.Provider>
     </React.Fragment>
   );
