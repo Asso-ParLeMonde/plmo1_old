@@ -31,7 +31,7 @@ function TableCard(props) {
 
 TableCard.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"])
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE", "USER"])
     .isRequired,
   title: PropTypes.string.isRequired,
   elements: PropTypes.array.isRequired,
