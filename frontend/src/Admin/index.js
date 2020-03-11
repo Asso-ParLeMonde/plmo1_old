@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Route, Switch, withRouter } from "react-router-dom";
+import React from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -34,14 +34,8 @@ const tabs = [
   }
 ];
 
-function Admin(props) {
+function Admin() {
   const classes = useStyles();
-
-  useEffect(() => {
-    if (props.location.pathname === "/admin") {
-      return props.history.push("admin/themes");
-    }
-  }, [props.history, props.location]);
 
   return (
     <div
@@ -79,6 +73,7 @@ function Admin(props) {
                   <Route path="/admin/themes" component={Themes} />
                   <Route path="/admin/scenarios" component={Scenarios} />
                   <Route path="/admin/languages" component={Languages} />
+                  <Redirect exact from="/admin" to="admin/themes" />
                 </Switch>
               </Container>
             </ScenariosServiceProvider>
@@ -89,4 +84,4 @@ function Admin(props) {
   );
 }
 
-export default withRouter(Admin);
+export default Admin;
