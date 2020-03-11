@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
@@ -11,22 +11,23 @@ import ScenarioSelector from "./components/ScenarioSelector";
 import { Card, CardContent, Typography } from "@material-ui/core";
 import { axiosRequest } from "../components/axiosRequest";
 
+export const QuestionsContext = React.createContext(undefined);
+
 function Questions() {
   const [questions, setQuestions] = useState([]);
   const [selectedScenarioId, setSelectedScenarioId] = useState(undefined);
 
-  useEffect(() => {
-    async function getQuestions() {
-      const questionsRequest = await axiosRequest({
-        method: "GET",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenarioId}/questions`
-      });
-
-      setQuestions(questionsRequest.data || []);
-    }
-
-    getQuestions();
+  const updateQuestions = useCallback(async () => {
+    const questionsRequest = await axiosRequest({
+      method: "GET",
+      url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenarioId}/questions`
+    });
+    setQuestions(questionsRequest.data || []);
   }, [selectedScenarioId]);
+
+  useEffect(() => {
+    updateQuestions().catch();
+  }, [updateQuestions]);
 
   return (
     <React.Fragment>
@@ -46,33 +47,34 @@ function Questions() {
         </CardContent>
       </Card>
 
-      <TableCard
-        type="QUESTION"
-        title={"Liste des questions par défault"}
-        elements={questions.filter(question => question.isDefault === true)}
-        validIcon={<EditIcon />}
-        invalidIcon={<DeleteIcon />}
-      >
-        <AddButton
-          buttonTitle="Ajouter une question"
+      <QuestionsContext.Provider value={updateQuestions}>
+        <TableCard
           type="QUESTION"
-          link="/admin/questions/new"
-          modalTitle="Creation d'une nouvelle question par default"
-          scenarioId={selectedScenarioId || 0}
-        />
-      </TableCard>
+          title={"Liste des questions par défault"}
+          elements={questions.filter(question => question.isDefault === true)}
+          validIcon={<EditIcon />}
+          invalidIcon={<DeleteIcon />}
+        >
+          <AddButton
+            buttonTitle="Ajouter une question"
+            type="QUESTION"
+            link="/admin/questions/new"
+            modalTitle="Creation d'une nouvelle question par default"
+            scenarioId={selectedScenarioId || 0}
+            disabled={selectedScenarioId ? false : true}
+          />
+        </TableCard>
 
-      <TableCard
-        type="QUESTION"
-        title={"Autres questions existantes"}
-        elements={questions.filter(question => question.isDefault === false)}
-        validIcon={<CheckIcon />}
-        invalidIcon={<ClearIcon />}
-      />
+        <TableCard
+          type="QUESTION"
+          title={"Autres questions existantes"}
+          elements={questions.filter(question => question.isDefault === false)}
+          validIcon={<CheckIcon />}
+          invalidIcon={<ClearIcon />}
+        />
+      </QuestionsContext.Provider>
     </React.Fragment>
   );
 }
-
-Questions.propTypes = {};
 
 export default Questions;

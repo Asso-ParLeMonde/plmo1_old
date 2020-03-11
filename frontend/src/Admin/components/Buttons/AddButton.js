@@ -88,6 +88,7 @@ function AddButton(props) {
         onClick={handleOpenModal}
         className={classes.link}
         startIcon={<AddCircleIcon />}
+        disabled={props.disabled || false}
       >
         {props.buttonTitle}
       </Button>
@@ -105,7 +106,8 @@ AddButton.propTypes = {
   link: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
-  scenarioId: PropTypes.number
+  scenarioId: PropTypes.number,
+  disabled: PropTypes.bool
 };
 
 export default withRouter(AddButton);

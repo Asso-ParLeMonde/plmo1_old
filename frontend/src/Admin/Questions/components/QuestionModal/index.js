@@ -2,8 +2,8 @@ import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
-import { QuestionsServiceContext } from "../../../../services/QuestionsService";
 import { updateQuestion } from "../questionRequest";
+import { QuestionsContext } from "../..";
 
 const DEFAULT_QUESTION = {
   id: null,
@@ -14,11 +14,10 @@ const DEFAULT_QUESTION = {
 };
 
 function QuestionModal(props) {
+  const updateQuestions = useContext(QuestionsContext);
   const [newQuestion, setNewQuestion] = useState(
-    props.Question || DEFAULT_QUESTION
+    props.question || DEFAULT_QUESTION
   );
-  const updateQuestions = useContext(QuestionsServiceContext).updateQuestions;
-
   const [res, setRes] = useState({
     error: false,
     complete: false,
@@ -26,10 +25,12 @@ function QuestionModal(props) {
   });
 
   useEffect(() => {
-    setNewQuestion({
-      ...newQuestion,
-      scenarioId: props.scenarioId
-    });
+    if (!newQuestion.scenarioId) {
+      setNewQuestion({
+        ...newQuestion,
+        scenarioId: props.scenarioId
+      });
+    }
   }, [props.scenarioId]);
 
   function handleChange(enumCase, event) {
@@ -42,6 +43,12 @@ function QuestionModal(props) {
           question: event.target.value.slice(0, 280)
         });
         break;
+      case "LANGUAGECODE":
+        setNewQuestion({
+          ...newQuestion,
+          languageCode: event.code
+        });
+        break;
     }
   }
 
@@ -49,17 +56,17 @@ function QuestionModal(props) {
     event.preventDefault();
 
     let error = false;
-    if (props.Question) {
-      error = await updateQuestion("PUT", props.Question, newQuestion, setRes);
+    if (props.question) {
+      error = await updateQuestion("PUT", props.question, newQuestion, setRes);
     } else {
-      error = await updateQuestion("POST", props.Question, newQuestion, setRes);
+      error = await updateQuestion("POST", props.question, newQuestion, setRes);
     }
 
     if (error === false) {
       setRes({
         error: false,
         complete: true,
-        message: "Succès lors de la création de la Question"
+        message: "Succès lors de la création de la question"
       });
     }
 
@@ -69,7 +76,9 @@ function QuestionModal(props) {
 
   function handleCloseModal() {
     props.setIsOpen(false);
-    setNewQuestion(props.Question || DEFAULT_QUESTION);
+    setNewQuestion(
+      props.question || { ...DEFAULT_QUESTION, scenarioId: props.scenarioId }
+    );
     props.history.push("/admin/questions");
   }
 
@@ -88,12 +97,12 @@ function QuestionModal(props) {
 }
 
 QuestionModal.propTypes = {
-  theme: PropTypes.object,
+  question: PropTypes.object,
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
-  scenarioId: PropTypes.number.isRequired
+  scenarioId: PropTypes.number
 };
 
 export default QuestionModal;

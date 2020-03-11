@@ -13,16 +13,19 @@ function QuestionModifyButton(props) {
     event.preventDefault();
 
     setIsOpen(true);
-    props.history.push(`/admin/questions/${props.scenario.id}`);
+    props.history.push(`/admin/questions/${props.question.id}`);
   }
 
   return (
     <React.Fragment>
-      <a href={`/scenario/${props.scenario.id}/question/${props.question.id}`} onClick={handleOpenModal}>
+      <a
+        href={`/scenario/${props.question.scenarioId}/question/${props.question.id}`}
+        onClick={handleOpenModal}
+      >
         <Button className="shape">{props.icon}</Button>
       </a>
       <QuestionModal
-        theme={props.theme}
+        question={props.question}
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         modalTitle={"Modification de la question"}
@@ -34,7 +37,7 @@ function QuestionModifyButton(props) {
 
 QuestionModifyButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired,
+  question: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired

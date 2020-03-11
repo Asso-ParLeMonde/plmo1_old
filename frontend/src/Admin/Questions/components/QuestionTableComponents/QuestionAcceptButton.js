@@ -2,12 +2,13 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import { QuestionsServiceContext } from "../../../../services/QuestionsService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
+import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
+
+import { QuestionsContext } from "../../index";
 
 function QuestionAcceptButton(props) {
-  const updateQuestions = useContext(QuestionsServiceContext).updateQuestions;
+  const updateQuestions = useContext(QuestionsContext);
 
   const [res, setRes] = useState({
     error: false,
@@ -17,7 +18,7 @@ function QuestionAcceptButton(props) {
 
   async function handleAcceptation(event) {
     event.preventDefault();
-    await handleRequest(
+    await handleQuestionButtonRequest(
       "PUT",
       props.question,
       setRes,

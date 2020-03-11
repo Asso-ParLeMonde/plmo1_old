@@ -3,11 +3,11 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { QuestionsServiceContext } from "../../../../services/QuestionsService";
-import { handleRequest } from "../../../Themes/components/ThemeTableComponents/ThemeButtonRequests";
+import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
+import { QuestionsContext } from "../..";
 
 function QuestionRemoveButton(props) {
-  const updateQuestions = useContext(QuestionsServiceContext).updateQuestions;
+  const updateQuestions = useContext(QuestionsContext);
 
   const [res, setRes] = useState({
     complete: false,
@@ -17,7 +17,7 @@ function QuestionRemoveButton(props) {
 
   async function handleRemove(event) {
     event.preventDefault();
-    await handleRequest(
+    await handleQuestionButtonRequest(
       "DELETE",
       props.question,
       setRes,

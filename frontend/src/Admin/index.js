@@ -12,7 +12,6 @@ import Navbar from "../components/Navbar";
 import AdminDrawer from "./components/AdminDrawer";
 import { ThemesServiceProvider } from "../services/ThemesService";
 import { ScenariosServiceProvider } from "../services/ScenariosService";
-import { QuestionsServiceProvider } from "../services/QuestionsService";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -74,17 +73,15 @@ function Admin() {
         <main style={{ flex: 1 }}>
           <ThemesServiceProvider>
             <ScenariosServiceProvider>
-              <QuestionsServiceProvider>
-                <Container maxWidth="lg" className={classes.container}>
-                  <Switch>
-                    <Route path="/admin/themes" component={Themes} />
-                    <Route path="/admin/scenarios" component={Scenarios} />
-                    <Route path="/admin/questions" component={Questions} />
-                    <Route path="/admin/languages" component={Languages} />
-                    <Redirect exact from="/admin" to="admin/themes" />
-                  </Switch>
-                </Container>
-              </QuestionsServiceProvider>
+              <Container maxWidth="lg" className={classes.container}>
+                <Switch>
+                  <Route path="/admin/themes" component={Themes} />
+                  <Route path="/admin/scenarios" component={Scenarios} />
+                  <Route path="/admin/questions" component={Questions} />
+                  <Route path="/admin/languages" component={Languages} />
+                  <Redirect exact from="/admin" to="admin/themes" />
+                </Switch>
+              </Container>
             </ScenariosServiceProvider>
           </ThemesServiceProvider>
         </main>

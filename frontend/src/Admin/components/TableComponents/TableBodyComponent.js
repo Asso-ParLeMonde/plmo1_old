@@ -71,10 +71,10 @@ function TableBodyComponent(props) {
       case "QUESTION":
         return (
           <React.Fragment>
-            {element.isStandard && (
+            {element.isDefault && (
               <QuestionModifyButton icon={props.validIcon} question={element} />
             )}
-            {!element.isStandard && (
+            {!element.isDefault && (
               <QuestionAcceptButton icon={props.validIcon} question={element} />
             )}
             <QuestionRemoveButton icon={props.invalidIcon} question={element} />
