@@ -94,7 +94,6 @@ function ScenarioQuestionModal(props) {
       return <span>Aucune question n'existe pour ce scenario</span>;
     }
 
-    console.log(questions);
     return (
       <ul>
         {questions.map((q, index) => (
