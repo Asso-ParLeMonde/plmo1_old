@@ -10,6 +10,7 @@ import EditButtons from "./components/EditButtons";
 
 import "./edit-plan.css";
 import CustomModal from "../../../components/CustomModal";
+import {uploadTemporaryImage} from "../../../../services/PlanService";
 
 
 function EditPlan(props) {
@@ -38,6 +39,20 @@ function EditPlan(props) {
   const handleEditPlanModal = show => (event) => {
     event.preventDefault();
     setshowEditPlan(show);
+  };
+
+  const submitImageWithUrl = async (imageBlob) => {
+    try {
+      const data = await uploadTemporaryImage(imageBlob);
+      if (data !== null) {
+        question.plans[planIndex].url = data.path;
+        question.plans[planIndex].uuid = data.uuid;
+        question.plans[planIndex].localPath = data.localPath;
+        props.updateQuestion(questionIndex, question);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -107,7 +122,10 @@ function EditPlan(props) {
                 maxWidth="md"
                 open={showEditPlan}>
                 <div id="edit-drawing-desc">
-                  <EditButtons questionIndex={questionIndex} planIndex={planIndex} history={props.history}/>
+                  <EditButtons questionIndex={questionIndex}
+                               planIndex={planIndex}
+                               submitImageWithUrl={submitImageWithUrl}
+                               history={props.history}/>
                 </div>
               </CustomModal>
             </div>
@@ -116,7 +134,10 @@ function EditPlan(props) {
 
         {
           !!question.plans[planIndex].url || (
-            <EditButtons questionIndex={questionIndex} planIndex={planIndex} history={props.history}/>
+            <EditButtons questionIndex={questionIndex}
+                         planIndex={planIndex}
+                         submitImageWithUrl={submitImageWithUrl}
+                         history={props.history}/>
           )
         }
 

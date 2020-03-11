@@ -1,0 +1,31 @@
+.plan-croppie-container {
+    padding-bottom: 40%;
+    position: relative;
+    display: inline-block;
+    margin-bottom: 2rem;
+}
+.plan-croppie-container > div {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.plan-img-buttons {
+    display: block;
+    margin: 1rem auto;
+    width: 40%;
+    max-width: 500px;
+    min-width: 350px;
+}
+
+@media only screen and (max-width: 800px){
+    .plan-croppie-container {
+        padding-bottom: 100%;
+    }
+    .plan-img-buttons {
+        width: 100%;
+        max-width: unset;
+        min-width: unset;
+    }
+}
