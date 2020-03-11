@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
@@ -73,6 +73,7 @@ function Admin() {
                   <Route path="/admin/themes" component={Themes} />
                   <Route path="/admin/scenarios" component={Scenarios} />
                   <Route path="/admin/languages" component={Languages} />
+                  <Redirect exact from="/admin" to="admin/themes" />
                 </Switch>
               </Container>
             </ScenariosServiceProvider>
@@ -82,7 +83,5 @@ function Admin() {
     </div>
   );
 }
-
-Admin.propTypes = {};
 
 export default Admin;

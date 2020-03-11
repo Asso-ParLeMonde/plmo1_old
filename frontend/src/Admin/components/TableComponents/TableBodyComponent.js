@@ -13,6 +13,7 @@ import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableCompon
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
 import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
+import ScenarioQuestionModal from "../../Scenarios/components/ScenarioTableComponents/ScenarioQuestionsModal";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -46,6 +47,7 @@ function TableBodyComponent(props) {
       case "SCENARIO":
         return (
           <React.Fragment>
+            <ScenarioQuestionModal scenario={element} />
             {element.isDefault && (
               <ScenarioModifyButton icon={props.validIcon} scenario={element} />
             )}
@@ -56,10 +58,12 @@ function TableBodyComponent(props) {
           </React.Fragment>
         );
       case "LANGUAGE":
+        if (element.value === "fr") {
+          return;
+        }
+
         return (
-          <React.Fragment>
-            <LanguageRemoveButton icon={props.invalidIcon} language={element} />
-          </React.Fragment>
+          <LanguageRemoveButton icon={props.invalidIcon} language={element} />
         );
     }
   }
@@ -71,13 +75,13 @@ function TableBodyComponent(props) {
       default:
         break;
       case "THEME":
-        information = ["id", "names.fr"];
+        information = ["ID", "NAME"];
         break;
       case "SCENARIO":
-        information = ["id", "name", "names.fr", "descriptions.fr"];
+        information = ["ID", "NAME", "THEMEID", "DESCRIPTION"];
         break;
       case "LANGUAGE":
-        information = ["id", "label", "value"];
+        information = ["ID", "LABEL", "VALUE"];
         break;
     }
 
@@ -85,14 +89,64 @@ function TableBodyComponent(props) {
   }
 
   function getInfo(el, info) {
-    const splitedInfo = info.split(".");
-    let finalInfo = el;
+    switch (info) {
+      default:
+        return "";
 
-    splitedInfo.forEach(element => {
-      finalInfo = finalInfo[element];
-    });
+      case "ID":
+        return el.id;
 
-    return finalInfo;
+      case "NAME":
+        const languagesName = Object.keys(el.names);
+
+        const names = [];
+        for (let i = 0; i < languagesName.length; i++) {
+          names.push(el.names[languagesName[i]]);
+        }
+
+        return names.find((name, index) => {
+          if (name !== "") {
+            if (languagesName[index] !== "fr") {
+              return `${languagesName[index].toUpperCase()} : ${name}`;
+            }
+
+            return name;
+          }
+
+          return "";
+        });
+
+      case "THEMEID":
+        return el.themeId;
+
+      case "DESCRIPTION":
+        const languagesDescription = Object.keys(el.names);
+
+        const descriptions = [];
+        for (let j = 0; j < languagesDescription.length; j++) {
+          descriptions.push(el.descriptions[languagesDescription[j]]);
+        }
+
+        return descriptions.find((description, index) => {
+          if (description !== "") {
+            if (languagesDescription[index] !== "fr") {
+              return `${languagesDescription[
+                index
+              ].toUpperCase()} : ${description}`;
+            }
+
+            return description;
+          }
+
+          return "";
+        });
+
+      case "LABEL":
+        return el.label;
+
+      case "VALUE":
+        return el.value;
+    }
   }
 
   return (
