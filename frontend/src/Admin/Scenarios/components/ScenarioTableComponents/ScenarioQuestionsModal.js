@@ -56,8 +56,10 @@ function ScenarioQuestionModal(props) {
       }
     };
 
-    getScenarioQuestions();
-  }, [props.scenario.id]);
+    if (isOpen) {
+      getScenarioQuestions();
+    }
+  }, [props.scenario.id, isOpen]);
 
   const handleOpenModal = event => {
     event.preventDefault();
@@ -94,8 +96,10 @@ function ScenarioQuestionModal(props) {
 
     return (
       <ul>
-        {questions.map(q => (
-          <li>{q.title}</li>
+        {questions.map((q, index) => (
+          <li key={index}>{`${q.languageCode.toUpperCase()} : ${
+            q.question
+          }`}</li>
         ))}
       </ul>
     );
