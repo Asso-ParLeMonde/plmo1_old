@@ -3,7 +3,7 @@ import {withRouter} from "react-router";
 import PropTypes from "prop-types";
 import QRCode from "qrcode.react";
 
-import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
+import {Breadcrumbs, Hidden, Link, Typography, Button} from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import VideocamIcon from '@material-ui/icons/Videocam';
 
@@ -41,17 +41,25 @@ function Partie4(props) {
                 <Inverted round>4</Inverted> À votre <Inverted>caméra</Inverted> !
                 <VideocamIcon fontSize="large" color="primary" style={{ transform: "translateY(0.5rem)", marginLeft: "1.5rem" }}/>
               </Typography>
-            </div>
 
-            <div className="text-center">
-              <Typography variant="h2">
-                Flashez ce code QR pour accéder directement à l'application et commencer à filmer !
+              <Typography variant="h2" style={{marginBottom: "1rem"}}>
+                Téléchargez votre plan de tournage :
               </Typography>
-              <QRCode
-                size={192}
-                value="https://par-le-monde-1.herokuapp.com/creer/4-a-votre-camera"/>
-            </div>
+              <div className="text-center">
+                <Button className="mobile-full-width" variant="contained" color="secondary">
+                  plan de tournage
+                </Button>
+              </div>
 
+              <Typography variant="h2" style={{margin: "1rem 0"}}>
+                Flashez ce code QR pour accéder directement à l&apos;application et commencer à filmer !
+              </Typography>
+              <div className="text-center">
+                <QRCode
+                  size={192}
+                  value="https://par-le-monde-1.herokuapp.com/creer/4-a-votre-camera"/>
+              </div>
+            </div>
           </React.Fragment>
         )
       }
