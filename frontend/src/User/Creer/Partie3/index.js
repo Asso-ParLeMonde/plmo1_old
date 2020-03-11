@@ -6,17 +6,27 @@ import {Breadcrumbs, Hidden, Link, Typography} from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import {ProjectServiceContext} from "../../../services/ProjectService";
+import {getQuestions} from "../../../util/questions";
 import Steps from "../../components/Steps";
 import AllPlans from "./AllPlans";
 import EditPlan from "./EditPlan";
 import DrawPlan from "./DrawPlan";
 
+
 function Partie3(props) {
-  const { project } = useContext(ProjectServiceContext);
+  const { project, updateProject } = useContext(ProjectServiceContext);
+  const questions = getQuestions(project);
 
   const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/creer");
+  };
+
+  const updateQuestion = (index, newQuestion) => {
+    const questions = [...project.questions];
+    const prevQuestion = project.questions[index];
+    questions[index] = { ...prevQuestion, ...newQuestion };
+    updateProject({ questions });
   };
 
   return (
@@ -36,9 +46,12 @@ function Partie3(props) {
             <Steps activeStep={2}/>
 
             <Switch>
-              <Route path="/creer/3-storyboard-et-plan-de-tournage/edit" component={EditPlan} />
-              <Route path="/creer/3-storyboard-et-plan-de-tournage/draw" component={DrawPlan} />
-              <Route path="/creer/3-storyboard-et-plan-de-tournage" component={AllPlans} />
+              <Route path="/creer/3-storyboard-et-plan-de-tournage/edit"
+                     render={() => <EditPlan questions={questions} updateQuestion={updateQuestion} />} />
+              <Route path="/creer/3-storyboard-et-plan-de-tournage/draw"
+                     render={() => <DrawPlan questions={questions} updateQuestion={updateQuestion} />} />
+              <Route path="/creer/3-storyboard-et-plan-de-tournage"
+                     render={() => <AllPlans questions={questions} updateQuestion={updateQuestion} />} />
             </Switch>
 
           </React.Fragment>
