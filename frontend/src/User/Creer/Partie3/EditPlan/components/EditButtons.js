@@ -54,9 +54,9 @@ function EditButtons(props) {
     }
   };
 
-  const submitImage = async () => {
+  const submitImage = async (blob) => {
     setIsLoading(true);
-    await props.submitImageWithUrl(imageUrl);
+    await props.submitImageWithUrl(blob);
     setIsLoading(false);
   };
 
@@ -72,7 +72,7 @@ function EditButtons(props) {
       </Backdrop>
       {
         (imageUrl !== null && imageUrl.length > 0) ? (
-          <UploadPlan imageUrl={imageUrl} handleClearInput={handleClearInput} />
+          <UploadPlan imageUrl={imageUrl} handleClearInput={handleClearInput} handleSubmit={submitImage}/>
         ) : (
           <React.Fragment>
             <Hidden smDown>
@@ -142,7 +142,7 @@ function EditButtons(props) {
           </React.Fragment>
         )
       }
-      <input id="plan-img-upload" type="file" accept="image/*" onChange={handleInputchange} ref={inputRef}/>
+      <input id="plan-img-upload" type="file" accept="image/*" onChange={handleInputchange} ref={inputRef} style={{display: "none"}}/>
     </React.Fragment>
   );
 }

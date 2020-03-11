@@ -53,6 +53,7 @@ function EditPlan(props) {
     } catch (e) {
       console.log(e);
     }
+    setshowEditPlan(false);
   };
 
   return (
