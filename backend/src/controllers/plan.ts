@@ -7,7 +7,7 @@ export class PlanController extends Controller {
   }
 
   @tempImage({ path: "/image", tableName: "plan" })
-  public uploadTempImage(req: Request, res: Response, next: NextFunction): void {
+  public async uploadTempImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (req.image === undefined) {
       next();
       return;

@@ -24,8 +24,8 @@ function ImgCroppie(props, ref) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     croppie = new Croppie(document.getElementById("my-croppie-img"), {
       viewport: {
-        width: 340,
-        height: 340,
+        width: props.imgWidth,
+        height: props.imgHeight,
         type: 'square',
       },
     });
@@ -44,6 +44,11 @@ ImgCroppieComponent.propTypes = {
   alt: PropTypes.string.isRequired,
   imgWidth: PropTypes.number,
   imgHeight: PropTypes.number,
+};
+
+ImgCroppieComponent.defaultProps = {
+  imgWidth: 340,
+  imgHeight: 340,
 };
 
 export default ImgCroppieComponent;
