@@ -72,12 +72,12 @@ function TableBodyComponent(props) {
         return (
           <React.Fragment>
             {element.isStandard && (
-              <QuestionModifyButton icon={props.validIcon} theme={element} />
+              <QuestionModifyButton icon={props.validIcon} question={element} />
             )}
             {!element.isStandard && (
-              <QuestionAcceptButton icon={props.validIcon} theme={element} />
+              <QuestionAcceptButton icon={props.validIcon} question={element} />
             )}
-            <QuestionRemoveButton icon={props.invalidIcon} theme={element} />
+            <QuestionRemoveButton icon={props.invalidIcon} question={element} />
           </React.Fragment>
         );
     }
@@ -93,13 +93,13 @@ function TableBodyComponent(props) {
         information = ["ID", "NAME"];
         break;
       case "SCENARIO":
-        information = ["ID", "NAME", "THEMEID", "DESCRIPTION"];
+        information = ["ID", "THEMEID", "NAME", "DESCRIPTION"];
         break;
       case "LANGUAGE":
         information = ["ID", "LABEL", "VALUE"];
         break;
       case "QUESTION":
-        information = ["id", "languageCode", "question", "scenario.id"];
+        information = ["ID", "SCENARIOID", "LANGUAGECODE", "QUESTION"];
         break;
     }
 
@@ -137,6 +137,9 @@ function TableBodyComponent(props) {
       case "THEMEID":
         return el.themeId;
 
+      case "SCENARIOID":
+        return el.scenarioId;
+
       case "DESCRIPTION":
         const languagesDescription = Object.keys(el.names);
 
@@ -164,6 +167,12 @@ function TableBodyComponent(props) {
 
       case "VALUE":
         return el.value;
+
+      case "LANGUAGECODE":
+        return el.languageCode;
+
+      case "QUESTION":
+        return el.question;
     }
   }
 

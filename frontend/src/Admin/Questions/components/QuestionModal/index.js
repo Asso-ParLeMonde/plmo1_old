@@ -67,7 +67,7 @@ function QuestionModal(props) {
     handleCloseModal();
   }
 
-  function handleCloseModal(event) {
+  function handleCloseModal() {
     props.setIsOpen(false);
     setNewQuestion(props.Question || DEFAULT_QUESTION);
     props.history.push("/admin/questions");
