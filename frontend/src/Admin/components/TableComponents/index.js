@@ -37,7 +37,7 @@ function TableComponent(props) {
 }
 
 TableComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"]).isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object,
   invalidIcon: PropTypes.object

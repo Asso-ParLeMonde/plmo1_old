@@ -12,8 +12,11 @@ import ThemeRemoveButton from "../../Themes/components/ThemeTableComponents/Them
 import ScenarioModifyButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioModifyButton";
 import ScenarioAcceptButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioAcceptButton";
 import ScenarioRemoveButton from "../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
-import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
 import ScenarioQuestionModal from "../../Scenarios/components/ScenarioTableComponents/ScenarioQuestionsModal";
+import LanguageRemoveButton from "../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
+import QuestionModifyButton from "../../Questions/components/QuestionTableComponents/QuestionModifyButton";
+import QuestionAcceptButton from "../../Questions/components/QuestionTableComponents/QuestionAcceptButton";
+import QuestionRemoveButton from "../../Questions/components/QuestionTableComponents/QuestionRemoveButton";
 
 const useStyles = makeStyles(theme => ({
   th: {
@@ -65,6 +68,18 @@ function TableBodyComponent(props) {
         return (
           <LanguageRemoveButton icon={props.invalidIcon} language={element} />
         );
+      case "QUESTION":
+        return (
+          <React.Fragment>
+            {element.isDefault && (
+              <QuestionModifyButton icon={props.validIcon} question={element} />
+            )}
+            {!element.isDefault && (
+              <QuestionAcceptButton icon={props.validIcon} question={element} />
+            )}
+            <QuestionRemoveButton icon={props.invalidIcon} question={element} />
+          </React.Fragment>
+        );
     }
   }
 
@@ -78,10 +93,13 @@ function TableBodyComponent(props) {
         information = ["ID", "NAME"];
         break;
       case "SCENARIO":
-        information = ["ID", "NAME", "THEMEID", "DESCRIPTION"];
+        information = ["ID", "THEMEID", "NAME", "DESCRIPTION"];
         break;
       case "LANGUAGE":
         information = ["ID", "LABEL", "VALUE"];
+        break;
+      case "QUESTION":
+        information = ["ID", "SCENARIOID", "LANGUAGECODE", "QUESTION"];
         break;
     }
 
@@ -119,6 +137,9 @@ function TableBodyComponent(props) {
       case "THEMEID":
         return el.themeId;
 
+      case "SCENARIOID":
+        return el.scenarioId;
+
       case "DESCRIPTION":
         const languagesDescription = Object.keys(el.names);
 
@@ -146,6 +167,12 @@ function TableBodyComponent(props) {
 
       case "VALUE":
         return el.value;
+
+      case "LANGUAGECODE":
+        return el.languageCode;
+
+      case "QUESTION":
+        return el.question;
     }
   }
 
@@ -176,7 +203,8 @@ function TableBodyComponent(props) {
 }
 
 TableBodyComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired,
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"])
+    .isRequired,
   elements: PropTypes.array.isRequired,
   validIcon: PropTypes.object.isRequired,
   invalidIcon: PropTypes.object.isRequired

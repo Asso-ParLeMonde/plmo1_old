@@ -13,6 +13,7 @@ import LanguageForm from "../../Languages/components/LanguageForm";
 import Notifications from "../../../components/Notifications";
 import ThemeForm from "../../Themes/components/ThemeForm";
 import ScenarioForm from "../../Scenarios/components/ScenarioForm";
+import QuestionForm from "../../Questions/components/QuestionForm";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -40,6 +41,13 @@ function ModalContainer(props) {
         return (
           <ScenarioForm
             scenario={props.newElement}
+            handleChange={props.handleChange}
+          />
+        );
+      case "QUESTION":
+        return (
+          <QuestionForm
+            question={props.newElement}
             handleChange={props.handleChange}
           />
         );
