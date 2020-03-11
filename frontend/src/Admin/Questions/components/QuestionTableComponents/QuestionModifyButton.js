@@ -18,10 +18,7 @@ function QuestionModifyButton(props) {
 
   return (
     <React.Fragment>
-      <a
-        href={`/scenario/${props.question.scenarioId}/question/${props.question.id}`}
-        onClick={handleOpenModal}
-      >
+      <a href={`/question/${props.question.id}`} onClick={handleOpenModal}>
         <Button className="shape">{props.icon}</Button>
       </a>
       <QuestionModal

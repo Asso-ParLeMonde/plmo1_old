@@ -27,7 +27,7 @@ function QuestionModal(props) {
   useEffect(() => {
     setNewQuestion({
       ...newQuestion,
-      scenarioId: props.scenarioId
+      scenarioId: props.scenarioId || props.question.scenarioId
     });
     // eslint-disable-next-line
   }, [props.scenarioId]);
