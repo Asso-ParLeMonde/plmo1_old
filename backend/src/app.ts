@@ -12,6 +12,7 @@ import { routes } from "./routes/routes";
 import { connectToDatabase } from "./utils/database";
 import { logger } from "./utils/logger";
 import { normalizePort, onError } from "./utils/server";
+import { htmlToPDF } from "./pdf";
 
 async function main(): Promise<void> {
   const connection: Connection | null = await connectToDatabase();
@@ -62,6 +63,8 @@ async function main(): Promise<void> {
       res.status(404).send("Error 404 - Not found.");
     });
   }
+
+  await htmlToPDF("test");
 
   /* --- Start server --- */
   const port = normalizePort(process.env.PORT || "5000");
