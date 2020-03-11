@@ -14,10 +14,6 @@ export class UserController extends Controller {
   @get()
   public async getUsers(_: Request, res: Response): Promise<void> {
     const users: User[] = await getRepository(User).find();
-
-    const hash = "$argon2i$v=19$m=4096,t=3,p=1$OO+vVjSjxZrHML/1+quMrg$7M5oVKr0LiXR0dl9evSv0ndi6EDDzpZsMtTEJ0HvZfI";
-    console.log(await argon2.verify(hash, "password"));
-
     res.sendJSON(users);
   }
 
@@ -46,7 +42,6 @@ export class UserController extends Controller {
       user.school = new School();
       user.school.id = req.body.schoolId;
     }
-    console.log(await argon2.hash(req.body.password));
     user.passwordHash = await argon2.hash(req.body.password);
     await getRepository(User).save(user); // save new user
     res.sendJSON(user); // send new user
