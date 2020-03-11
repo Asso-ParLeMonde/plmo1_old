@@ -31,6 +31,7 @@ function QuestionModal(props) {
         scenarioId: props.scenarioId
       });
     }
+    // eslint-disable-next-line
   }, [props.scenarioId]);
 
   function handleChange(enumCase, event) {
