@@ -15,7 +15,7 @@ const StyledTabs = withStyles(theme => ({
   },
   selected: {
     fill: theme.palette.secondary.main,
-    color: theme.palette.secondary.main,
+    color: `${theme.palette.secondary.main}!important`,
   },
 }))(BottomNavigationAction);
 
