@@ -8,6 +8,8 @@ import { ThemesServiceProvider } from "../services/ThemesService";
 
 import Creer from "./Creer";
 import Login from "./Login";
+import Signup from "./Signup";
+import ResetPassword from "./ResetPassword";
 
 import { ReactComponent as CreateLogo } from "../images/create.svg";
 import { ReactComponent as MoviesLogo } from "../images/movies.svg";
@@ -68,6 +70,8 @@ function User() {
               <Route path="/creer" component={Creer} />
               <Redirect exact from="/" to="/creer" />
               <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/reset-password" component={ResetPassword} />
               <Route path="*">404 not found!</Route>
             </Switch>
           </ThemesServiceProvider>

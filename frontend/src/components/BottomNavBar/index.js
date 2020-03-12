@@ -8,7 +8,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 
 import "./bottomNavBar.css";
 
-const StyledTabs = withStyles(theme => ({
+const StyledTab = withStyles(theme => ({
   root: {
     fill: "#808080",
     color: "#808080",
@@ -25,9 +25,9 @@ function BottomNavBar(props) {
   useEffect(() => {
     const index = props.tabs.reduce(
       (i1, tab, i2) => (tab.path === props.location.pathname ? i2 : i1),
-      0
+      -1
     );
-    setActiveTab(index);
+    setActiveTab(index + 1);
     // eslint-disable-next-line
   }, [props.location.pathname]);
 
@@ -42,8 +42,9 @@ function BottomNavBar(props) {
         showLabels
         className="bottom-navbar"
       >
+        <StyledTab label="" style={{ display: "none" }}/>
         {props.tabs.map((tab, index) => (
-          <StyledTabs label={tab.label} icon={tab.icon} href={tab.path} key={index} onClick={(event) => {
+          <StyledTab label={tab.label} icon={tab.icon} href={tab.path} key={index} onClick={(event) => {
             event.preventDefault();
             props.history.push(tab.path);
           }}/>

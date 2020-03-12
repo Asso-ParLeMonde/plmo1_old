@@ -60,9 +60,9 @@ function Navbar(props) {
   useEffect(() => {
     const index = props.tabs.reduce(
       (i1, tab, i2) => (tab.path === props.location.pathname ? i2 : i1),
-      0
+      -1
     );
-    setValue(index);
+    setValue(index + 1);
     // eslint-disable-next-line
   }, [props.location.pathname]);
 
@@ -82,6 +82,7 @@ function Navbar(props) {
               </Grid>
               <Grid item>
                 <StyledTabs value={value} aria-label="simple tabs example">
+                  <StyledTab content="" path="/" {...a11yProps(0)} style={{ display: "none" }}/>
                   {props.tabs.map((tab, index) => (
                     <StyledTab
                       content={tab.label}
