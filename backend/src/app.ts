@@ -12,7 +12,7 @@ import { routes } from "./routes/routes";
 import { connectToDatabase } from "./utils/database";
 import { logger } from "./utils/logger";
 import { normalizePort, onError } from "./utils/server";
-import { htmlToPDF } from "./pdf";
+import { htmlToPDF, Template } from "./pdf";
 
 async function main(): Promise<void> {
   const connection: Connection | null = await connectToDatabase();
@@ -64,7 +64,7 @@ async function main(): Promise<void> {
     });
   }
 
-  await htmlToPDF("test");
+  await htmlToPDF("test", Template.PLAN_DE_TOURNAGE);
 
   /* --- Start server --- */
   const port = normalizePort(process.env.PORT || "5000");
