@@ -36,11 +36,14 @@ export class User {
   )
   public school: School;
 
+  @Column({ default: 0 })
+  public accountRegistration: number;
+
   @Column({ type: "varchar", length: 95 })
   public passwordHash: string;
 
-  /*@Column({ type: "varchar", length: 50 })
-  public verificationHash: string;*/
+  @Column({ type: "varchar", length: 95 })
+  public verificationHash: string;
 
   @Column({
     type: "enum",
@@ -51,6 +54,8 @@ export class User {
 
   public userWithoutPassword(): User {
     delete this.passwordHash;
+    delete this.verificationHash;
+    delete this.accountRegistration;
     return this;
   }
 }

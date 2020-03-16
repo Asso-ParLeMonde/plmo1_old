@@ -89,8 +89,9 @@ export function del({ path, userType }: decoratorParams = defaultParams) {
  * @param path: path for the put function
  * @param name: name of the file from the request
  * @param tableName
+ * @param userType: Authentication type for this request
  */
-export function oneImage({ path, name, tableName }: { path: string; name?: string; tableName: string } = { path: "", tableName: "other" }) {
+export function oneImage({ path, name, tableName, userType }: { path: string; name?: string; tableName: string; userType?: UserType } = { path: "", tableName: "other" }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
@@ -98,7 +99,7 @@ export function oneImage({ path, name, tableName }: { path: string; name?: strin
     }
     const storage = multer.memoryStorage();
     const upload = multer({ storage });
-    target.router.post(path, upload.single(name || "image"), handleErrors(saveImages(tableName)), handleErrors(method));
+    target.router.post(path, authenticate(userType), upload.single(name || "image"), handleErrors(saveImages(tableName)), handleErrors(method));
     return propertyDesciptor;
   };
 }
