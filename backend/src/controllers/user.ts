@@ -18,7 +18,7 @@ export class UserController extends Controller {
     res.sendJSON(users.map(u => u.userWithoutPassword()));
   }
 
-  @get({ path: "/:id" })
+  @get({ path: "/:id", userOnly: true })
   public async getUser(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     const user: User | undefined = await getRepository(User).findOne(id);

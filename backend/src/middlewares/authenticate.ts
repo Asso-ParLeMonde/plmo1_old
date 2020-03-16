@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { logger } from "../utils/logger";
+
+const secret: string = process.env.APP_SECRET || "";
 
 function getHeader(req: Request, header: string): string | undefined {
   const headers: string | string[] | undefined = req.headers[header];
@@ -18,12 +19,26 @@ export function authenticate(req: Request, res: Response, next: NextFunction): v
     // Remove Bearer from string
     token = token.slice(7, token.length);
   }
-  console.log(token);
+  if (secret.length === 0) {
+    res.status(401).send("invalid access token");
+    return;
+  }
+
   try {
-    const decoded = jwt.verify(token, "maclefsecrete");
-    console.log(decoded);
-  } catch (e) {
-    logger.error(JSON.stringify(e));
+    const decoded: string | { userId: number; iat: number; exp: number } = jwt.verify(token, secret) as string | { userId: number; iat: number; exp: number };
+    let data: { userId: number; iat: number; exp: number };
+    if (typeof decoded === "string") {
+      try {
+        data = JSON.parse(decoded);
+      } catch (e) {
+        res.status(401).send("invalid access token");
+        return;
+      }
+    } else {
+      data = decoded;
+    }
+    console.log("userid: ", data.userId);
+  } catch (_e) {
     res.status(401).send("invalid access token");
     return;
   }
