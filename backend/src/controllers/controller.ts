@@ -3,23 +3,31 @@ import multer from "multer";
 import { handleErrors } from "../middlewares/handleErrors";
 import { saveImages } from "../middlewares/saveImages";
 import { authenticate } from "../middlewares/authenticate";
+import { UserType } from "../entities/user";
+
+type decoratorParams = {
+  path?: string;
+  userType?: UserType;
+};
+
+const defaultParams: decoratorParams = {
+  path: "",
+  userType: undefined,
+};
 
 /**
  * GET decorator.
  *
  * @param path: path for the get function
+ * @param userType: Authentication type for this request
  */
-export function get({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
+export function get({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    if (userOnly) {
-      target.router.get(path || "", authenticate, handleErrors(method));
-    } else {
-      target.router.get(path || "", handleErrors(method));
-    }
+    target.router.get(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -28,18 +36,15 @@ export function get({ path, userOnly }: { path?: string; userOnly?: boolean } = 
  * POST decorator
  *
  * @param path: path for the post function
+ * @param userType: Authentication type for this request
  */
-export function post({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
+export function post({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    if (userOnly) {
-      target.router.post(path || "", authenticate, handleErrors(method));
-    } else {
-      target.router.post(path || "", handleErrors(method));
-    }
+    target.router.post(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -48,18 +53,15 @@ export function post({ path, userOnly }: { path?: string; userOnly?: boolean } =
  * PUT decorator
  *
  * @param path: path for the put function
+ * @param userType: Authentication type for this request
  */
-export function put({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
+export function put({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    if (userOnly) {
-      target.router.put(path || "", authenticate, handleErrors(method));
-    } else {
-      target.router.put(path || "", handleErrors(method));
-    }
+    target.router.put(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -68,18 +70,15 @@ export function put({ path, userOnly }: { path?: string; userOnly?: boolean } = 
  * DELETE decorator
  *
  * @param path: path for the put function
+ * @param userType: Authentication type for this request
  */
-export function del({ path, userOnly }: { path?: string; userOnly?: boolean } = { path: "", userOnly: false }) {
+export function del({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    if (userOnly) {
-      target.router.delete(path || "", authenticate, handleErrors(method));
-    } else {
-      target.router.delete(path || "", handleErrors(method));
-    }
+    target.router.delete(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }

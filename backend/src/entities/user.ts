@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { School } from "./school";
 
-export enum Type {
-  CLASS = "class",
-  ADMIN = "admin",
-  PLMO_ADMIN = "plmo_admin",
+export enum UserType {
+  CLASS = 0,
+  ADMIN = 1,
+  PLMO_ADMIN = 2,
 }
 
 @Entity()
@@ -44,10 +44,10 @@ export class User {
 
   @Column({
     type: "enum",
-    enum: Type,
-    default: "class",
+    enum: UserType,
+    default: 0,
   })
-  type: Type;
+  type: UserType;
 
   public userWithoutPassword(): User {
     delete this.passwordHash;
