@@ -17,19 +17,27 @@ const StyledDeleteButton = withStyles(theme => ({
 }))(IconButton);
 
 function Plan(props) {
+  const buttonStyle = {width: "100%", height: "100%"};
+  if (props.plan.url !== null) {
+    buttonStyle.backgroundImage = `url('${props.plan.url}')`;
+    buttonStyle.backgroundPosition = "center"; /* Center the image */
+    buttonStyle.backgroundRepeat = "no-repeat"; /* Do not repeat the image */
+    buttonStyle.backgroundSize = "cover";
+  }
+
   return (
     <div className="plan-button-container" key={props.planIndex}>
       <ButtonBase
         component="a"
         href={`/creer/3-storyboard-et-plan-de-tournage/edit?question=${props.questionIndex}&plan=${props.planIndex}`}
         onClick={props.handleClick}
-        style={{width: "100%", height: "100%"}}
+        style={buttonStyle}
       >
         <div className="plan">
           <div className="number">{props.showNumber}</div>
           <div className="edit">Modifier</div>
           {
-            props.planIndex !== 0 && (
+            props.canDelete && (
               <div className="delete">
                 <StyledDeleteButton aria-label="delete" size="small" onClick={props.handleDelete}>
                   <DeleteIcon />
@@ -44,11 +52,13 @@ function Plan(props) {
 }
 
 Plan.propTypes = {
+  plan: PropTypes.object.isRequired,
   questionIndex: PropTypes.number.isRequired,
   planIndex: PropTypes.number.isRequired,
   showNumber: PropTypes.number.isRequired,
   handleClick: PropTypes.func.isRequired,
   handleDelete: PropTypes.func.isRequired,
+  canDelete: PropTypes.bool,
 };
 
 export default Plan;

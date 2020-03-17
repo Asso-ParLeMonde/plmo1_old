@@ -21,3 +21,25 @@
     flex-direction: row;
     align-items: center;
 }
+.plan-img {
+    border: 1px solid black;
+    width: 40%;
+    max-width: 500px;
+    min-width: 350px;
+}
+.plan-button {
+    width: 40%;
+    max-width: 500px;
+    min-width: 350px;
+    margin: 0.5rem 0 2rem 0!important;
+}
+@media only screen and (max-width: 800px){
+    .plan-img, .plan-button {
+        width: 100%;
+        max-width: unset;
+        min-width: unset;
+    }
+    .mobile-full-width {
+        width: 100%!important;
+    }
+}

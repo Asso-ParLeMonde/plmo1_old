@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 import PropTypes from "prop-types";
 import {withRouter} from "react-router";
 import {
@@ -11,8 +11,6 @@ import {
   Typography
 } from "@material-ui/core";
 
-import {ProjectServiceContext} from "../../../../services/ProjectService";
-import {getQuestions} from "../../../../util/questions";
 import Inverted from "../../../../components/Inverted";
 import Scene from "./components/scene";
 
@@ -22,29 +20,21 @@ function AllPlans(props) {
     planIndex: -1,
     showNumber: 0,
   });
-  const { project, updateProject } = useContext(ProjectServiceContext);
-  const questions = getQuestions(project);
   const showDeleteModal = deleteIndexes.questionIndex !== -1 && deleteIndexes.planIndex !== -1;
-
-  const updateQuestion = (index, newQuestion) => {
-    const questions = [...project.questions];
-    const prevQuestion = project.questions[index];
-    questions[index] = { ...prevQuestion, ...newQuestion };
-    updateProject({ questions });
-  };
 
   const handleNext = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/4-a-votre-caméra`);
+    props.history.push(`/creer/4-a-votre-camera`);
   };
 
   const addPlan = questionIndex => (event) => {
     event.preventDefault();
-    const plans = questions[questionIndex].plans || [];
+    const plans = props.questions[questionIndex].plans || [];
     plans.push({
-      url: "",
+      url: null,
+      description: "",
     });
-    updateQuestion(questionIndex, { plans });
+    props.updateQuestion(questionIndex, { plans });
   };
 
   const removePlan = questionIndex => planIndex => (event) => {
@@ -53,7 +43,7 @@ function AllPlans(props) {
     setDeleteIndexes({
       questionIndex,
       planIndex,
-      showNumber: questions[questionIndex].planStartIndex + planIndex,
+      showNumber: props.questions[questionIndex].planStartIndex + planIndex,
     });
   };
 
@@ -67,9 +57,9 @@ function AllPlans(props) {
     if(!confirm) {
       return;
     }
-    const plans = questions[questionIndex].plans || [];
+    const plans = props.questions[questionIndex].plans || [];
     plans.splice(planIndex, 1);
-    updateQuestion(questionIndex, { plans });
+    props.updateQuestion(questionIndex, { plans });
   };
 
   return (
@@ -83,7 +73,7 @@ function AllPlans(props) {
         </Typography>
 
         {
-          questions.map((q, index) => <Scene
+          props.questions.map((q, index) => <Scene
             q={q}
             index={index}
             history={props.history}
@@ -120,7 +110,7 @@ function AllPlans(props) {
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
             <Button
               component="a"
-              href={`/creer/4-a-votre-caméra`}
+              href={`/creer/4-a-votre-camera`}
               color="secondary"
               onClick={handleNext}
               variant="contained"
@@ -133,7 +123,7 @@ function AllPlans(props) {
         <Hidden mdUp>
           <Button
             component="a"
-            href={`/creer/4-a-votre-caméra`}
+            href={`/creer/4-a-votre-camera`}
             color="secondary"
             onClick={handleNext}
             variant="contained"
@@ -151,6 +141,8 @@ AllPlans.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
+  questions: PropTypes.array.isRequired,
+  updateQuestion: PropTypes.func.isRequired,
 };
 
 export default withRouter(AllPlans);

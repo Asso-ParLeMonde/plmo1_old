@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
+import qs from "query-string";
 import {
   Stepper,
   Step,
@@ -51,17 +52,21 @@ const StyleMobileStepper = withStyles(theme => ({
 
 function Steps(props) {
   const [ isNewPage, setIsNewPage ] = useState(false);
+  const [ isDrawPage, setIsDrawPage ] = useState(false);
 
   useEffect(() => {
-    setIsNewPage(props.location.pathname.indexOf("new") !== -1
-      || props.location.pathname.indexOf("edit") !== -1
-      || props.location.pathname.indexOf("draw") !== -1);
+    setIsNewPage(props.location.pathname.indexOf("new") !== -1 || props.location.pathname.indexOf("edit") !== -1);
+    setIsDrawPage(props.location.pathname.indexOf("draw") !== -1);
   }, [props.location]);
 
   const handleBack = index => event => {
     event.preventDefault();
     if (index < 0) {
       props.history.push("/creer");
+    } else if (index === 2 && isDrawPage) {
+      const questionIndex = parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).question) || 0;
+      const planIndex = parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).plan) || 0;
+      props.history.push(`/creer/3-storyboard-et-plan-de-tournage/edit?question=${questionIndex}&plan=${planIndex}`);
     } else if (index < props.activeStep || (index === props.activeStep && isNewPage)) {
       props.history.push(steps[index].back);
     }
@@ -84,7 +89,7 @@ function Steps(props) {
         position="top"
         activeStep={props.activeStep}
         backButton={
-          <Button size="medium" onClick={handleBack(isNewPage ? props.activeStep : props.activeStep - 1)} className="back-button">
+          <Button size="medium" onClick={handleBack((isNewPage || isDrawPage) ? props.activeStep : props.activeStep - 1)} className="back-button">
             <KeyboardArrowLeft />
             Retour
           </Button>

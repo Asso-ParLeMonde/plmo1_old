@@ -7,7 +7,17 @@ import { Autocomplete } from "@material-ui/lab";
 import languages from "../../Languages/components/iso_languages.json";
 
 function ChooseLanguages(props) {
-  function countryToFlag(isoCode) {
+  const sortedLanguages = () => {
+    return languages.filter(l => props.allowLanguages.includes(l.code)) || [];
+  };
+
+  const defaultValue = () => {
+    if (props.defaultLanguage) {
+      return languages.find(l => l.code === props.defaultLanguage);
+    }
+  };
+
+  const countryToFlag = isoCode => {
     return typeof String.fromCodePoint !== "undefined"
       ? isoCode
           .toUpperCase()
@@ -15,25 +25,29 @@ function ChooseLanguages(props) {
             String.fromCodePoint(char.charCodeAt(0) + 127397)
           )
       : isoCode;
-  }
+  };
 
-  function onTagsChange(_, selectedOption) {
+  const onTagsChange = (_, selectedOption) => {
     props.handleChange(selectedOption);
-  }
+  };
 
   return (
     <React.Fragment>
       <Autocomplete
-        options={languages}
+        options={
+          props.allowLanguages !== undefined ? sortedLanguages() : languages
+        }
         getOptionLabel={option => option.name}
+        defaultValue={defaultValue()}
         onChange={onTagsChange}
+        style={{ marginBottom: 8 }}
         renderOption={option => (
           <React.Fragment>
             {`${countryToFlag(option.code)} ${option.name} (${option.code})`}
           </React.Fragment>
         )}
         renderInput={params => (
-          <TextField {...params} label="Choix du pays" fullWidth />
+          <TextField {...params} label="Choix de la langue" fullWidth />
         )}
       />
     </React.Fragment>
@@ -41,6 +55,8 @@ function ChooseLanguages(props) {
 }
 
 ChooseLanguages.propTypes = {
+  allowLanguages: PropTypes.array,
+  defaultLanguage: PropTypes.string,
   handleChange: PropTypes.func.isRequired
 };
 

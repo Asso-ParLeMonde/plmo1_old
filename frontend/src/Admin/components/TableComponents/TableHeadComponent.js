@@ -33,6 +33,9 @@ function TableHeadComponent(props) {
         case "LANGUAGE":
           titles = ["Id", "Intitulé", "Valeur"];
           break;
+      case "QUESTION":
+        titles = ["Id", "Langue", "Question", "Scénario"];
+        break;
     }
 
     return titles;
@@ -57,7 +60,7 @@ function TableHeadComponent(props) {
 }
 
 TableHeadComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "LANGUAGE"]).isRequired
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"]).isRequired
 };
 
 export default TableHeadComponent;

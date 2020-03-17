@@ -5,6 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 
 import Languages from "./Languages";
+import Questions from "./Questions";
 import Scenarios from "./Scenarios";
 import Themes from "./Themes";
 import Navbar from "../components/Navbar";
@@ -29,6 +30,10 @@ const tabs = [
     path: "/admin/scenarios"
   },
   {
+    label: "Questions",
+    path: "/admin/questions"
+  },
+  {
     label: "Langues",
     path: "/admin/languages"
   }
@@ -47,7 +52,7 @@ function Admin() {
       }}
     >
       <Navbar
-        title={"Administrateur : Par le monde"}
+        title={"Administrateur : Par Le monde"}
         tabs={[
           {
             label: "App",
@@ -72,6 +77,7 @@ function Admin() {
                 <Switch>
                   <Route path="/admin/themes" component={Themes} />
                   <Route path="/admin/scenarios" component={Scenarios} />
+                  <Route path="/admin/questions" component={Questions} />
                   <Route path="/admin/languages" component={Languages} />
                   <Redirect exact from="/admin" to="admin/themes" />
                 </Switch>
