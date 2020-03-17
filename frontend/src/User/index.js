@@ -14,6 +14,7 @@ import Videos from "./Videos";
 import Login from "./Login";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
+import NotFound from "./404";
 
 // logos
 import { ReactComponent as CreateLogo } from "../images/create.svg";
@@ -80,7 +81,7 @@ function User() {
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/reset-password" component={ResetPassword} />
-              <Route path="*">404 not found!</Route>
+              <Route path="*" component={NotFound}/>
             </Switch>
           </ThemesServiceProvider>
         </Container>
