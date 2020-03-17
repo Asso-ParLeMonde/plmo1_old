@@ -1,10 +1,10 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { School } from "./school";
 
-export enum Type {
-  CLASS = "class",
-  ADMIN = "admin",
-  PLMO_ADMIN = "plmo_admin",
+export enum UserType {
+  CLASS = 0,
+  ADMIN = 1,
+  PLMO_ADMIN = 2,
 }
 
 @Entity()
@@ -21,14 +21,14 @@ export class User {
   @Column({ type: "varchar", length: 50 })
   public managerFirstName: string;
 
-  @Column({ type: "varchar", length: 150 })
+  @Column({ type: "varchar", length: 150, unique: true })
   public mail: string;
 
   @Column({ type: "varchar", length: 50 })
   public level: string;
 
-  @Column({ type: "varchar", length: 50 })
-  public name: string;
+  @Column({ type: "varchar", length: 50, unique: true })
+  public pseudo: string;
 
   @ManyToOne(
     () => School,
@@ -36,16 +36,26 @@ export class User {
   )
   public school: School;
 
+  @Column({ default: 0 })
+  public accountRegistration: number;
+
   @Column({ type: "varchar", length: 95 })
   public passwordHash: string;
 
-  /*@Column({ type: "varchar", length: 50 })
-  public verificationHash: string;*/
+  @Column({ type: "varchar", length: 95 })
+  public verificationHash: string;
 
   @Column({
     type: "enum",
-    enum: Type,
-    default: "class",
+    enum: UserType,
+    default: 0,
   })
-  type: Type;
+  type: UserType;
+
+  public userWithoutPassword(): User {
+    delete this.passwordHash;
+    delete this.verificationHash;
+    delete this.accountRegistration;
+    return this;
+  }
 }
