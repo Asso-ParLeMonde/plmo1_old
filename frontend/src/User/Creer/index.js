@@ -12,11 +12,11 @@ function Creer() {
   return (
     <ProjectServiceProvider>
       <Switch>
-        <Route path="/creer/1-choix-du-scenario" component={Partie1} />
-        <Route path="/creer/2-choix-des-questions" component={Partie2} />
-        <Route path="/creer/3-storyboard-et-plan-de-tournage" component={Partie3} />
-        <Route path="/creer/4-a-votre-camera" component={Partie4} />
-        <Route path="/creer" component={Theme} />
+        <Route path="/create/1-scenario-choice" component={Partie1} />
+        <Route path="/create/2-questions-choice" component={Partie2} />
+        <Route path="/create/3-storyboard-and-filming-schedule" component={Partie3} />
+        <Route path="/create/4-to-your-camera" component={Partie4} />
+        <Route path="/create" component={Theme} />
       </Switch>
     </ProjectServiceProvider>
   )

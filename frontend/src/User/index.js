@@ -27,12 +27,12 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 const userTabs = [
   {
     label: "Créer",
-    path: "/creer",
+    path: "/create",
     icon: <CreateLogo />
   },
   {
     label: "Mes vidéos",
-    path: "/mes-videos",
+    path: "/my-videos",
     icon: <MoviesLogo />
   },
   {
@@ -50,7 +50,7 @@ const userTabs = [
 const defaultTabs = [
   {
     label: "Créer",
-    path: "/creer",
+    path: "/create",
     icon: <CreateLogo />
   },
   {
@@ -72,9 +72,9 @@ function User() {
         <Container maxWidth="lg">
           <ThemesServiceProvider isPublished={true}>
             <Switch>
-              <Route path="/creer" component={Creer} />
-              <Redirect exact from="/" to="/creer" />
-              <Route path="/mes-videos" component={Videos} />
+              <Route path="/create" component={Creer} />
+              <Redirect exact from="/" to="/create" />
+              <Route path="/my-videos" component={Videos} />
               <Route path="/inspiration" component={Inspiration} />
               <Route path="/settings" component={Reglages} />
               <Route path="/login" component={Login} />

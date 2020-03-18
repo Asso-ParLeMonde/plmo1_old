@@ -14,6 +14,7 @@ const getInitialState = () => {
       themeId: null,
       themeName: '',
       scenarioId: null,
+      scenarioName: '',
       languageCode: 'fr',
       questions: [],
     },

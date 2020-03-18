@@ -17,7 +17,7 @@ function Partie4(props) {
 
   const handleHome = (event) => {
     event.preventDefault();
-    props.history.push("/creer");
+    props.history.push("/create");
   };
 
   return (
@@ -27,7 +27,7 @@ function Partie4(props) {
           <React.Fragment>
             <Hidden smDown>
               <Breadcrumbs separator={<NavigateNextIcon fontSize="small"/>} aria-label="breadcrumb">
-                <Link color="inherit" href="/creer" onClick={handleHome}>
+                <Link color="inherit" href="/create" onClick={handleHome}>
                   Tout les thèmes
                 </Link>
                 <Typography color="textPrimary">{project.themeName}</Typography>
@@ -57,7 +57,7 @@ function Partie4(props) {
               <div className="text-center">
                 <QRCode
                   size={192}
-                  value="https://par-le-monde-1.herokuapp.com/creer/4-a-votre-camera"/>
+                  value="https://par-le-monde-1.herokuapp.com/create/4-to-your-camera"/>
               </div>
             </div>
           </React.Fragment>

@@ -19,7 +19,7 @@ function Partie3(props) {
 
   const handleHome = (event) => {
     event.preventDefault();
-    props.history.push("/creer");
+    props.history.push("/create");
   };
 
   const updateQuestion = (index, newQuestion) => {
@@ -36,7 +36,7 @@ function Partie3(props) {
           <React.Fragment>
             <Hidden smDown>
               <Breadcrumbs separator={<NavigateNextIcon fontSize="small"/>} aria-label="breadcrumb">
-                <Link color="inherit" href="/creer" onClick={handleHome}>
+                <Link color="inherit" href="/create" onClick={handleHome}>
                   Tout les thèmes
                 </Link>
                 <Typography color="textPrimary">{project.themeName}</Typography>
@@ -46,11 +46,11 @@ function Partie3(props) {
             <Steps activeStep={2}/>
 
             <Switch>
-              <Route path="/creer/3-storyboard-et-plan-de-tournage/edit"
+              <Route path="/create/3-storyboard-and-filming-schedule/edit"
                      render={() => <EditPlan questions={questions} updateQuestion={updateQuestion} />} />
-              <Route path="/creer/3-storyboard-et-plan-de-tournage/draw"
+              <Route path="/create/3-storyboard-and-filming-schedule/draw"
                      render={() => <DrawPlan questions={questions} updateQuestion={updateQuestion} />} />
-              <Route path="/creer/3-storyboard-et-plan-de-tournage"
+              <Route path="/create/3-storyboard-and-filming-schedule"
                      render={() => <AllPlans questions={questions} updateQuestion={updateQuestion} />} />
             </Switch>
 
