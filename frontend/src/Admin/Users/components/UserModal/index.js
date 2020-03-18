@@ -7,11 +7,11 @@ import { updateUser } from "../userRequest";
 
 const DEFAULT_USER = {
   id: undefined,
-  names: {
-    fr: ""
-  },
-  image: undefined,
-  published: undefined
+  languageCode: undefined,
+  lastName: undefined,
+  firstName: undefined,
+  mail: undefined,
+  type: undefined
 };
 
 function UserModal(props) {
@@ -27,21 +27,7 @@ function UserModal(props) {
   function handleChange(enumCase, event) {
     switch (enumCase) {
       default:
-        break;
-      case "NAME":
-        setNewUser({
-          ...newUser,
-          names: {
-            ...newUser.names,
-            [event.target.id]: event.target.value
-          }
-        });
-        break;
-      case "IMAGE":
-        setNewUser({
-          ...newUser,
-          image: event.target.files[0]
-        });
+        console.log(event);
         break;
     }
   }

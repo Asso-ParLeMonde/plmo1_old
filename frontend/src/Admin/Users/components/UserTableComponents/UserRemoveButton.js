@@ -20,8 +20,8 @@ function UserRemoveButton(props) {
     await handleRequest(
       props.user,
       setRes,
-      "Success lors de la suppression du utilisateur",
-      "Erreur lors de la suppression du utilisateur",
+      "Success lors de la suppression de l'utilisateur",
+      "Erreur lors de la suppression de l'utilisateur",
       props.history,
       updateUsers
     );
