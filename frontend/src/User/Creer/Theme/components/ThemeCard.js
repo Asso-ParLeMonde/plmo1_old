@@ -39,12 +39,12 @@ function ThemeCard(props) {
     updateProject({
       themeId: props.themeId,
     });
-    props.history.push(`/creer/1-choix-du-scenario`);
+    props.history.push(`/create/1-scenario-choice`);
   };
 
   return (
     <a className="theme-card-button"
-       href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
+       href={`/create/1-scenario-choice?themeId=${props.themeId}`}
        onClick={handleSelect}
     >
       <Paper className="theme-card-paper">

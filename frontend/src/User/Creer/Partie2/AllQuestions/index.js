@@ -17,12 +17,12 @@ function AllQuestions(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/2-choix-des-questions/new`);
+    props.history.push(`/create/2-questions-choice/new`);
   };
 
   const handleNext = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage`);
+    props.history.push(`/create/3-storyboard-and-filming-schedule`);
   };
 
   return (
@@ -37,7 +37,7 @@ function AllQuestions(props) {
         <Button
           component="a"
           variant="outlined"
-          href={`/creer/2-choix-des-questions/new`}
+          href={`/create/2-questions-choice/new`}
           color="secondary"
           onClick={handleBack}
           style={{ textTransform: "none", fontWeight: "500", marginTop: "2rem" }}>
@@ -48,7 +48,7 @@ function AllQuestions(props) {
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
             <Button
               component="a"
-              href={`/creer/3-storyboard-et-plan-de-tournage`}
+              href={`/create/3-storyboard-and-filming-schedule`}
               color="secondary"
               onClick={handleNext}
               variant="contained"
@@ -61,7 +61,7 @@ function AllQuestions(props) {
         <Hidden mdUp>
           <Button
             component="a"
-            href={`/creer/3-storyboard-et-plan-de-tournage`}
+            href={`/create/3-storyboard-and-filming-schedule`}
             color="secondary"
             onClick={handleNext}
             variant="contained"

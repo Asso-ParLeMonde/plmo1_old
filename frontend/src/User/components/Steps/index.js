@@ -16,19 +16,19 @@ import "./steps.css";
 
 const steps = [{
   name: "Choix du scénario",
-  back: "/creer/1-choix-du-scenario",
+  back: "/create/1-scenario-choice",
 }, {
   name: "Choix des questions",
-  back: "/creer/2-choix-des-questions",
+  back: "/create/2-questions-choice",
 }, {
   name: "Storyboard et plan de tournage",
-  back: "/creer/3-storyboard-et-plan-de-tournage",
+  back: "/create/3-storyboard-and-filming-schedule",
 }, {
   name: "A votre caméra !",
-  back: "/creer",
+  back: "/create",
 }, {
   name: "Résultat final",
-  back: "/creer",
+  back: "/create",
 }
 ];
 
@@ -62,11 +62,11 @@ function Steps(props) {
   const handleBack = index => event => {
     event.preventDefault();
     if (index < 0) {
-      props.history.push("/creer");
+      props.history.push("/create");
     } else if (index === 2 && isDrawPage) {
       const questionIndex = parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).question) || 0;
       const planIndex = parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).plan) || 0;
-      props.history.push(`/creer/3-storyboard-et-plan-de-tournage/edit?question=${questionIndex}&plan=${planIndex}`);
+      props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`);
     } else if (index < props.activeStep || (index === props.activeStep && isNewPage)) {
       props.history.push(steps[index].back);
     }

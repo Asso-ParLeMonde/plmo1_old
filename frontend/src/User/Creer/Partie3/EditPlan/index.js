@@ -26,7 +26,7 @@ function EditPlan(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push("/creer/3-storyboard-et-plan-de-tournage");
+    props.history.push("/create/3-storyboard-and-filming-schedule");
   };
 
   const handleDescriptionChange = (event) => {
@@ -149,7 +149,7 @@ function EditPlan(props) {
               variant="contained"
               color="secondary"
               style={{ margin: "0 1rem 3rem 0" }}
-              href="/creer/3-storyboard-et-plan-de-tournage"
+              href="/create/3-storyboard-and-filming-schedule"
               onClick={handleBack}
             >
               Continuer
@@ -162,7 +162,7 @@ function EditPlan(props) {
             variant="contained"
             color="secondary"
             style={{ margin: "3rem 0", width: "100%" }}
-            href={`/creer/3-storyboard-et-plan-de-tournage`}
+            href={`/create/3-storyboard-and-filming-schedule`}
             onClick={handleBack}
           >
             Continuer

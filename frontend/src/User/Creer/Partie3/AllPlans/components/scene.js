@@ -20,7 +20,7 @@ function Scene(props) {
 
   const handleClick = (planIndex) => (event) => {
     event.preventDefault();
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/edit?question=${props.index}&plan=${planIndex}`)
+    props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${props.index}&plan=${planIndex}`)
   };
 
   return (

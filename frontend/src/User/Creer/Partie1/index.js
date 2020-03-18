@@ -33,12 +33,12 @@ function Partie1(props) {
 
   const handleHome = event => {
     event.preventDefault();
-    props.history.push("/creer");
+    props.history.push("/create");
   };
 
   const handleBack = event => {
     event.preventDefault();
-    props.history.push(`/creer/1-choix-du-scenario?themeId=${project.themeId}`);
+    props.history.push(`/create/1-scenario-choice?themeId=${project.themeId}`);
   };
 
   return (
@@ -50,13 +50,13 @@ function Partie1(props) {
               separator={<NavigateNextIcon fontSize="small" />}
               aria-label="breadcrumb"
             >
-              <Link color="inherit" href="/creer" onClick={handleHome}>
+              <Link color="inherit" href="/create" onClick={handleHome}>
                 Tout les thèmes
               </Link>
               {isNewScenario && (
                 <Link
                   color="inherit"
-                  href={`/creer/1-choix-du-scenario?themeId=${project.themeId}`}
+                  href={`/create/1-scenario-choice?themeId=${project.themeId}`}
                   onClick={handleBack}
                 >
                   {project.themeName}
@@ -72,13 +72,13 @@ function Partie1(props) {
 
           <Switch>
             <Route
-              path="/creer/1-choix-du-scenario/new"
+              path="/create/1-scenario-choice/new"
               render={props => (
                 <NewScenario {...props} themeId={project.themeId} />
               )}
             />
             <Route
-              path="/creer/1-choix-du-scenario/"
+              path="/create/1-scenario-choice/"
               render={props => (
                 <AllScenarios
                   {...props}

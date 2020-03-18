@@ -39,7 +39,7 @@ function NewScenario(props) {
         });
         if (response.status === 200) {
           updateProject({ scenarioId: response.data.id });
-          props.history.push(`/creer/2-choix-des-questions`);
+          props.history.push(`/create/2-questions-choice`);
         }
       } catch (e) {
         // TODO afficher notif d'erreur
@@ -64,7 +64,7 @@ function NewScenario(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/1-choix-du-scenario`);
+    props.history.push(`/create/1-scenario-choice`);
   };
 
   return (
@@ -124,7 +124,7 @@ function NewScenario(props) {
                 variant="outlined"
                 color="secondary"
                 style={{ marginRight: "1rem" }}
-                href={`/creer/1-choix-du-scenario?themeId=${props.themeId}`}
+                href={`/create/1-scenario-choice?themeId=${props.themeId}`}
                 onClick={handleBack}
               >
                 Annuler

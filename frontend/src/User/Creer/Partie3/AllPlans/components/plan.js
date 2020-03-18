@@ -29,7 +29,7 @@ function Plan(props) {
     <div className="plan-button-container" key={props.planIndex}>
       <ButtonBase
         component="a"
-        href={`/creer/3-storyboard-et-plan-de-tournage/edit?question=${props.questionIndex}&plan=${props.planIndex}`}
+        href={`/create/3-storyboard-and-filming-schedule/edit?question=${props.questionIndex}&plan=${props.planIndex}`}
         onClick={props.handleClick}
         style={buttonStyle}
       >
