@@ -42,7 +42,7 @@ export class User {
   @Column({ type: "varchar", length: 95 })
   public passwordHash: string;
 
-  @Column({ type: "varchar", length: 95 })
+  @Column({ type: "varchar", length: 95, default: "" })
   public verificationHash: string;
 
   @Column({
