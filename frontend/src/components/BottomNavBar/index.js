@@ -24,7 +24,7 @@ function BottomNavBar(props) {
 
   useEffect(() => {
     const index = props.tabs.reduce(
-      (i1, tab, i2) => (tab.path === props.location.pathname ? i2 : i1),
+      (i1, tab, i2) => (tab.path.split('/')[1] === props.location.pathname.split('/')[1] ? i2 : i1),
       -1
     );
     setActiveTab(index + 1);
