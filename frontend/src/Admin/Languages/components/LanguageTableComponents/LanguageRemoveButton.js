@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { axiosRequest } from "../../../components/axiosRequest";
+import { axiosRequest } from "../../../../components/axiosRequest";
 
 function LanguageRemoveButton(props) {
   const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;

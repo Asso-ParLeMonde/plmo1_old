@@ -9,7 +9,7 @@ import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
 import ScenarioSelector from "./components/ScenarioSelector";
 import { Card, CardContent, Typography } from "@material-ui/core";
-import { axiosRequest } from "../components/axiosRequest";
+import { axiosRequest } from "../../components/axiosRequest";
 
 export const QuestionsContext = React.createContext(undefined);
 

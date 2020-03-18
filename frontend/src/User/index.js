@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext} from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
 import Navbar from "../components/Navbar";
 import BottomNavBar from "../components/BottomNavBar";
 import { ThemesServiceProvider } from "../services/ThemesService";
+import { UserServiceContext } from "../services/UserService";
 
 // routes
 import Creer from "./Creer";
@@ -59,13 +60,11 @@ const defaultTabs = [
   }
 ];
 
-const UserServiceContext = React.createContext(undefined, undefined);
-
 function User() {
-  const [user, setUser] = useState({});
+  const { user } = useContext(UserServiceContext);
 
   return (
-    <UserServiceContext.Provider value={{ user, setUser }}>
+    <React.Fragment>
       <Hidden smDown>
         <Navbar title={"Par Le monde"} tabs={user === null ? defaultTabs : userTabs} homeLink="/" />
       </Hidden>
@@ -89,7 +88,7 @@ function User() {
       <Hidden mdUp>
         <BottomNavBar tabs={user === null ? defaultTabs : userTabs} />
       </Hidden>
-    </UserServiceContext.Provider>
+    </React.Fragment>
   );
 }
 

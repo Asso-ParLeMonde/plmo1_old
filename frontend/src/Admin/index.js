@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,7 @@ import Navbar from "../components/Navbar";
 import AdminDrawer from "./components/AdminDrawer";
 import { ThemesServiceProvider } from "../services/ThemesService";
 import { ScenariosServiceProvider } from "../services/ScenariosService";
+import { UserServiceContext } from "../services/UserService";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -40,7 +41,16 @@ const tabs = [
 ];
 
 function Admin() {
+  const { user, isLoggedIn } = useContext(UserServiceContext);
   const classes = useStyles();
+
+  if (!isLoggedIn()) {
+    return <Redirect to="/login?redirect=/admin" />;
+  }
+
+  if (user.type < 1) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div

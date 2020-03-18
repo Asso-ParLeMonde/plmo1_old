@@ -1,4 +1,4 @@
-import { axiosRequest } from "../../components/axiosRequest";
+import { axiosRequest } from "../../../components/axiosRequest";
 
 async function themeImagePOSTRequest(newTheme, requestedThemeId, setRes) {
   const bodyFormData = new FormData();

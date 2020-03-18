@@ -6,6 +6,7 @@ import { User } from "../entities/user";
 import { Controller, post } from "./controller";
 import { logger } from "../utils/logger";
 import { generateTemporaryPassword, isPasswordValid } from "../utils/utils";
+import { AppError, ErrorCode } from "../middlewares/handleErrors";
 
 const secret: string = process.env.APP_SECRET || "";
 
@@ -27,7 +28,7 @@ export class LoginController extends Controller {
       where: [{ mail: username }, { pseudo: username }],
     });
     if (user === undefined) {
-      throw new Error("Invalid username");
+      throw new AppError("Invalid username", ErrorCode.INVALID_USERNAME);
     }
     let isPasswordCorrect: boolean = false;
     try {
@@ -37,13 +38,13 @@ export class LoginController extends Controller {
     }
 
     if (user.accountRegistration >= 3) {
-      throw new Error("Account blocked. Please reset password");
+      throw new AppError("Account blocked. Please reset password", ErrorCode.ACCOUNT_BLOCKED);
     }
 
     if (!isPasswordCorrect) {
       user.accountRegistration += 1;
       await getRepository(User).save(user);
-      throw new Error("Invalid password");
+      throw new AppError("Invalid password", ErrorCode.INVALID_PASSWORD);
     } else {
       user.accountRegistration = 0;
       await getRepository(User).save(user);
@@ -60,7 +61,7 @@ export class LoginController extends Controller {
       where: { mail },
     });
     if (user === undefined) {
-      throw new Error("Invalid email");
+      throw new AppError("Invalid email", ErrorCode.INVALID_USERNAME);
     }
 
     const temporaryPassword = generateTemporaryPassword(12);
@@ -85,7 +86,7 @@ export class LoginController extends Controller {
       where: { mail },
     });
     if (user === undefined) {
-      throw new Error("Invalid email");
+      throw new AppError("Invalid email", ErrorCode.INVALID_USERNAME);
     }
 
     // verify token
@@ -97,13 +98,13 @@ export class LoginController extends Controller {
       logger.error(JSON.stringify(e));
     }
     if (!isverifyTokenCorrect) {
-      throw new Error("Invalid reset token");
+      throw new AppError("Invalid reset token", ErrorCode.INVALID_PASSWORD);
     }
 
     // update password
     const password = req.body.password;
     if (!isPasswordValid(password)) {
-      throw new Error("Invalid password");
+      throw new AppError("Invalid password", ErrorCode.PASSWORD_NOT_STRONG);
     }
     user.passwordHash = await argon2.hash(password);
     user.accountRegistration = 0;
