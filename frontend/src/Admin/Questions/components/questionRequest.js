@@ -1,4 +1,4 @@
-import { axiosRequest } from "../../components/axiosRequest";
+import { axiosRequest } from "../../../components/axiosRequest";
 
 async function postQuestion(newQuestion, setRes) {
   const request = await axiosRequest({
