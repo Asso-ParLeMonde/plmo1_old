@@ -7,7 +7,7 @@ const ThemesServiceContext = React.createContext(undefined, undefined);
 function ThemesServiceProvider({ children, isPublished }) {
   const [getThemes, setGetThemes] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });

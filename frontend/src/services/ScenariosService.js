@@ -7,7 +7,7 @@ const ScenariosServiceContext = React.createContext(undefined, undefined);
 function ScenariosServiceProvider({ children, isDefault }) {
   const [getScenarios, setGetScenarios] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });

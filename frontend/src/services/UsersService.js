@@ -7,7 +7,7 @@ const UsersServiceContext = React.createContext(undefined, undefined);
 function UsersServiceProvider({ children }) {
   const [getUsers, setGetUsers] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });
