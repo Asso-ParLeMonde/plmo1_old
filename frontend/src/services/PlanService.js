@@ -1,4 +1,4 @@
-import {axiosRequest} from "../Admin/components/axiosRequest";
+import {axiosRequest} from "../components/axiosRequest";
 
 export async function uploadTemporaryImage(imageBlob) {
   const bodyFormData = new FormData();

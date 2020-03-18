@@ -7,6 +7,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import Admin from "./Admin";
 import User from "./User";
 import { LanguagesServiceProvider } from "./services/LanguagesService";
+import { UserServiceProvider } from "./services/UserService";
 
 const theme = createMuiTheme({
   palette: {
@@ -59,15 +60,17 @@ function App() {
   return (
     <React.Fragment>
       <ThemeProvider theme={theme}>
-        <LanguagesServiceProvider>
-          <CssBaseline />
-            <BrowserRouter>
-              <Switch>
-                <Route path="/admin" component={Admin} />
-                <Route path="/" component={User} />
-              </Switch>
-            </BrowserRouter>
-        </LanguagesServiceProvider>
+        <UserServiceProvider>
+          <LanguagesServiceProvider>
+            <CssBaseline />
+              <BrowserRouter>
+                <Switch>
+                  <Route path="/admin" component={Admin} />
+                  <Route path="/" component={User} />
+                </Switch>
+              </BrowserRouter>
+          </LanguagesServiceProvider>
+        </UserServiceProvider>
       </ThemeProvider>
     </React.Fragment>
   );

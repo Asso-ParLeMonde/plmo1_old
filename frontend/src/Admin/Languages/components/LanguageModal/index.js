@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
-import { axiosRequest } from "../../../components/axiosRequest";
+import { axiosRequest } from "../../../../components/axiosRequest";
 
 function LanguageModal(props) {
   const [newLanguage, setNewLanguage] = useState(

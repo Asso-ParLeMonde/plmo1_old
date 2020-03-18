@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { axiosRequest } from "../Admin/components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
 
 const ThemesServiceContext = React.createContext(undefined, undefined);
 
