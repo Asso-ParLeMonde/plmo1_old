@@ -6,11 +6,17 @@ import Navbar from "../components/Navbar";
 import BottomNavBar from "../components/BottomNavBar";
 import { ThemesServiceProvider } from "../services/ThemesService";
 
+// routes
 import Creer from "./Creer";
+import Inspiration from "./Inspiration";
+import Reglages from "./Reglages";
+import Videos from "./Videos";
 import Login from "./Login";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
+import NotFound from "./404";
 
+// logos
 import { ReactComponent as CreateLogo } from "../images/create.svg";
 import { ReactComponent as MoviesLogo } from "../images/movies.svg";
 import { ReactComponent as LightLogo } from "../images/light.svg";
@@ -25,7 +31,7 @@ const userTabs = [
   },
   {
     label: "Mes vidéos",
-    path: "/my-movies",
+    path: "/mes-videos",
     icon: <MoviesLogo />
   },
   {
@@ -69,10 +75,13 @@ function User() {
             <Switch>
               <Route path="/creer" component={Creer} />
               <Redirect exact from="/" to="/creer" />
+              <Route path="/mes-videos" component={Videos} />
+              <Route path="/inspiration" component={Inspiration} />
+              <Route path="/settings" component={Reglages} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/reset-password" component={ResetPassword} />
-              <Route path="*">404 not found!</Route>
+              <Route path="*" component={NotFound}/>
             </Switch>
           </ThemesServiceProvider>
         </Container>
