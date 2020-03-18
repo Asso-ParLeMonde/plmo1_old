@@ -1,10 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { axiosRequest } from "../components/axiosRequest";
+import { UserServiceContext } from "./UserService";
 
 const UsersServiceContext = React.createContext(undefined, undefined);
 
 function UsersServiceProvider({ children }) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [getUsers, setGetUsers] = useState({
     data: null,
     pending: null,
@@ -13,7 +15,7 @@ function UsersServiceProvider({ children }) {
   });
 
   const updateUsers = useCallback(async () => {
-    const usersRequest = await axiosRequest({
+    const usersRequest = await axiosLoggedRequest({
       method: "GET",
       url: `${process.env.REACT_APP_BASE_APP}/users`
     });
