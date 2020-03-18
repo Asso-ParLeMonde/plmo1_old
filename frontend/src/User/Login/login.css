@@ -1,22 +1,23 @@
-.login-form {
+.login-form, .signup-form {
     width: 400px;
     max-width: 100%;
     display: inline-block;
     margin-bottom: 1.5rem;
 }
 
-.login-form > div, .login-form > button, .login-form > label {
+.login-form > div, .login-form > button, .login-form > label,
+.signup-form > div, .signup-form > button, .signup-form > label {
     margin-top: 1.5rem;
     width: 100%;
     text-align: left;
 }
 
-.login-form > div.text-center {
+.login-form > div.text-center, .signup-form > div.text-center {
     text-align: center;
 }
 
 @media only screen and (max-width: 800px) {
-    .login-form {
+    .login-form, .signup-form {
         width: 100%;
     }
 }

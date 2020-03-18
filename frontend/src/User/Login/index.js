@@ -77,7 +77,7 @@ function Login(props) {
       <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>
         { redirect === "/admin" ? "Connexion à votre compte" : "Connexion à votre compte classe" }
       </Typography>
-      <form className="login-form" noValidate autoComplete="off">
+      <form className="login-form" noValidate>
         {(errorCode === 0 || errorCode === 3) && (
           <Typography variant="caption" color="error">
             {errorMessages[errorCode]}
