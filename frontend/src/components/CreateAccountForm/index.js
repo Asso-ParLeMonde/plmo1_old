@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import PropTypes from "prop-types";
 import {
   TextField,
@@ -29,12 +29,19 @@ export const DEFAULT_USER = {
   pseudo: "",
   schoolId: "",
   level: "",
-  languageCode: "fr",
+  languageCode: "",
   password: "",
   passwordConfirm: "",
+  type: 0, // To be handled by an admin
 };
 
-function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, submit}) {
+export const TYPES = {
+  0: "Classe",
+  1: "Admin",
+  2: "Super Admin !",
+};
+
+function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, buttonLabel}) {
   const { getLanguages } = useContext(LanguagesServiceContext);
   const [showPassword, setShowPassword] = useState(false);
   const languages = (getLanguages.complete && !getLanguages.error) ? getLanguages.data : [];
@@ -57,6 +64,19 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
     event.preventDefault();
     await submit();
   };
+
+  // !!! Fix for bug with select input and default value !!!
+  // Maybe can pre-fill with browser language ?
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setUser({ ...user, languageCode: "fr" });
+    }, 100);
+
+    return () => {
+      clearTimeout(timeout);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <form className="signup-form" noValidate autoComplete={noAutoComplete ? "off" : ""}>
@@ -106,7 +126,7 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
         helperText="Utilisé pour la connection par les élèves"
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="outlined-age-native-simple">École</InputLabel>
+        <InputLabel htmlFor="school">École</InputLabel>
         <Select
           native
           value={user.schoolId === undefined ? "" : user.schoolId}
@@ -145,10 +165,10 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
         )}
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="outlined-age-native-simple">Langue de préférence</InputLabel>
+        <InputLabel htmlFor="languageCode">Langue de préférence</InputLabel>
         <Select
           native
-          value={user.languageCode || ""}
+          value={user.languageCode}
           onChange={handleInputChange("languageCode")}
           label="Langue de préférence"
           inputProps={{
@@ -156,7 +176,6 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
             id: 'languageCode',
           }}
         >
-          <option aria-label="None" value="" />
           {
             languages.map(l => (
               <option value={l.value} key={l.id}>{l.label}</option>
@@ -165,7 +184,27 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
         </Select>
       </FormControl>
 
-      {hideCreatePassword || (
+      {admin ? (
+        <FormControl variant="outlined" color="secondary">
+          <InputLabel htmlFor="type">Type de compte</InputLabel>
+          <Select
+            native
+            value={user.type || 0}
+            onChange={handleInputChange("type")}
+            label="Type de compte"
+            inputProps={{
+              name: 'type',
+              id: 'type',
+            }}
+          >
+            {
+              Object.keys(TYPES).map(typeKey => (
+                <option value={typeKey} key={typeKey}>{TYPES[typeKey]}</option>
+              ))
+            }
+          </Select>
+        </FormControl>
+      ) : (
         <React.Fragment>
           <TextField
             type={showPassword ? 'text' : 'password'}
@@ -218,7 +257,7 @@ function CreateAccountForm({user, setUser, noAutoComplete, hideCreatePassword, s
         </React.Fragment>
       )}
       <Button variant="contained" color="secondary" type="submit" value="Submit" onClick={handleSubmit}>
-        S&apos;inscrire !
+        {buttonLabel}
       </Button>
     </form>
   );
@@ -229,7 +268,8 @@ CreateAccountForm.propTypes = {
   setUser: PropTypes.func,
   submit: PropTypes.func,
   noAutoComplete: PropTypes.bool,
-  hideCreatePassword: PropTypes.bool,
+  admin: PropTypes.bool,
+  buttonLabel: PropTypes.string,
 };
 
 CreateAccountForm.defaultProps = {
@@ -237,7 +277,8 @@ CreateAccountForm.defaultProps = {
   setUser: () => {},
   submit: () => {},
   noAutoComplete: false,
-  hideCreatePassword: false,
+  admin: false,
+  buttonLabel: "S'inscrire !",
 };
 
 export default CreateAccountForm;

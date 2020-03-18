@@ -15,7 +15,7 @@ function Signup(props) {
   return (
     <div className="text-center">
       <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>Création du compte classe</Typography>
-      <CreateAccountForm user={user} setUser={setUser} noAutoComplete/>
+      <CreateAccountForm user={user} setUser={setUser}/>
       <div className="text-center" style={{ marginBottom: "2rem" }}>
         Compte déjà créé ? <Link href="/login" onClick={handleLinkClick("/login")}>Se connecter</Link>
       </div>
