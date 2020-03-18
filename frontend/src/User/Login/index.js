@@ -28,7 +28,7 @@ function Login(props) {
 
   useEffect(() => {
     try {
-      setRedirect(decodeURI(qs.parse(props.location.search, { ignoreQueryPrefix: true }).redirect) || "/");
+      setRedirect(decodeURI(qs.parse(props.location.search, { ignoreQueryPrefix: true }).redirect || "/"));
     } catch (e) {
       setRedirect("/");
     }
@@ -59,7 +59,7 @@ function Login(props) {
   const submit = async (event) => {
     event.preventDefault();
     setErrorCode(-1);
-    const response = await login(user.username, user.password);
+    const response = await login(user.username, user.password, user.localSave);
     if (response.success) {
       props.history.push(redirect);
     } else {

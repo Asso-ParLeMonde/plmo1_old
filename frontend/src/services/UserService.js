@@ -4,18 +4,26 @@ import {axiosRequest} from "../components/axiosRequest";
 
 const UserServiceContext = React.createContext(undefined, undefined);
 
+function getCacheUser() {
+  return JSON.parse(localStorage.getItem("user")) || null;
+}
+function getCacheToken() {
+  return localStorage.getItem("token") || "";
+}
+
 function UserServiceProvider(props) {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState("");
+  const [user, setUser] = useState(getCacheUser());
+  const [token, setToken] = useState(getCacheToken());
 
   /**
    * Login the user with username and password.
    * Return a number 0 -> success or not.
    * @param username
    * @param password
+   * @param localSave
    * @returns {Promise<{success: boolean, errorCode: number}>}
    */
-  const login = async (username, password) => {
+  const login = async (username, password, localSave=false) => {
     const response = await axiosRequest({
       method: "POST",
       baseURL: process.env.REACT_APP_BASE_APP,
@@ -33,6 +41,10 @@ function UserServiceProvider(props) {
     }
     setUser(response.data.user || null);
     setToken(response.data.token || "");
+    if (localSave) {
+      localStorage.setItem("user", JSON.stringify(response.data.user || null));
+      localStorage.setItem("token", response.data.token || "");
+    }
     return {
       success: true,
       errorCode: 0,
