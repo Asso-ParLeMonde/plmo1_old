@@ -19,7 +19,7 @@ function ScenarioCard({title, description, stepNumber, path, scenarioId, history
 
   const handleClick = (event) => {
     event.preventDefault();
-    updateProject({ scenarioId });
+    updateProject({ scenarioId, scenarioName: title });
     history.push(shortPath);
   };
 

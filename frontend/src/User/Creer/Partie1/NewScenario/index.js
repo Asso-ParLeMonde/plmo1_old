@@ -38,7 +38,7 @@ function NewScenario(props) {
           data: newScenario,
         });
         if (response.status === 200) {
-          updateProject({ scenarioId: response.data.id });
+          updateProject({ scenarioId: response.data.id, scenarioName: newScenario.name });
           props.history.push(`/create/2-questions-choice`);
         }
       } catch (e) {
