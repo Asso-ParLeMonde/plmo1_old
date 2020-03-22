@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   TextField,
@@ -8,19 +8,15 @@ import {
   FormHelperText,
   Link,
   InputAdornment,
-  IconButton, Button
+  IconButton,
+  Button,
+  Typography
 } from "@material-ui/core";
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import {LanguagesServiceContext} from "../../services/LanguagesService";
-import {Visibility, VisibilityOff} from "@material-ui/icons";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import { LanguagesServiceContext } from "../../services/LanguagesService";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 
-const frenchClasses = [
-  "CP",
-  "CE1",
-  "CE2",
-  "CM1",
-  "CM2"
-];
+const frenchClasses = ["CP", "CE1", "CE2", "CM1", "CM2"];
 
 export const DEFAULT_USER = {
   managerFirstName: "",
@@ -32,37 +28,95 @@ export const DEFAULT_USER = {
   languageCode: "",
   password: "",
   passwordConfirm: "",
-  type: 0, // To be handled by an admin
+  type: 0 // To be handled by an admin
 };
 
 export const TYPES = {
   0: "Classe",
   1: "Admin",
-  2: "Super Admin !",
+  2: "Super Admin !"
 };
 
-function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, buttonLabel}) {
+// eslint-disable-next-line no-control-regex
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i;
+const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
+
+const checks = {
+  managerFirstName: value => value.length > 0,
+  managerLastName: value => value.length > 0,
+  mail: value => emailRegex.test(value),
+  pseudo: value => value.length > 0,
+  password: value => strongPassword.test(value),
+  passwordConfirm: (value, user) => value === user.password
+};
+
+function CreateAccountForm({
+  user,
+  setUser,
+  noAutoComplete,
+  admin,
+  submit,
+  buttonLabel,
+  slideTop
+}) {
   const { getLanguages } = useContext(LanguagesServiceContext);
   const [showPassword, setShowPassword] = useState(false);
-  const languages = (getLanguages.complete && !getLanguages.error) ? getLanguages.data : [];
+  const [errors, setErrors] = useState({
+    managerFirstName: false,
+    managerLastName: false,
+    mail: false,
+    pseudo: false,
+    password: false,
+    passwordConfirm: false,
+    global: false
+  });
+  const languages =
+    getLanguages.complete && !getLanguages.error ? getLanguages.data : [];
 
-  const handleInputChange = userKey => (event) => {
+  const handleInputChange = userKey => event => {
     event.preventDefault();
     if (userKey === "schoolId") {
       const schoolId = parseInt(event.target.value, 10);
       setUser({ ...user, schoolId: Number.isNaN(schoolId) ? "" : schoolId });
       return;
     }
-    setUser({ ...user, [userKey]: event.target.value })
+    setUser({ ...user, [userKey]: event.target.value });
+    setErrors({ ...errors, [userKey]: false, global: false });
+  };
+
+  const handleInputValidations = userKey => event => {
+    const value = event.target.value || "";
+    setErrors({
+      ...errors,
+      [userKey]: value.length !== 0 && !checks[userKey](value, user)
+    });
   };
 
   const handleToggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
-    await submit();
+    // Check form validity
+    const userKeys = ["managerFirstName", "managerLastName", "mail", "pseudo"];
+    if (!admin) {
+      userKeys.push("password", "passwordConfirm");
+    }
+    let isFormValid = true;
+    for (let userKey of userKeys) {
+      if (!checks[userKey](user[userKey], user)) {
+        isFormValid = false;
+        setErrors(e => ({ ...e, [userKey]: true }));
+      }
+    }
+    if (!isFormValid) {
+      setErrors(e => ({ ...e, global: true }));
+      slideTop();
+      return;
+    }
+
+    await submit(user);
   };
 
   // !!! Fix for bug with select input and default value !!!
@@ -74,12 +128,22 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
 
     return () => {
       clearTimeout(timeout);
-    }
+    };
     // eslint-disable-next-line
   }, []);
 
   return (
-    <form className="signup-form" noValidate autoComplete={noAutoComplete ? "off" : ""}>
+    <form
+      className="signup-form"
+      noValidate
+      autoComplete={noAutoComplete ? "off" : ""}
+    >
+      {errors.global && (
+        <Typography variant="caption" color="error">
+          Votre inscription comporte des erreurs, veuillez les corriger pour
+          continuer.
+        </Typography>
+      )}
       <TextField
         id="firstname"
         name="firstname"
@@ -90,6 +154,8 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
         onChange={handleInputChange("managerFirstName")}
         variant="outlined"
         fullWidth
+        error={errors.managerFirstName}
+        helperText={errors.managerFirstName ? "Requis" : ""}
       />
       <TextField
         id="lastname"
@@ -101,6 +167,8 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
         onChange={handleInputChange("managerLastName")}
         variant="outlined"
         fullWidth
+        error={errors.managerLastName}
+        helperText={errors.managerLastName ? "Requis" : ""}
       />
       <TextField
         id="email"
@@ -110,8 +178,11 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
         label="E-mail du professeur"
         value={user.mail || ""}
         onChange={handleInputChange("mail")}
+        onBlur={handleInputValidations("mail")}
         variant="outlined"
         fullWidth
+        error={errors.mail}
+        helperText={errors.mail ? "Adresse e-mail non valide." : ""}
       />
       <TextField
         id="username"
@@ -123,7 +194,11 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
         onChange={handleInputChange("pseudo")}
         variant="outlined"
         fullWidth
-        helperText="Utilisé pour la connection par les élèves"
+        error={errors.pseudo}
+        helperText={
+          (errors.pseudo ? "Requis | " : "") +
+          "Utilisé pour la connection par les élèves."
+        }
       />
       <FormControl variant="outlined" color="secondary">
         <InputLabel htmlFor="school">École</InputLabel>
@@ -133,22 +208,20 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
           onChange={handleInputChange("schoolId")}
           label="École"
           inputProps={{
-            name: 'school',
-            id: 'school',
+            name: "school",
+            id: "school"
           }}
         >
           <option aria-label="None" value="" />
           <option value={0}>Mon école n&apos;apparait pas dans la liste</option>
         </Select>
-        {
-          user.schoolId === 0 && (
-            <FormHelperText>
-              <Link href="#" target="_blank">
-                Ajouter mon école ?
-              </Link>
-            </FormHelperText>
-          )
-        }
+        {user.schoolId === 0 && (
+          <FormHelperText>
+            <Link href="#" target="_blank">
+              Ajouter mon école ?
+            </Link>
+          </FormHelperText>
+        )}
       </FormControl>
       <Autocomplete
         id="classe"
@@ -161,7 +234,8 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
             value={user.level || ""}
             onChange={handleInputChange("level")}
             variant="outlined"
-            color="secondary" />
+            color="secondary"
+          />
         )}
       />
       <FormControl variant="outlined" color="secondary">
@@ -172,15 +246,15 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
           onChange={handleInputChange("languageCode")}
           label="Langue de préférence"
           inputProps={{
-            name: 'languageCode',
-            id: 'languageCode',
+            name: "languageCode",
+            id: "languageCode"
           }}
         >
-          {
-            languages.map(l => (
-              <option value={l.value} key={l.id}>{l.label}</option>
-            ))
-          }
+          {languages.map(l => (
+            <option value={l.value} key={l.id}>
+              {l.label}
+            </option>
+          ))}
         </Select>
       </FormControl>
 
@@ -193,27 +267,28 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
             onChange={handleInputChange("type")}
             label="Type de compte"
             inputProps={{
-              name: 'type',
-              id: 'type',
+              name: "type",
+              id: "type"
             }}
           >
-            {
-              Object.keys(TYPES).map(typeKey => (
-                <option value={typeKey} key={typeKey}>{TYPES[typeKey]}</option>
-              ))
-            }
+            {Object.keys(TYPES).map(typeKey => (
+              <option value={typeKey} key={typeKey}>
+                {TYPES[typeKey]}
+              </option>
+            ))}
           </Select>
         </FormControl>
       ) : (
         <React.Fragment>
           <TextField
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             color="secondary"
             id="password"
             name="password"
             label="Mot de passe"
             value={user.password || ""}
             onChange={handleInputChange("password")}
+            onBlur={handleInputValidations("password")}
             variant="outlined"
             InputProps={{
               endAdornment: (
@@ -226,18 +301,25 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              ),
+              )
             }}
             fullWidth
+            error={errors.password}
+            helperText={
+              errors.password
+                ? "Mot de passe trop faible. Il doit contenir au moins 8 charactères avec des lettres minuscules, majuscules et des chiffres."
+                : ""
+            }
           />
           <TextField
-            type={showPassword ? 'text' : 'password'}
+            type={showPassword ? "text" : "password"}
             color="secondary"
             id="passwordComfirm"
             name="passwordComfirm"
             label="Confirmer le mot de passe"
             value={user.passwordConfirm || ""}
             onChange={handleInputChange("passwordConfirm")}
+            onBlur={handleInputValidations("passwordConfirm")}
             variant="outlined"
             InputProps={{
               endAdornment: (
@@ -250,13 +332,23 @@ function CreateAccountForm({user, setUser, noAutoComplete, admin, submit, button
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              ),
+              )
             }}
             fullWidth
+            error={errors.passwordConfirm}
+            helperText={
+              errors.passwordConfirm ? "Mots de passe différents." : ""
+            }
           />
         </React.Fragment>
       )}
-      <Button variant="contained" color="secondary" type="submit" value="Submit" onClick={handleSubmit}>
+      <Button
+        variant="contained"
+        color="secondary"
+        type="submit"
+        value="Submit"
+        onClick={handleSubmit}
+      >
         {buttonLabel}
       </Button>
     </form>
@@ -270,6 +362,7 @@ CreateAccountForm.propTypes = {
   noAutoComplete: PropTypes.bool,
   admin: PropTypes.bool,
   buttonLabel: PropTypes.string,
+  slideTop: PropTypes.func
 };
 
 CreateAccountForm.defaultProps = {
@@ -279,6 +372,9 @@ CreateAccountForm.defaultProps = {
   noAutoComplete: false,
   admin: false,
   buttonLabel: "S'inscrire !",
+  slideTop: () => {
+    window.scrollTo(0, 0);
+  }
 };
 
 export default CreateAccountForm;
