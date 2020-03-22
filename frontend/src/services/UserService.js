@@ -25,6 +25,7 @@ function UserServiceProvider(props) {
         message: `Bienvenue ${user.pseudo} !`
       });
     }
+    // eslint-disable-next-line
   }, [token]);
 
   /**
