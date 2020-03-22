@@ -1,6 +1,7 @@
-import React, {useState} from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import {axiosRequest} from "../components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
+import Notifications from "../components/Notifications";
 
 const UserServiceContext = React.createContext(undefined, undefined);
 
@@ -14,6 +15,17 @@ function getCacheToken() {
 function UserServiceProvider(props) {
   const [user, setUser] = useState(getCacheUser());
   const [token, setToken] = useState(getCacheToken());
+  const [res, setRes] = useState({ complete: false });
+
+  useEffect(() => {
+    if (token.length > 0) {
+      setRes({
+        complete: true,
+        error: false,
+        message: `Bienvenue ${user.pseudo} !`
+      });
+    }
+  }, [token]);
 
   /**
    * Login the user with username and password.
@@ -23,20 +35,20 @@ function UserServiceProvider(props) {
    * @param localSave
    * @returns {Promise<{success: boolean, errorCode: number}>}
    */
-  const login = async (username, password, localSave=false) => {
+  const login = async (username, password, localSave = false) => {
     const response = await axiosRequest({
       method: "POST",
       baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login",
       data: {
         username,
-        password,
-      },
+        password
+      }
     });
     if (response.error && response.complete) {
       return {
         success: false,
-        errorCode: response.data.errorCode || 0,
+        errorCode: response.data.errorCode || 0
       };
     }
     setUser(response.data.user || null);
@@ -47,7 +59,36 @@ function UserServiceProvider(props) {
     }
     return {
       success: true,
-      errorCode: 0,
+      errorCode: 0
+    };
+  };
+
+  /**
+   * Signup the user.
+   * Return a number 0 -> success or not.
+   * @param user
+   * @returns {Promise<{success: boolean, errorCode: number}>}
+   */
+  const signup = async user => {
+    const response = await axiosRequest({
+      method: "POST",
+      baseURL: process.env.REACT_APP_BASE_APP,
+      url: "/users",
+      data: {
+        ...user
+      }
+    });
+    if (response.error && response.complete) {
+      return {
+        success: false,
+        errorCode: response.data.errorCode || 0
+      };
+    }
+    setUser(response.data.user || null);
+    setToken(response.data.token || "");
+    return {
+      success: true,
+      errorCode: 0
     };
   };
 
@@ -64,24 +105,27 @@ function UserServiceProvider(props) {
    * @param req
    * @returns {Promise<{data, pending, error, complete}>}
    */
-  const axiosLoggedRequest = async (req) => {
+  const axiosLoggedRequest = async req => {
     return await axiosRequest({
       ...req,
       headers: {
         Authorization: `Bearer ${token}`
-      },
+      }
     });
   };
 
   return (
-    <UserServiceContext.Provider value={{ user, login, isLoggedIn, axiosLoggedRequest }}>
+    <UserServiceContext.Provider
+      value={{ user, login, isLoggedIn, axiosLoggedRequest, signup }}
+    >
       {props.children}
+      <Notifications res={res} />
     </UserServiceContext.Provider>
   );
 }
 
 UserServiceProvider.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export { UserServiceContext, UserServiceProvider };

@@ -24,7 +24,7 @@ export class User {
   @Column({ type: "varchar", length: 150, unique: true })
   public mail: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ type: "varchar", length: 50, default: "" })
   public level: string;
 
   @Column({ type: "varchar", length: 50, unique: true })

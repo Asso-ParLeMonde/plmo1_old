@@ -15,6 +15,7 @@ import {
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { LanguagesServiceContext } from "../../services/LanguagesService";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { axiosRequest } from "../axiosRequest";
 
 const frenchClasses = ["CP", "CE1", "CE2", "CM1", "CM2"];
 
@@ -50,6 +51,18 @@ const checks = {
   passwordConfirm: (value, user) => value === user.password
 };
 
+const isPseudoAvailable = async pseudo => {
+  const response = await axiosRequest({
+    method: "GET",
+    baseURL: process.env.REACT_APP_BASE_APP,
+    url: `/users/test-pseudo/${pseudo}`
+  });
+  if (response.complete && !response.error) {
+    return response.data.available;
+  }
+  return false;
+};
+
 function CreateAccountForm({
   user,
   setUser,
@@ -66,6 +79,7 @@ function CreateAccountForm({
     managerLastName: false,
     mail: false,
     pseudo: false,
+    pseudoNotAvailable: false,
     password: false,
     passwordConfirm: false,
     global: false
@@ -81,15 +95,20 @@ function CreateAccountForm({
       return;
     }
     setUser({ ...user, [userKey]: event.target.value });
-    setErrors({ ...errors, [userKey]: false, global: false });
+    setErrors(e => ({ ...e, [userKey]: false, global: false }));
   };
 
   const handleInputValidations = userKey => event => {
     const value = event.target.value || "";
-    setErrors({
-      ...errors,
+    setErrors(e => ({
+      ...e,
       [userKey]: value.length !== 0 && !checks[userKey](value, user)
-    });
+    }));
+    if (userKey === "pseudo" && value.length !== 0) {
+      isPseudoAvailable(value).then(result => {
+        setErrors(e => ({ ...e, pseudoNotAvailable: !result }));
+      });
+    }
   };
 
   const handleToggleShowPassword = () => {
@@ -110,6 +129,11 @@ function CreateAccountForm({
         setErrors(e => ({ ...e, [userKey]: true }));
       }
     }
+    if (user.pseudo.length !== 0 && !(await isPseudoAvailable(user.pseudo))) {
+      isFormValid = false;
+      setErrors(e => ({ ...e, pseudoNotAvailable: true }));
+    }
+
     if (!isFormValid) {
       setErrors(e => ({ ...e, global: true }));
       slideTop();
@@ -192,12 +216,16 @@ function CreateAccountForm({
         label="Pseudo de la classe"
         value={user.pseudo || ""}
         onChange={handleInputChange("pseudo")}
+        onBlur={handleInputValidations("pseudo")}
         variant="outlined"
         fullWidth
-        error={errors.pseudo}
+        error={errors.pseudo || errors.pseudoNotAvailable}
         helperText={
-          (errors.pseudo ? "Requis | " : "") +
-          "Utilisé pour la connection par les élèves."
+          (errors.pseudo
+            ? "Requis | "
+            : errors.pseudoNotAvailable
+            ? "Pseudo déjà utilisé |"
+            : "") + "Utilisé pour la connection par les élèves."
         }
       />
       <FormControl variant="outlined" color="secondary">
@@ -227,6 +255,7 @@ function CreateAccountForm({
         id="classe"
         freeSolo
         options={frenchClasses}
+        onSelect={handleInputChange("level")}
         renderInput={params => (
           <TextField
             {...params}

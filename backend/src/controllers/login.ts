@@ -51,7 +51,7 @@ export class LoginController extends Controller {
     }
 
     const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send new user
+    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send user
   }
 
   @post({ path: "/reset-password" })
