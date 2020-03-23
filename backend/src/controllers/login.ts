@@ -7,6 +7,7 @@ import { Controller, post } from "./controller";
 import { logger } from "../utils/logger";
 import { generateTemporaryPassword, isPasswordValid } from "../utils/utils";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
+import { sendMail, MailType } from "../emails";
 
 const secret: string = process.env.APP_SECRET || "";
 
@@ -71,6 +72,7 @@ export class LoginController extends Controller {
     await getRepository(User).save(user);
 
     // TODO: send mail with verification password
+    await sendMail(MailType.RESET_PASSWORD);
     res.sendJSON({ success: true });
   }
 
