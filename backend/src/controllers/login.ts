@@ -7,7 +7,7 @@ import { Controller, post } from "./controller";
 import { logger } from "../utils/logger";
 import { generateTemporaryPassword, isPasswordValid } from "../utils/utils";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
-import { sendMail, MailType } from "../emails";
+import { sendMail, Email } from "../emails";
 
 const secret: string = process.env.APP_SECRET || "";
 
@@ -66,13 +66,12 @@ export class LoginController extends Controller {
     }
 
     const temporaryPassword = generateTemporaryPassword(12);
-    logger.info(temporaryPassword); // TODO: remove
     user.verificationHash = await argon2.hash(temporaryPassword);
     user.accountRegistration = 3;
     await getRepository(User).save(user);
 
-    // TODO: send mail with verification password
-    await sendMail(MailType.RESET_PASSWORD);
+    // send mail with verification password
+    await sendMail(Email.RESET_PASSWORD, user.mail, { resetCode: temporaryPassword });
     res.sendJSON({ success: true });
   }
 
