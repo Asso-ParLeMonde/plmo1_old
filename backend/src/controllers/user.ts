@@ -1,10 +1,13 @@
 import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
+import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
 import { User, UserType } from "../entities/user";
 import { Controller, del, get, post, put } from "./controller";
 import { School } from "../entities/school";
 import { isPasswordValid } from "../utils/utils";
+
+const secret: string = process.env.APP_SECRET || "";
 
 async function updateUser(user: User, req: Request): Promise<void> {
   if (req.body.managerFirstName) user.managerFirstName = req.body.managerFirstName;
@@ -49,6 +52,12 @@ export class UserController extends Controller {
     res.sendJSON(user.userWithoutPassword());
   }
 
+  @get({ path: "/test-pseudo/:pseudo" })
+  public async getUserByPseudo(req: Request, res: Response): Promise<void> {
+    const nbUser: number = await getRepository(User).count({ where: { pseudo: req.params.pseudo || "" } });
+    res.sendJSON({ available: nbUser === 0 });
+  }
+
   @post()
   public async addUser(req: Request, res: Response): Promise<void> {
     const password = req.body.password;
@@ -62,7 +71,9 @@ export class UserController extends Controller {
       user.type = req.body.type;
     }
     await updateUser(user, req);
-    res.sendJSON(user.userWithoutPassword());
+
+    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send user
   }
 
   @put({ path: "/:id", userType: UserType.CLASS })
