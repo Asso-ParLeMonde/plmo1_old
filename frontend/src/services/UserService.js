@@ -123,6 +123,35 @@ function UserServiceProvider(props) {
   };
 
   /**
+   * Verifies the user email.
+   * Return a number 0 -> success or not.
+   * @param user
+   * @returns {Promise<{success: boolean, errorCode: number}>}
+   */
+  const verifyEmail = async user => {
+    const response = await axiosRequest({
+      method: "POST",
+      baseURL: process.env.REACT_APP_BASE_APP,
+      url: "/login/verify-email",
+      data: {
+        ...user
+      }
+    });
+    if (response.error && response.complete) {
+      return {
+        success: false,
+        errorCode: response.data.errorCode || 0
+      };
+    }
+    setUser(response.data.user || null);
+    setToken(response.data.token || "");
+    return {
+      success: true,
+      errorCode: 0
+    };
+  };
+
+  /**
    * Returns if the user is loggedIn
    * @returns {boolean}
    */
@@ -152,7 +181,8 @@ function UserServiceProvider(props) {
         isLoggedIn,
         axiosLoggedRequest,
         signup,
-        updatePassword
+        updatePassword,
+        verifyEmail
       }}
     >
       {props.children}

@@ -16,6 +16,7 @@ import Login from "./Login";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
 import UpdatePassword from "./UpdatePassword";
+import VerifyEmail from "./VerifyEmail";
 import NotFound from "./404";
 
 // logos
@@ -86,6 +87,7 @@ function User() {
               <Route path="/signup" component={Signup} />
               <Route path="/reset-password" component={ResetPassword} />
               <Route path="/update-password" component={UpdatePassword} />
+              <Route path="/verify" component={VerifyEmail} />
               <Route path="*" component={NotFound} />
             </Switch>
           </ThemesServiceProvider>

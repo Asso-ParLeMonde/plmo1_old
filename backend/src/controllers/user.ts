@@ -5,11 +5,12 @@ import * as argon2 from "argon2";
 import { User, UserType } from "../entities/user";
 import { Controller, del, get, post, put } from "./controller";
 import { School } from "../entities/school";
-import { isPasswordValid } from "../utils/utils";
+import { isPasswordValid, generateTemporaryPassword } from "../utils/utils";
+import { sendMail, Email } from "../emails";
 
 const secret: string = process.env.APP_SECRET || "";
 
-async function updateUser(user: User, req: Request): Promise<void> {
+function updateUser(user: User, req: Request): void {
   if (req.body.managerFirstName) user.managerFirstName = req.body.managerFirstName;
   if (req.body.managerLastName) user.managerLastName = req.body.managerLastName;
   if (req.body.mail) user.mail = req.body.mail;
@@ -20,7 +21,6 @@ async function updateUser(user: User, req: Request): Promise<void> {
     user.school = new School();
     user.school.id = req.body.schoolId;
   }
-  await getRepository(User).save(user);
 }
 
 async function getUser(req: Request): Promise<User | undefined> {
@@ -65,12 +65,24 @@ export class UserController extends Controller {
       throw new Error("Invalid password");
     }
     const user: User = new User();
+    updateUser(user, req);
     user.passwordHash = await argon2.hash(password);
     user.type = 0; // type class per default
     if (req.user !== undefined && req.user.type === UserType.PLMO_ADMIN && req.body.type !== undefined) {
       user.type = req.body.type;
     }
-    await updateUser(user, req);
+
+    // new user and not admin
+    if (req.user === undefined && user.mail !== undefined && user.mail.length > 0) {
+      const verifyEmailPassword = generateTemporaryPassword(12);
+      user.verificationHash = await argon2.hash(verifyEmailPassword);
+      // Uncomment next line to block account on registration before email is not verified
+      // user.accountRegistration = 3;
+      await sendMail(Email.VERIFY_EMAIL, user.mail, { verifyCode: verifyEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName });
+    }
+
+    // save user
+    await getRepository(User).save(user);
 
     const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
     res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send user
@@ -86,7 +98,8 @@ export class UserController extends Controller {
     if (req.user !== undefined && req.user.type === UserType.PLMO_ADMIN && req.body.type !== undefined) {
       user.type = req.body.type;
     }
-    await updateUser(user, req);
+    updateUser(user, req);
+    await getRepository(User).save(user);
     res.sendJSON(user.userWithoutPassword()); // send updated user
   }
 

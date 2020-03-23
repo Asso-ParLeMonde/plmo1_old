@@ -115,4 +115,41 @@ export class LoginController extends Controller {
     const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
     res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send new user
   }
+
+  @post({ path: "/verify-email" })
+  public async verifyEmail(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (secret.length === 0) {
+      next();
+      return;
+    }
+    // get user
+    const mail = req.body.email;
+    const user = await getRepository(User).findOne({
+      where: { mail },
+    });
+    if (user === undefined) {
+      throw new AppError("Invalid email", ErrorCode.INVALID_USERNAME);
+    }
+
+    // verify token
+    const verifyToken = req.body.verifyToken || "";
+    let isverifyTokenCorrect: boolean = false;
+    try {
+      isverifyTokenCorrect = await argon2.verify(user.verificationHash, verifyToken);
+    } catch (e) {
+      logger.error(JSON.stringify(e));
+    }
+    if (!isverifyTokenCorrect) {
+      throw new AppError("Invalid reset token", ErrorCode.INVALID_PASSWORD);
+    }
+
+    // save user
+    user.accountRegistration = 0;
+    user.verificationHash = "";
+    await getRepository(User).save(user);
+
+    // login user
+    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), token: token });
+  }
 }

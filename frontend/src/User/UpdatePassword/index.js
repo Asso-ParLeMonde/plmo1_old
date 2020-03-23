@@ -9,12 +9,7 @@ import {
   InputAdornment,
   IconButton
 } from "@material-ui/core";
-import {
-  Visibility,
-  VisibilityOff,
-  SettingsBackupRestore
-} from "@material-ui/icons";
-import { axiosRequest } from "../../components/axiosRequest";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { UserServiceContext } from "../../services/UserService";
 import Notifications from "../../components/Notifications";
 
