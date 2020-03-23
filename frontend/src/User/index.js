@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
@@ -15,6 +15,7 @@ import Videos from "./Videos";
 import Login from "./Login";
 import Signup from "./Signup";
 import ResetPassword from "./ResetPassword";
+import UpdatePassword from "./UpdatePassword";
 import NotFound from "./404";
 
 // logos
@@ -22,7 +23,7 @@ import { ReactComponent as CreateLogo } from "../images/create.svg";
 import { ReactComponent as MoviesLogo } from "../images/movies.svg";
 import { ReactComponent as LightLogo } from "../images/light.svg";
 import { ReactComponent as SettingsLogo } from "../images/settings.svg";
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const userTabs = [
   {
@@ -66,7 +67,11 @@ function User() {
   return (
     <React.Fragment>
       <Hidden smDown>
-        <Navbar title={"Par Le monde"} tabs={user === null ? defaultTabs : userTabs} homeLink="/" />
+        <Navbar
+          title={"Par Le monde"}
+          tabs={user === null ? defaultTabs : userTabs}
+          homeLink="/"
+        />
       </Hidden>
       <main>
         <Container maxWidth="lg">
@@ -80,7 +85,8 @@ function User() {
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
               <Route path="/reset-password" component={ResetPassword} />
-              <Route path="*" component={NotFound}/>
+              <Route path="/update-password" component={UpdatePassword} />
+              <Route path="*" component={NotFound} />
             </Switch>
           </ThemesServiceProvider>
         </Container>

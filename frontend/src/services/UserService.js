@@ -94,6 +94,35 @@ function UserServiceProvider(props) {
   };
 
   /**
+   * Updates the user password.
+   * Return a number 0 -> success or not.
+   * @param user
+   * @returns {Promise<{success: boolean, errorCode: number}>}
+   */
+  const updatePassword = async user => {
+    const response = await axiosRequest({
+      method: "POST",
+      baseURL: process.env.REACT_APP_BASE_APP,
+      url: "/login/update-password",
+      data: {
+        ...user
+      }
+    });
+    if (response.error && response.complete) {
+      return {
+        success: false,
+        errorCode: response.data.errorCode || 0
+      };
+    }
+    setUser(response.data.user || null);
+    setToken(response.data.token || "");
+    return {
+      success: true,
+      errorCode: 0
+    };
+  };
+
+  /**
    * Returns if the user is loggedIn
    * @returns {boolean}
    */
@@ -117,7 +146,14 @@ function UserServiceProvider(props) {
 
   return (
     <UserServiceContext.Provider
-      value={{ user, login, isLoggedIn, axiosLoggedRequest, signup }}
+      value={{
+        user,
+        login,
+        isLoggedIn,
+        axiosLoggedRequest,
+        signup,
+        updatePassword
+      }}
     >
       {props.children}
       <Notifications res={res} />

@@ -28,14 +28,14 @@ type emailData = {
   args: { [key: string]: string };
 };
 
-function getTemplateData<E extends Email>(email: E, options: EmailOptions<E>): emailData | undefined {
+function getTemplateData<E extends Email>(email: E, receiverEmail: string, options: EmailOptions<E>): emailData | undefined {
   if (email === Email.RESET_PASSWORD) {
     return {
       filename: "reset-password.pug",
       filenameText: "reset-password_text.pug",
       subject: "Réinitialisez votre mot de passe",
       args: {
-        resetUrl: `${frontUrl}/update-password?verify-token=${options.resetCode}`,
+        resetUrl: `${frontUrl}/update-password?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI(options.resetCode)}`,
       },
     };
   }
@@ -49,7 +49,7 @@ export async function sendMail<E extends Email>(email: E, receiverEmail: string,
   }
 
   // Get email template data
-  const templateData = getTemplateData<E>(email, options);
+  const templateData = getTemplateData<E>(email, receiverEmail, options);
   if (templateData === undefined) {
     logger.info(`Template ${email} not found!`);
     return undefined;

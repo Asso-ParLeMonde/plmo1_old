@@ -67,7 +67,6 @@ export class LoginController extends Controller {
 
     const temporaryPassword = generateTemporaryPassword(12);
     user.verificationHash = await argon2.hash(temporaryPassword);
-    user.accountRegistration = 3;
     await getRepository(User).save(user);
 
     // send mail with verification password
