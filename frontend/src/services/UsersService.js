@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState, useContext } from "react";
 import PropTypes from "prop-types";
-import { axiosRequest } from "../components/axiosRequest";
 import { UserServiceContext } from "./UserService";
 
 const UsersServiceContext = React.createContext(undefined, undefined);
@@ -21,7 +20,7 @@ function UsersServiceProvider({ children }) {
     });
 
     setGetUsers(usersRequest);
-  }, []);
+  }, [axiosLoggedRequest]);
 
   useEffect(() => {
     updateUsers().catch();
