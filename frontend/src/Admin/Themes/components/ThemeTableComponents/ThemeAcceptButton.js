@@ -21,8 +21,8 @@ function ThemeAcceptButton(props) {
       "PUT",
       props.theme,
       setRes,
-      "Success lors de la validation du theme",
-      "Erreur lors de la validation du theme",
+      "Succès lors de la modification du theme",
+      "Erreur lors de la modification du theme",
       props.history,
       updateThemes
     );

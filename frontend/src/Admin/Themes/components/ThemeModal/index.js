@@ -60,7 +60,7 @@ function ThemeModal(props) {
       setRes({
         error: false,
         complete: true,
-        message: "Success lors dans la creation du theme"
+        message: "Succès lors dans la creation du theme"
       });
     }
 

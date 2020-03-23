@@ -60,7 +60,6 @@ function ModalContainer(props) {
     <React.Fragment>
       <Dialog
         open={props.isOpen}
-        onClose={props.handleCloseModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

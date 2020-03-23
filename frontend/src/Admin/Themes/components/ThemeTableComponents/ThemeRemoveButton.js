@@ -21,7 +21,7 @@ function ThemeRemoveButton(props) {
       "DELETE",
       props.theme,
       setRes,
-      "Success lors de la suppression du theme",
+      "Succès lors de la suppression du theme",
       "Erreur lors de la suppression du theme",
       props.history,
       updateThemes
