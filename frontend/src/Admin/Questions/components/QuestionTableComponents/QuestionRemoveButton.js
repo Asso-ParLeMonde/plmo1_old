@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
 import { QuestionsContext } from "../..";
+import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
 
 function QuestionRemoveButton(props) {
   const updateQuestions = useContext(QuestionsContext);
@@ -29,11 +29,13 @@ function QuestionRemoveButton(props) {
   }
 
   return (
-    <DefaultButton
-      href={`/admin/scenario/delete`}
-      handleAction={handleRemove}
-      icon={props.icon}
+    <DefaultDeleteButton
+      name={props.question.question}
+      handleRemove={handleRemove}
+      goTo={"/admin/questions/delete"}
+      returnTo={"/admin/questions"}
       res={res}
+      icon={props.icon}
     />
   );
 }
