@@ -7,11 +7,9 @@ import "./buttonShape.css";
 
 function DefaultButton(props) {
   return (
-    <React.Fragment>
-      <a onClick={props.handleAction}>
-        <Button className="shape">{props.icon}</Button>
-      </a>
-    </React.Fragment>
+    <Button className="shape" onClick={props.handleAction}>
+      {props.icon}
+    </Button>
   );
 }
 
