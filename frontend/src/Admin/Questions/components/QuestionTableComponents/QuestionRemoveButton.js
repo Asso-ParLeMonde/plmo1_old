@@ -21,7 +21,7 @@ function QuestionRemoveButton(props) {
       "DELETE",
       props.question,
       setRes,
-      "Success lors de la suppression de la question",
+      "Succès lors de la suppression de la question",
       "Erreur lors de la suppression de la question",
       props.history,
       updateQuestions

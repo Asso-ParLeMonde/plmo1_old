@@ -22,8 +22,8 @@ function QuestionAcceptButton(props) {
       "PUT",
       props.question,
       setRes,
-      "Success lors de la validation de la question",
-      "Erreur lors de la validation de la question",
+      "Succès lors de la modification de la question",
+      "Erreur lors de la modification de la question",
       props.history,
       updateQuestions
     );

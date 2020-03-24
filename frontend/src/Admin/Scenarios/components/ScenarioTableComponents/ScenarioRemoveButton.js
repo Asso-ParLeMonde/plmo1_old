@@ -21,7 +21,7 @@ function ScenarioRemoveButton(props) {
       "DELETE",
       props.scenario,
       setRes,
-      "Success lors de la suppression du scenario",
+      "Succès lors de la suppression du scenario",
       "Erreur lors de la suppression du scenario",
       props.history,
       updateScenarios

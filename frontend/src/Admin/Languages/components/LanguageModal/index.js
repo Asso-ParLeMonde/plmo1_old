@@ -45,7 +45,7 @@ function LanguageModal(props) {
       setRes({
         error: false,
         complete: true,
-        message: "Success lors de la création de la langue"
+        message: "Succès lors de la création de la langue"
       });
     }
 

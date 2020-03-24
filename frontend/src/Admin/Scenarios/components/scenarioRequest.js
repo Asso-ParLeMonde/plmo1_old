@@ -24,7 +24,7 @@ async function postScenario(newScenario, setRes) {
     setRes({
       error: false,
       complete: true,
-      message: "Success lors dans la creation du scenario"
+      message: "Succès lors dans la creation du scenario"
     });
   }
 
@@ -55,7 +55,7 @@ async function putScenario(inheritedScenario, newScenario, setRes) {
     setRes({
       error: false,
       complete: true,
-      message: "Success lors dans la modification du scenario"
+      message: "Succès lors dans la modification du scenario"
     });
   }
 

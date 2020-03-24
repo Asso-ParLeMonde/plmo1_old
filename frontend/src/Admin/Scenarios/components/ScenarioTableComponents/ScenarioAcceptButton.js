@@ -21,8 +21,8 @@ function ScenarioAcceptButton(props) {
       "PUT",
       props.scenario,
       setRes,
-      "Success lors de la validation du scenario",
-      "Erreur lors de la validation du scenario",
+      "Succès lors de la modification du scenario",
+      "Erreur lors de la modification du scenario",
       props.history,
       updateScenarios
     );
