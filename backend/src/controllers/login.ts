@@ -7,6 +7,7 @@ import { Controller, post } from "./controller";
 import { logger } from "../utils/logger";
 import { generateTemporaryPassword, isPasswordValid } from "../utils/utils";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
+import { sendMail, Email } from "../emails";
 
 const secret: string = process.env.APP_SECRET || "";
 
@@ -65,12 +66,11 @@ export class LoginController extends Controller {
     }
 
     const temporaryPassword = generateTemporaryPassword(12);
-    logger.info(temporaryPassword); // TODO: remove
     user.verificationHash = await argon2.hash(temporaryPassword);
-    user.accountRegistration = 3;
     await getRepository(User).save(user);
 
-    // TODO: send mail with verification password
+    // send mail with verification password
+    await sendMail(Email.RESET_PASSWORD, user.mail, { resetCode: temporaryPassword });
     res.sendJSON({ success: true });
   }
 
@@ -114,5 +114,42 @@ export class LoginController extends Controller {
     // login user
     const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
     res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send new user
+  }
+
+  @post({ path: "/verify-email" })
+  public async verifyEmail(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (secret.length === 0) {
+      next();
+      return;
+    }
+    // get user
+    const mail = req.body.email;
+    const user = await getRepository(User).findOne({
+      where: { mail },
+    });
+    if (user === undefined) {
+      throw new AppError("Invalid email", ErrorCode.INVALID_USERNAME);
+    }
+
+    // verify token
+    const verifyToken = req.body.verifyToken || "";
+    let isverifyTokenCorrect: boolean = false;
+    try {
+      isverifyTokenCorrect = await argon2.verify(user.verificationHash, verifyToken);
+    } catch (e) {
+      logger.error(JSON.stringify(e));
+    }
+    if (!isverifyTokenCorrect) {
+      throw new AppError("Invalid reset token", ErrorCode.INVALID_PASSWORD);
+    }
+
+    // save user
+    user.accountRegistration = 0;
+    user.verificationHash = "";
+    await getRepository(User).save(user);
+
+    // login user
+    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), token: token });
   }
 }
