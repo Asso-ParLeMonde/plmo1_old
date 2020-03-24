@@ -9,8 +9,8 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import { axiosRequest } from "../../../../components/axiosRequest";
 import Notifications from "../../../../components/Notifications";
+import { axiosRequest } from "../../../../components/axiosRequest";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {

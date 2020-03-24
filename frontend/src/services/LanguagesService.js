@@ -7,7 +7,7 @@ const LanguagesServiceContext = React.createContext(undefined, undefined);
 function LanguagesServiceProvider({ children }) {
   const [getLanguages, setGetLanguages] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });
@@ -32,7 +32,7 @@ function LanguagesServiceProvider({ children }) {
 }
 
 LanguagesServiceProvider.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export { LanguagesServiceContext, LanguagesServiceProvider };
