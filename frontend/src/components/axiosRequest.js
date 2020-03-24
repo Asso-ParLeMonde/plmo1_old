@@ -2,7 +2,10 @@ import axios from "axios";
 
 const axiosRequest = async req => {
   try {
-    const res = await axios(req);
+    const res = await axios({
+      ...req,
+      baseURL: process.env.REACT_APP_BASE_APP
+    });
     return {
       data: res.data,
       pending: false,

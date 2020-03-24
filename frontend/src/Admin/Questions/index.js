@@ -20,7 +20,7 @@ function Questions() {
   const updateQuestions = useCallback(async () => {
     const questionsRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/scenarios/${selectedScenarioId}/questions`
+      url: `/scenarios/${selectedScenarioId}/questions`
     });
     setQuestions(questionsRequest.data || []);
   }, [selectedScenarioId]);

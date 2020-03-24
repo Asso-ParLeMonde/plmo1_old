@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import { axiosRequest } from "../components/axiosRequest";
 
 function useAxios(req) {
   const [res, setRes] = useState({
@@ -12,22 +12,15 @@ function useAxios(req) {
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.log(req.url);
-    setRes({
-      data: null,
-      pending: true,
-      error: false,
-      complete: false
-    });
     if (req.url !== null) {
-      axios(req)
-        .then(res =>
-          setRes({
-            data: res.data,
-            pending: false,
-            error: false,
-            complete: true
-          })
-        )
+      setRes({
+        data: null,
+        pending: true,
+        error: false,
+        complete: false
+      });
+      axiosRequest(req)
+        .then(r => setRes(r))
         .catch(() =>
           setRes({
             data: null,

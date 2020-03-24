@@ -19,7 +19,7 @@ function LanguageRemoveButton(props) {
     event.preventDefault();
     const request = await axiosRequest({
       method: "DELETE",
-      url: `${process.env.REACT_APP_BASE_APP}/languages/${props.language.id}`
+      url: `/languages/${props.language.id}`
     });
 
     if (request.error === true && request.complete === true) {

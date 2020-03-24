@@ -10,7 +10,7 @@ async function handleRequest(
 ) {
   const request = await axiosRequest({
     method: "DELETE",
-    url: `${process.env.REACT_APP_BASE_APP}/users/${user.id}`
+    url: `/users/${user.id}`
   });
 
   if (request.error === true && request.complete === true) {

@@ -21,7 +21,7 @@ function Partie1(props) {
     url:
       project.themeId === null
         ? null
-        : `${process.env.REACT_APP_BASE_APP}/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`
+        : `/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {

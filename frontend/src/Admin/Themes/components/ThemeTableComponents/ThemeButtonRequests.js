@@ -17,7 +17,7 @@ async function handleRequest(
     case "PUT":
       request = await axiosRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${theme.id}`,
+        url: `/themes/${theme.id}`,
         data: {
           names: theme.names,
           image: theme.image,
@@ -28,7 +28,7 @@ async function handleRequest(
     case "DELETE":
       request = await axiosRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${theme.id}`
+        url: `/themes/${theme.id}`
       });
       break;
   }

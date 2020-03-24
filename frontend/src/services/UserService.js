@@ -39,7 +39,6 @@ function UserServiceProvider(props) {
   const login = async (username, password, localSave = false) => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login",
       data: {
         username,
@@ -73,7 +72,6 @@ function UserServiceProvider(props) {
   const signup = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/users",
       data: {
         ...user
@@ -102,7 +100,6 @@ function UserServiceProvider(props) {
   const updatePassword = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login/update-password",
       data: {
         ...user
@@ -131,7 +128,6 @@ function UserServiceProvider(props) {
   const verifyEmail = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login/verify-email",
       data: {
         ...user

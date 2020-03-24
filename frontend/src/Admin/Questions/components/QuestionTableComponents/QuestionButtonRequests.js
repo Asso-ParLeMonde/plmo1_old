@@ -17,14 +17,14 @@ async function handleQuestionButtonRequest(
     case "PUT":
       request = await axiosRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/questions/${question.id}_${question.language}`,
+        url: `/questions/${question.id}_${question.language}`,
         data: { ...question, isStandard: true }
       });
       break;
     case "DELETE":
       request = await axiosRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/questions/${question.id}`
+        url: `/questions/${question.id}`
       });
       break;
   }

@@ -15,7 +15,7 @@ function LanguagesServiceProvider({ children }) {
   const updateLanguages = useCallback(async () => {
     const languagesRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/languages`
+      url: "/languages"
     });
     setGetLanguages(languagesRequest);
   }, []);

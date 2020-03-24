@@ -34,7 +34,7 @@ function ScenarioQuestionModal(props) {
     const getScenarioQuestions = async () => {
       const questionsRequest = await axiosRequest({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${props.scenario.id}/questions`
+        url: `/scenarios/${props.scenario.id}/questions`
       });
 
       if (

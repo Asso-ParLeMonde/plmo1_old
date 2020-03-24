@@ -3,7 +3,7 @@ import { axiosRequest } from "../../../components/axiosRequest";
 async function postUser(newUser, setRes) {
   const request = await axiosRequest({
     method: "POST",
-    url: `${process.env.REACT_APP_BASE_APP}/users`,
+    url: "/users",
     data: newUser
   });
 
@@ -23,7 +23,7 @@ async function postUser(newUser, setRes) {
 async function putUser(inheritedUser, newUser, setRes) {
   const request = await axiosRequest({
     method: "PUT",
-    url: `${process.env.REACT_APP_BASE_APP}/users/${inheritedUser.id}`,
+    url: `/users/${inheritedUser.id}`,
     data: newUser
   });
 

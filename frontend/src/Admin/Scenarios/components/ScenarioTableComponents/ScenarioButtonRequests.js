@@ -17,14 +17,14 @@ async function handleScenarioButtonRequest(
     case "PUT":
       request = await axiosRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${scenario.id}`,
+        url: `/scenarios/${scenario.id}`,
         data: { ...scenario, isDefault: true }
       });
       break;
     case "DELETE":
       request = await axiosRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${scenario.themeId}/scenarios/${scenario.id}`
+        url: `/themes/${scenario.themeId}/scenarios/${scenario.id}`
       });
       break;
   }

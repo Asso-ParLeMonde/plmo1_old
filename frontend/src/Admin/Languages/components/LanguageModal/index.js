@@ -29,7 +29,7 @@ function LanguageModal(props) {
 
     const request = await axiosRequest({
       method: "POST",
-      url: `${process.env.REACT_APP_BASE_APP}/languages`,
+      url: "/languages",
       data: newLanguage
     });
 

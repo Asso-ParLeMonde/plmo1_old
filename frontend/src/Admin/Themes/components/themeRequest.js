@@ -7,7 +7,7 @@ async function themeImagePOSTRequest(newTheme, requestedThemeId, setRes) {
   const requestImage = await axiosRequest({
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${requestedThemeId}/image`,
+    url: `/themes/${requestedThemeId}/image`,
     data: bodyFormData
   });
 
@@ -27,7 +27,7 @@ async function themeImagePOSTRequest(newTheme, requestedThemeId, setRes) {
 async function postTheme(newTheme, setRes) {
   const request = await axiosRequest({
     method: "POST",
-    url: `${process.env.REACT_APP_BASE_APP}/themes`,
+    url: "/themes",
     data: {
       names: newTheme.names,
       isPublished: true
@@ -50,7 +50,7 @@ async function postTheme(newTheme, setRes) {
 async function putTheme(inheritedTheme, newTheme, setRes) {
   const request = await axiosRequest({
     method: "PUT",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${inheritedTheme.id}`,
+    url: `/themes/${inheritedTheme.id}`,
     data: {
       names: newTheme.names,
       isPublished: true
