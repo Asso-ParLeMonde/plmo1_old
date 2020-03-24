@@ -8,13 +8,13 @@ import TableCard from "../components/TableCard";
 import { LanguagesServiceContext } from "../../services/LanguagesService";
 
 function Languages() {
-  let languages = [];
-
-  // eslint-disable-next-line
-  const languagesRequest = useContext(LanguagesServiceContext).getLanguages;
-  if (languagesRequest.complete && !languagesRequest.error) {
-    languages = languagesRequest.data;
-  }
+  const { getLanguages: languagesRequest } = useContext(
+    LanguagesServiceContext
+  );
+  const languages =
+    languagesRequest.complete && !languagesRequest.error
+      ? languagesRequest.data
+      : [];
 
   return (
     <TableCard

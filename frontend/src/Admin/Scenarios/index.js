@@ -10,13 +10,13 @@ import TableCard from "../components/TableCard";
 import AddButton from "../components/Buttons/AddButton";
 
 function Scenarios() {
-  let scenarios = [];
-
-  // eslint-disable-next-line
-  const scenariosRequest = useContext(ScenariosServiceContext).getScenarios;
-  if (scenariosRequest.complete && !scenariosRequest.error) {
-    scenarios = scenariosRequest.data;
-  }
+  const { getScenarios: scenariosRequest } = useContext(
+    ScenariosServiceContext
+  );
+  const scenarios =
+    scenariosRequest.complete && !scenariosRequest.error
+      ? scenariosRequest.data
+      : [];
 
   return (
     <React.Fragment>

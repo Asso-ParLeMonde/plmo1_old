@@ -8,13 +8,9 @@ import TableCard from "../components/TableCard";
 import { UsersServiceContext } from "../../services/UsersService";
 
 function Users() {
-  let users = [];
-
-  // eslint-disable-next-line
-  const usersRequest = useContext(UsersServiceContext).getUsers;
-  if (usersRequest.complete && !usersRequest.error) {
-    users = usersRequest.data;
-  }
+  const { getUsers: usersRequest } = useContext(UsersServiceContext);
+  const users =
+    usersRequest.complete && !usersRequest.error ? usersRequest.data : [];
 
   return (
     <React.Fragment>
