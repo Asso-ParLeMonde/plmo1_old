@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
+import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
 
 function ScenarioRemoveButton(props) {
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
@@ -29,11 +29,13 @@ function ScenarioRemoveButton(props) {
   }
 
   return (
-    <DefaultButton
-      href={`/admin/themes/delete`}
-      handleAction={handleRemove}
-      icon={props.icon}
+    <DefaultDeleteButton
+      name={props.scenario.names[Object.keys(props.scenario.names)[0]]}
+      handleRemove={handleRemove}
+      goTo={"/admin/scenarios/delete"}
+      returnTo={"/admin/scenarios"}
       res={res}
+      icon={props.icon}
     />
   );
 }
