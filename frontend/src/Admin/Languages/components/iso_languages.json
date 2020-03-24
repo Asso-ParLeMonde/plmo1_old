@@ -11,7 +11,7 @@
   },
   {
     "code": "ae",
-    "name": "avesta",
+    "name": "Avesta",
     "englishName": "Avestan"
   },
   {
@@ -31,7 +31,7 @@
   },
   {
     "code": "an",
-    "name": "aragonés",
+    "name": "Aragonés",
     "englishName": "Aragonese"
   },
   {
@@ -51,12 +51,12 @@
   },
   {
     "code": "ay",
-    "name": "aymar aru",
+    "name": "Aymar aru",
     "englishName": "Aymara"
   },
   {
     "code": "az",
-    "name": "azərbaycan dili",
+    "name": "Azərbaycan dili",
     "englishName": "Azerbaijani"
   },
   {
@@ -86,7 +86,7 @@
   },
   {
     "code": "bm",
-    "name": "bamanankan",
+    "name": "Bamanankan",
     "englishName": "Bambara"
   },
   {
@@ -101,7 +101,7 @@
   },
   {
     "code": "br",
-    "name": "brezhoneg",
+    "name": "Brezhoneg",
     "englishName": "Breton"
   },
   {
@@ -111,7 +111,7 @@
   },
   {
     "code": "ca",
-    "name": "català",
+    "name": "Català",
     "englishName": "Catalan"
   },
   {
@@ -126,7 +126,7 @@
   },
   {
     "code": "co",
-    "name": "corsu, lingua corsa",
+    "name": "Corsu, lingua corsa",
     "englishName": "Corsican"
   },
   {
@@ -156,7 +156,7 @@
   },
   {
     "code": "da",
-    "name": "dansk",
+    "name": "Dansk",
     "englishName": "Danish"
   },
   {
@@ -201,12 +201,12 @@
   },
   {
     "code": "et",
-    "name": "eesti, eesti keel",
+    "name": "Eesti, eesti keel",
     "englishName": "Estonian"
   },
   {
     "code": "eu",
-    "name": "euskara, euskera",
+    "name": "Euskara",
     "englishName": "Basque"
   },
   {
@@ -221,7 +221,7 @@
   },
   {
     "code": "fi",
-    "name": "suomi, suomen kieli",
+    "name": "Suomi, suomen kieli",
     "englishName": "Finnish"
   },
   {
@@ -231,12 +231,12 @@
   },
   {
     "code": "fo",
-    "name": "føroyskt",
+    "name": "Føroyskt",
     "englishName": "Faroese"
   },
   {
     "code": "fr",
-    "name": "français, langue française",
+    "name": "Français",
     "englishName": "French"
   },
   {
@@ -256,7 +256,7 @@
   },
   {
     "code": "gl",
-    "name": "galego",
+    "name": "Galego",
     "englishName": "Galician"
   },
   {
@@ -296,7 +296,7 @@
   },
   {
     "code": "hr",
-    "name": "hrvatski jezik",
+    "name": "Hrvatski jezik",
     "englishName": "Croatian"
   },
   {
@@ -306,7 +306,7 @@
   },
   {
     "code": "hu",
-    "name": "magyar",
+    "name": "Magyar",
     "englishName": "Hungarian"
   },
   {
@@ -456,7 +456,7 @@
   },
   {
     "code": "la",
-    "name": "latine, lingua latina",
+    "name": "Latine, lingua latina",
     "englishName": "Latin"
   },
   {
@@ -486,7 +486,7 @@
   },
   {
     "code": "lt",
-    "name": "lietuvių kalba",
+    "name": "Lietuvių kalba",
     "englishName": "Lithuanian"
   },
   {
@@ -496,12 +496,12 @@
   },
   {
     "code": "lv",
-    "name": "latviešu valoda",
+    "name": "Latviešu valoda",
     "englishName": "Latvian"
   },
   {
     "code": "mg",
-    "name": "fiteny malagasy",
+    "name": "Fiteny malagasy",
     "englishName": "Malagasy"
   },
   {
@@ -536,7 +536,7 @@
   },
   {
     "code": "ms",
-    "name": "bahasa Melayu, بهاس ملايو‎",
+    "name": "Bahasa Melayu, بهاس ملايو‎",
     "englishName": "Malay"
   },
   {
@@ -606,7 +606,7 @@
   },
   {
     "code": "oc",
-    "name": "occitan, lenga d'òc",
+    "name": "Occitan",
     "englishName": "Occitan"
   },
   {
@@ -641,7 +641,7 @@
   },
   {
     "code": "pl",
-    "name": "język polski, polszczyzna",
+    "name": "Język polski, polszczyzna",
     "englishName": "Polish"
   },
   {
@@ -716,22 +716,22 @@
   },
   {
     "code": "sk",
-    "name": "slovenčina, slovenský jazyk",
+    "name": "Slovenčina, slovenský jazyk",
     "englishName": "Slovak"
   },
   {
     "code": "sl",
-    "name": "slovenski jezik, slovenščina",
+    "name": "Slovenski jezik, slovenščina",
     "englishName": "Slovene"
   },
   {
     "code": "sm",
-    "name": "gagana fa'a Samoa",
+    "name": "Gagana fa'a Samoa",
     "englishName": "Samoan"
   },
   {
     "code": "sn",
-    "name": "chiShona",
+    "name": "ChiShona",
     "englishName": "Shona"
   },
   {
@@ -766,7 +766,7 @@
   },
   {
     "code": "sv",
-    "name": "svenska",
+    "name": "Svenska",
     "englishName": "Swedish"
   },
   {
@@ -816,7 +816,7 @@
   },
   {
     "code": "to",
-    "name": "faka Tonga",
+    "name": "Faka Tonga",
     "englishName": "Tonga (Tonga Islands)"
   },
   {
@@ -881,7 +881,7 @@
   },
   {
     "code": "wa",
-    "name": "walon",
+    "name": "Walon",
     "englishName": "Walloon"
   },
   {
