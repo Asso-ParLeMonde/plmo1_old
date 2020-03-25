@@ -1,5 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 
+import { Card, CardContent, Typography } from "@material-ui/core";
 import CheckIcon from "@material-ui/icons/Check";
 import ClearIcon from "@material-ui/icons/Clear";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -8,21 +9,22 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
 import ScenarioSelector from "./components/ScenarioSelector";
-import { Card, CardContent, Typography } from "@material-ui/core";
-import { axiosRequest } from "../../components/axiosRequest";
+import { UserServiceContext } from "../../services/UserService";
 
 export const QuestionsContext = React.createContext(undefined);
 
 function Questions() {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [questions, setQuestions] = useState([]);
   const [selectedScenarioId, setSelectedScenarioId] = useState(undefined);
 
   const updateQuestions = useCallback(async () => {
-    const questionsRequest = await axiosRequest({
+    const questionsRequest = await axiosLoggedRequest({
       method: "GET",
       url: `/scenarios/${selectedScenarioId}/questions`
     });
     setQuestions(questionsRequest.data || []);
+    // eslint-disable-next-line
   }, [selectedScenarioId]);
 
   useEffect(() => {

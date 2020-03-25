@@ -4,9 +4,11 @@ import PropTypes from "prop-types";
 
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
+import { UserServiceContext } from "../../../../services/UserService";
 import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
 
 function ScenarioRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
@@ -18,6 +20,7 @@ function ScenarioRemoveButton(props) {
   async function handleRemove(event) {
     event.preventDefault();
     await handleScenarioButtonRequest(
+      axiosLoggedRequest,
       "DELETE",
       props.scenario,
       setRes,

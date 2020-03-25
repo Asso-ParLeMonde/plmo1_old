@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { updateQuestion } from "../questionRequest";
 import { QuestionsContext } from "../..";
+import { UserServiceContext } from "../../../../services/UserService";
 
 const DEFAULT_QUESTION = {
   id: null,
@@ -14,6 +15,7 @@ const DEFAULT_QUESTION = {
 };
 
 function QuestionModal(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateQuestions = useContext(QuestionsContext);
   const [newQuestion, setNewQuestion] = useState(
     props.question || DEFAULT_QUESTION
@@ -56,9 +58,21 @@ function QuestionModal(props) {
 
     let error = false;
     if (props.question) {
-      error = await updateQuestion("PUT", props.question, newQuestion, setRes);
+      error = await updateQuestion(
+        axiosLoggedRequest,
+        "PUT",
+        props.question,
+        newQuestion,
+        setRes
+      );
     } else {
-      error = await updateQuestion("POST", props.question, newQuestion, setRes);
+      error = await updateQuestion(
+        axiosLoggedRequest,
+        "POST",
+        props.question,
+        newQuestion,
+        setRes
+      );
     }
 
     if (error === false) {

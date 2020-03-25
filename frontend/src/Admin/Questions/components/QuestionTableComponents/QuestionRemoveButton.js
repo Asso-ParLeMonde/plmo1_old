@@ -5,8 +5,10 @@ import PropTypes from "prop-types";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
 import { QuestionsContext } from "../..";
+import { UserServiceContext } from "../../../../services/UserService";
 
 function QuestionRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateQuestions = useContext(QuestionsContext);
 
   const [res, setRes] = useState({
@@ -18,6 +20,7 @@ function QuestionRemoveButton(props) {
   async function handleRemove(event) {
     event.preventDefault();
     await handleQuestionButtonRequest(
+      axiosLoggedRequest,
       "DELETE",
       props.question,
       setRes,

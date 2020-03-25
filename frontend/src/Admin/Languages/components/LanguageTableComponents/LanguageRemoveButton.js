@@ -3,10 +3,11 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
+import { UserServiceContext } from "../../../../services/UserService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { axiosRequest } from "../../../../components/axiosRequest";
 
 function LanguageRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateLanguages = useContext(LanguagesServiceContext).updateLanguages;
 
   const [res, setRes] = useState({
@@ -17,7 +18,7 @@ function LanguageRemoveButton(props) {
 
   async function handleRemove(event) {
     event.preventDefault();
-    const request = await axiosRequest({
+    const request = await axiosLoggedRequest({
       method: "DELETE",
       url: `/languages/${props.language.id}`
     });

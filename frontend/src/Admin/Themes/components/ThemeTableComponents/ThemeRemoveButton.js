@@ -3,10 +3,12 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
+import { UserServiceContext } from "../../../../services/UserService";
 import { handleRequest } from "./ThemeButtonRequests";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 
 function ThemeRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateThemes = useContext(ThemesServiceContext).updateThemes;
 
   const [res, setRes] = useState({
@@ -18,6 +20,7 @@ function ThemeRemoveButton(props) {
   async function handleRemove(event) {
     event.preventDefault();
     await handleRequest(
+      axiosLoggedRequest,
       "DELETE",
       props.theme,
       setRes,

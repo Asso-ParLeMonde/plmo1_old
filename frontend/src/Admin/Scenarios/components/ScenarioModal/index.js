@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import { postScenario, putScenario } from "../scenarioRequest";
+import { UserServiceContext } from "../../../../services/UserService";
 
 const DEFAULT_SCENARIO = {
   id: null,
@@ -18,6 +19,7 @@ const DEFAULT_SCENARIO = {
 };
 
 function ScenarioModal(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [newScenario, setNewScenario] = useState(
     props.scenario || DEFAULT_SCENARIO
   );
@@ -64,9 +66,14 @@ function ScenarioModal(props) {
     event.preventDefault();
 
     if (props.scenario) {
-      await putScenario(props.scenario, newScenario, setRes);
+      await putScenario(
+        axiosLoggedRequest,
+        props.scenario,
+        newScenario,
+        setRes
+      );
     } else {
-      await postScenario(newScenario, setRes);
+      await postScenario(axiosLoggedRequest, newScenario, setRes);
     }
 
     updateScenarios().catch();

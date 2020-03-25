@@ -1,18 +1,22 @@
 import React, { useContext, useState } from "react";
-import PropTypes from "prop-types";
-import { Hidden, Typography } from "@material-ui/core";
 import { withRouter } from "react-router-dom";
-import axios from "axios";
+import PropTypes from "prop-types";
+
+import {
+  Hidden,
+  Typography,
+  Button,
+  TextField,
+  FormHelperText
+} from "@material-ui/core";
+import ArrowForwardIcon from "@material-ui/icons/ArrowForwardIos";
 
 import Inverted from "../../../../components/Inverted";
-
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import ArrowForwardIcon from "@material-ui/icons/ArrowForwardIos";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { UserServiceContext } from "../../../../services/UserService";
 
 function NewScenario(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [newScenario, setNewScenario] = useState({
     name: "",
     description: "",
@@ -32,12 +36,12 @@ function NewScenario(props) {
     }
     if (newScenario.name.length > 0 && newScenario.description.length <= 280) {
       try {
-        const response = await axios({
+        const response = await axiosLoggedRequest({
           url: `/themes/${newScenario.themeId}/scenarios`,
           method: "POST",
           data: newScenario
         });
-        if (response.status === 200) {
+        if (!response.error) {
           updateProject({
             scenarioId: response.data.id,
             scenarioName: newScenario.name

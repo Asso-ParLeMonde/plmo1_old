@@ -1,11 +1,17 @@
 import axios from "axios";
 
-const axiosRequest = async req => {
+const axiosRequest = async (req, token = null) => {
   try {
-    const res = await axios({
+    const axiosOptions = {
       ...req,
       baseURL: process.env.REACT_APP_BASE_APP
-    });
+    };
+    if (token !== null && token.length > 0) {
+      axiosOptions.headers = {
+        Authorization: `Bearer ${token}`
+      };
+    }
+    const res = await axios(axiosOptions);
     return {
       data: res.data,
       pending: false,

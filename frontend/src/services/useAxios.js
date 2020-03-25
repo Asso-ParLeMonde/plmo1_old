@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import { axiosRequest } from "../components/axiosRequest";
+import { useState, useEffect, useContext } from "react";
+import { UserServiceContext } from "./UserService";
 
 function useAxios(req) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
+
   const [res, setRes] = useState({
     data: null,
     complete: false,
@@ -19,7 +21,7 @@ function useAxios(req) {
         error: false,
         complete: false
       });
-      axiosRequest(req)
+      axiosLoggedRequest(req)
         .then(r => setRes(r))
         .catch(() =>
           setRes({

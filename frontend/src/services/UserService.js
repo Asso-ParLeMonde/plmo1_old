@@ -161,12 +161,7 @@ function UserServiceProvider(props) {
    * @returns {Promise<{data, pending, error, complete}>}
    */
   const axiosLoggedRequest = async req => {
-    return await axiosRequest({
-      ...req,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    return await axiosRequest(req, token);
   };
 
   return (

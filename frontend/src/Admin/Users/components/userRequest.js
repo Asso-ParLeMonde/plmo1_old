@@ -1,7 +1,5 @@
-import { axiosRequest } from "../../../components/axiosRequest";
-
-async function postUser(newUser, setRes) {
-  const request = await axiosRequest({
+async function postUser(axiosLoggedRequest, newUser, setRes) {
+  const request = await axiosLoggedRequest({
     method: "POST",
     url: "/users",
     data: newUser
@@ -20,8 +18,8 @@ async function postUser(newUser, setRes) {
   return false;
 }
 
-async function putUser(inheritedUser, newUser, setRes) {
-  const request = await axiosRequest({
+async function putUser(axiosLoggedRequest, inheritedUser, newUser, setRes) {
+  const request = await axiosLoggedRequest({
     method: "PUT",
     url: `/users/${inheritedUser.id}`,
     data: newUser
@@ -40,17 +38,23 @@ async function putUser(inheritedUser, newUser, setRes) {
   return false;
 }
 
-async function updateUser(requestType, inheritedUser, newUser, setRes) {
+async function updateUser(
+  axiosLoggedRequest,
+  requestType,
+  inheritedUser,
+  newUser,
+  setRes
+) {
   let error = false;
 
   switch (requestType) {
     default:
       break;
     case "POST":
-      error = await postUser(newUser, setRes);
+      error = await postUser(axiosLoggedRequest, newUser, setRes);
       break;
     case "PUT":
-      error = await putUser(inheritedUser, newUser, setRes);
+      error = await putUser(axiosLoggedRequest, inheritedUser, newUser, setRes);
       break;
   }
 
