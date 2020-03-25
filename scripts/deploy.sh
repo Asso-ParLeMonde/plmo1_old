@@ -14,13 +14,13 @@ machine git.heroku.com
 " >> ~/.netrc
 
 # push image
-IMAGE="${REGISTRY_URL}/${HEROKU_APP}"
+IMAGE="${REGISTRY_URL}/${HEROKU_APP}/web"
 docker build . -t ${IMAGE}
 docker login --username=_ --password=$(heroku auth:token) ${REGISTRY_URL}
 docker push ${IMAGE}
-docker logout ${REGISTRY_URL}
 
 # release image
 heroku container:release web -app ${HEROKU_APP}
 
+docker logout ${REGISTRY_URL}
 rm -f ~/.netrc
