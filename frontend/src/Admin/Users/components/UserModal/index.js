@@ -15,6 +15,7 @@ const DEFAULT_USER = {
 };
 
 function UserModal(props) {
+  const { axiosLoggedRequest } = useContext(UsersServiceContext);
   const [newUser, setNewUser] = useState(props.user || DEFAULT_USER);
   const updateUsers = useContext(UsersServiceContext).updateUsers;
 
@@ -37,9 +38,21 @@ function UserModal(props) {
 
     let error = false;
     if (props.user) {
-      error = await updateUser("PUT", props.user, newUser, setRes);
+      error = await updateUser(
+        axiosLoggedRequest,
+        "PUT",
+        props.user,
+        newUser,
+        setRes
+      );
     } else {
-      error = await updateUser("POST", props.user, newUser, setRes);
+      error = await updateUser(
+        axiosLoggedRequest,
+        "POST",
+        props.user,
+        newUser,
+        setRes
+      );
     }
 
     if (error === false) {

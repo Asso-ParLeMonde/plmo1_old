@@ -15,7 +15,7 @@ function ScenariosServiceProvider({ children, isDefault }) {
   const updateScenarios = useCallback(async () => {
     const scenariosRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/scenarios`
+      url: "/scenarios"
     });
     setGetScenarios(scenariosRequest);
   }, []);

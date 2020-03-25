@@ -1,6 +1,5 @@
-import { axiosRequest } from "../../../../components/axiosRequest";
-
 async function handleRequest(
+  axiosLoggedRequest,
   user,
   setRes,
   successMessage,
@@ -8,9 +7,9 @@ async function handleRequest(
   history,
   updateUsers
 ) {
-  const request = await axiosRequest({
+  const request = await axiosLoggedRequest({
     method: "DELETE",
-    url: `${process.env.REACT_APP_BASE_APP}/users/${user.id}`
+    url: `/users/${user.id}`
   });
 
   if (request.error === true && request.complete === true) {

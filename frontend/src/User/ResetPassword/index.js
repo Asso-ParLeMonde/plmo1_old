@@ -1,12 +1,12 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router";
-import {Button, Link, TextField, Typography} from "@material-ui/core";
-import {axiosRequest} from "../../components/axiosRequest";
+import { withRouter } from "react-router";
+import { Button, Link, TextField, Typography } from "@material-ui/core";
+import { axiosRequest } from "../../components/axiosRequest";
 
 const errorMessages = {
   0: "Une erreur inconnue est survenue. Veuillez réessayer plus tard...",
-  1: "E-mail invalide",
+  1: "E-mail invalide"
 };
 
 function ResetPassword(props) {
@@ -24,35 +24,38 @@ function ResetPassword(props) {
     setSuccessMsg("");
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login/reset-password",
       data: {
-        email,
-      },
+        email
+      }
     });
     if (response.error && response.complete) {
       setErrorCode(response.data.errorCode);
     } else {
-      setSuccessMsg("Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !")
+      setSuccessMsg(
+        "Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !"
+      );
     }
   };
 
-  const handleLinkClick = path => (event) => {
+  const handleLinkClick = path => event => {
     event.preventDefault();
     props.history.push(path);
   };
 
   return (
     <div className="text-center">
-      <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>Réinitialiser le mot de passe</Typography>
+      <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>
+        Réinitialiser le mot de passe
+      </Typography>
       <form className="login-form" noValidate autoComplete="off">
-        {(errorCode === 0) && (
+        {errorCode === 0 && (
           <Typography variant="caption" color="error">
             {errorMessages[0]}
           </Typography>
         )}
 
-        {(successMsg.length > 0) && (
+        {successMsg.length > 0 && (
           <Typography variant="caption" color="primary">
             {successMsg}
           </Typography>

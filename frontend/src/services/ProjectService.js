@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import qs from "query-string";
@@ -12,13 +12,13 @@ const getInitialState = () => {
   const initialProject = {
     ...{
       themeId: null,
-      themeName: '',
+      themeName: "",
       scenarioId: null,
-      scenarioName: '',
-      languageCode: 'fr',
-      questions: [],
+      scenarioName: "",
+      languageCode: "fr",
+      questions: []
     },
-    ...lastProject,
+    ...lastProject
   };
   if (initialProject.questions.length > 0) {
     initialProject.preventDataFetch = true;
@@ -32,14 +32,24 @@ function ProjectService(props) {
 
   const updateProject = updatedProject => {
     setProject(previousProject => {
-      localStorage.setItem("lastProject", JSON.stringify({ ...previousProject, ...updatedProject }));
-      return { ...previousProject, ...updatedProject }
+      localStorage.setItem(
+        "lastProject",
+        JSON.stringify({ ...previousProject, ...updatedProject })
+      );
+      return { ...previousProject, ...updatedProject };
     });
   };
 
-  useEffect(() => { // update project base on location
-    const themeId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId) || null;
-    const scenarioId = parseInt(qs.parse(props.location.search, { ignoreQueryPrefix: true }).scenarioId) || null;
+  useEffect(() => {
+    // update project base on location
+    const themeId =
+      parseInt(
+        qs.parse(props.location.search, { ignoreQueryPrefix: true }).themeId
+      ) || null;
+    const scenarioId =
+      parseInt(
+        qs.parse(props.location.search, { ignoreQueryPrefix: true }).scenarioId
+      ) || null;
     if (project.themeId !== themeId && themeId !== null) {
       updateProject({ themeId });
     }
@@ -49,9 +59,17 @@ function ProjectService(props) {
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => { // update theme name when themeId change
-    if (project.themeId !== null && themesRequest.complete && !themesRequest.error) {
-      const themeIndex = themesRequest.data.reduce((i1, t, i2) => t.id === project.themeId ? i2 : i1, -1);
+  useEffect(() => {
+    // update theme name when themeId change
+    if (
+      project.themeId !== null &&
+      themesRequest.complete &&
+      !themesRequest.error
+    ) {
+      const themeIndex = themesRequest.data.reduce(
+        (i1, t, i2) => (t.id === project.themeId ? i2 : i1),
+        -1
+      );
       if (themeIndex === -1) {
         updateProject({ themeId: null, scenarioId: null });
         props.history.push("/");
@@ -65,10 +83,18 @@ function ProjectService(props) {
 
   const getQuestions = useAxios({
     method: "GET",
-    url: project.scenarioId === null ? null : `${process.env.REACT_APP_BASE_APP}/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`,
+    url:
+      project.scenarioId === null
+        ? null
+        : `/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`
   });
-  useEffect(() => { // Get questions when scenarioId change
-    if (project.scenarioId !== null && getQuestions.complete && !getQuestions.error) {
+  useEffect(() => {
+    // Get questions when scenarioId change
+    if (
+      project.scenarioId !== null &&
+      getQuestions.complete &&
+      !getQuestions.error
+    ) {
       if (project.preventDataFetch) {
         updateProject({ preventDataFetch: false });
         return;

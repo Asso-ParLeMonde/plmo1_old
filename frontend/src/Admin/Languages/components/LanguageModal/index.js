@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
-import { axiosRequest } from "../../../../components/axiosRequest";
+import { UserServiceContext } from "../../../../services/UserService";
 
 function LanguageModal(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [newLanguage, setNewLanguage] = useState(
     props.language || { label: "", value: "" }
   );
@@ -27,9 +28,9 @@ function LanguageModal(props) {
   async function handleConfirmation(event) {
     event.preventDefault();
 
-    const request = await axiosRequest({
+    const request = await axiosLoggedRequest({
       method: "POST",
-      url: `${process.env.REACT_APP_BASE_APP}/languages`,
+      url: "/languages",
       data: newLanguage
     });
 

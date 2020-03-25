@@ -1,4 +1,4 @@
-import {axiosRequest} from "../components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
 
 export async function uploadTemporaryImage(imageBlob) {
   const bodyFormData = new FormData();
@@ -8,7 +8,7 @@ export async function uploadTemporaryImage(imageBlob) {
     const requestImage = await axiosRequest({
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
-      url: `${process.env.REACT_APP_BASE_APP}/plans/image`,
+      url: "/plans/image",
       data: bodyFormData
     });
     return requestImage.data;

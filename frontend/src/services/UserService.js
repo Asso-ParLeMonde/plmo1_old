@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { axiosRequest } from "../components/axiosRequest";
 import Notifications from "../components/Notifications";
@@ -12,7 +13,7 @@ function getCacheToken() {
   return localStorage.getItem("token") || "";
 }
 
-function UserServiceProvider(props) {
+function UserServiceProviderWithRouter(props) {
   const [user, setUser] = useState(getCacheUser());
   const [token, setToken] = useState(getCacheToken());
   const [res, setRes] = useState({ complete: false });
@@ -39,7 +40,6 @@ function UserServiceProvider(props) {
   const login = async (username, password, localSave = false) => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login",
       data: {
         username,
@@ -73,7 +73,6 @@ function UserServiceProvider(props) {
   const signup = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/users",
       data: {
         ...user
@@ -102,7 +101,6 @@ function UserServiceProvider(props) {
   const updatePassword = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login/update-password",
       data: {
         ...user
@@ -131,7 +129,6 @@ function UserServiceProvider(props) {
   const verifyEmail = async user => {
     const response = await axiosRequest({
       method: "POST",
-      baseURL: process.env.REACT_APP_BASE_APP,
       url: "/login/verify-email",
       data: {
         ...user
@@ -165,12 +162,21 @@ function UserServiceProvider(props) {
    * @returns {Promise<{data, pending, error, complete}>}
    */
   const axiosLoggedRequest = async req => {
-    return await axiosRequest({
-      ...req,
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+    const response = await axiosRequest(req, token);
+    // User token is invalid
+    if (response.error && response.status === 401) {
+      setUser(null);
+      setToken("");
+      setRes({
+        complete: true,
+        error: true,
+        message: "Une erreur est survenue, veuillez vous reconnecter"
+      });
+      props.history.push(
+        `/login?redirect=${encodeURI(props.location.pathname)}`
+      );
+    }
+    return response;
   };
 
   return (
@@ -191,8 +197,13 @@ function UserServiceProvider(props) {
   );
 }
 
-UserServiceProvider.propTypes = {
-  children: PropTypes.any
+UserServiceProviderWithRouter.propTypes = {
+  children: PropTypes.any,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
+
+const UserServiceProvider = withRouter(UserServiceProviderWithRouter);
 
 export { UserServiceContext, UserServiceProvider };

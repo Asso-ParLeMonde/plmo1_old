@@ -3,10 +3,12 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import DefaultButton from "../../../components/Buttons/DefaultButton";
+import { UserServiceContext } from "../../../../services/UserService";
 import { UsersServiceContext } from "../../../../services/UsersService";
 import { handleRequest } from "./UserButtonRequests";
 
 function UserRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateUsers = useContext(UsersServiceContext).updateUsers;
 
   const [res, setRes] = useState({
@@ -18,6 +20,7 @@ function UserRemoveButton(props) {
   async function handleRemove(event) {
     event.preventDefault();
     await handleRequest(
+      axiosLoggedRequest,
       props.user,
       setRes,
       "Success lors de la suppression de l'utilisateur",

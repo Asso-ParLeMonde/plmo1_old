@@ -1,6 +1,5 @@
-import { axiosRequest } from "../../../../components/axiosRequest";
-
 async function handleQuestionButtonRequest(
+  axiosLoggedRequest,
   type,
   question,
   setRes,
@@ -15,16 +14,16 @@ async function handleQuestionButtonRequest(
     default:
       break;
     case "PUT":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/questions/${question.id}_${question.language}`,
+        url: `/questions/${question.id}_${question.language}`,
         data: { ...question, isStandard: true }
       });
       break;
     case "DELETE":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/questions/${question.id}`
+        url: `/questions/${question.id}`
       });
       break;
   }

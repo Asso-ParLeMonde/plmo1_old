@@ -54,7 +54,6 @@ const checks = {
 const isPseudoAvailable = async pseudo => {
   const response = await axiosRequest({
     method: "GET",
-    baseURL: process.env.REACT_APP_BASE_APP,
     url: `/users/test-pseudo/${pseudo}`
   });
   if (response.complete && !response.error) {

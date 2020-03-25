@@ -3,10 +3,12 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
+import { UserServiceContext } from "../../../../services/UserService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
 
 function ScenarioAcceptButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateScenarios = useContext(ScenariosServiceContext).updateScenarios;
 
   const [res, setRes] = useState({
@@ -18,6 +20,7 @@ function ScenarioAcceptButton(props) {
   async function handleAcceptation(event) {
     event.preventDefault();
     await handleScenarioButtonRequest(
+      axiosLoggedRequest,
       "PUT",
       props.scenario,
       setRes,

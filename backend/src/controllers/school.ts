@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { School } from "../entities/school";
 import { Controller, del, get, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 export class SchoolController extends Controller {
   constructor() {
@@ -40,7 +41,7 @@ export class SchoolController extends Controller {
     res.sendJSON(school); // send new school
   }
 
-  @put({ path: "/:id" })
+  @put({ path: "/:id", userType: UserType.CLASS })
   public async editSchool(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     const school: School | undefined = await getRepository(School).findOne(id);
@@ -60,7 +61,7 @@ export class SchoolController extends Controller {
     res.sendJSON(school); // send updated school
   }
 
-  @del({ path: "/:id" })
+  @del({ path: "/:id", userType: UserType.CLASS })
   public async deleteSchool(req: Request, res: Response): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getRepository(School).delete(id);

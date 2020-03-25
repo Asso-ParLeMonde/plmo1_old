@@ -16,7 +16,7 @@ function UsersServiceProvider({ children }) {
   const updateUsers = useCallback(async () => {
     const usersRequest = await axiosLoggedRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/users`
+      url: "/users"
     });
 
     setGetUsers(usersRequest);

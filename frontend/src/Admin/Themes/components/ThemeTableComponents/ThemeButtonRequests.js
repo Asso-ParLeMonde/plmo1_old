@@ -1,6 +1,5 @@
-import { axiosRequest } from "../../../../components/axiosRequest";
-
 async function handleRequest(
+  axiosLoggedRequest,
   type,
   theme,
   setRes,
@@ -15,9 +14,9 @@ async function handleRequest(
     default:
       break;
     case "PUT":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${theme.id}`,
+        url: `/themes/${theme.id}`,
         data: {
           names: theme.names,
           image: theme.image,
@@ -26,9 +25,9 @@ async function handleRequest(
       });
       break;
     case "DELETE":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${theme.id}`
+        url: `/themes/${theme.id}`
       });
       break;
   }

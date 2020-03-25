@@ -4,6 +4,7 @@ import { ScenarioRepository } from "../customRepositories/scenarioRepository";
 import { Question } from "../entities/question";
 import { Scenario } from "../entities/scenario";
 import { Controller, del, get, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 async function getScenario(req: Request): Promise<Scenario | undefined> {
   const themeId: number = parseInt(req.params.themeId, 10) || 0;
@@ -45,7 +46,7 @@ export class ThemeScenariosController extends Controller {
     res.sendJSON(scenario);
   }
 
-  @post()
+  @post({ userType: UserType.CLASS })
   public async addScenarios(req: Request, res: Response): Promise<void> {
     const scenario: Scenario = new Scenario(); // create a new scenario
     scenario.description = req.body.description || "";
@@ -56,7 +57,7 @@ export class ThemeScenariosController extends Controller {
     res.sendJSON(scenario);
   }
 
-  @put({ path: "/:scenarioIDS" })
+  @put({ path: "/:scenarioIDS", userType: UserType.CLASS })
   public async editScenario(req: Request, res: Response, next: NextFunction): Promise<void> {
     const scenario: Scenario | undefined = await getScenario(req);
     if (scenario === undefined) {
@@ -69,7 +70,7 @@ export class ThemeScenariosController extends Controller {
     res.sendJSON(scenario);
   }
 
-  @del({ path: "/:scenarioIDS" })
+  @del({ path: "/:scenarioIDS", userType: UserType.CLASS })
   public async deleteScenario(req: Request, res: Response): Promise<void> {
     const themeId: number = parseInt(req.params.themeId, 10) || 0;
     const scenarioIDS: string[] = (req.params.scenarioIDS || "_").split("_");

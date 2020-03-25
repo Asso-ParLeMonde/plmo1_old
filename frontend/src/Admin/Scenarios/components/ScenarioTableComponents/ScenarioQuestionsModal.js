@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
@@ -10,7 +10,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import Notifications from "../../../../components/Notifications";
-import { axiosRequest } from "../../../../components/axiosRequest";
+import { UserServiceContext } from "../../../../services/UserService";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
@@ -21,6 +21,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 function ScenarioQuestionModal(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -32,9 +33,9 @@ function ScenarioQuestionModal(props) {
 
   useEffect(() => {
     const getScenarioQuestions = async () => {
-      const questionsRequest = await axiosRequest({
+      const questionsRequest = await axiosLoggedRequest({
         method: "GET",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${props.scenario.id}/questions`
+        url: `/scenarios/${props.scenario.id}/questions`
       });
 
       if (
@@ -59,6 +60,7 @@ function ScenarioQuestionModal(props) {
     if (isOpen) {
       getScenarioQuestions();
     }
+    // eslint-disable-next-line
   }, [props.scenario.id, isOpen]);
 
   const handleOpenModal = event => {

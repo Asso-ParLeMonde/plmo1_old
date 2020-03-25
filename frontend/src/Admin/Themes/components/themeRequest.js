@@ -1,13 +1,16 @@
-import { axiosRequest } from "../../../components/axiosRequest";
-
-async function themeImagePOSTRequest(newTheme, requestedThemeId, setRes) {
+async function themeImagePOSTRequest(
+  axiosLoggedRequest,
+  newTheme,
+  requestedThemeId,
+  setRes
+) {
   const bodyFormData = new FormData();
   bodyFormData.append("image", newTheme.image);
 
-  const requestImage = await axiosRequest({
+  const requestImage = await axiosLoggedRequest({
     method: "POST",
     headers: { "Content-Type": "multipart/form-data" },
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${requestedThemeId}/image`,
+    url: `/themes/${requestedThemeId}/image`,
     data: bodyFormData
   });
 
@@ -24,10 +27,10 @@ async function themeImagePOSTRequest(newTheme, requestedThemeId, setRes) {
   return false;
 }
 
-async function postTheme(newTheme, setRes) {
-  const request = await axiosRequest({
+async function postTheme(axiosLoggedRequest, newTheme, setRes) {
+  const request = await axiosLoggedRequest({
     method: "POST",
-    url: `${process.env.REACT_APP_BASE_APP}/themes`,
+    url: "/themes",
     data: {
       names: newTheme.names,
       isPublished: true
@@ -47,10 +50,10 @@ async function postTheme(newTheme, setRes) {
   return [request.data.id, false];
 }
 
-async function putTheme(inheritedTheme, newTheme, setRes) {
-  const request = await axiosRequest({
+async function putTheme(axiosLoggedRequest, inheritedTheme, newTheme, setRes) {
+  const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `${process.env.REACT_APP_BASE_APP}/themes/${inheritedTheme.id}`,
+    url: `/themes/${inheritedTheme.id}`,
     data: {
       names: newTheme.names,
       isPublished: true
@@ -70,7 +73,13 @@ async function putTheme(inheritedTheme, newTheme, setRes) {
   return [request.data.id, false];
 }
 
-async function updateTheme(requestType, inheritedTheme, newTheme, setRes) {
+async function updateTheme(
+  axiosLoggedRequest,
+  requestType,
+  inheritedTheme,
+  newTheme,
+  setRes
+) {
   let error = false;
   let requestedThemeId = undefined;
 
@@ -78,10 +87,15 @@ async function updateTheme(requestType, inheritedTheme, newTheme, setRes) {
     default:
       break;
     case "POST":
-      [requestedThemeId, error] = await postTheme(newTheme, setRes);
+      [requestedThemeId, error] = await postTheme(
+        axiosLoggedRequest,
+        newTheme,
+        setRes
+      );
       break;
     case "PUT":
       [requestedThemeId, error] = await putTheme(
+        axiosLoggedRequest,
         inheritedTheme,
         newTheme,
         setRes
@@ -96,7 +110,12 @@ async function updateTheme(requestType, inheritedTheme, newTheme, setRes) {
     newTheme.image !== null &&
     newTheme.image.path === undefined
   ) {
-    error = await themeImagePOSTRequest(newTheme, requestedThemeId, setRes);
+    error = await themeImagePOSTRequest(
+      axiosLoggedRequest,
+      newTheme,
+      requestedThemeId,
+      setRes
+    );
   }
 
   return error;

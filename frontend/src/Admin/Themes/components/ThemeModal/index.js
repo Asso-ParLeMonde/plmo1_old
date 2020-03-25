@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
+import { UserServiceContext } from "../../../../services/UserService";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { updateTheme } from "../themeRequest";
 
@@ -15,8 +16,9 @@ const DEFAULT_THEME = {
 };
 
 function ThemeModal(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const [newTheme, setNewTheme] = useState(props.theme || DEFAULT_THEME);
-  const updateThemes = useContext(ThemesServiceContext).updateThemes;
+  const { updateThemes } = useContext(ThemesServiceContext);
 
   const [res, setRes] = useState({
     error: false,
@@ -51,9 +53,21 @@ function ThemeModal(props) {
 
     let error = false;
     if (props.theme) {
-      error = await updateTheme("PUT", props.theme, newTheme, setRes);
+      error = await updateTheme(
+        axiosLoggedRequest,
+        "PUT",
+        props.theme,
+        newTheme,
+        setRes
+      );
     } else {
-      error = await updateTheme("POST", props.theme, newTheme, setRes);
+      error = await updateTheme(
+        axiosLoggedRequest,
+        "POST",
+        props.theme,
+        newTheme,
+        setRes
+      );
     }
 
     if (error === false) {

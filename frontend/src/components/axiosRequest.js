@@ -1,13 +1,23 @@
 import axios from "axios";
 
-const axiosRequest = async req => {
+const axiosRequest = async (req, token = null) => {
   try {
-    const res = await axios(req);
+    const axiosOptions = {
+      ...req,
+      baseURL: process.env.REACT_APP_BASE_APP
+    };
+    if (token !== null && token.length > 0) {
+      axiosOptions.headers = {
+        Authorization: `Bearer ${token}`
+      };
+    }
+    const res = await axios(axiosOptions);
     return {
       data: res.data,
       pending: false,
       error: false,
-      complete: true
+      complete: true,
+      status: res.status
     };
   } catch (error) {
     if (error.response) {
@@ -22,7 +32,8 @@ const axiosRequest = async req => {
       data: error.response ? error.response.data || null : null,
       pending: false,
       error: true,
-      complete: true
+      complete: true,
+      status: (error.response || {}).status || 404
     };
   }
 };

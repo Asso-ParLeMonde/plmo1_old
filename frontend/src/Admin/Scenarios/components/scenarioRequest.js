@@ -1,9 +1,7 @@
-import { axiosRequest } from "../../../components/axiosRequest";
-
-async function postScenario(newScenario, setRes) {
-  const request = await axiosRequest({
+async function postScenario(axiosLoggedRequest, newScenario, setRes) {
+  const request = await axiosLoggedRequest({
     method: "POST",
-    url: `${process.env.REACT_APP_BASE_APP}/scenarios`,
+    url: "/scenarios",
     data: {
       names: newScenario.names,
       descriptions: newScenario.descriptions,
@@ -31,10 +29,15 @@ async function postScenario(newScenario, setRes) {
   return;
 }
 
-async function putScenario(inheritedScenario, newScenario, setRes) {
-  const request = await axiosRequest({
+async function putScenario(
+  axiosLoggedRequest,
+  inheritedScenario,
+  newScenario,
+  setRes
+) {
+  const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `${process.env.REACT_APP_BASE_APP}/scenarios/${inheritedScenario.id}`,
+    url: `/scenarios/${inheritedScenario.id}`,
     data: {
       names: newScenario.names,
       descriptions: newScenario.descriptions,
