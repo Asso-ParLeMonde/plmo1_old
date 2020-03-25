@@ -15,7 +15,7 @@ function Partie2(props) {
 
   const handleHome = event => {
     event.preventDefault();
-    props.history.push("/creer");
+    props.history.push("/create");
   };
 
   return (
@@ -27,7 +27,7 @@ function Partie2(props) {
               separator={<NavigateNextIcon fontSize="small" />}
               aria-label="breadcrumb"
             >
-              <Link color="inherit" href="/creer" onClick={handleHome}>
+              <Link color="inherit" href="/create" onClick={handleHome}>
                 Tout les thèmes
               </Link>
               <Typography color="textPrimary">{project.themeName}</Typography>
@@ -38,7 +38,7 @@ function Partie2(props) {
 
           <Switch>
             <Route
-              path="/creer/2-choix-des-questions/new"
+              path="/create/2-questions-choice/new"
               render={props => (
                 <NewQuestion
                   {...props}
@@ -48,7 +48,7 @@ function Partie2(props) {
               )}
             />
             <Route
-              path="/creer/2-choix-des-questions"
+              path="/create/2-questions-choice"
               render={props => (
                 <AllQuestions
                   {...props}

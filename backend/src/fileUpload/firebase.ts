@@ -28,7 +28,7 @@ export class FirebaseUtils extends Provider {
     this.bucket = storage().bucket("gs://cs-par-le-monde-1.appspot.com");
   }
 
-  public async uploadImage(filename: string, filePath: string): Promise<string> {
+  public async uploadImage(filename: string, filePath: string, hasMultipleSizes: boolean = false): Promise<string> {
     if (process.env.STOCKAGE_PROVIDER_NAME !== "firebase") {
       return "";
     }
@@ -43,16 +43,18 @@ export class FirebaseUtils extends Provider {
           destination: `${filePath}/${filename}/normal.jpeg`,
         }),
       );
-      uploadTasks.push(
-        this.bucket.upload(`${dir}/${filename}_md.jpeg`, {
-          destination: `${filePath}/${filename}/medium.jpeg`,
-        }),
-      );
-      uploadTasks.push(
-        this.bucket.upload(`${dir}/${filename}_sm.jpeg`, {
-          destination: `${filePath}/${filename}/small.jpeg`,
-        }),
-      );
+      if (hasMultipleSizes) {
+        uploadTasks.push(
+          this.bucket.upload(`${dir}/${filename}_md.jpeg`, {
+            destination: `${filePath}/${filename}/medium.jpeg`,
+          }),
+        );
+        uploadTasks.push(
+          this.bucket.upload(`${dir}/${filename}_sm.jpeg`, {
+            destination: `${filePath}/${filename}/small.jpeg`,
+          }),
+        );
+      }
       await Promise.all(uploadTasks);
     } catch (e) {
       logger.error(`File ${filename} could not be sent to firebase !`);
@@ -63,8 +65,10 @@ export class FirebaseUtils extends Provider {
     try {
       const deleteTasks: Array<Promise<void>> = [];
       deleteTasks.push(fs.remove(`${dir}/${filename}.jpeg`));
-      deleteTasks.push(fs.remove(`${dir}/${filename}_md.jpeg`));
-      deleteTasks.push(fs.remove(`${dir}/${filename}_sm.jpeg`));
+      if (hasMultipleSizes) {
+        deleteTasks.push(fs.remove(`${dir}/${filename}_md.jpeg`));
+        deleteTasks.push(fs.remove(`${dir}/${filename}_sm.jpeg`));
+      }
       await Promise.all(deleteTasks);
     } catch (e) {
       logger.error(`File ${filename} not found !`);

@@ -54,16 +54,6 @@ function AddButton(props) {
             history={props.history}
           />
         );
-      case "LANGUAGE":
-        return (
-          <LanguageModal
-            language={props.newLanguage}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            modalTitle={props.modalTitle}
-            history={props.history}
-          />
-        );
       case "QUESTION":
         return (
           <QuestionModal
@@ -73,6 +63,18 @@ function AddButton(props) {
             modalTitle={props.modalTitle}
             history={props.history}
             scenarioId={props.scenarioId}
+          />
+        );
+      case "USER":
+        return <div />;
+      case "LANGUAGE":
+        return (
+          <LanguageModal
+            language={props.newLanguage}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalTitle={props.modalTitle}
+            history={props.history}
           />
         );
     }
@@ -100,7 +102,7 @@ function AddButton(props) {
 AddButton.propTypes = {
   buttonTitle: PropTypes.string.isRequired,
   newObject: PropTypes.object,
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE"])
+  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE", "USER"])
     .isRequired,
   link: PropTypes.string.isRequired,
   modalTitle: PropTypes.string.isRequired,

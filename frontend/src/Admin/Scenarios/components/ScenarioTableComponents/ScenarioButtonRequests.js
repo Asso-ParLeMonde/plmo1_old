@@ -1,6 +1,5 @@
-import { axiosRequest } from "../../../components/axiosRequest";
-
 async function handleScenarioButtonRequest(
+  axiosLoggedRequest,
   type,
   scenario,
   setRes,
@@ -15,16 +14,16 @@ async function handleScenarioButtonRequest(
     default:
       break;
     case "PUT":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "PUT",
-        url: `${process.env.REACT_APP_BASE_APP}/scenarios/${scenario.id}`,
+        url: `/scenarios/${scenario.id}`,
         data: { ...scenario, isDefault: true }
       });
       break;
     case "DELETE":
-      request = await axiosRequest({
+      request = await axiosLoggedRequest({
         method: "DELETE",
-        url: `${process.env.REACT_APP_BASE_APP}/themes/${scenario.themeId}/scenarios/${scenario.id}`
+        url: `/themes/${scenario.themeId}/scenarios/${scenario.id}`
       });
       break;
   }

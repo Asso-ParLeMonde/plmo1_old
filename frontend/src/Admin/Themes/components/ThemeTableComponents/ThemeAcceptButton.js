@@ -3,10 +3,12 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
+import { UserServiceContext } from "../../../../services/UserService";
 import { handleRequest } from "./ThemeButtonRequests";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 
 function ThemeAcceptButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateThemes = useContext(ThemesServiceContext).updateThemes;
 
   const [res, setRes] = useState({
@@ -18,11 +20,12 @@ function ThemeAcceptButton(props) {
   async function handleAcceptation(event) {
     event.preventDefault();
     await handleRequest(
+      axiosLoggedRequest,
       "PUT",
       props.theme,
       setRes,
-      "Success lors de la validation du theme",
-      "Erreur lors de la validation du theme",
+      "Succès lors de la modification du theme",
+      "Erreur lors de la modification du theme",
       props.history,
       updateThemes
     );

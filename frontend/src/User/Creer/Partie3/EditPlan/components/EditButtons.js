@@ -66,7 +66,7 @@ function EditButtons(props) {
 
   const handleDraw = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/draw?question=${props.questionIndex}&plan=${props.planIndex}`);
+    props.history.push(`/create/3-storyboard-and-filming-schedule/draw?question=${props.questionIndex}&plan=${props.planIndex}`);
   };
 
   const toggleShowCamera = show => () => {
@@ -133,7 +133,7 @@ function EditButtons(props) {
               color="secondary"
               style={{textTransform: "none"}}
               startIcon={<CreateIcon />}
-              href={`/creer/3-storyboard-et-plan-de-tournage/draw?question=${props.questionIndex}&plan=${props.planIndex}`}
+              href={`/create/3-storyboard-and-filming-schedule/draw?question=${props.questionIndex}&plan=${props.planIndex}`}
               onClick={handleDraw}
             >Dessiner le plan</Button>
           </div>

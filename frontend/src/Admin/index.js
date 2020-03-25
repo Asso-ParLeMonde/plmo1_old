@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,6 +12,9 @@ import Navbar from "../components/Navbar";
 import AdminDrawer from "./components/AdminDrawer";
 import { ThemesServiceProvider } from "../services/ThemesService";
 import { ScenariosServiceProvider } from "../services/ScenariosService";
+import { UserServiceContext } from "../services/UserService";
+import Users from "./Users";
+import { UsersServiceProvider } from "../services/UsersService";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -34,13 +37,26 @@ const tabs = [
     path: "/admin/questions"
   },
   {
+    label: "Users",
+    path: "/admin/users"
+  },
+  {
     label: "Langues",
     path: "/admin/languages"
   }
 ];
 
 function Admin() {
+  const { user, isLoggedIn } = useContext(UserServiceContext);
   const classes = useStyles();
+
+  if (!isLoggedIn()) {
+    return <Redirect to="/login?redirect=/admin" />;
+  }
+
+  if (user.type < 1) {
+    return <Redirect to="/" />;
+  }
 
   return (
     <div
@@ -71,19 +87,22 @@ function Admin() {
       >
         <AdminDrawer tabs={tabs} />
         <main style={{ flex: 1 }}>
-          <ThemesServiceProvider>
-            <ScenariosServiceProvider>
-              <Container maxWidth="lg" className={classes.container}>
-                <Switch>
-                  <Route path="/admin/themes" component={Themes} />
-                  <Route path="/admin/scenarios" component={Scenarios} />
-                  <Route path="/admin/questions" component={Questions} />
-                  <Route path="/admin/languages" component={Languages} />
-                  <Redirect exact from="/admin" to="admin/themes" />
-                </Switch>
-              </Container>
-            </ScenariosServiceProvider>
-          </ThemesServiceProvider>
+          <UsersServiceProvider>
+            <ThemesServiceProvider>
+              <ScenariosServiceProvider>
+                <Container maxWidth="lg" className={classes.container}>
+                  <Switch>
+                    <Route path="/admin/themes" component={Themes} />
+                    <Route path="/admin/scenarios" component={Scenarios} />
+                    <Route path="/admin/questions" component={Questions} />
+                    <Route path="/admin/languages" component={Languages} />
+                    <Route path="/admin/users" component={Users} />
+                    <Redirect exact from="/admin" to="admin/themes" />
+                  </Switch>
+                </Container>
+              </ScenariosServiceProvider>
+            </ThemesServiceProvider>
+          </UsersServiceProvider>
         </main>
       </div>
     </div>

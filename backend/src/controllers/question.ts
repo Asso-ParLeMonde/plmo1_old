@@ -3,6 +3,7 @@ import { getRepository } from "typeorm";
 import { Question } from "../entities/question";
 import { Scenario } from "../entities/scenario";
 import { Controller, del, get, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 function getOptions(req: Request): { isDefault?: boolean; scenarioId?: number; languageCode?: string } {
   const isDefault: string | undefined = req.query.isDefault || undefined;
@@ -51,7 +52,7 @@ export class QuestionController extends Controller {
     res.sendJSON(question);
   }
 
-  @post()
+  @post({ userType: UserType.CLASS })
   public async addQuestion(req: Request, res: Response): Promise<void> {
     const scenarioId = parseInt(req.body.scenarioId || "", 10) || 0;
     const languageCode = req.body.languageCode || "";
@@ -78,7 +79,7 @@ export class QuestionController extends Controller {
     res.sendJSON(question);
   }
 
-  @put({ path: "/:id" })
+  @put({ path: "/:id", userType: UserType.CLASS })
   public async editQuestion(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id || "", 10) || 0;
     const question: Question | undefined = await getRepository(Question).findOne({
@@ -99,7 +100,7 @@ export class QuestionController extends Controller {
     res.sendJSON(question);
   }
 
-  @del({ path: "/:id" })
+  @del({ path: "/:id", userType: UserType.CLASS })
   public async deleteQuestion(req: Request, res: Response): Promise<void> {
     const id = parseInt(req.params.id || "", 10) || 0;
     await getRepository(Question).delete({ id });

@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { axiosRequest } from "../Admin/components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
 
 const ThemesServiceContext = React.createContext(undefined, undefined);
 
 function ThemesServiceProvider({ children, isPublished }) {
   const [getThemes, setGetThemes] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });
@@ -15,7 +15,7 @@ function ThemesServiceProvider({ children, isPublished }) {
   const updateThemes = useCallback(async () => {
     const themesRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/themes?published=${isPublished}`
+      url: `/themes?published=${isPublished}`
     });
     setGetThemes(themesRequest);
   }, [isPublished]);

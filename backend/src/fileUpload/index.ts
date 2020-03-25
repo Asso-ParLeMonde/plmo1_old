@@ -7,12 +7,12 @@ const providers: { [p: string]: Provider } = {
   local: new LocalUtils(),
 };
 
-export async function uploadImage(filename: string, filePath: string): Promise<string | null> {
+export async function uploadImage(filename: string, filePath: string, hasMultipleSizes: boolean = false): Promise<string | null> {
   const provider: string = process.env.STOCKAGE_PROVIDER_NAME || "local";
   if (providers[provider] === undefined) {
     return null;
   } else {
-    return await providers[provider].uploadImage(filename, filePath);
+    return await providers[provider].uploadImage(filename, filePath, hasMultipleSizes);
   }
 }
 

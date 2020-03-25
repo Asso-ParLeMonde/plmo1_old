@@ -5,6 +5,7 @@ import { Image } from "../entities/image";
 import { Theme } from "../entities/theme";
 import { deleteImage } from "../fileUpload";
 import { Controller, del, get, oneImage, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 export class ThemesController extends Controller {
   constructor() {
@@ -33,7 +34,7 @@ export class ThemesController extends Controller {
     res.sendJSON(theme);
   }
 
-  @post()
+  @post({ userType: UserType.CLASS })
   public async addTheme(req: Request, res: Response): Promise<void> {
     const labels: { [key: string]: string } = req.body.names || {};
     const isPublished = req.body.isPublished || false;
@@ -43,7 +44,7 @@ export class ThemesController extends Controller {
     res.sendJSON(theme); // send new theme
   }
 
-  @put({ path: "/:id" })
+  @put({ path: "/:id", userType: UserType.PLMO_ADMIN })
   public async editTheme(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     const labels: { [key: string]: string } = req.body.names || {};
@@ -60,14 +61,14 @@ export class ThemesController extends Controller {
     res.sendJSON(theme); // send updated theme
   }
 
-  @del({ path: "/:id" })
+  @del({ path: "/:id", userType: UserType.PLMO_ADMIN })
   public async deleteTheme(req: Request, res: Response): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getCustomRepository(ThemeRepository).delete(id);
     res.status(204).send();
   }
 
-  @oneImage({ path: "/:id/image", tableName: "themes" })
+  @oneImage({ path: "/:id/image", tableName: "themes", userType: UserType.PLMO_ADMIN })
   public async addImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (req.imageID === undefined || req.image === undefined) {
       next();
@@ -92,7 +93,7 @@ export class ThemesController extends Controller {
     res.sendJSON(theme.image);
   }
 
-  @del({ path: "/:id/image" })
+  @del({ path: "/:id/image", userType: UserType.PLMO_ADMIN })
   public async deleteThemeImage(req: Request, res: Response): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getCustomRepository(ThemeRepository).deleteThemeImage(id);

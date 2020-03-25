@@ -27,7 +27,7 @@ export function saveImages(tableName: string): RequestHandler {
       .toFile(path.join(dir, `${uuid}.jpeg`));
 
     // then send file to server
-    const filePath: string | null = await uploadImage(uuid, path.join("images", tableName));
+    const filePath: string | null = await uploadImage(uuid, path.join("images", tableName), true);
     if (filePath !== null) {
       // Next save it in the database
       const image = new Image();

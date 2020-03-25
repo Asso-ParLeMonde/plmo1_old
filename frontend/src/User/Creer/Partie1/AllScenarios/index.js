@@ -35,8 +35,8 @@ function Scenarios(props) {
               stepNumber={0}
               title="Nouveau scénario"
               history={props.history}
-              path={`/creer/1-choix-du-scenario/new?themeId=${props.themeId}`}
-              shortPath={`/creer/1-choix-du-scenario/new`}
+              path={`/create/1-scenario-choice/new?themeId=${props.themeId}`}
+              shortPath={`/create/1-scenario-choice/new`}
               scenarioId={0}
               description="Cliquez ici pour créer votre propre scénario !"/>
             {props.scenarios.map((scenario, index) => (
@@ -45,8 +45,8 @@ function Scenarios(props) {
                 stepNumber={0}
                 title={scenario.name}
                 scenarioId={scenario.id}
-                path={`/creer/2-choix-des-questions?themeId=${props.themeId}&scenarioId=${scenario.id}`}
-                shortPath={`/creer/2-choix-des-questions`}
+                path={`/create/2-questions-choice?themeId=${props.themeId}&scenarioId=${scenario.id}`}
+                shortPath={`/create/2-questions-choice`}
                 history={props.history}
                 description={scenario.description}/>
             ))}

@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useEffect, useContext } from "react";
+import { UserServiceContext } from "./UserService";
 
 function useAxios(req) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
+
   const [res, setRes] = useState({
     data: null,
     complete: false,
@@ -12,22 +14,15 @@ function useAxios(req) {
   useEffect(() => {
     // eslint-disable-next-line no-console
     console.log(req.url);
-    setRes({
-      data: null,
-      pending: true,
-      error: false,
-      complete: false
-    });
     if (req.url !== null) {
-      axios(req)
-        .then(res =>
-          setRes({
-            data: res.data,
-            pending: false,
-            error: false,
-            complete: true
-          })
-        )
+      setRes({
+        data: null,
+        pending: true,
+        error: false,
+        complete: false
+      });
+      axiosLoggedRequest(req)
+        .then(r => setRes(r))
         .catch(() =>
           setRes({
             data: null,

@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { axiosRequest } from "../Admin/components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
 
 const ScenariosServiceContext = React.createContext(undefined, undefined);
 
 function ScenariosServiceProvider({ children, isDefault }) {
   const [getScenarios, setGetScenarios] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });
@@ -15,7 +15,7 @@ function ScenariosServiceProvider({ children, isDefault }) {
   const updateScenarios = useCallback(async () => {
     const scenariosRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/scenarios`
+      url: "/scenarios"
     });
     setGetScenarios(scenariosRequest);
   }, []);

@@ -1,0 +1,10 @@
+{
+  "name": "par-le-monde-1",
+  "version": "1.0.0",
+  "license": "private",
+  "scripts": {
+    "build": "chmod u+x build.sh && ./build.sh",
+    "start": "node ./backend/dist/app.js"
+  },
+  "private": true
+}

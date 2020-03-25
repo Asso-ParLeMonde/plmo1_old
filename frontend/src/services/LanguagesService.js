@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { axiosRequest } from "../Admin/components/axiosRequest";
+import { axiosRequest } from "../components/axiosRequest";
 
 const LanguagesServiceContext = React.createContext(undefined, undefined);
 
 function LanguagesServiceProvider({ children }) {
   const [getLanguages, setGetLanguages] = useState({
     data: null,
-    pendint: null,
+    pending: null,
     error: null,
     complete: null
   });
@@ -15,7 +15,7 @@ function LanguagesServiceProvider({ children }) {
   const updateLanguages = useCallback(async () => {
     const languagesRequest = await axiosRequest({
       method: "GET",
-      url: `${process.env.REACT_APP_BASE_APP}/languages`
+      url: "/languages"
     });
     setGetLanguages(languagesRequest);
   }, []);
@@ -32,7 +32,7 @@ function LanguagesServiceProvider({ children }) {
 }
 
 LanguagesServiceProvider.propTypes = {
-  children: PropTypes.any,
+  children: PropTypes.any
 };
 
 export { LanguagesServiceContext, LanguagesServiceProvider };

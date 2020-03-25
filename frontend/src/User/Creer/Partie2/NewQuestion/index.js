@@ -22,7 +22,7 @@ function NewQuestion(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/2-choix-des-questions`);
+    props.history.push(`/create/2-questions-choice`);
   };
 
   const handleSubmit = (event) => {
@@ -46,7 +46,7 @@ function NewQuestion(props) {
         },
       ],
     });
-    props.history.push(`/creer/2-choix-des-questions`);
+    props.history.push(`/create/2-questions-choice`);
   };
 
   return (
@@ -89,7 +89,7 @@ function NewQuestion(props) {
               variant="outlined"
               color="secondary"
               style={{ marginRight: "1rem" }}
-              href={`/creer/2-choix-des-questions`}
+              href={`/create/2-questions-choice`}
               onClick={handleBack}
             >
               Annuler

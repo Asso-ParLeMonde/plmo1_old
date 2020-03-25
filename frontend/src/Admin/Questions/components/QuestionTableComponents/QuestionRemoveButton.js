@@ -2,11 +2,13 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
 import { QuestionsContext } from "../..";
+import { UserServiceContext } from "../../../../services/UserService";
+import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
 
 function QuestionRemoveButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateQuestions = useContext(QuestionsContext);
 
   const [res, setRes] = useState({
@@ -18,10 +20,11 @@ function QuestionRemoveButton(props) {
   async function handleRemove(event) {
     event.preventDefault();
     await handleQuestionButtonRequest(
+      axiosLoggedRequest,
       "DELETE",
       props.question,
       setRes,
-      "Success lors de la suppression de la question",
+      "Succès lors de la suppression de la question",
       "Erreur lors de la suppression de la question",
       props.history,
       updateQuestions
@@ -29,11 +32,13 @@ function QuestionRemoveButton(props) {
   }
 
   return (
-    <DefaultButton
-      href={`/admin/scenario/delete`}
-      handleAction={handleRemove}
-      icon={props.icon}
+    <DefaultDeleteButton
+      name={props.question.question}
+      handleRemove={handleRemove}
+      goTo={"/admin/questions/delete"}
+      returnTo={"/admin/questions"}
       res={res}
+      icon={props.icon}
     />
   );
 }

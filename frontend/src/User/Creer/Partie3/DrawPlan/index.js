@@ -31,7 +31,7 @@ function DrawPlan(props) {
 
   const handleBack = (event) => {
     event.preventDefault();
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/edit?question=${questionIndex}&plan=${planIndex}`);
+    props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`);
   };
 
   const handleConfirm = async (event) => {
@@ -50,7 +50,7 @@ function DrawPlan(props) {
       console.log(e);
     }
     setIsLoading(false);
-    props.history.push(`/creer/3-storyboard-et-plan-de-tournage/edit?question=${questionIndex}&plan=${planIndex}`);
+    props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`);
   };
 
   return (
@@ -78,7 +78,7 @@ function DrawPlan(props) {
             variant="outlined"
             color="secondary"
             style={{ marginRight: "1rem" }}
-            href="/creer/3-storyboard-et-plan-de-tournage"
+            href="/create/3-storyboard-and-filming-schedule"
             onClick={handleBack}
           >
             Annuler
@@ -88,7 +88,7 @@ function DrawPlan(props) {
             variant="contained"
             color="secondary"
             style={{ marginRight: "1rem" }}
-            href={`/creer/3-storyboard-et-plan-de-tournage/edit?question=${questionIndex}&plan=${planIndex}`}
+            href={`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`}
             onClick={handleConfirm}
           >
             Enregistrer

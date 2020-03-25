@@ -1,9 +1,7 @@
-import { axiosRequest } from "../../components/axiosRequest";
-
-async function postQuestion(newQuestion, setRes) {
-  const request = await axiosRequest({
+async function postQuestion(axiosLoggedRequest, newQuestion, setRes) {
+  const request = await axiosLoggedRequest({
     method: "POST",
-    url: `${process.env.REACT_APP_BASE_APP}/questions`,
+    url: "/questions",
     data: newQuestion
   });
 
@@ -20,10 +18,15 @@ async function postQuestion(newQuestion, setRes) {
   return false;
 }
 
-async function putQuestion(inheritedQuestion, newQuestion, setRes) {
-  const request = await axiosRequest({
+async function putQuestion(
+  axiosLoggedRequest,
+  inheritedQuestion,
+  newQuestion,
+  setRes
+) {
+  const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `${process.env.REACT_APP_BASE_APP}/questions/${inheritedQuestion.id}`,
+    url: `/questions/${inheritedQuestion.id}`,
     data: {
       scenarioId: newQuestion.scenarioId,
       question: newQuestion.question,
@@ -45,6 +48,7 @@ async function putQuestion(inheritedQuestion, newQuestion, setRes) {
 }
 
 async function updateQuestion(
+  axiosLoggedRequest,
   requestType,
   inheritedQuestion,
   newQuestion,
@@ -56,10 +60,15 @@ async function updateQuestion(
     default:
       break;
     case "POST":
-      error = await postQuestion(newQuestion, setRes);
+      error = await postQuestion(axiosLoggedRequest, newQuestion, setRes);
       break;
     case "PUT":
-      error = await putQuestion(inheritedQuestion, newQuestion, setRes);
+      error = await putQuestion(
+        axiosLoggedRequest,
+        inheritedQuestion,
+        newQuestion,
+        setRes
+      );
       break;
   }
 

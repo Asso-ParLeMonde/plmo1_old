@@ -8,13 +8,8 @@ services:
       - "5000:5000"
     links:
       - mariaDB
-    environment:
-      - PRODUCTION=false
-      - DEBUG=true
-      - DB_HOST=mariaDB
-      - DB_PORT=3306
-      - DB_USER=root
-      - DB_PASS=password
+    env_file:
+      - ./.env
     restart: always
     volumes:
       - ./src:/usr/src/app/src

@@ -2,20 +2,33 @@ import { RequestHandler, Router } from "express";
 import multer from "multer";
 import { handleErrors } from "../middlewares/handleErrors";
 import { saveImages } from "../middlewares/saveImages";
+import { authenticate } from "../middlewares/authenticate";
 import { saveTemporaryImage } from "../middlewares/saveTemporaryImage";
+import { UserType } from "../entities/user";
+
+type decoratorParams = {
+  path?: string;
+  userType?: UserType;
+};
+
+const defaultParams: decoratorParams = {
+  path: "",
+  userType: undefined,
+};
 
 /**
  * GET decorator.
  *
  * @param path: path for the get function
+ * @param userType: Authentication type for this request
  */
-export function get({ path }: { path: string } = { path: "" }) {
+export function get({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.get(path, handleErrors(method));
+    target.router.get(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -24,14 +37,15 @@ export function get({ path }: { path: string } = { path: "" }) {
  * POST decorator
  *
  * @param path: path for the post function
+ * @param userType: Authentication type for this request
  */
-export function post({ path }: { path: string } = { path: "" }) {
+export function post({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.post(path, handleErrors(method));
+    target.router.post(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -40,14 +54,15 @@ export function post({ path }: { path: string } = { path: "" }) {
  * PUT decorator
  *
  * @param path: path for the put function
+ * @param userType: Authentication type for this request
  */
-export function put({ path }: { path: string } = { path: "" }) {
+export function put({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.put(path, handleErrors(method));
+    target.router.put(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -56,14 +71,15 @@ export function put({ path }: { path: string } = { path: "" }) {
  * DELETE decorator
  *
  * @param path: path for the put function
+ * @param userType: Authentication type for this request
  */
-export function del({ path }: { path: string } = { path: "" }) {
+export function del({ path, userType }: decoratorParams = defaultParams) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
       target.router = Router({ mergeParams: true });
     }
-    target.router.delete(path, handleErrors(method));
+    target.router.delete(path || "", authenticate(userType), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -74,8 +90,9 @@ export function del({ path }: { path: string } = { path: "" }) {
  * @param path: path for the put function
  * @param name: name of the file from the request
  * @param tableName
+ * @param userType: Authentication type for this request
  */
-export function oneImage({ path, name, tableName }: { path: string; name?: string; tableName: string } = { path: "", tableName: "other" }) {
+export function oneImage({ path, name, tableName, userType }: { path: string; name?: string; tableName: string; userType?: UserType } = { path: "", tableName: "other" }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
@@ -83,7 +100,7 @@ export function oneImage({ path, name, tableName }: { path: string; name?: strin
     }
     const storage = multer.memoryStorage();
     const upload = multer({ storage });
-    target.router.post(path, upload.single(name || "image"), handleErrors(saveImages(tableName)), handleErrors(method));
+    target.router.post(path, authenticate(userType), upload.single(name || "image"), handleErrors(saveImages(tableName)), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -94,8 +111,9 @@ export function oneImage({ path, name, tableName }: { path: string; name?: strin
  * @param path: path for the put function
  * @param name: name of the file from the request
  * @param tableName
+ * @param userType: Authentication type for this request
  */
-export function tempImage({ path, name, tableName }: { path: string; name?: string; tableName: string } = { path: "", tableName: "other" }) {
+export function tempImage({ path, name, tableName, userType }: { path: string; name?: string; tableName: string; userType?: UserType } = { path: "", tableName: "other" }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
@@ -103,7 +121,7 @@ export function tempImage({ path, name, tableName }: { path: string; name?: stri
     }
     const storage = multer.memoryStorage();
     const upload = multer({ storage });
-    target.router.post(path, upload.single(name || "image"), handleErrors(saveTemporaryImage(tableName)), handleErrors(method));
+    target.router.post(path, authenticate(userType), upload.single(name || "image"), handleErrors(saveTemporaryImage(tableName)), handleErrors(method));
     return propertyDesciptor;
   };
 }

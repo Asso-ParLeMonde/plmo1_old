@@ -3,6 +3,7 @@ import { getCustomRepository } from "typeorm";
 import { ScenarioRepository } from "../customRepositories/scenarioRepository";
 import { Scenario } from "../entities/scenario";
 import { Controller, get, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 interface ScenarioResponse {
   id: undefined | number;
@@ -81,7 +82,7 @@ export class ScenariosController extends Controller {
     res.sendJSON(response);
   }
 
-  @post()
+  @post({ userType: UserType.PLMO_ADMIN })
   public async addScenarios(req: Request, res: Response): Promise<void> {
     const labels: { [key: string]: string } = req.body.names || {};
     const descriptions: { [key: string]: string } = req.body.descriptions || {};
@@ -113,7 +114,7 @@ export class ScenariosController extends Controller {
     res.sendJSON(response);
   }
 
-  @put({ path: "/:id" })
+  @put({ path: "/:id", userType: UserType.PLMO_ADMIN })
   public async editScenario(req: Request, res: Response, next: NextFunction): Promise<void> {
     const scenarios: Scenario[] | undefined = await getScenariosById(req);
     if (scenarios === undefined) {

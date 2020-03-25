@@ -6,8 +6,10 @@ import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { handleQuestionButtonRequest } from "./QuestionButtonRequests";
 
 import { QuestionsContext } from "../../index";
+import { UserServiceContext } from "../../../../services/UserService";
 
 function QuestionAcceptButton(props) {
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
   const updateQuestions = useContext(QuestionsContext);
 
   const [res, setRes] = useState({
@@ -19,11 +21,12 @@ function QuestionAcceptButton(props) {
   async function handleAcceptation(event) {
     event.preventDefault();
     await handleQuestionButtonRequest(
+      axiosLoggedRequest,
       "PUT",
       props.question,
       setRes,
-      "Success lors de la validation de la question",
-      "Erreur lors de la validation de la question",
+      "Succès lors de la modification de la question",
+      "Erreur lors de la modification de la question",
       props.history,
       updateQuestions
     );

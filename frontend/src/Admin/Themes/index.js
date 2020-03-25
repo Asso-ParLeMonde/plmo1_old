@@ -10,13 +10,9 @@ import TableCard from "../components/TableCard";
 import { ThemesServiceContext } from "../../services/ThemesService";
 
 function Themes() {
-  let themes = [];
-
-  // eslint-disable-next-line
-  const themesRequest = useContext(ThemesServiceContext).getThemes;
-  if (themesRequest.complete && !themesRequest.error) {
-    themes = themesRequest.data;
-  }
+  const { getThemes: themesRequest } = useContext(ThemesServiceContext);
+  const themes =
+    themesRequest.complete && !themesRequest.error ? themesRequest.data : [];
 
   return (
     <React.Fragment>
