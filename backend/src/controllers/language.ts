@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Language } from "../entities/language";
 import { Controller, del, get, post, put } from "./controller";
+import { UserType } from "../entities/user";
 
 export class LanguageController extends Controller {
   constructor() {
@@ -25,7 +26,7 @@ export class LanguageController extends Controller {
     res.sendJSON(language);
   }
 
-  @post()
+  @post({ userType: UserType.PLMO_ADMIN })
   public async addLanguage(req: Request, res: Response): Promise<void> {
     const language: Language = new Language(); // create a new language
     language.label = req.body.label;
@@ -34,7 +35,7 @@ export class LanguageController extends Controller {
     res.sendJSON(language); // send new language
   }
 
-  @put({ path: "/:id" })
+  @put({ path: "/:id", userType: UserType.PLMO_ADMIN })
   public async editLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     const language: Language | undefined = await getRepository(Language).findOne(id);
@@ -48,7 +49,7 @@ export class LanguageController extends Controller {
     res.sendJSON(language); // send updated language
   }
 
-  @del({ path: "/:id" })
+  @del({ path: "/:id", userType: UserType.PLMO_ADMIN })
   public async deleteLanguage(req: Request, res: Response): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getRepository(Language).delete(id);
