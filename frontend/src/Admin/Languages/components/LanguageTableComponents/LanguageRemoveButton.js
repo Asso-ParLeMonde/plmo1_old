@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
 import { UserServiceContext } from "../../../../services/UserService";
-import DefaultButton from "../../../components/Buttons/DefaultButton";
+import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
 
 function LanguageRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -43,11 +43,13 @@ function LanguageRemoveButton(props) {
   }
 
   return (
-    <DefaultButton
-      href={`/admin/languagues/delete`}
-      handleAction={handleRemove}
-      icon={props.icon}
+    <DefaultDeleteButton
+      name={props.theme.names[Object.keys(props.theme.names)[0]]}
+      handleRemove={handleRemove}
+      goTo={"/admin/languages/delete"}
+      returnTo={"/admin/languages"}
       res={res}
+      icon={props.icon}
     />
   );
 }
