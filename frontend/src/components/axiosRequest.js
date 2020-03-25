@@ -16,7 +16,8 @@ const axiosRequest = async (req, token = null) => {
       data: res.data,
       pending: false,
       error: false,
-      complete: true
+      complete: true,
+      status: res.status
     };
   } catch (error) {
     if (error.response) {
@@ -31,7 +32,8 @@ const axiosRequest = async (req, token = null) => {
       data: error.response ? error.response.data || null : null,
       pending: false,
       error: true,
-      complete: true
+      complete: true,
+      status: (error.response || {}).status || 404
     };
   }
 };
