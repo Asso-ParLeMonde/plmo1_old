@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, OneToMany } from "typeorm";
+import { Plan } from "./plan";
 
 @Entity()
 export class Question {
@@ -16,4 +17,10 @@ export class Question {
 
   @PrimaryColumn({ type: "varchar", length: 2 })
   public languageCode: string;
+
+  @OneToMany(
+    () => Plan,
+    plan => plan.question,
+  )
+  public plans: Plan[];
 }

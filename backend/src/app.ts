@@ -12,7 +12,6 @@ import { routes } from "./routes/routes";
 import { connectToDatabase } from "./utils/database";
 import { logger } from "./utils/logger";
 import { normalizePort, onError } from "./utils/server";
-import { htmlToPDF, Template } from "./pdf";
 
 async function main(): Promise<void> {
   const connection: Connection | null = await connectToDatabase();
@@ -48,6 +47,9 @@ async function main(): Promise<void> {
   /* --- Public videos --- */
   backRouter.use(`/videos`, express.static(path.join(__dirname, "videos")));
 
+  /* --- Public pdf --- */
+  backRouter.use(`/pdf`, express.static(path.join(__dirname, "pdf/generated")));
+
   /* --- 404 Errors --- */
   backRouter.use((_, res: Response) => {
     res.status(404).send("Error 404 - Not found.");
@@ -63,8 +65,6 @@ async function main(): Promise<void> {
       res.status(404).send("Error 404 - Not found.");
     });
   }
-
-  await htmlToPDF("test", Template.PLAN_DE_TOURNAGE);
 
   /* --- Start server --- */
   const port = normalizePort(process.env.PORT || "5000");

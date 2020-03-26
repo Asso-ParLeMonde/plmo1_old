@@ -4,28 +4,53 @@ import fs from "fs-extra";
 import * as path from "path";
 import pug from "pug";
 import { logger } from "../utils/logger";
+import { getBase64File } from "../utils/utils";
+import { Question } from "../entities/question";
 
-export enum Template {
+const logoFont = getBase64File(path.join(__dirname, "templates/littledays.woff"));
+const userLogo = getBase64File(path.join(__dirname, "templates/face.png"));
+
+export enum PDF {
   PLAN_DE_TOURNAGE,
 }
+interface PDFMapping {
+  [PDF.PLAN_DE_TOURNAGE]: {
+    themeName: string;
+    scenarioName: string;
+    scenarioDescription: string;
+    questions: Array<Question>;
+    pseudo?: string;
+  };
+}
+type PDFOptions<P extends PDF> = PDFMapping[P];
 
-function getTemplateName(template: Template): string | undefined {
-  if (template === Template.PLAN_DE_TOURNAGE) {
-    return "plan_de_tournage.pug";
+type pdfData<P extends PDF> = {
+  filename: string;
+  pugFile: string;
+  args: PDFOptions<P>;
+};
+function getTemplateData<P extends PDF>(pdf: P, options: PDFOptions<P>): pdfData<P> | undefined {
+  if (pdf === PDF.PLAN_DE_TOURNAGE) {
+    return {
+      pugFile: "plan_de_tournage.pug",
+      filename: "Plan_de_tournage",
+      args: options,
+    };
   }
   return undefined;
 }
 
-export async function htmlToPDF(filename: string, template: Template): Promise<string | undefined> {
-  const templateName = getTemplateName(template);
-  if (templateName === undefined) {
-    logger.info(`Template ${template} not found!`);
+export async function htmlToPDF<P extends PDF>(pdf: P, options: PDFOptions<P>): Promise<string | undefined> {
+  const templateData = getTemplateData(pdf, options);
+  if (templateData === undefined) {
+    logger.info(`PDF ${pdf} not found!`);
     return undefined;
   }
-  const html = pug.renderFile(path.join(__dirname, "templates", templateName));
+  const filename: string = templateData.filename;
+  const html = pug.renderFile(path.join(__dirname, "templates", templateData.pugFile), { ...templateData.args, logoFont, userLogo });
 
   const id: string = uuidv4();
-  const directory: string = path.join(__dirname, "../..", "dist/pdf", id);
+  const directory: string = path.join(__dirname, "../..", "dist/pdf/generated", id);
   await fs.mkdirs(directory);
 
   // Use puppeteer to generate PDF.
@@ -47,6 +72,9 @@ export async function htmlToPDF(filename: string, template: Template): Promise<s
       left: "0px",
     },
     printBackground: true,
+    displayHeaderFooter: true,
+    headerTemplate: "<div></div>",
+    footerTemplate: "<div style='font-size:8px!important;color:grey!important;padding-right:1cm;text-align: right;width:100%;position: relative;' class='pdffooter'><span class='pageNumber'></span>/<span class='totalPages'></span></div>",
   });
   await browser.close();
 

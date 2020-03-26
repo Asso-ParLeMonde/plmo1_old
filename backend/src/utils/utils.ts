@@ -1,3 +1,5 @@
+import fs from "fs";
+
 /**
  * Pause the program for x milliseconds.
  * @param ms
@@ -22,4 +24,8 @@ export function generateTemporaryPassword(length: number): string {
       return x[Math.floor(Math.random() * x.length)];
     })
     .join("");
+}
+
+export function getBase64File(path: string): string {
+  return fs.readFileSync(path).toString("base64");
 }
