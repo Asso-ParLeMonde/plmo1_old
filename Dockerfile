@@ -10,7 +10,7 @@ RUN yarn install
 COPY frontend/.eslintrc.js .
 COPY frontend/src src
 COPY frontend/public public
-COPY frontend/.env.production .
+RUN echo REACT_APP_BASE_APP=/back >> .env.production
 RUN yarn build
 
 
@@ -59,7 +59,6 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY backend/package.json .
-COPY backend/yarn.lock .
 RUN yarn install --production
 
 # Copy app files
