@@ -381,7 +381,7 @@ function CreateAccountForm({
       )}
       <Button
         variant="contained"
-        color="secondary"
+        color={admin ? "primary" : "secondary"}
         type="submit"
         value="Submit"
         onClick={handleSubmit}
