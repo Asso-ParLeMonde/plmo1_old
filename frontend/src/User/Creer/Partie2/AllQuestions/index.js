@@ -52,6 +52,7 @@ function AllQuestions(props) {
         <QuestionsList
           questions={project.questions}
           setQuestions={setQuestions}
+          history={props.history}
         />
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>

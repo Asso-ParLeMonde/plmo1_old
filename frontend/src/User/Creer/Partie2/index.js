@@ -9,6 +9,7 @@ import { ProjectServiceContext } from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
 import NewQuestion from "./NewQuestion";
 import AllQuestions from "./AllQuestions";
+import EditQuestion from "./EditQuestion";
 
 function Partie2(props) {
   const { project } = useContext(ProjectServiceContext);
@@ -41,6 +42,16 @@ function Partie2(props) {
               path="/create/2-questions-choice/new"
               render={props => (
                 <NewQuestion
+                  {...props}
+                  themeId={project.themeId}
+                  scenarioId={project.scenarioId}
+                />
+              )}
+            />
+            <Route
+              path="/create/2-questions-choice/edit"
+              render={props => (
+                <EditQuestion
                   {...props}
                   themeId={project.themeId}
                   scenarioId={project.scenarioId}
