@@ -44,7 +44,7 @@ function LanguageRemoveButton(props) {
 
   return (
     <DefaultDeleteButton
-      name={props.theme.names[Object.keys(props.theme.names)[0]]}
+      name={props.language.label}
       handleRemove={handleRemove}
       goTo={"/admin/languages/delete"}
       returnTo={"/admin/languages"}
