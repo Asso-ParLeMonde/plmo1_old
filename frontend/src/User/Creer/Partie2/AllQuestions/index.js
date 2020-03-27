@@ -90,7 +90,7 @@ AllQuestions.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.number.isRequired
+  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
 };
 
 export default withRouter(AllQuestions);

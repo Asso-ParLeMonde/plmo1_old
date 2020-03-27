@@ -81,25 +81,28 @@ function ProjectService(props) {
     // eslint-disable-next-line
   }, [project.themeId, themesRequest]);
 
+  const isScenarioIdValid =
+    project.scenarioId !== null && typeof project.scenarioId !== "string";
   const getQuestions = useAxios({
     method: "GET",
-    url:
-      project.scenarioId === null
-        ? null
-        : `/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`
+    url: isScenarioIdValid
+      ? `/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`
+      : null
   });
   useEffect(() => {
     // Get questions when scenarioId change
-    if (
-      project.scenarioId !== null &&
-      getQuestions.complete &&
-      !getQuestions.error
-    ) {
+    if (isScenarioIdValid && getQuestions.complete && !getQuestions.error) {
       if (project.preventDataFetch) {
         updateProject({ preventDataFetch: false });
         return;
       }
       updateProject({ questions: getQuestions.data });
+    } else if (typeof project.scenarioId === "string") {
+      if (project.preventDataFetch) {
+        updateProject({ preventDataFetch: false });
+        return;
+      }
+      updateProject({ questions: [] });
     }
     // eslint-disable-next-line
   }, [project.scenarioId, getQuestions]);

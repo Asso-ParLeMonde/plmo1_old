@@ -16,7 +16,7 @@ import { ProjectServiceContext } from "../../../../services/ProjectService";
 import { UserServiceContext } from "../../../../services/UserService";
 
 function NewScenario(props) {
-  const { axiosLoggedRequest } = useContext(UserServiceContext);
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const [newScenario, setNewScenario] = useState({
     name: "",
     description: "",
@@ -25,6 +25,20 @@ function NewScenario(props) {
   });
   const [hasError, setHasError] = useState(false);
   const { updateProject } = useContext(ProjectServiceContext);
+
+  const postNewScenario = async () => {
+    const response = await axiosLoggedRequest({
+      url: `/themes/${newScenario.themeId}/scenarios`,
+      method: "POST",
+      data: newScenario
+    });
+    if (!response.error) {
+      updateProject({
+        scenarioId: response.data.id,
+        scenarioName: newScenario.name
+      });
+    }
+  };
 
   const handleSubmit = async event => {
     event.preventDefault();
@@ -35,24 +49,12 @@ function NewScenario(props) {
       }, 1000);
     }
     if (newScenario.name.length > 0 && newScenario.description.length <= 280) {
-      try {
-        const response = await axiosLoggedRequest({
-          url: `/themes/${newScenario.themeId}/scenarios`,
-          method: "POST",
-          data: newScenario
-        });
-        if (!response.error) {
-          updateProject({
-            scenarioId: response.data.id,
-            scenarioName: newScenario.name
-          });
-          props.history.push(`/create/2-questions-choice`);
-        }
-      } catch (e) {
-        // TODO afficher notif d'erreur
-        // eslint-disable-next-line no-console
-        console.log(e);
+      if (isLoggedIn()) {
+        await postNewScenario();
+      } else {
+        props.addLocalScenario(newScenario);
       }
+      props.history.push(`/create/2-questions-choice`);
     }
   };
 
@@ -174,7 +176,8 @@ NewScenario.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeId: PropTypes.number.isRequired
+  themeId: PropTypes.number.isRequired,
+  addLocalScenario: PropTypes.func.isRequired
 };
 
 export default withRouter(NewScenario);
