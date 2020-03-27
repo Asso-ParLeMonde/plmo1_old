@@ -16,10 +16,12 @@ getNodeMailer()
 export enum Email {
   RESET_PASSWORD,
   VERIFY_EMAIL,
+  INVITATION_EMAIL,
 }
 interface EmailMapping {
   [Email.RESET_PASSWORD]: { resetCode: string };
   [Email.VERIFY_EMAIL]: { verifyCode: string; firstname: string; lastname: string };
+  [Email.INVITATION_EMAIL]: { verifyCode: string; firstname: string; lastname: string };
 }
 type EmailOptions<E extends Email> = EmailMapping[E];
 
@@ -50,6 +52,18 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
         verifyUrl: `${frontUrl}/verify?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.VERIFY_EMAIL>).verifyCode)}`,
         firstname: (options as EmailOptions<Email.VERIFY_EMAIL>).firstname,
         lastname: (options as EmailOptions<Email.VERIFY_EMAIL>).lastname,
+      },
+    };
+  }
+  if (email === Email.VERIFY_EMAIL) {
+    return {
+      filename: "invite-email.pug",
+      filenameText: "invite-email_text.pug",
+      subject: "Bienvenue! - Initialiser votre adresse email",
+      args: {
+        initUrl: `${frontUrl}/verify?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.INVITATION_EMAIL>).verifyCode)}`,
+        firstname: (options as EmailOptions<Email.INVITATION_EMAIL>).firstname,
+        lastname: (options as EmailOptions<Email.INVITATION_EMAIL>).lastname,
       },
     };
   }
