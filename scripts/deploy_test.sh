@@ -8,5 +8,5 @@ docker login --username=_ --password=$(heroku auth:token) ${REGISTRY_URL}
 docker push ${IMAGE}
 
 # release image
-heroku container:release web -app ${HEROKU_APP}
+heroku container:release web --app ${HEROKU_APP}
 docker logout ${REGISTRY_URL}
