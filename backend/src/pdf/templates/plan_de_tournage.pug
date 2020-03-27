@@ -221,3 +221,11 @@ main
                   .plan-number #{count}
               .plan-description
                 | #{plan.description}
+  div
+    h2
+      | À votre caméra !
+    .content
+      p
+        | Flashez le code QR suivant pour accéder directement à l'application et démarrer le tournage.
+      div.text-center(style="margin-top: 1rem;")
+        img(alt="qrcode" style="width:4cm;height:4cm" src=QRCode)

@@ -4,7 +4,7 @@ import fs from "fs-extra";
 import * as path from "path";
 import pug from "pug";
 import { logger } from "../utils/logger";
-import { getBase64File } from "../utils/utils";
+import { getBase64File, getQRCodeURL } from "../utils/utils";
 import { Question } from "../entities/question";
 
 const logoFont = getBase64File(path.join(__dirname, "templates/littledays.woff"));
@@ -24,24 +24,25 @@ interface PDFMapping {
 }
 type PDFOptions<P extends PDF> = PDFMapping[P];
 
-type pdfData<P extends PDF> = {
+type pdfData = {
   filename: string;
   pugFile: string;
-  args: PDFOptions<P>;
+  args: pug.Options & pug.LocalsObject;
 };
-function getTemplateData<P extends PDF>(pdf: P, options: PDFOptions<P>): pdfData<P> | undefined {
+async function getTemplateData<P extends PDF>(pdf: P, options: PDFOptions<P>): Promise<pdfData | undefined> {
   if (pdf === PDF.PLAN_DE_TOURNAGE) {
+    const QRCode = await getQRCodeURL("https://par-le-monde-1.herokuapp.com/create/4-to-your-camera"); // TODO, put projectID in url
     return {
       pugFile: "plan_de_tournage.pug",
       filename: "Plan_de_tournage",
-      args: options,
+      args: { ...options, QRCode },
     };
   }
   return undefined;
 }
 
 export async function htmlToPDF<P extends PDF>(pdf: P, options: PDFOptions<P>): Promise<string | undefined> {
-  const templateData = getTemplateData(pdf, options);
+  const templateData = await getTemplateData(pdf, options);
   if (templateData === undefined) {
     logger.info(`PDF ${pdf} not found!`);
     return undefined;
