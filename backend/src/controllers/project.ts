@@ -8,6 +8,7 @@ import { Theme } from "../entities/theme";
 import { Scenario } from "../entities/scenario";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
 import { ThemeRepository } from "../customRepositories/themeRepository";
+import { PDFDownload } from "../entities/pdfDownload";
 
 type QuestionsFromBody = Array<{ question?: string; plans?: Array<{ url?: string; description?: string }> }>;
 
@@ -51,6 +52,9 @@ export class ProjectController extends Controller {
       pseudo: req.user !== undefined ? req.user.pseudo : undefined,
       questions,
     });
+    //For PDF Download statistics
+    const pdfEntry = new PDFDownload();
+    await getRepository(PDFDownload).save(pdfEntry);
     res.sendJSON({ url });
   }
 }
