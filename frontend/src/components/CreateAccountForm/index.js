@@ -64,6 +64,7 @@ const isPseudoAvailable = async pseudo => {
 
 function CreateAccountForm({
   user,
+  currentUserPseudo,
   setUser,
   noAutoComplete,
   admin,
@@ -103,7 +104,11 @@ function CreateAccountForm({
       ...e,
       [userKey]: value.length !== 0 && !checks[userKey](value, user)
     }));
-    if (userKey === "pseudo" && value.length !== 0) {
+    if (
+      userKey === "pseudo" &&
+      value.length !== 0 &&
+      currentUserPseudo != user.pseudo
+    ) {
       isPseudoAvailable(value).then(result => {
         setErrors(e => ({ ...e, pseudoNotAvailable: !result }));
       });
@@ -128,7 +133,11 @@ function CreateAccountForm({
         setErrors(e => ({ ...e, [userKey]: true }));
       }
     }
-    if (user.pseudo.length !== 0 && !(await isPseudoAvailable(user.pseudo))) {
+    if (
+      user.pseudo.length !== 0 &&
+      !(await isPseudoAvailable(user.pseudo)) &&
+      currentUserPseudo != user.pseudo
+    ) {
       isFormValid = false;
       setErrors(e => ({ ...e, pseudoNotAvailable: true }));
     }
@@ -385,6 +394,7 @@ function CreateAccountForm({
 
 CreateAccountForm.propTypes = {
   user: PropTypes.object,
+  currentUserPseudo: PropTypes.string,
   setUser: PropTypes.func,
   submit: PropTypes.func,
   noAutoComplete: PropTypes.bool,
@@ -395,6 +405,7 @@ CreateAccountForm.propTypes = {
 
 CreateAccountForm.defaultProps = {
   user: DEFAULT_USER,
+  currentUserPseudo: "",
   setUser: () => {},
   submit: () => {},
   noAutoComplete: false,

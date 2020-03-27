@@ -10,6 +10,7 @@ import LanguageModal from "../../Languages/components/LanguageModal";
 import QuestionModal from "../../Questions/components/QuestionModal";
 import ScenarioModal from "../../Scenarios/components/ScenarioModal";
 import ThemeModal from "../../Themes/components/ThemeModal";
+import UserModal from "../../Users/components/UserModal";
 
 const useStyles = makeStyles(() => ({
   link: {
@@ -47,7 +48,7 @@ function AddButton(props) {
       case "SCENARIO":
         return (
           <ScenarioModal
-            scenario={props.newScenario}
+            scenario={props.newObject}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             modalTitle={props.modalTitle}
@@ -57,7 +58,7 @@ function AddButton(props) {
       case "QUESTION":
         return (
           <QuestionModal
-            question={props.newQuestion}
+            question={props.newObject}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             modalTitle={props.modalTitle}
@@ -66,11 +67,19 @@ function AddButton(props) {
           />
         );
       case "USER":
-        return <div />;
+        return (
+          <UserModal
+            user={props.newObject}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            modalTitle={props.modalTitle}
+            history={props.history}
+          />
+        );
       case "LANGUAGE":
         return (
           <LanguageModal
-            language={props.newLanguage}
+            language={props.newObject}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             modalTitle={props.modalTitle}

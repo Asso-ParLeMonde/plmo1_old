@@ -1,23 +1,37 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { UsersServiceContext } from "../../../../services/UsersService";
 import { updateUser } from "../userRequest";
+import CreateAccountForm, {
+  DEFAULT_USER
+} from "../../../../components/CreateAccountForm";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  makeStyles,
+  DialogActions,
+  Button
+} from "@material-ui/core";
+import Notifications from "../../../../components/Notifications";
+import { UserServiceContext } from "../../../../services/UserService";
 
-const DEFAULT_USER = {
-  id: undefined,
-  languageCode: undefined,
-  lastName: undefined,
-  firstName: undefined,
-  mail: undefined,
-  type: undefined
-};
+const useStyles = makeStyles(() => ({
+  dialogContent: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: "8px 24px"
+  }
+}));
 
 function UserModal(props) {
-  const { axiosLoggedRequest } = useContext(UsersServiceContext);
+  const classes = useStyles();
   const [newUser, setNewUser] = useState(props.user || DEFAULT_USER);
   const updateUsers = useContext(UsersServiceContext).updateUsers;
+  const { axiosLoggedRequest } = useContext(UserServiceContext);
 
   const [res, setRes] = useState({
     error: false,
@@ -25,17 +39,7 @@ function UserModal(props) {
     message: ""
   });
 
-  function handleChange(enumCase, event) {
-    switch (enumCase) {
-      default:
-        console.log(event);
-        break;
-    }
-  }
-
-  async function handleConfirmation(event) {
-    event.preventDefault();
-
+  async function handleConfirmation() {
     let error = false;
     if (props.user) {
       error = await updateUser(
@@ -74,16 +78,31 @@ function UserModal(props) {
   }
 
   return (
-    <ModalContainer
-      newElement={newUser}
-      handleChange={handleChange}
-      isOpen={props.isOpen}
-      modalTitle={props.modalTitle}
-      formDescription={"USER"}
-      handleCloseModal={handleCloseModal}
-      handleConfirmation={handleConfirmation}
-      res={res}
-    />
+    <React.Fragment>
+      <Dialog
+        open={props.isOpen}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{props.modalTitle}</DialogTitle>
+        <DialogContent className={classes.dialogContent}>
+          <CreateAccountForm
+            user={newUser}
+            currentUserPseudo={newUser.pseudo}
+            setUser={setNewUser}
+            submit={handleConfirmation}
+            admin={true}
+            buttonLabel={"Confirmer le nouvel utilisateur"}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseModal} variant="outlined">
+            Annuler
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Notifications res={res} />
+    </React.Fragment>
   );
 }
 
