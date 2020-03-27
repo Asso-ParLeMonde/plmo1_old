@@ -1,14 +1,21 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { ReactSortable } from "react-sortablejs";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button } from "@material-ui/core";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button
+} from "@material-ui/core";
 
 import QuestionEdit from "../QuestionEdit";
 
 function QuestionsList(props) {
   const [deleteIndex, setDeleteIndex] = useState(-1);
 
-  const handleDelete = index => (event) => {
+  const handleDelete = index => event => {
     event.preventDefault();
     setDeleteIndex(index);
   };
@@ -26,14 +33,27 @@ function QuestionsList(props) {
     setDeleteIndex(-1);
   };
 
+  const handleEdit = index => event => {
+    event.preventDefault();
+    props.history.push(`/create/2-questions-choice/edit?question=${index}`);
+  };
+
   return (
     <div className="questions">
-      <ReactSortable tag="div"  list={props.questions} setList={props.setQuestions} animation={200} handle=".question-index">
+      <ReactSortable
+        tag="div"
+        list={props.questions}
+        setList={props.setQuestions}
+        animation={200}
+        handle=".question-index"
+      >
         {props.questions.map((q, index) => (
-          <QuestionEdit key={q.id}
-                        index={index}
-                        question={q.question}
-                        handleDelete={handleDelete(index)}
+          <QuestionEdit
+            key={q.id}
+            index={index}
+            question={q.question}
+            handleDelete={handleDelete(index)}
+            handleEdit={handleEdit(index)}
           />
         ))}
       </ReactSortable>
@@ -45,7 +65,9 @@ function QuestionsList(props) {
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle id="delete-dialog-title">Supprimer la question ?</DialogTitle>
+        <DialogTitle id="delete-dialog-title">
+          Supprimer la question ?
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
             Voulez-vous vraiment supprimer la question :
@@ -55,21 +77,30 @@ function QuestionsList(props) {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose(false)} color="secondary" variant="outlined">
+          <Button
+            onClick={handleClose(false)}
+            color="secondary"
+            variant="outlined"
+          >
             Annuler
           </Button>
-          <Button onClick={handleClose(true)} color="secondary" variant="contained">
+          <Button
+            onClick={handleClose(true)}
+            color="secondary"
+            variant="contained"
+          >
             Supprimer
           </Button>
         </DialogActions>
       </Dialog>
     </div>
-  )
+  );
 }
 
 QuestionsList.propTypes = {
   questions: PropTypes.array.isRequired,
   setQuestions: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
 };
 
 export default QuestionsList;

@@ -1,26 +1,26 @@
-import React, {useContext} from "react";
-import {withRouter} from 'react-router-dom';
+import React, { useContext } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import {Typography, Button, Hidden} from "@material-ui/core";
+import { Typography, Button, Hidden } from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
 import QuestionsList from "../../../components/QuestionsList";
-import {ProjectServiceContext} from "../../../../services/ProjectService";
+import { ProjectServiceContext } from "../../../../services/ProjectService";
 
 function AllQuestions(props) {
   const { project, updateProject } = useContext(ProjectServiceContext);
 
-  const setQuestions = (questions) => {
+  const setQuestions = questions => {
     updateProject({ questions });
   };
 
-  const handleBack = (event) => {
+  const handleBack = event => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice/new`);
   };
 
-  const handleNext = (event) => {
+  const handleNext = event => {
     event.preventDefault();
     props.history.push(`/create/3-storyboard-and-filming-schedule`);
   };
@@ -32,7 +32,8 @@ function AllQuestions(props) {
           <Inverted round>2</Inverted> Mes <Inverted>questions</Inverted>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Pour structurer votre scénario, nous vous proposons de sélectionner les questions qui feraient sens.
+          Pour structurer votre scénario, nous vous proposons de sélectionner
+          les questions qui feraient sens.
         </Typography>
         <Button
           component="a"
@@ -40,10 +41,19 @@ function AllQuestions(props) {
           href={`/create/2-questions-choice/new`}
           color="secondary"
           onClick={handleBack}
-          style={{ textTransform: "none", fontWeight: "500", marginTop: "2rem" }}>
+          style={{
+            textTransform: "none",
+            fontWeight: "500",
+            marginTop: "2rem"
+          }}
+        >
           Ajouter une question
         </Button>
-        <QuestionsList questions={project.questions} setQuestions={setQuestions}/>
+        <QuestionsList
+          questions={project.questions}
+          setQuestions={setQuestions}
+          history={props.history}
+        />
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>
             <Button
@@ -72,7 +82,7 @@ function AllQuestions(props) {
         </Hidden>
       </div>
     </div>
-  )
+  );
 }
 
 AllQuestions.propTypes = {
@@ -80,7 +90,7 @@ AllQuestions.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.number.isRequired,
+  scenarioId: PropTypes.number.isRequired
 };
 
 export default withRouter(AllQuestions);
