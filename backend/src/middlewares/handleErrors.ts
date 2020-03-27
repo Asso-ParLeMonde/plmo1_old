@@ -8,6 +8,7 @@ export enum ErrorCode {
   INVALID_PASSWORD = 2,
   ACCOUNT_BLOCKED = 3,
   PASSWORD_NOT_STRONG = 4,
+  INVALID_DATA = 10,
 }
 
 export class AppError extends Error {

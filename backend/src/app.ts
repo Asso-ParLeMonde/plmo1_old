@@ -47,6 +47,9 @@ async function main(): Promise<void> {
   /* --- Public videos --- */
   backRouter.use(`/videos`, express.static(path.join(__dirname, "videos")));
 
+  /* --- Public pdf --- */
+  backRouter.use(`/pdf`, express.static(path.join(__dirname, "pdf/generated")));
+
   /* --- 404 Errors --- */
   backRouter.use((_, res: Response) => {
     res.status(404).send("Error 404 - Not found.");

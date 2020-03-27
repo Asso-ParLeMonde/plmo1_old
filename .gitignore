@@ -70,3 +70,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+
+docker-compose_test.yml
+backend/src/pdf/templates/plan_de_tournage.html

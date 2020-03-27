@@ -1,6 +1,8 @@
 language: node_js
 node_js:
-  - '12.13'
+  - "12.13"
+services:
+  - docker
 before_install:
   - cd frontend
   - npm install
@@ -10,10 +12,14 @@ before_install:
 script:
   - npm run build
   - cd ..
+env:
+  global:
+    - REGISTRY_URL=registry.heroku.com
+    - HEROKU_APP=par-le-monde-1
+    - secure: KOj0Ku2lG2yIcCbEOxbUPqF0x2WiRU+D8fyMnt/rdXc/DLr616Wk1pN6i38CG44iwM5cctRJaWDrddKjEIjTetFwvQIzAOgFEOLlFSjahGyRDLLJ8wWvqtxejMMAQOUWCy00grLbleHIUUj7Y5Fvn2DEM3la26ll/JPNVwgonIZ4WrcX1Xtj6h9P2K4y7OKcTT5n3npiYAPm5nc/bcymcjfOmGjstfOP4MdnlDRcjAhpLHwJSNVD7JiOzgcUd6G/BQaRKDR/ihBX3rYWeHE8x6KvfHpiYZb0H27Ev82pRYmLI6c0aFiE9FSnzQmR81M0mO5PuD47d+GL5ngw60HTqZrtJwYIGAY2p2dKHcyT+o8qj+rzMHj0kv+7wZxkeGsZoPAekDbDabP4gMvnrQX3umc26/TnRg1+UFPczd3O8nC0DLxGPePNxxU2n4agq/gRD/P3c+ZuCgQRrEKF9u3BffJVTGD7eoAmoBeEPn8XfyivVnHydr3F6xvQ7n08/y3mItZunGt0kZx4X+zS6+SaMzkgpqm99wCmFm8Dd+VufItMq6NJWzd2FwKGci5AIaU4O51yduv4o1e4B6g8gKbytzNOr9GsuX8Jbx5solsj4JCtaGQV7/H47tyg2xIERFJLZl7XT9TTxxNNGOT2d8zz9UAfUg06Fa4Qtki6zFsukHQ=
+    - secure: uV9T5Qoef7OuMV3ngBBSzJjCxDHd6Ykov1ztoCkyP7VBt4OiyWks4PvwbCiive+JVg1Z5IIk7bivvpbvCg2qWOLuOLiJ7ggNkHenLY/PPxlO9eL1J+vmxSTM/BT9FAulDjYOXvR/GkTtb/691n2MAgTHGgGuBpqTh+nZkruqyM08ar+HluZR6OK2cOfLiSHcrT0HUrSrfRjHq1jnlicc9LLacNc8j8xqlbSzGAWABc8QBmaFbn8jwOsEE0Lr+3Ajfop9trBdP+6xp2OVnH4axLzNk1jqkJaOgWgH+a6zE/cmbqnwmZNLySyI3qobRMClXPGbOAJPviCXFcsRSvk3Pdkgx2XhAzsM+tyRBbnlY3C8s7LaapIlqQZ+pmyYeXJX9BOrYHo50WG2hX60SjBrLt9Qa5Y7QyznQiFSvhr7wHSs17en0idlKD62aWUJbbBFHBIBhSRgPyqSvfZZwI1j7DvK15yz85CVxXuQBMrwlh6E0by+40Vs/UrEohVBaEN0NYrawbJCDsi/nabvCl/zjFxzwICYDFVGk14kgajf3wPevxNVRTMexjNBYPO9iTNbB9uKggbxnqvwzmqfLSwEwZVV6YcDJrx5b75aSKolqAozfC/acVW3X2FrerDKpm74DgNpE2y0wqrmx45XZkp5C0XetjSEAWalsPGI3ENxGBo=
 deploy:
   on:
     branch: master
-  provider: heroku
-  app: par-le-monde-1
-  api_key:
-    secure: "CtfbmoMrdfR4ELILNnxlkJrZRmh8TmAm5AvhIoePURQN0a11fK6LLSHjeylgyq/7cPTEDeZyy0u/urHlUMRJP4uefhlTtoWgdtGIYE7C5bhY60kyAaxAN0ukY37+3caEjQUkUfmbpR4H9fWFjih7iP6KQJ6cQq6zdyS4ZPB60He46Wjml2KibeKLBiRo8OKFPSI3Tu+xBi+ernK0qi+/u3elc6svVTl11lY4S66dYPj9FAEHiZXfUQdvi2G7w5Fgxs4kYxMbt46f2+vQ/xeyTS7It7fj5kG4Q6DoObP9RUJAOk4Qvt509HfaqDeOTILk5dK9ZSHgUyT/q5SxCJaK+4Ckp1WKuRAakZrXas794uAkOKpuXDfe7AiDEQB1X6dPxVR2ocdyb/8FY1JD937wYXAUoeHLT/SqQXjv0QR/rj2hm74E2comKSYzceH7bSYlWKRgNd6xJ0s4K3ZL9ZRR0M0AsxnM1UX+6a/K8fzy+NFA6HpJ/nJ6MRzeskRtIGRLOZwPFSb1eDjkuaiojsA/27vYBrJ2otyLdXNAQ3CQ1eYPoDKaWY69SJXT2miwDqaZOBT3kEKJRVoeeAXBISjpOxHtRW1lXHyDFZyfQfcd4ZNGYwB9hzQxGz55zCHMP3yrZqYCW4gO/+UXdbFmLSYbDXEv998/VIbzBJUNeR+Oxlo="
+  provider: script
+  script: bash scripts/deploy.sh

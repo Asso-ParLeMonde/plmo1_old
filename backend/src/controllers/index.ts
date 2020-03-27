@@ -8,3 +8,4 @@ export { PlanController } from "./plan";
 export { UserController } from "./user";
 export { SchoolController } from "./school";
 export { LoginController } from "./login";
+export { ProjectController } from "./project";

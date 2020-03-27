@@ -1,0 +1,231 @@
+doctype html
+head
+  meta(charset='utf-8')
+  meta(name='viewport' content='width=device-width,initial-scale=1')
+  title Plan de tournage
+  meta(name='description' content=`Plan de tournage pour ${pseudo} sur le thème ${themeName}`)
+  meta(name='author' content=pseudo)
+  link(href='https://fonts.googleapis.com/css?family=Open+Sans&display=swap' rel='stylesheet')
+  link(href='https://fonts.googleapis.com/css?family=Alegreya+Sans&display=swap' rel='stylesheet')
+  style(type="text/css").
+    html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    }
+    *,
+    *::before,
+    *::after {
+    box-sizing: inherit;
+    }
+    strong,
+    b {
+    font-weight: 700;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+    margin: 0;
+    padding: 0;
+    }
+    @font-face {
+    font-family: "littledays";
+    src: local("littledays"),
+    url("data:application/x-font-woff;charset=utf-8;base64,#{logoFont}") format("woff");
+    }
+    .material-icons {
+    font-family: "Material Icons";
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+    /* Support for IE. */
+    font-feature-settings: "liga";
+    }
+    body {
+    color: rgba(0, 0, 0, 0.87);
+    margin: 0;
+    padding: 1cm;
+    font-size: 0.875rem;
+    font-family: Open Sans, Arial, sans-serif;
+    font-weight: 400;
+    line-height: 1.43;
+    background-color: #fff;
+    width: 21cm;
+    min-height: 29cm;
+    -webkit-print-color-adjust: exact !important;
+    }
+    @media print {
+    body {
+    padding: 0;
+    background-color: #fff;
+    }
+    }
+    body::backdrop {
+    background-color: #fff;
+    }
+    @page {
+    margin: 1cm;
+    }
+    header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    }
+    header > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    }
+    h6.pseudo {
+    font-size: 1rem;
+    font-weight: 400;
+    margin-left: 0.25rem;
+    }
+    .logo-svg {
+    margin: 0 0.5rem 0 0;
+    padding: 0;
+    }
+    .logo-title {
+    font-family: littledays, Alegreya Sans, sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    padding-top: 0.25rem;
+    }
+    .text-center {
+    width: 100%;
+    text-align: center;
+    }
+    .content {
+    width: 100%;
+    padding: 0.8rem 1rem 1.2rem 1rem;
+    }
+    label {
+    display: inline;
+    text-decoration: underline;
+    }
+    p.inline {
+    display: inline;
+    }
+    .plan {
+    page-break-inside: avoid;
+    margin: -1px 0 0 0;
+    border: 1px solid black;
+    display: flex;
+    }
+    .plans > .plan:first-child {
+    margin-top: 0.5rem;
+    }
+    .plan-image {
+    padding: 0.5rem;
+    width: 6.5cm;
+    height: 6.5cm;
+    min-width: 6.5cm;
+    min-height: 6.5cm;
+    border-right: 1px solid black;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    }
+    .plan-description {
+    padding: 0.5rem;
+    border-left: 1px solid black;
+    margin-left: -1px;
+    }
+    .scene > h3 {
+    page-break-after: avoid;
+    }
+header
+  div
+    svg.logo-svg(width='1cm' height='0.98cm' viewbox='0 0 1138 1113' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink')
+      title Pelico
+      defs
+        filter#filter-1(x='-12.0%' y='-1.3%' width='113.9%' height='110.4%' filterunits='objectBoundingBox')
+          feoffset(dx='0' dy='6' in='SourceAlpha' result='shadowOffsetOuter1')
+          fegaussianblur(stddeviation='5.5' in='shadowOffsetOuter1' result='shadowBlurOuter1')
+          fecolormatrix(values='0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.2 0' type='matrix' in='shadowBlurOuter1' result='shadowMatrixOuter1')
+          femerge
+            femergenode(in='shadowMatrixOuter1')
+            femergenode(in='SourceGraphic')
+        lineargradient#linearGradient-2(x1='50%' y1='100%' x2='50%' y2='0%')
+          stop(stop-color='#79C3A5' offset='0%')
+          stop(stop-color='#54A987' offset='100%')
+      g#UI(stroke='none' stroke-width='1' fill='none' fill-rule='evenodd')
+        g#App-icons(transform='translate(0.000000, -1097.000000)')
+          g#iOS(filter='url(#filter-1)' transform='translate(103.000000, 1102.000000)')
+            rect#masky-mcmask(x='0' y='0' width='1024' height='1024')
+            g(id='UI/AppIcon/Background' fill='url(#linearGradient-2)')
+              rect#very-nice-background(x='0' y='0' width='1024' height='1024')
+            g#Pelico_app_android(transform='translate(-103.000000, 193.000000)')
+              g#corps
+                path#Path(d='M0,507.824776 C20.0387821,440.196757 47.4522874,371.741948 82.240516,302.460349 C97.709574,271.653346 124.75352,199.746419 166.089362,128.96493 C179.729096,105.608913 214.022312,69.2113557 266.479896,43.6724104 C288.802394,32.8047148 331.795118,18.8561817 377.583361,10.973781 C409.155083,5.53874026 440.391879,1.56419751 463.100233,1.0232746 C480.836992,0.600777253 495.963303,-0.420055205 495.963303,18.7499513 C495.963303,37.0754493 507.308869,305.208978 530,823.150538 C261.798632,926.807888 107.231206,921.942297 66.2977227,808.553763 C25.3642395,695.16523 3.26499864,594.922235 0,507.824776 Z' fill='#000000')
+                path#Path-2(d='M526.802254,749.346011 L284.35782,267.569903 C239.701407,184.342527 246.006294,130.168961 303.272479,105.049204 C360.538665,79.9294482 424.768939,50.6991167 495.963303,17.3582099 L526.802254,749.346011 Z' fill='#FFFFFF')
+                ellipse#Oval(fill='#000000' cx='386.386485' cy='190.961413' rx='55.3052604' ry='55.2293771')
+              path#Path-3(d='M509.211692,341 L1002,341 C982.500125,228.499789 952.868211,153.480177 913.104256,115.941165 C869.630089,74.8995405 827.174031,50.0794649 767.28562,34.2598665 C724.216973,22.8832298 633.788433,18.3138726 496,20.5517949 L509.211692,341 Z' fill='#FCA34B')
+              path#Path-3(d='M506.991884,278 L905,278 C889.270252,207.976775 865.367404,161.282505 833.291456,137.917192 C798.222631,112.371756 763.975073,96.9230583 715.665553,87.0765053 C680.923844,79.9953737 608.701994,77.0575569 499,78.2630548 L506.991884,278 Z' fill='#FCD74B')
+    h6.logo-title
+      | Par Le Monde
+  if pseudo
+    div
+      img(width='30px' height='auto' alt='user' src=`data:image/png;base64,${userLogo}`)
+      h6.pseudo
+        | #{pseudo}
+main
+  .text-center
+    h1(style='margin: 0.5rem 0')
+      | Plan de tournage
+  div
+    h2
+      | Description g&eacute;n&eacute;rale :
+    .content
+      div(style='margin: 0.1rem 0')
+        label Th&egrave;me :
+        p.inline #{" "}#{themeName}
+      div(style='margin: 0.1rem 0')
+        label Sc&eacute;nario :
+        p.inline #{" "}#{scenarioName}
+      p #{scenarioDescription}
+  div
+    h2
+      | Storyboard :
+    - let count = 0
+    each question, index in questions
+      .content.scene
+        h3 #{index + 1}. #{question.question}
+        .plans
+          each plan in question.plans
+            - count += 1
+            .plan
+              if plan.url
+                .plan-image(style=`background-image: url(${plan.url})`)
+                  .plan-number #{count}
+              else
+                .plan-image
+                  .plan-number #{count}
+              .plan-description
+                | #{plan.description}
+  div
+    h2
+      | À votre caméra !
+    .content
+      p
+        | Flashez le code QR suivant pour accéder directement à l'application et démarrer le tournage.
+      div.text-center(style="margin-top: 1rem;")
+        img(alt="qrcode" style="width:4cm;height:4cm" src=QRCode)
