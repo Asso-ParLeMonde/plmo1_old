@@ -4,7 +4,6 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY frontend/package.json .
-COPY frontend/yarn.lock .
 RUN yarn install
 
 # Build app source
@@ -21,7 +20,6 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY backend/package.json .
-COPY backend/yarn.lock .
 RUN yarn install
 
 # Build app source
