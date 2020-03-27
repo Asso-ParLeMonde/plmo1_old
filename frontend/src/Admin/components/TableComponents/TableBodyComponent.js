@@ -32,7 +32,7 @@ function TableBodyComponent(props) {
         information = ["ID", "NAME"];
         break;
       case "SCENARIO":
-        information = ["ID", "THEMEID", "NAME", "DESCRIPTION"];
+        information = ["ID", "NAME", "THEMEID", "DESCRIPTION"];
         break;
       case "LANGUAGE":
         information = ["ID", "LABEL", "VALUE"];
