@@ -21,7 +21,7 @@ export enum Email {
 interface EmailMapping {
   [Email.RESET_PASSWORD]: { resetCode: string };
   [Email.VERIFY_EMAIL]: { verifyCode: string; firstname: string; lastname: string };
-  [Email.INVITATION_EMAIL]: { verifyCode: string; firstname: string; lastname: string };
+  [Email.INVITATION_EMAIL]: { initCode: string; firstname: string; lastname: string };
 }
 type EmailOptions<E extends Email> = EmailMapping[E];
 
@@ -61,7 +61,7 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
       filenameText: "invite-email_text.pug",
       subject: "Bienvenue! - Initialiser votre adresse email",
       args: {
-        initUrl: `${frontUrl}/verify?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.INVITATION_EMAIL>).verifyCode)}`,
+        initUrl: `${frontUrl}/update-password?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.INVITATION_EMAIL>).initCode)}`,
         firstname: (options as EmailOptions<Email.INVITATION_EMAIL>).firstname,
         lastname: (options as EmailOptions<Email.INVITATION_EMAIL>).lastname,
       },
