@@ -2,10 +2,10 @@ import React, { useContext, useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
-import DefaultButton from "../../../components/Buttons/DefaultButton";
 import { UserServiceContext } from "../../../../services/UserService";
 import { UsersServiceContext } from "../../../../services/UsersService";
-import { handleRequest } from "./UserButtonRequests";
+import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
+import { deleteUser } from "../userRequest";
 
 function UserRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -19,7 +19,7 @@ function UserRemoveButton(props) {
 
   async function handleRemove(event) {
     event.preventDefault();
-    await handleRequest(
+    await deleteUser(
       axiosLoggedRequest,
       props.user,
       setRes,
@@ -31,11 +31,13 @@ function UserRemoveButton(props) {
   }
 
   return (
-    <DefaultButton
-      href={`/admin/users/delete`}
-      handleAction={handleRemove}
-      icon={props.icon}
+    <DefaultDeleteButton
+      name={`${props.user.managerFirstName} ${props.user.managerLastName}`}
+      handleRemove={handleRemove}
+      goTo={"/admin/users/delete"}
+      returnTo={"/admin/users"}
       res={res}
+      icon={props.icon}
     />
   );
 }

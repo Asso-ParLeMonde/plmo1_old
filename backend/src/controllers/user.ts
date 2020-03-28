@@ -61,15 +61,24 @@ export class UserController extends Controller {
   @post()
   public async addUser(req: Request, res: Response): Promise<void> {
     const password = req.body.password;
-    if (!isPasswordValid(password)) {
+    if (password && !isPasswordValid(password)) {
       throw new Error("Invalid password");
     }
+
     const user: User = new User();
     updateUser(user, req);
-    user.passwordHash = await argon2.hash(password);
+    user.passwordHash = await argon2.hash(password || generateTemporaryPassword(12));
     user.type = 0; // type class per default
-    if (req.user !== undefined && req.user.type === UserType.PLMO_ADMIN && req.body.type !== undefined) {
-      user.type = req.body.type;
+
+    if (req.user !== undefined && req.user.type === UserType.PLMO_ADMIN) {
+      if (req.body.type !== undefined) {
+        user.type = req.body.type;
+      }
+      const initEmailPassword = generateTemporaryPassword(12);
+      user.verificationHash = await argon2.hash(initEmailPassword);
+      // Uncomment next line to block account on registration before email is not verified
+      // user.accountRegistration = 3;
+      await sendMail(Email.INVITATION_EMAIL, user.mail, { initCode: initEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName });
     }
 
     // new user and not admin
