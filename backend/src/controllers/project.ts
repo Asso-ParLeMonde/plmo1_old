@@ -1,19 +1,40 @@
-import { Request, Response } from "express";
-import { Controller, post } from "./controller";
+import { Request, Response, NextFunction } from "express";
+import { Controller, post, put, get, del } from "./controller";
 import { htmlToPDF, PDF } from "../pdf";
 import { Question } from "../entities/question";
 import { Plan } from "../entities/plan";
-import { getRepository, getCustomRepository } from "typeorm";
+import { getRepository, getCustomRepository, getManager } from "typeorm";
 import { Theme } from "../entities/theme";
 import { Scenario } from "../entities/scenario";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
 import { ThemeRepository } from "../customRepositories/themeRepository";
+import { UserType } from "../entities/user";
+import { Project } from "../entities/project";
 
-type QuestionsFromBody = Array<{ question?: string; plans?: Array<{ url?: string; description?: string }> }>;
+type planFromBody = { id?: number | string; url?: string; description?: string };
+type QuestionFromBody = { question?: string; id?: number | string; plans?: Array<planFromBody> };
+type QuestionsFromBody = Array<QuestionFromBody>;
+
+function getQuestionsFromBody(req: Request): Question[] {
+  const questions: Question[] = [];
+  for (const q of (req.body.questions || []) as QuestionsFromBody) {
+    const question = new Question();
+    question.question = q.question || "";
+    question.plans = [];
+    for (const p of q.plans || []) {
+      const plan = new Plan();
+      plan.url = p.url || "";
+      plan.description = p.description || "";
+      question.plans.push(plan);
+    }
+    questions.push(question);
+  }
+  return questions;
+}
 
 export class ProjectController extends Controller {
   constructor() {
-    super("project");
+    super("projects");
   }
 
   @post({ path: "/pdf" })
@@ -30,19 +51,7 @@ export class ProjectController extends Controller {
       throw new AppError("Invalid data", ErrorCode.INVALID_DATA);
     }
 
-    const questions: Question[] = [];
-    for (const q of (req.body.questions || []) as QuestionsFromBody) {
-      const question = new Question();
-      question.question = q.question || "";
-      question.plans = [];
-      for (const p of q.plans || []) {
-        const plan = new Plan();
-        plan.url = p.url || "";
-        plan.description = p.description || "";
-        question.plans.push(plan);
-      }
-      questions.push(question);
-    }
+    const questions: Question[] = getQuestionsFromBody(req);
 
     const url = await htmlToPDF(PDF.PLAN_DE_TOURNAGE, {
       themeName: theme.names.fr,
@@ -52,5 +61,113 @@ export class ProjectController extends Controller {
       questions,
     });
     res.sendJSON({ url });
+  }
+
+  @get({ userType: UserType.CLASS })
+  public async getProjects(req: Request, res: Response): Promise<void> {
+    if (req.user === undefined) {
+      res.sendJSON([]);
+      return;
+    }
+
+    const projects = await getRepository(Project).find({ where: { user: { id: req.user.id } } });
+    res.sendJSON(projects);
+  }
+
+  @get({ path: "/:id", userType: UserType.CLASS })
+  public async getProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const project: Project | undefined = await getRepository(Project).findOne({ id, user: { id: req.user.id } }, { relations: ["theme", "scenario", "questions"] });
+    if (project === undefined) {
+      next();
+      return;
+    }
+    res.sendJSON(project);
+  }
+
+  @post({ userType: UserType.CLASS })
+  public async addProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
+    const project = new Project();
+
+    // set theme and scenario
+    if (req.body.scenarioId !== undefined && req.body.languageCode !== undefined) {
+      project.scenario = new Scenario();
+      project.scenario.id = parseInt(req.body.scenarioId, 10) || 0;
+      project.scenario.languageCode = req.body.languageCode;
+    }
+    if (req.body.themeId !== undefined) {
+      project.theme = new Theme();
+      project.theme.id = parseInt(req.body.themeId, 10) || 0;
+    }
+    if (project.scenario === undefined || project.theme === undefined) {
+      next();
+      return;
+    }
+
+    // get questions
+    project.questions = getQuestionsFromBody(req);
+    project.user = req.user;
+
+    // save all in a transaction in case of one problem
+    await getManager().transaction(async entityManager => {
+      await entityManager.getRepository(Project).save(project);
+      const questionSavePromises: Array<Promise<Question>> = [];
+      for (const [index, q] of project.questions.entries()) {
+        q.plans = []; // we do not save plans yet
+        q.scenarioId = project.scenario.id;
+        q.languageCode = project.scenario.languageCode;
+        q.index = index;
+        q.project = new Project();
+        q.project.id = project.id;
+        questionSavePromises.push(entityManager.getRepository(Question).save(q));
+      }
+      project.questions = await Promise.all(questionSavePromises);
+    });
+
+    // return saved project with ids
+    res.sendJSON(project);
+  }
+
+  @put({ path: "/:id", userType: UserType.CLASS })
+  public async editProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const project: Project | undefined = await getRepository(Project).findOne({ id, user: { id: req.user.id } });
+    if (project === undefined) {
+      next();
+      return;
+    }
+
+    if (req.body.title !== undefined) {
+      project.title = req.body.title;
+      await getRepository(Project).save(project);
+    }
+    res.sendJSON(project);
+  }
+
+  @del({ path: "/:id", userType: UserType.CLASS })
+  public async deleteProject(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
+    const id = parseInt(req.params.id || "", 10) || 0;
+    await getRepository(Project).delete({ id, user: { id: req.user.id } });
+    res.status(204).send();
   }
 }

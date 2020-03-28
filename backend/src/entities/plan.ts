@@ -20,6 +20,7 @@ export class Plan {
   @ManyToOne(
     () => Question,
     question => question.plans,
+    { onDelete: "CASCADE" },
   )
   public question: Question | null;
 
