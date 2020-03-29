@@ -21,6 +21,7 @@ function AllQuestions(props) {
       return;
     }
     const requests = [];
+    project.questions = questions;
     for (const [index, q] of questions.entries()) {
       requests.push(
         editQuestion(
