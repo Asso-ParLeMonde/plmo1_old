@@ -9,7 +9,7 @@ import Inverted from "../../../../components/Inverted";
 import EditButtons from "./components/EditButtons";
 
 import "./edit-plan.css";
-import CustomModal from "../../../components/CustomModal";
+import CustomModal from "../../../../components/CustomModal";
 import {uploadTemporaryImage} from "../../../../services/PlanService";
 
 

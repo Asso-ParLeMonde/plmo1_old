@@ -20,15 +20,9 @@ function QuestionsList(props) {
     setDeleteIndex(index);
   };
 
-  const deleteQuestion = index => {
-    const questions = props.questions;
-    questions.splice(index, 1);
-    props.setQuestions(questions);
-  };
-
-  const handleClose = remove => () => {
+  const handleClose = remove => async () => {
     if (remove) {
-      deleteQuestion(deleteIndex);
+      await props.deleteQuestion(deleteIndex);
     }
     setDeleteIndex(-1);
   };
@@ -100,7 +94,12 @@ function QuestionsList(props) {
 QuestionsList.propTypes = {
   questions: PropTypes.array.isRequired,
   setQuestions: PropTypes.func.isRequired,
+  deleteQuestion: PropTypes.func,
   history: PropTypes.object.isRequired
+};
+
+QuestionsList.defaultProps = {
+  deleteQuestion: () => {}
 };
 
 export default QuestionsList;

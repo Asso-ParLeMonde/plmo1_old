@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {DialogContentText} from "@material-ui/core";
+import { DialogContentText } from "@material-ui/core";
 
-import CustomModal from "../../../../components/CustomModal";
+import CustomModal from "../../../../../components/CustomModal";
 
 function ClearModal(props) {
   return (
@@ -19,17 +19,17 @@ function ClearModal(props) {
         Êtes-vous sûr de vouloir effacer totalement le plan ?
       </DialogContentText>
     </CustomModal>
-  )
+  );
 }
 
 ClearModal.propTypes = {
   open: PropTypes.bool,
-  onClear: PropTypes.func,
+  onClear: PropTypes.func
 };
 
 ClearModal.defaultProps = {
   open: false,
-  onClear: () => {},
+  onClear: () => {}
 };
 
 export default ClearModal;

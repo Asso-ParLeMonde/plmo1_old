@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { withRouter, Route, Switch } from "react-router-dom";
+import { withRouter, Route, Switch, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
@@ -41,55 +41,53 @@ function Partie1(props) {
     props.history.push(`/create/1-scenario-choice?themeId=${project.themeId}`);
   };
 
+  if (project.themeId === null) {
+    return <Redirect to="/create" />;
+  }
+
   return (
     <div>
-      {project.themeId !== null && (
-        <React.Fragment>
-          <Hidden smDown>
-            <Breadcrumbs
-              separator={<NavigateNextIcon fontSize="small" />}
-              aria-label="breadcrumb"
+      <Hidden smDown>
+        <Breadcrumbs
+          separator={<NavigateNextIcon fontSize="small" />}
+          aria-label="breadcrumb"
+        >
+          <Link color="inherit" href="/create" onClick={handleHome}>
+            Tout les thèmes
+          </Link>
+          {isNewScenario && (
+            <Link
+              color="inherit"
+              href={`/create/1-scenario-choice?themeId=${project.themeId}`}
+              onClick={handleBack}
             >
-              <Link color="inherit" href="/create" onClick={handleHome}>
-                Tout les thèmes
-              </Link>
-              {isNewScenario && (
-                <Link
-                  color="inherit"
-                  href={`/create/1-scenario-choice?themeId=${project.themeId}`}
-                  onClick={handleBack}
-                >
-                  {project.themeName}
-                </Link>
-              )}
-              <Typography color="textPrimary">
-                {isNewScenario ? "Nouveau scénario" : project.themeName}
-              </Typography>
-            </Breadcrumbs>
-          </Hidden>
+              {project.themeName}
+            </Link>
+          )}
+          <Typography color="textPrimary">
+            {isNewScenario ? "Nouveau scénario" : project.themeName}
+          </Typography>
+        </Breadcrumbs>
+      </Hidden>
 
-          <Steps activeStep={0} />
+      <Steps activeStep={0} />
 
-          <Switch>
-            <Route
-              path="/create/1-scenario-choice/new"
-              render={props => (
-                <NewScenario {...props} themeId={project.themeId} />
-              )}
+      <Switch>
+        <Route
+          path="/create/1-scenario-choice/new"
+          render={props => <NewScenario {...props} themeId={project.themeId} />}
+        />
+        <Route
+          path="/create/1-scenario-choice/"
+          render={props => (
+            <AllScenarios
+              {...props}
+              themeId={project.themeId}
+              scenarios={scenarios}
             />
-            <Route
-              path="/create/1-scenario-choice/"
-              render={props => (
-                <AllScenarios
-                  {...props}
-                  themeId={project.themeId}
-                  scenarios={scenarios}
-                />
-              )}
-            />
-          </Switch>
-        </React.Fragment>
-      )}
+          )}
+        />
+      </Switch>
     </div>
   );
 }

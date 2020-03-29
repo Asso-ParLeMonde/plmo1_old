@@ -1,31 +1,34 @@
-import React, {useContext, useState} from "react";
-import {withRouter} from 'react-router-dom';
+import React, { useContext, useState } from "react";
+import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import {Hidden, Typography} from "@material-ui/core";
+import { Hidden, Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 
 import Inverted from "../../../../components/Inverted";
-import {ProjectServiceContext} from "../../../../services/ProjectService";
+import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { UserServiceContext } from "../../../../services/UserService";
+import { addQuestion } from "../../components/questionRequest";
 
 function NewQuestion(props) {
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const { project, updateProject } = useContext(ProjectServiceContext);
-  const [ hasError, setHasError ] = useState(false);
-  const [ newQuestion, setNewQuestion ] = useState('');
+  const [hasError, setHasError] = useState(false);
+  const [newQuestion, setNewQuestion] = useState("");
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     event.preventDefault();
     setNewQuestion(event.target.value.slice(0, 280));
   };
 
-  const handleBack = (event) => {
+  const handleBack = event => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice`);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async event => {
     event.preventDefault();
     if (newQuestion.length === 0) {
       setHasError(true);
@@ -34,18 +37,13 @@ function NewQuestion(props) {
       }, 1000);
       return;
     }
-    const maxId = Math.max(0, ...project.questions.map(q => q.id));
-    updateProject({ questions: [
-        ...project.questions,
-        {
-          id: maxId + 1,
-          isDefault: false,
-          languageCode: project.languageCode,
-          question: newQuestion,
-          scenarioId: project.scenarioId,
-        },
-      ],
-    });
+    await addQuestion(
+      axiosLoggedRequest,
+      isLoggedIn,
+      project,
+      updateProject,
+      newQuestion
+    );
     props.history.push(`/create/2-questions-choice`);
   };
 
@@ -58,32 +56,33 @@ function NewQuestion(props) {
         <Typography color="inherit" variant="h2">
           Ajouter une question
         </Typography>
-        <Typography color="inherit" variant="h2" style={{marginTop: "1rem"}}>
+        <Typography color="inherit" variant="h2" style={{ marginTop: "1rem" }}>
           <div>
             <TextField
               value={newQuestion}
               onChange={handleChange}
               required
               error={hasError}
-              className={hasError ? 'shake' : ''}
+              className={hasError ? "shake" : ""}
               id="scenarioDescription"
               multiline
               placeholder="Ma question"
               fullWidth
               style={{ marginTop: "0.5rem" }}
-              variant = "outlined"
+              variant="outlined"
               color="secondary"
               autoComplete="off"
             />
             <FormHelperText
               id="component-helper-text"
-              style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }} >
+              style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }}
+            >
               {newQuestion.length}/280
             </FormHelperText>
           </div>
         </Typography>
         <Hidden smDown>
-          <div style={{width: "100%", textAlign: "right"}}>
+          <div style={{ width: "100%", textAlign: "right" }}>
             <Button
               as="a"
               variant="outlined"
@@ -115,7 +114,7 @@ function NewQuestion(props) {
         </Hidden>
       </div>
     </div>
-  )
+  );
 }
 
 NewQuestion.propTypes = {
@@ -123,7 +122,7 @@ NewQuestion.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.number.isRequired,
+  scenarioId: PropTypes.number.isRequired
 };
 
 export default withRouter(NewQuestion);

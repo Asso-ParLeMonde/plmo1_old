@@ -113,6 +113,9 @@ export class ProjectController extends Controller {
       next();
       return;
     }
+    if (req.body.title !== undefined) {
+      project.title = req.body.title;
+    }
 
     // get questions
     project.questions = getQuestionsFromBody(req);
