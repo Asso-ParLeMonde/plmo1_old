@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToOne, ManyToOne, JoinColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToOne, JoinColumn } from "typeorm";
 import { Image } from "./image";
 import { Question } from "./question";
 
@@ -24,5 +24,5 @@ export class Plan {
   )
   public question: Question | null;
 
-  public url: string;
+  public url: string | null;
 }

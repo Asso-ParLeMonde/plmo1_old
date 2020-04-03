@@ -87,6 +87,13 @@ export class ProjectController extends Controller {
       next();
       return;
     }
+
+    const getQuestionWithPlansPromises: Array<Promise<Question>> = [];
+    for (const question of project.questions) {
+      getQuestionWithPlansPromises.push(question.getPlans());
+    }
+    project.questions = await Promise.all(getQuestionWithPlansPromises);
+
     res.sendJSON(project);
   }
 

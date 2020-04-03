@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, OneToMany, ManyToOne, getRepository } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, getRepository } from "typeorm";
 import { Plan } from "./plan";
 import { Project } from "./project";
 
@@ -16,7 +16,7 @@ export class Question {
   @Column()
   public scenarioId: number;
 
-  @PrimaryColumn({ type: "varchar", length: 2 })
+  @Column({ type: "varchar", length: 2 })
   public languageCode: string;
 
   @Column({ default: 0 })
@@ -36,7 +36,10 @@ export class Question {
   public project: Project;
 
   public async getPlans(): Promise<Question> {
-    this.plans = await getRepository(Plan).find({ where: { question: { id: this.id } } });
+    this.plans = await getRepository(Plan).find({ where: { question: { id: this.id } }, order: { index: "ASC" }, relations: ["image"] });
+    for (const plan of this.plans) {
+      plan.url = plan.image ? plan.image.path : null;
+    }
     return this;
   }
 }

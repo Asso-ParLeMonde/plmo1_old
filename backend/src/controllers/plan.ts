@@ -1,5 +1,11 @@
-import { Controller, tempImage } from "./controller";
+import { Controller, tempImage, get, post, put, del } from "./controller";
 import { NextFunction, Request, Response } from "express";
+import { getRepository } from "typeorm";
+import { Plan } from "../entities/plan";
+import { UserType } from "../entities/user";
+import { Question } from "../entities/question";
+import { AppError, ErrorCode } from "../middlewares/handleErrors";
+import { deleteImage } from "../fileUpload";
 
 export class PlanController extends Controller {
   constructor() {
@@ -13,5 +19,78 @@ export class PlanController extends Controller {
       return;
     }
     res.sendJSON(req.image);
+  }
+
+  @get({ userType: UserType.CLASS })
+  public async getUserPlans(req: Request, res: Response): Promise<void> {
+    if (req.user === undefined) {
+      res.sendJSON([]);
+      return;
+    }
+
+    const plans: Plan[] = await getRepository(Plan).find({ relations: ["image"] });
+    res.sendJSON(plans);
+  }
+
+  @get({ path: "/:id", userType: UserType.CLASS })
+  public async getUserPlan(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const plan: Plan | undefined = await getRepository(Plan).findOne(id, { relations: ["image"] });
+    if (plan === undefined) {
+      next();
+      return;
+    }
+
+    res.sendJSON(plan);
+  }
+
+  @post({ userType: UserType.CLASS })
+  public async addPlan(req: Request, res: Response): Promise<void> {
+    const plan = new Plan();
+    plan.description = req.body.description || "";
+    plan.index = req.body.index || 0;
+    plan.question = new Question();
+    plan.question.id = req.body.questionId || 0;
+
+    if (plan.question.id === 0) {
+      throw new AppError("questionId not provided...", ErrorCode.INVALID_DATA);
+    }
+
+    await getRepository(Plan).save(plan);
+    res.sendJSON(plan);
+  }
+
+  @put({ path: "/:id", userType: UserType.CLASS })
+  public async editPlan(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const plan: Plan | undefined = await getRepository(Plan).findOne(id);
+    if (plan === undefined) {
+      next();
+      return;
+    }
+
+    plan.description = req.body.description || plan.description;
+    plan.index = req.body.index !== undefined ? req.body.index : plan.index;
+
+    await getRepository(Plan).save(plan);
+    res.sendJSON(plan);
+  }
+
+  @del({ path: "/:id", userType: UserType.CLASS })
+  public async deletePlan(req: Request, res: Response): Promise<void> {
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const plan: Plan | undefined = await getRepository(Plan).findOne(id, { relations: ["image"] });
+    if (plan !== undefined && plan.image) {
+      await deleteImage(plan.image.uuid, plan.image.localPath);
+      await getRepository(Image).delete(plan.image.id);
+    }
+
+    await getRepository(Plan).delete(id);
+    res.status(204).send();
   }
 }

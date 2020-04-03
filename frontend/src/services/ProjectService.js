@@ -31,13 +31,13 @@ const getInitialState = path => {
     return DEFAULT_PROJECT;
   }
   const lastProject = JSON.parse(localStorage.getItem("lastProject")) || {};
-  lastProject.questions = lastProject.questions.sort((a, b) =>
-    a.index > b.index ? 1 : -1
-  );
   const initialProject = {
     ...DEFAULT_PROJECT,
     ...lastProject
   };
+  initialProject.questions = initialProject.questions.sort((a, b) =>
+    a.index > b.index ? 1 : -1
+  );
   if (initialProject.questions.length > 0) {
     initialProject.preventDataFetch = true;
   }
@@ -73,6 +73,7 @@ function ProjectService(props) {
       url: `/projects/${projectId}`
     });
     if (!response.error) {
+      console.log(response.data);
       updateProject({
         id: response.data.id,
         themeId: response.data.theme.id,
