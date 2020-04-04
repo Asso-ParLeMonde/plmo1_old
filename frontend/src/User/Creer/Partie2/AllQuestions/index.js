@@ -9,6 +9,7 @@ import QuestionsList from "../../../components/QuestionsList";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
 import { UserServiceContext } from "../../../../services/UserService";
 import { editQuestion, deleteQuestion } from "../../components/questionRequest";
+import { addPlan } from "../../components/planRequest";
 
 function AllQuestions(props) {
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
@@ -62,14 +63,27 @@ function AllQuestions(props) {
     props.history.push(`/create/2-questions-choice/new`);
   };
 
+  const goNext = async p => {
+    const createOnePlanPromises = [];
+    for (const [index, question] of p.questions.entries()) {
+      if ((question.plans || []).length === 0) {
+        createOnePlanPromises.push(
+          addPlan(axiosLoggedRequest, isLoggedIn, p, updateProject, index)
+        );
+      }
+    }
+    await Promise.all(createOnePlanPromises);
+    props.history.push(`/create/3-storyboard-and-filming-schedule`);
+  };
+
   const handleNext = event => {
     event.preventDefault();
     if (project.id === null) {
-      askSaveProject(() => {
-        props.history.push(`/create/3-storyboard-and-filming-schedule`);
+      askSaveProject(p => {
+        goNext(p).catch();
       });
     } else {
-      props.history.push(`/create/3-storyboard-and-filming-schedule`);
+      goNext(project).catch();
     }
   };
 

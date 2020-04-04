@@ -5,7 +5,6 @@ import qs from "query-string";
 
 import { TextField } from "@material-ui/core";
 
-import useAxios from "./useAxios";
 import { ThemesServiceContext } from "./ThemesService";
 import { UserServiceContext } from "./UserService";
 import CustomModal from "../components/CustomModal";
@@ -38,9 +37,6 @@ const getInitialState = path => {
   initialProject.questions = initialProject.questions.sort((a, b) =>
     a.index > b.index ? 1 : -1
   );
-  if (initialProject.questions.length > 0) {
-    initialProject.preventDataFetch = true;
-  }
   return initialProject;
 };
 
@@ -54,7 +50,27 @@ function ProjectService(props) {
   const [modalCallback, setModalCallback] = useState(() => () => {});
   const [hasError, setHasError] = useState(false);
 
-  const updateProject = updatedProject => {
+  const getDefaultQuestions = async scenarioId => {
+    if (scenarioId === null) {
+      return;
+    }
+    const response = await axiosLoggedRequest({
+      method: "GET",
+      url: `/scenarios/${scenarioId}_${project.languageCode}/questions/?isDefault=true`
+    });
+    if (!response.error) {
+      updateProject({ questions: response.data, id: null });
+    }
+  };
+
+  const updateProject = (updatedProject, fetchQuestion = true) => {
+    if (
+      updatedProject.scenarioId &&
+      updatedProject.scenarioId !== project.scenarioId &&
+      fetchQuestion
+    ) {
+      getDefaultQuestions(updatedProject.scenarioId).catch();
+    }
     setProject(previousProject => {
       localStorage.setItem(
         "lastProject",
@@ -73,18 +89,19 @@ function ProjectService(props) {
       url: `/projects/${projectId}`
     });
     if (!response.error) {
-      console.log(response.data);
-      updateProject({
-        id: response.data.id,
-        themeId: response.data.theme.id,
-        scenarioId: response.data.scenario.id,
-        scenarioName: response.data.scenario.name,
-        languageCode: response.data.scenario.languageCode,
-        questions: response.data.questions.sort((a, b) =>
-          a.index > b.index ? 1 : -1
-        ),
-        preventDataFetch: true
-      });
+      updateProject(
+        {
+          id: response.data.id,
+          themeId: response.data.theme.id,
+          scenarioId: response.data.scenario.id,
+          scenarioName: response.data.scenario.name,
+          languageCode: response.data.scenario.languageCode,
+          questions: response.data.questions.sort((a, b) =>
+            a.index > b.index ? 1 : -1
+          )
+        },
+        false
+      );
     } else {
       props.history.push("/create");
     }
@@ -97,7 +114,7 @@ function ProjectService(props) {
 
   const saveProject = async () => {
     if (!isLoggedIn() || project.id !== null) {
-      return;
+      return null;
     }
     const response = await axiosLoggedRequest({
       method: "POST",
@@ -109,30 +126,15 @@ function ProjectService(props) {
         id: response.data.id,
         questions: response.data.questions
       });
+      return {
+        id: response.data.id,
+        questions: response.data.questions
+      };
     } else {
       console.log(response.data);
+      return null;
     }
   };
-
-  useEffect(() => {
-    // get project when projectId is not null
-    const locationParams = qs.parse(props.location.search, {
-      ignoreQueryPrefix: true
-    });
-    const projectId = parseInt(locationParams.project, 10) || project.id || 0;
-    if (projectId !== 0) {
-      if (!isLoggedIn()) {
-        props.history.push(
-          `/login?redirect=${encodeURI(
-            `${props.location.pathname}?project=${projectId}`
-          )}`
-        );
-      } else {
-        updateProjectFromId(projectId).catch();
-      }
-    }
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     // update theme name when themeId change
@@ -156,28 +158,25 @@ function ProjectService(props) {
     // eslint-disable-next-line
   }, [project.themeId, themesRequest]);
 
-  const getQuestions = useAxios({
-    method: "GET",
-    url:
-      project.scenarioId === null
-        ? null
-        : `/scenarios/${project.scenarioId}_${project.languageCode}/questions/?isDefault=true`
-  });
   useEffect(() => {
-    // Get questions when scenarioId change
-    if (
-      project.scenarioId !== null &&
-      getQuestions.complete &&
-      !getQuestions.error
-    ) {
-      if (project.preventDataFetch) {
-        updateProject({ preventDataFetch: false });
-        return;
+    // get project when projectId is not null
+    const locationParams = qs.parse(props.location.search, {
+      ignoreQueryPrefix: true
+    });
+    const projectId = parseInt(locationParams.project, 10) || project.id || 0;
+    if (projectId !== 0) {
+      if (!isLoggedIn()) {
+        props.history.push(
+          `/login?redirect=${encodeURI(
+            `${props.location.pathname}?project=${projectId}`
+          )}`
+        );
+      } else {
+        updateProjectFromId(projectId).catch();
       }
-      updateProject({ questions: getQuestions.data });
     }
     // eslint-disable-next-line
-  }, [project.scenarioId, getQuestions]);
+  }, []);
 
   const handleToggleModal = save => async () => {
     if (save && (project.title || "").length === 0) {
@@ -187,11 +186,12 @@ function ProjectService(props) {
 
     setHasError(false);
     setShowSaveModal(s => !s);
+    let savedProject = null;
     if (save) {
-      await saveProject();
+      savedProject = await saveProject();
     }
     if (typeof modalCallback === "function") {
-      modalCallback(save);
+      modalCallback(savedProject === null ? project : savedProject);
     }
   };
 

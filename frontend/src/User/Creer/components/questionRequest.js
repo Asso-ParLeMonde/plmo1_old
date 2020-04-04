@@ -28,10 +28,10 @@ export async function addQuestion(
     if (!response.error) {
       question = response.data;
     } else {
-      question.id = Math.max(0, ...project.questions.map(q => q.id));
+      question.id = Math.max(0, ...project.questions.map(q => q.id)) + 1;
     }
   } else {
-    question.id = Math.max(0, ...project.questions.map(q => q.id));
+    question.id = Math.max(0, ...project.questions.map(q => q.id)) + 1;
   }
 
   updateProject({
