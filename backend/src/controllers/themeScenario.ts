@@ -22,11 +22,21 @@ export class ThemeScenariosController extends Controller {
   @get()
   public async getScenarios(req: Request, res: Response): Promise<void> {
     const themeId: number = parseInt(req.params.themeId, 10) || 0;
-    const conditions: { where: { theme: { id: number }; languageCode?: string } } = { where: { theme: { id: themeId } } };
+    const conditions: { where: { theme: { id: number }; languageCode?: string; isDefault?: boolean } } = { where: { theme: { id: themeId } } };
+    let conditions2: { where: [{ theme: { id: number }; languageCode?: string; isDefault?: boolean }, { theme: { id: number }; user: { id: number } }] };
     if (req.query.languageCode !== undefined) {
       conditions.where.languageCode = req.query.languageCode;
     }
-    const scenarios = await getRepository(Scenario).find(conditions);
+    if (req.query.isDefault !== undefined) {
+      conditions.where.isDefault = req.query.isDefault === "true";
+    }
+    let scenarios: Scenario[];
+    if (req.query.user !== undefined && req.user !== undefined) {
+      conditions2 = { where: [conditions.where, { theme: { id: themeId }, user: { id: req.user.id } }] };
+      scenarios = await getRepository(Scenario).find(conditions2);
+    } else {
+      scenarios = await getRepository(Scenario).find(conditions);
+    }
     res.sendJSON(scenarios);
   }
 
@@ -47,12 +57,18 @@ export class ThemeScenariosController extends Controller {
   }
 
   @post({ userType: UserType.CLASS })
-  public async addScenarios(req: Request, res: Response): Promise<void> {
+  public async addScenarios(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined) {
+      next();
+      return;
+    }
+
     const scenario: Scenario = new Scenario(); // create a new scenario
     scenario.description = req.body.description || "";
     scenario.languageCode = req.body.languageCode || "fr";
     scenario.name = req.body.name || "";
     scenario.id = req.body.id || null;
+    scenario.user = req.user.userWithoutPassword();
     await getCustomRepository(ScenarioRepository).saveScenario(scenario, parseInt(req.params.themeId, 10) || 0); // 0 because there is no theme with this id
     res.sendJSON(scenario);
   }

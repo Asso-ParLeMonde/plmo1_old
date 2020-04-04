@@ -10,6 +10,7 @@ import { AppError, ErrorCode } from "../middlewares/handleErrors";
 import { ThemeRepository } from "../customRepositories/themeRepository";
 import { UserType } from "../entities/user";
 import { Project } from "../entities/project";
+import { PDFDownload } from "../entities/pdfDownload";
 
 type planFromBody = { id?: number | string; url?: string; description?: string };
 type QuestionFromBody = { question?: string; id?: number | string; plans?: Array<planFromBody> };
@@ -41,14 +42,23 @@ export class ProjectController extends Controller {
   public async getProjectPDF(req: Request, res: Response): Promise<void> {
     const languageCode: string = req.body.languageCode || "fr";
     const theme: Theme | undefined = await getCustomRepository(ThemeRepository).findOneWithLabels(req.body.themeId || 0);
-    const scenario: Scenario | undefined = await getRepository(Scenario).findOne({
+    let scenario: Scenario | undefined = await getRepository(Scenario).findOne({
       where: {
         id: req.body.scenarioId || 0,
         languageCode,
       },
     });
-    if (theme === undefined || scenario === undefined) {
+    if (theme === undefined) {
       throw new AppError("Invalid data", ErrorCode.INVALID_DATA);
+    }
+    if (scenario === undefined) {
+      if (req.body.scenarioName !== undefined && req.body.scenarioDescription !== undefined) {
+        scenario = new Scenario();
+        scenario.name = req.body.scenarioName;
+        scenario.description = req.body.scenarioDescription;
+      } else {
+        throw new AppError("Invalid data", ErrorCode.INVALID_DATA);
+      }
     }
 
     const questions: Question[] = getQuestionsFromBody(req);
@@ -60,6 +70,9 @@ export class ProjectController extends Controller {
       pseudo: req.user !== undefined ? req.user.pseudo : undefined,
       questions,
     });
+    //For PDF Download statistics
+    const pdfEntry = new PDFDownload();
+    await getRepository(PDFDownload).save(pdfEntry);
     res.sendJSON({ url });
   }
 

@@ -51,7 +51,7 @@ function ProjectService(props) {
   const [hasError, setHasError] = useState(false);
 
   const getDefaultQuestions = async scenarioId => {
-    if (scenarioId === null) {
+    if (scenarioId === null || typeof scenarioId === "string") {
       return;
     }
     const response = await axiosLoggedRequest({

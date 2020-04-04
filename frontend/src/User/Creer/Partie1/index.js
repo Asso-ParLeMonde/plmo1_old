@@ -12,16 +12,22 @@ import NewScenario from "./NewScenario";
 import AllScenarios from "./AllScenarios";
 
 function Partie1(props) {
-  const { project } = useContext(ProjectServiceContext);
+  const { project, updateProject } = useContext(ProjectServiceContext);
 
   // Get scenarios
   const [scenarios, setScenarios] = useState([]);
+  const [localScenarios, setLocalScenarios] = useState(
+    (JSON.parse(localStorage.getItem("scenarios")) || []).filter(
+      s => s.themeId === project.themeId
+    )
+  );
+  const allScenarios = [...scenarios, ...localScenarios];
   const getScenarios = useAxios({
     method: "GET",
     url:
       project.themeId === null
         ? null
-        : `/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}`
+        : `/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}&isDefault=true&user`
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -44,6 +50,18 @@ function Partie1(props) {
   if (project.themeId === null) {
     return <Redirect to="/create" />;
   }
+
+  const addLocalScenario = newScenario => {
+    newScenario.id = `local_${localScenarios.length + 1}`;
+    newScenario.isDefault = false;
+    localScenarios.push(newScenario);
+    setLocalScenarios(localScenarios);
+    updateProject({
+      scenarioId: newScenario.id,
+      scenarioName: newScenario.name
+    });
+    localStorage.setItem("scenarios", JSON.stringify(localScenarios));
+  };
 
   return (
     <div>
@@ -75,7 +93,13 @@ function Partie1(props) {
       <Switch>
         <Route
           path="/create/1-scenario-choice/new"
-          render={props => <NewScenario {...props} themeId={project.themeId} />}
+          render={props => (
+            <NewScenario
+              {...props}
+              themeId={project.themeId}
+              addLocalScenario={addLocalScenario}
+            />
+          )}
         />
         <Route
           path="/create/1-scenario-choice/"
@@ -83,10 +107,11 @@ function Partie1(props) {
             <AllScenarios
               {...props}
               themeId={project.themeId}
-              scenarios={scenarios}
+              scenarios={allScenarios}
             />
           )}
         />
+        )} />
       </Switch>
     </div>
   );

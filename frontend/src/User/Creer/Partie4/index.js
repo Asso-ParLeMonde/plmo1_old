@@ -45,6 +45,8 @@ function Partie4(props) {
       data: {
         themeId: project.themeId,
         scenarioId: project.scenarioId,
+        scenarioName: project.scenarioName,
+        scenarioDescription: "",
         questions
       }
     });

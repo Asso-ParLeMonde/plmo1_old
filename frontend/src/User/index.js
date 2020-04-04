@@ -8,7 +8,7 @@ import { ThemesServiceProvider } from "../services/ThemesService";
 import { UserServiceContext } from "../services/UserService";
 
 // routes
-import Creer from "./Creer";
+import Create from "./Creer";
 import Inspiration from "./Inspiration";
 import Reglages from "./Reglages";
 import Videos from "./Videos";
@@ -78,7 +78,7 @@ function User() {
         <Container maxWidth="lg">
           <ThemesServiceProvider isPublished={true}>
             <Switch>
-              <Route path="/create" component={Creer} />
+              <Route path="/create" component={Create} />
               <Redirect exact from="/" to="/create" />
               <Route path="/my-videos" component={Videos} />
               <Route path="/inspiration" component={Inspiration} />

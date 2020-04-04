@@ -1,6 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryColumn } from "typeorm";
 import { Question } from "./question";
 import { Theme } from "./theme";
+import { User } from "./user";
 
 @Entity()
 export class Scenario {
@@ -24,6 +25,9 @@ export class Scenario {
 
   @Column({ type: "varchar", length: 280 })
   public description: string;
+
+  @ManyToOne(() => User)
+  public user: User;
 
   public questions: Question[];
 }
