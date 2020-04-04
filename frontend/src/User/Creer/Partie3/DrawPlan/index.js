@@ -1,22 +1,30 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router";
+import { withRouter } from "react-router";
 import qs from "query-string";
 
-import {Button, Typography, Backdrop, CircularProgress, makeStyles} from "@material-ui/core";
+import {
+  Button,
+  Typography,
+  Backdrop,
+  CircularProgress,
+  makeStyles
+} from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
 import Canvas from "./components/canvas";
-import {uploadTemporaryImage} from "../../../../services/PlanService";
+import { uploadPlanImage } from "../../components/planRequest";
+import { UserServiceContext } from "../../../../services/UserService";
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
+    color: "#fff"
+  }
 }));
 
 function DrawPlan(props) {
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const classes = useStyles();
   const canvasRef = useRef(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -25,32 +33,46 @@ function DrawPlan(props) {
   const question = props.questions[questionIndex] || {};
 
   useEffect(() => {
-    setQuestionIndex(parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).question) || 0);
-    setPlanIndex(parseInt(qs.parse(props.location.search, {ignoreQueryPrefix: true}).plan) || 0);
+    setQuestionIndex(
+      parseInt(
+        qs.parse(props.location.search, { ignoreQueryPrefix: true }).question
+      ) || 0
+    );
+    setPlanIndex(
+      parseInt(
+        qs.parse(props.location.search, { ignoreQueryPrefix: true }).plan
+      ) || 0
+    );
   }, [props.location.search]);
 
-  const handleBack = (event) => {
+  const handleBack = event => {
     event.preventDefault();
-    props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`);
+    props.history.push(
+      `/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`
+    );
   };
 
-  const handleConfirm = async (event) => {
+  const handleConfirm = async event => {
     event.preventDefault();
     setIsLoading(true);
     try {
       const imageBlob = await canvasRef.current.getBlob();
-      const data = await uploadTemporaryImage(imageBlob);
-      if (data !== null) {
-        question.plans[planIndex].url = data.path;
-        question.plans[planIndex].uuid = data.uuid;
-        question.plans[planIndex].localPath = data.localPath;
-        props.updateQuestion(questionIndex, question);
-      }
+      await uploadPlanImage(
+        axiosLoggedRequest,
+        isLoggedIn,
+        props.project,
+        props.updateProject,
+        questionIndex,
+        planIndex,
+        imageBlob
+      );
     } catch (e) {
       console.log(e);
     }
     setIsLoading(false);
-    props.history.push(`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`);
+    props.history.push(
+      `/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`
+    );
   };
 
   return (
@@ -66,13 +88,17 @@ function DrawPlan(props) {
           <span>Plan numéro :</span> {question.planStartIndex + planIndex}
         </Typography>
 
-        <Canvas ref={canvasRef}/>
+        <Canvas ref={canvasRef} />
 
-        <Backdrop className={classes.backdrop} open={isLoading} onClick={() => {}}>
+        <Backdrop
+          className={classes.backdrop}
+          open={isLoading}
+          onClick={() => {}}
+        >
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        <div style={{width: "100%", textAlign: "right", margin: "2rem 0"}}>
+        <div style={{ width: "100%", textAlign: "right", margin: "2rem 0" }}>
           <Button
             as="a"
             variant="outlined"
@@ -104,7 +130,8 @@ DrawPlan.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   questions: PropTypes.array.isRequired,
-  updateQuestion: PropTypes.func.isRequired,
+  updateProject: PropTypes.func.isRequired,
+  project: PropTypes.object.isRequired
 };
 
 export default withRouter(DrawPlan);

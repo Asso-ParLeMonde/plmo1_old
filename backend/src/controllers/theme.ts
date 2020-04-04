@@ -79,13 +79,15 @@ export class ThemesController extends Controller {
     const theme: Theme | undefined = await getRepository(Theme).findOne(id, { relations: ["image"] });
     if (theme === undefined) {
       await getRepository(Image).delete(req.imageID);
-      await deleteImage(req.image.uuid, req.image.localPath);
+      await deleteImage(req.image);
       next();
       return;
     }
 
-    if (theme.image !== undefined && theme.image !== null) {
-      await getCustomRepository(ThemeRepository).deleteThemeImage(id);
+    // delete previous image
+    if (theme.image) {
+      await deleteImage(theme.image);
+      await getRepository(Image).delete(theme.image.id);
     }
 
     theme.image = req.image;
@@ -96,7 +98,11 @@ export class ThemesController extends Controller {
   @del({ path: "/:id/image", userType: UserType.PLMO_ADMIN })
   public async deleteThemeImage(req: Request, res: Response): Promise<void> {
     const id: number = parseInt(req.params.id, 10) || 0;
-    await getCustomRepository(ThemeRepository).deleteThemeImage(id);
+    const theme: Theme | undefined = await getRepository(Theme).findOne(id, { relations: ["image"] });
+    if (theme !== undefined && theme.image) {
+      await deleteImage(theme.image);
+      await getRepository(Image).delete(theme.image.id);
+    }
     res.status(204).send();
   }
 }

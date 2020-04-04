@@ -16,8 +16,7 @@ import EditButtons from "./components/EditButtons";
 
 import "./edit-plan.css";
 import CustomModal from "../../../../components/CustomModal";
-import { uploadTemporaryImage } from "../../../../services/PlanService";
-import { editPlan } from "../../components/planRequest";
+import { editPlan, uploadPlanImage } from "../../components/planRequest";
 import { UserServiceContext } from "../../../../services/UserService";
 
 function EditPlan(props) {
@@ -72,13 +71,15 @@ function EditPlan(props) {
 
   const submitImageWithUrl = async imageBlob => {
     try {
-      const data = await uploadTemporaryImage(imageBlob);
-      if (data !== null) {
-        question.plans[planIndex].url = data.path;
-        question.plans[planIndex].uuid = data.uuid;
-        question.plans[planIndex].localPath = data.localPath;
-        props.updateQuestion(questionIndex, question);
-      }
+      await uploadPlanImage(
+        axiosLoggedRequest,
+        isLoggedIn,
+        props.project,
+        props.updateProject,
+        questionIndex,
+        planIndex,
+        imageBlob
+      );
     } catch (e) {
       console.log(e);
     }
@@ -219,7 +220,8 @@ EditPlan.propTypes = {
   history: PropTypes.object.isRequired,
   questions: PropTypes.array.isRequired,
   updateQuestion: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
+  updateProject: PropTypes.func.isRequired
 };
 
 export default withRouter(EditPlan);

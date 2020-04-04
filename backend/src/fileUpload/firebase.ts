@@ -1,4 +1,4 @@
-import { Bucket, DeleteFileResponse, UploadResponse } from "@google-cloud/storage";
+import { Bucket } from "@google-cloud/storage";
 import { credential, initializeApp, ServiceAccount, storage } from "firebase-admin";
 import fs from "fs-extra";
 import path from "path";
@@ -28,54 +28,33 @@ export class FirebaseUtils extends Provider {
     this.bucket = storage().bucket("gs://cs-par-le-monde-1.appspot.com");
   }
 
-  public async uploadImage(filename: string, filePath: string, hasMultipleSizes: boolean = false): Promise<string> {
+  public async uploadImage(filename: string, filePath: string): Promise<string> {
     if (process.env.STOCKAGE_PROVIDER_NAME !== "firebase") {
       return "";
     }
 
+    // local dir
     const dir: string = path.join(__dirname, "../..", "dist", filePath);
 
-    // upload images on stockage server
+    // upload image on stockage server
     try {
-      const uploadTasks: Array<Promise<UploadResponse>> = [];
-      uploadTasks.push(
-        this.bucket.upload(`${dir}/${filename}.jpeg`, {
-          destination: `${filePath}/${filename}/normal.jpeg`,
-        }),
-      );
-      if (hasMultipleSizes) {
-        uploadTasks.push(
-          this.bucket.upload(`${dir}/${filename}_md.jpeg`, {
-            destination: `${filePath}/${filename}/medium.jpeg`,
-          }),
-        );
-        uploadTasks.push(
-          this.bucket.upload(`${dir}/${filename}_sm.jpeg`, {
-            destination: `${filePath}/${filename}/small.jpeg`,
-          }),
-        );
-      }
-      await Promise.all(uploadTasks);
+      await this.bucket.upload(`${dir}/${filename}.jpeg`, {
+        destination: `${filePath}/${filename}.jpeg`,
+      });
     } catch (e) {
       logger.error(`File ${filename} could not be sent to firebase !`);
       return "";
     }
 
-    // delete local files
+    // delete local file
     try {
-      const deleteTasks: Array<Promise<void>> = [];
-      deleteTasks.push(fs.remove(`${dir}/${filename}.jpeg`));
-      if (hasMultipleSizes) {
-        deleteTasks.push(fs.remove(`${dir}/${filename}_md.jpeg`));
-        deleteTasks.push(fs.remove(`${dir}/${filename}_sm.jpeg`));
-      }
-      await Promise.all(deleteTasks);
+      await fs.remove(`${dir}/${filename}.jpeg`);
     } catch (e) {
       logger.error(`File ${filename} not found !`);
     }
 
-    // return path to image
-    return `https://firebasestorage.googleapis.com/v0/b/cs-par-le-monde-1.appspot.com/o/${filePath.replace(/\//gim, "%2F")}%2F${filename}%2Fnormal.jpeg?alt=media`;
+    // return url to image
+    return `https://firebasestorage.googleapis.com/v0/b/cs-par-le-monde-1.appspot.com/o/${filePath.replace(/\//gim, "%2F")}%2F${filename}.jpeg?alt=media`;
   }
 
   public async deleteImage(filename: string, filePath: string): Promise<void> {
@@ -84,11 +63,7 @@ export class FirebaseUtils extends Provider {
     }
 
     try {
-      const deleteTasks: Array<Promise<DeleteFileResponse>> = [];
-      deleteTasks.push(this.bucket.file(`${filePath}/${filename}/normal.jpeg`).delete());
-      deleteTasks.push(this.bucket.file(`${filePath}/${filename}/medium.jpeg`).delete());
-      deleteTasks.push(this.bucket.file(`${filePath}/${filename}/small.jpeg`).delete());
-      await Promise.all(deleteTasks);
+      await this.bucket.file(`${filePath}/${filename}.jpeg`).delete();
     } catch (e) {
       logger.error(`File ${filename} not found !`);
     }

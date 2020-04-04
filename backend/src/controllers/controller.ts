@@ -1,7 +1,7 @@
 import { RequestHandler, Router } from "express";
 import multer from "multer";
 import { handleErrors } from "../middlewares/handleErrors";
-import { saveImages } from "../middlewares/saveImages";
+import { saveImage, Ratio } from "../middlewares/saveImage";
 import { authenticate } from "../middlewares/authenticate";
 import { saveTemporaryImage } from "../middlewares/saveTemporaryImage";
 import { UserType } from "../entities/user";
@@ -14,6 +14,17 @@ type decoratorParams = {
 const defaultParams: decoratorParams = {
   path: "",
   userType: undefined,
+};
+
+type imageParams = {
+  name?: string;
+  tableName?: string;
+  ratio?: Ratio;
+};
+
+const defaultImageParams: imageParams = {
+  name: "image",
+  tableName: "other",
 };
 
 /**
@@ -89,10 +100,11 @@ export function del({ path, userType }: decoratorParams = defaultParams) {
  *
  * @param path: path for the put function
  * @param name: name of the file from the request
- * @param tableName
+ * @param tableName: table name for the image
  * @param userType: Authentication type for this request
+ * @param ratio: ratio of the image
  */
-export function oneImage({ path, name, tableName, userType }: { path: string; name?: string; tableName: string; userType?: UserType } = { path: "", tableName: "other" }) {
+export function oneImage(data: decoratorParams & imageParams = { ...defaultParams, ...defaultImageParams }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
@@ -100,7 +112,7 @@ export function oneImage({ path, name, tableName, userType }: { path: string; na
     }
     const storage = multer.memoryStorage();
     const upload = multer({ storage });
-    target.router.post(path, authenticate(userType), upload.single(name || "image"), handleErrors(saveImages(tableName)), handleErrors(method));
+    target.router.post(data.path || "", authenticate(data.userType), upload.single(data.name || "image"), handleErrors(saveImage(data.tableName || "", data.ratio)), handleErrors(method));
     return propertyDesciptor;
   };
 }
@@ -110,10 +122,11 @@ export function oneImage({ path, name, tableName, userType }: { path: string; na
  *
  * @param path: path for the put function
  * @param name: name of the file from the request
- * @param tableName
+ * @param tableName: table name for the image
+ * @param userType: Authentication type for this request
  * @param userType: Authentication type for this request
  */
-export function tempImage({ path, name, tableName, userType }: { path: string; name?: string; tableName: string; userType?: UserType } = { path: "", tableName: "other" }) {
+export function tempImage(data: decoratorParams & imageParams = { ...defaultParams, ...defaultImageParams }) {
   return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
     const method: RequestHandler = propertyDesciptor.value;
     if (target.router === undefined) {
@@ -121,7 +134,7 @@ export function tempImage({ path, name, tableName, userType }: { path: string; n
     }
     const storage = multer.memoryStorage();
     const upload = multer({ storage });
-    target.router.post(path, authenticate(userType), upload.single(name || "image"), handleErrors(saveTemporaryImage(tableName)), handleErrors(method));
+    target.router.post(data.path || "", authenticate(data.userType), upload.single(data.name || "image"), handleErrors(saveTemporaryImage(data.tableName || "", data.ratio)), handleErrors(method));
     return propertyDesciptor;
   };
 }

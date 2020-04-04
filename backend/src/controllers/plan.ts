@@ -1,10 +1,11 @@
-import { Controller, tempImage, get, post, put, del } from "./controller";
+import { Controller, tempImage, oneImage, get, post, put, del } from "./controller";
 import { NextFunction, Request, Response } from "express";
 import { getRepository } from "typeorm";
 import { Plan } from "../entities/plan";
 import { UserType } from "../entities/user";
 import { Question } from "../entities/question";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
+import { Image } from "../entities/image";
 import { deleteImage } from "../fileUpload";
 
 export class PlanController extends Controller {
@@ -12,13 +13,40 @@ export class PlanController extends Controller {
     super("plans");
   }
 
-  @tempImage({ path: "/image", tableName: "plan" })
+  @tempImage({ path: "/temp-image", tableName: "plan", ratio: { width: null, height: 500 } })
   public async uploadTempImage(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (req.image === undefined) {
       next();
       return;
     }
     res.sendJSON(req.image);
+  }
+
+  @oneImage({ path: "/:id/image", userType: UserType.CLASS, tableName: "plan", ratio: { width: null, height: 500 } })
+  public async uploadImage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.user === undefined || req.image === undefined) {
+      next();
+      return;
+    }
+
+    const id = parseInt(req.params.id || "", 10) || 0;
+    const plan: Plan | undefined = await getRepository(Plan).findOne(id, { relations: ["image"] });
+    if (plan === undefined) {
+      next();
+      return;
+    }
+
+    // remove previous image
+    if (plan.image) {
+      await deleteImage(plan.image);
+      await getRepository(Image).delete(plan.image.id);
+    }
+
+    plan.image = req.image;
+    await getRepository(Plan).save(plan);
+
+    plan.url = plan.image.path;
+    res.sendJSON(plan);
   }
 
   @get({ userType: UserType.CLASS })
@@ -86,7 +114,7 @@ export class PlanController extends Controller {
     const id = parseInt(req.params.id || "", 10) || 0;
     const plan: Plan | undefined = await getRepository(Plan).findOne(id, { relations: ["image"] });
     if (plan !== undefined && plan.image) {
-      await deleteImage(plan.image.uuid, plan.image.localPath);
+      await deleteImage(plan.image);
       await getRepository(Image).delete(plan.image.id);
     }
 

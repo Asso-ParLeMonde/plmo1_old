@@ -50,7 +50,6 @@ export async function editPlan(
   questionIndex,
   planIndex
 ) {
-  const questions = project.questions;
   const question = project.questions[questionIndex] || {};
   question.plans = question.plans || [];
   const plan = question.plans[planIndex] || null;
@@ -60,7 +59,7 @@ export async function editPlan(
   }
 
   if (isLoggedIn() && project.id !== null && question.id !== null) {
-    const response = await axiosLoggedRequest({
+    await axiosLoggedRequest({
       method: "PUT",
       url: `/plans/${plan.id}`,
       data: {
@@ -100,6 +99,82 @@ export async function deletePlan(
 
   question.plans.splice(planIndex, 1);
   questions[questionIndex] = question;
+  updateProject({
+    questions
+  });
+}
+
+async function uploadTemporaryImage(axiosLoggedRequest, imageBlob) {
+  const bodyFormData = new FormData();
+  bodyFormData.append("image", imageBlob);
+
+  try {
+    const response = await axiosLoggedRequest({
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      url: "/plans/temp-image",
+      data: bodyFormData
+    });
+    if (!response.error) {
+      return response.data.path || null;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
+async function uploadImage(axiosLoggedRequest, imageBlob, planId) {
+  const bodyFormData = new FormData();
+  bodyFormData.append("image", imageBlob);
+
+  try {
+    const response = await axiosLoggedRequest({
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      url: `/plans/${planId}/image`,
+      data: bodyFormData
+    });
+    if (!response.error) {
+      return response.data.url || null;
+    } else {
+      return null;
+    }
+  } catch (e) {
+    return null;
+  }
+}
+
+export async function uploadPlanImage(
+  axiosLoggedRequest,
+  isLoggedIn,
+  project,
+  updateProject,
+  questionIndex,
+  planIndex,
+  imageBlob
+) {
+  const questions = project.questions;
+  const question = project.questions[questionIndex] || {};
+  question.plans = question.plans || [];
+  const plan = question.plans[planIndex] || null;
+
+  if (plan === null) {
+    return;
+  }
+
+  if (isLoggedIn() && project.id !== null && question.id !== null && plan.id) {
+    plan.url = await uploadImage(axiosLoggedRequest, imageBlob, plan.id);
+  } else {
+    plan.url = await uploadTemporaryImage(
+      axiosLoggedRequest,
+      imageBlob,
+      plan.id
+    );
+  }
+
+  questions[questionIndex].plans[planIndex] = plan;
   updateProject({
     questions
   });

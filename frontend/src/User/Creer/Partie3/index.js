@@ -52,6 +52,7 @@ function Partie3(props) {
               render={() => (
                 <EditPlan
                   questions={questions}
+                  updateProject={updateProject}
                   updateQuestion={updateQuestion}
                   project={project}
                 />
@@ -62,7 +63,8 @@ function Partie3(props) {
               render={() => (
                 <DrawPlan
                   questions={questions}
-                  updateQuestion={updateQuestion}
+                  updateProject={updateProject}
+                  project={project}
                 />
               )}
             />

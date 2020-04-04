@@ -13,7 +13,7 @@ export class Plan {
   @Column()
   public index: number;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: "SET NULL" })
   @JoinColumn()
   public image: Image | null;
 
