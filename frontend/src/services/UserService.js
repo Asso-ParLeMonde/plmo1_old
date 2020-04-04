@@ -58,6 +58,7 @@ function UserServiceProviderWithRouter(props) {
       localStorage.setItem("user", JSON.stringify(response.data.user || null));
       localStorage.setItem("token", response.data.token || "");
     }
+    localStorage.removeItem("scenarios");
     return {
       success: true,
       errorCode: 0
