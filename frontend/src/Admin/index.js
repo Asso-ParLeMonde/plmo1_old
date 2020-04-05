@@ -15,6 +15,7 @@ import { ScenariosServiceProvider } from "../services/ScenariosService";
 import { UserServiceContext } from "../services/UserService";
 import Users from "./Users";
 import { UsersServiceProvider } from "../services/UsersService";
+import Statistics from "./Statistics";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -39,6 +40,10 @@ const tabs = [
   {
     label: "Users",
     path: "/admin/users"
+  },
+  {
+    label: "Statistiques",
+    path: "/admin/statistics"
   },
   {
     label: "Langues",
@@ -97,6 +102,7 @@ function Admin() {
                     <Route path="/admin/questions" component={Questions} />
                     <Route path="/admin/languages" component={Languages} />
                     <Route path="/admin/users" component={Users} />
+                    <Route path="/admin/statistics" component={Statistics} />
                     <Redirect exact from="/admin" to="admin/themes" />
                   </Switch>
                 </Container>
