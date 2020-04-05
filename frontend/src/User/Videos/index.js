@@ -34,6 +34,7 @@ function Videos(props) {
       return;
     }
     getProjects().catch();
+    // eslint-disable-next-line
   }, []);
 
   // get themes

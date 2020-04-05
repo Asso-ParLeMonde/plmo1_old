@@ -1,12 +1,12 @@
 import mysql from "mysql";
 import path from "path";
-import { Connection, createConnection, EntityManager } from "typeorm";
+import { Connection, createConnection, EntityManager, ConnectionOptions } from "typeorm";
 import { logger } from "./logger";
 import { sleep } from "./utils";
 
 const dbType: "mariadb" = "mariadb";
 
-const DBConfig = {
+const DBConfig: ConnectionOptions = {
   charset: "utf8mb4_unicode_ci",
   database: process.env.DB_DB || "PLMO",
   entities: [path.join(__dirname, "../entities/*.js")],
@@ -17,7 +17,7 @@ const DBConfig = {
         }
       : {},
   host: process.env.DB_HOST,
-  logging: true,
+  logging: ["error"],
   migrations: [path.join(__dirname, "../migration/**/*.js")],
   password: process.env.DB_PASS,
   port: parseInt(process.env.DB_PORT || "3306", 10),

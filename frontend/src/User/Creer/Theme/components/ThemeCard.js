@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 
@@ -6,8 +6,8 @@ import Paper from "@material-ui/core/Paper";
 import CardMedia from "@material-ui/core/CardMedia";
 
 import "./ThemeCard.css";
-import {Typography} from "@material-ui/core";
-import {ProjectServiceContext} from "../../../../services/ProjectService";
+import { Typography } from "@material-ui/core";
+import { ProjectServiceContext } from "../../../../services/ProjectService";
 
 const colors = [
   "rgb(96, 105, 243)",
@@ -38,32 +38,38 @@ function ThemeCard(props) {
     event.preventDefault();
     updateProject({
       themeId: props.themeId,
+      id: null,
+      title: "",
     });
     props.history.push(`/create/1-scenario-choice`);
   };
 
   return (
-    <a className="theme-card-button"
-       href={`/create/1-scenario-choice?themeId=${props.themeId}`}
-       onClick={handleSelect}
+    <a
+      className="theme-card-button"
+      href={`/create/1-scenario-choice?themeId=${props.themeId}`}
+      onClick={handleSelect}
     >
       <Paper className="theme-card-paper">
-        {
-          props.theme.image ? (
-            <CardMedia
-              ref={img}
-              component="img"
-              alt={`picture of ${props.theme.names.fr} theme`}
-              image="/classe_default.png"
-            />
-          ) : (
-            <div className="theme-card-default" style={{backgroundColor: colors[props.themeId % 6]}}/>
-          )
-        }
+        {props.theme.image ? (
+          <CardMedia
+            ref={img}
+            component="img"
+            alt={`picture of ${props.theme.names.fr} theme`}
+            image="/classe_default.png"
+          />
+        ) : (
+          <div
+            className="theme-card-default"
+            style={{ backgroundColor: colors[props.themeId % 6] }}
+          />
+        )}
       </Paper>
-      <Typography className="theme-card-title">{props.theme.names.fr}</Typography>
+      <Typography className="theme-card-title">
+        {props.theme.names.fr}
+      </Typography>
     </a>
-  )
+  );
 }
 
 ThemeCard.propTypes = {
@@ -71,7 +77,7 @@ ThemeCard.propTypes = {
   theme: PropTypes.object,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 ThemeCard.defaultProps = {
