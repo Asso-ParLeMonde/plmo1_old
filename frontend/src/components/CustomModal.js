@@ -1,36 +1,42 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@material-ui/core";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle
+} from "@material-ui/core";
 
 function CustomModal(props) {
   return (
     <Dialog
       open={props.open}
-      onClose={props.onClose}
+      onClose={props.noCloseOutsideModal ? () => {} : props.onClose}
       aria-labelledby={props.ariaLabelledBy}
       aria-describedby={props.ariaDescribedBy}
       fullWidth={props.fullWidth}
       maxWidth={props.maxWidth}
     >
       <DialogTitle id={props.ariaLabelledBy}>{props.title}</DialogTitle>
-      <DialogContent>
-        {props.children}
-      </DialogContent>
+      <DialogContent>{props.children}</DialogContent>
       <DialogActions>
         <Button onClick={props.onClose} color="secondary" variant="outlined">
           {props.cancelLabel}
         </Button>
-        {
-          props.onConfirm !== null && (
-            <Button onClick={props.onConfirm} color="secondary" variant="contained">
-              {props.confirmLabel}
-            </Button>
-          )
-        }
+        {props.onConfirm !== null && (
+          <Button
+            onClick={props.onConfirm}
+            color="secondary"
+            variant="contained"
+          >
+            {props.confirmLabel}
+          </Button>
+        )}
       </DialogActions>
     </Dialog>
-  )
+  );
 }
 
 CustomModal.propTypes = {
@@ -45,6 +51,7 @@ CustomModal.propTypes = {
   confirmLabel: PropTypes.string.isRequired,
   fullWidth: PropTypes.bool,
   maxWidth: PropTypes.string,
+  noCloseOutsideModal: PropTypes.bool
 };
 
 CustomModal.defaultProps = {
@@ -52,11 +59,12 @@ CustomModal.defaultProps = {
   onClose: () => {},
   onConfirm: null,
   title: "",
-  children: <div/>,
+  children: <div />,
   cancelLabel: "Annuler",
   confirmLabel: "Oui",
   fullWidth: false,
-  maxWidth: "sm",
+  noCloseOutsideModal: false,
+  maxWidth: "sm"
 };
 
 export default CustomModal;

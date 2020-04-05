@@ -101,26 +101,12 @@ export class ThemeRepository extends Repository<Theme> {
       const theme: Theme | undefined = await this.findOne(criteria as string | number | ObjectID);
       if (theme !== undefined) {
         await getRepository(Label).delete({ id: theme.labelID });
-        await this.deleteThemeImage(theme.id);
+        if (theme.image) {
+          await deleteImage(theme.image);
+          await getRepository(Image).delete(theme.image.id);
+        }
       }
     }
     return await getRepository(Theme).delete(criteria);
-  }
-
-  public async deleteThemeImage(themeID: number): Promise<void> {
-    const theme: Theme | undefined = await this.findOne(themeID, { relations: ["image"] });
-    if (theme === undefined) {
-      return;
-    }
-    if (theme.image === null || theme.image === undefined) {
-      return;
-    }
-    await deleteImage(theme.image.uuid, theme.image.localPath);
-    if (process.env.DB_TYPE && process.env.DB_TYPE === "postgres") {
-      await this.query(`UPDATE "theme" SET "imageId" = NULL WHERE "theme"."id" = $1`, [themeID]);
-    } else {
-      await this.query("UPDATE `PLMO`.`theme` SET imageId = NULL WHERE `theme`.`id` = ?", [themeID]);
-    }
-    await getRepository(Image).delete(theme.image.id);
   }
 }

@@ -14,14 +14,10 @@ export class LocalUtils extends Provider {
       return;
     }
 
-    try {
-      const dir: string = path.join(__dirname, "../..", "dist", filePath);
+    const dir: string = path.join(__dirname, "../..", "dist", filePath);
 
-      const deleteTasks: Array<Promise<void>> = [];
-      deleteTasks.push(fs.remove(`${dir}/${filename}.jpeg`));
-      deleteTasks.push(fs.remove(`${dir}/${filename}_md.jpeg`));
-      deleteTasks.push(fs.remove(`${dir}/${filename}_sm.jpeg`));
-      await Promise.all(deleteTasks);
+    try {
+      await fs.remove(`${dir}/${filename}.jpeg`);
     } catch (e) {
       logger.error(`File ${filename} not found !`);
     }

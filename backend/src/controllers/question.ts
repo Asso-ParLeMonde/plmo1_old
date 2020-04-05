@@ -4,6 +4,7 @@ import { Question } from "../entities/question";
 import { Scenario } from "../entities/scenario";
 import { Controller, del, get, post, put } from "./controller";
 import { UserType } from "../entities/user";
+import { Project } from "../entities/project";
 
 function getOptions(req: Request): { isDefault?: boolean; scenarioId?: number; languageCode?: string } {
   const isDefault: string | undefined = req.query.isDefault || undefined;
@@ -74,6 +75,12 @@ export class QuestionController extends Controller {
     question.scenarioId = scenario.id;
     question.isDefault = req.body.isDefault !== undefined ? req.body.isDefault : false;
     question.question = q;
+    question.index = req.body.index || 0;
+
+    if (req.body.projectId !== undefined) {
+      question.project = new Project();
+      question.project.id = req.body.projectId;
+    }
 
     await getRepository(Question).save(question);
     res.sendJSON(question);
@@ -95,6 +102,9 @@ export class QuestionController extends Controller {
     }
     if (req.body.question !== undefined && req.body.question.length > 0) {
       question.question = (req.body.question || "").slice(0, 280);
+    }
+    if (req.body.index !== undefined) {
+      question.index = req.body.index;
     }
     await getRepository(Question).save(question);
     res.sendJSON(question);

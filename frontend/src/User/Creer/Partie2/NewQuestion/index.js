@@ -9,8 +9,11 @@ import Button from "@material-ui/core/Button";
 
 import Inverted from "../../../../components/Inverted";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { UserServiceContext } from "../../../../services/UserService";
+import { addQuestion } from "../../components/questionRequest";
 
 function NewQuestion(props) {
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const { project, updateProject } = useContext(ProjectServiceContext);
   const [hasError, setHasError] = useState(false);
   const [newQuestion, setNewQuestion] = useState("");
@@ -25,7 +28,7 @@ function NewQuestion(props) {
     props.history.push(`/create/2-questions-choice`);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     if (newQuestion.length === 0) {
       setHasError(true);
@@ -34,19 +37,13 @@ function NewQuestion(props) {
       }, 1000);
       return;
     }
-    const maxId = Math.max(0, ...project.questions.map(q => q.id));
-    updateProject({
-      questions: [
-        ...project.questions,
-        {
-          id: maxId + 1,
-          isDefault: false,
-          languageCode: project.languageCode,
-          question: newQuestion,
-          scenarioId: project.scenarioId
-        }
-      ]
-    });
+    await addQuestion(
+      axiosLoggedRequest,
+      isLoggedIn,
+      project,
+      updateProject,
+      newQuestion
+    );
     props.history.push(`/create/2-questions-choice`);
   };
 

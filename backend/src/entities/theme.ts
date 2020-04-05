@@ -20,7 +20,7 @@ export class Theme {
   @Column({ default: false })
   public isPublished: boolean;
 
-  @OneToOne(() => Image)
+  @OneToOne(() => Image, { onDelete: "SET NULL" })
   @JoinColumn()
   public image: Image;
 

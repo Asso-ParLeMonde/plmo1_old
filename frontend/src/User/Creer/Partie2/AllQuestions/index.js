@@ -7,12 +7,55 @@ import { Typography, Button, Hidden } from "@material-ui/core";
 import Inverted from "../../../../components/Inverted";
 import QuestionsList from "../../../components/QuestionsList";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { UserServiceContext } from "../../../../services/UserService";
+import { editQuestion, deleteQuestion } from "../../components/questionRequest";
+import { addPlan } from "../../components/planRequest";
 
 function AllQuestions(props) {
-  const { project, updateProject } = useContext(ProjectServiceContext);
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
+  const { project, updateProject, askSaveProject } = useContext(
+    ProjectServiceContext
+  );
+
+  const saveQuestionsOrder = questions => {
+    if (!isLoggedIn() || project.id === null) {
+      return;
+    }
+    const requests = [];
+    project.questions = questions;
+    for (const [index, q] of questions.entries()) {
+      requests.push(
+        editQuestion(
+          axiosLoggedRequest,
+          isLoggedIn,
+          project,
+          () => {},
+          q.question,
+          index
+        )
+      );
+    }
+    Promise.all(requests).catch();
+  };
 
   const setQuestions = questions => {
     updateProject({ questions });
+    if (
+      project.questions.map(q => q.id).join(",") !==
+      questions.map(q => q.id).join(",")
+    ) {
+      saveQuestionsOrder(questions);
+    }
+  };
+
+  const delQuestion = async index => {
+    await deleteQuestion(
+      axiosLoggedRequest,
+      isLoggedIn,
+      project,
+      index,
+      setQuestions
+    );
   };
 
   const handleBack = event => {
@@ -20,9 +63,28 @@ function AllQuestions(props) {
     props.history.push(`/create/2-questions-choice/new`);
   };
 
+  const goNext = async p => {
+    const createOnePlanPromises = [];
+    for (const [index, question] of p.questions.entries()) {
+      if ((question.plans || []).length === 0) {
+        createOnePlanPromises.push(
+          addPlan(axiosLoggedRequest, isLoggedIn, p, updateProject, index)
+        );
+      }
+    }
+    await Promise.all(createOnePlanPromises);
+    props.history.push(`/create/3-storyboard-and-filming-schedule`);
+  };
+
   const handleNext = event => {
     event.preventDefault();
-    props.history.push(`/create/3-storyboard-and-filming-schedule`);
+    if (project.id === null) {
+      askSaveProject(p => {
+        goNext(p).catch();
+      });
+    } else {
+      goNext(project).catch();
+    }
   };
 
   return (
@@ -53,6 +115,7 @@ function AllQuestions(props) {
           questions={project.questions}
           setQuestions={setQuestions}
           history={props.history}
+          deleteQuestion={delQuestion}
         />
         <Hidden smDown>
           <div style={{ width: "100%", textAlign: "right", marginTop: "2rem" }}>

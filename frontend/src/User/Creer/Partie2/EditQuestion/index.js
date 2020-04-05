@@ -10,6 +10,8 @@ import Button from "@material-ui/core/Button";
 
 import Inverted from "../../../../components/Inverted";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { UserServiceContext } from "../../../../services/UserService";
+import { editQuestion } from "../../components/questionRequest";
 
 function EditQuestion(props) {
   const questionIndex = parseInt(
@@ -17,6 +19,7 @@ function EditQuestion(props) {
       "-1",
     10
   );
+  const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const { project, updateProject } = useContext(ProjectServiceContext);
   const [hasError, setHasError] = useState(false);
   const [question, setQuestion] = useState(
@@ -39,7 +42,7 @@ function EditQuestion(props) {
     props.history.push(`/create/2-questions-choice`);
   };
 
-  const handleSubmit = event => {
+  const handleSubmit = async event => {
     event.preventDefault();
     if (question.length === 0) {
       setHasError(true);
@@ -48,9 +51,14 @@ function EditQuestion(props) {
       }, 1000);
       return;
     }
-    const questions = project.questions;
-    questions[questionIndex].question = question;
-    updateProject({ questions });
+    await editQuestion(
+      axiosLoggedRequest,
+      isLoggedIn,
+      project,
+      updateProject,
+      question,
+      questionIndex
+    );
     props.history.push(`/create/2-questions-choice`);
   };
 

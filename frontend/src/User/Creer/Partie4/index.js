@@ -41,7 +41,7 @@ function Partie4(props) {
     setIsLoading(true);
     const response = await axiosLoggedRequest({
       method: "POST",
-      url: "/project/pdf",
+      url: "/projects/pdf",
       data: {
         themeId: project.themeId,
         scenarioId: project.scenarioId,
