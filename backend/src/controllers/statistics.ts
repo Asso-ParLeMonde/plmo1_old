@@ -12,18 +12,18 @@ export class StatisticsController extends Controller {
   }
 
   @get({ path: "/project" })
-  public getProjectStatistiques(_req: Request, res: Response) {
+  public getProjectStatistiques(_req: Request, res: Response): void {
     res.sendJSON({ nbProjects: 0 });
   }
 
   @get({ path: "/PDF" })
-  public async getPDFStatistiques(_req: Request, res: Response) {
+  public async getPDFStatistiques(_req: Request, res: Response): Promise<void> {
     const pdfEntries = await getRepository(PDFDownload).find();
     res.sendJSON(pdfEntries);
   }
 
   @get({ path: "/classroom" })
-  public async getClassroomStatistiques(_req: Request, res: Response) {
+  public async getClassroomStatistiques(_req: Request, res: Response): Promise<void> {
     const classNb = await getRepository(User).count({ where: [{ type: UserType.CLASS }, { type: UserType.ADMIN }] });
     res.sendJSON({ classNb });
   }
