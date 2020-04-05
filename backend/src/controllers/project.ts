@@ -177,6 +177,9 @@ export class ProjectController extends Controller {
 
     if (req.body.title !== undefined) {
       project.title = req.body.title;
+      if (project.title.length === 0) {
+        throw new AppError("Title should not be empty", ErrorCode.INVALID_DATA);
+      }
       await getRepository(Project).save(project);
     }
     res.sendJSON(project);

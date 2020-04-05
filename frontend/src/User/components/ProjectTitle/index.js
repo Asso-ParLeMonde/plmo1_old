@@ -21,13 +21,24 @@ function ProjectTitle(props) {
 
   return (
     <div className="text-center">
-      <Typography color="primary" variant="h2" style={{ display: "inline" }}>
+      <Typography
+        color="primary"
+        variant="h2"
+        style={{
+          display: "inline",
+          fontSize: props.smaller ? "1.2rem" : "1.5rem",
+        }}
+      >
         Projet :
       </Typography>
       <Typography
         color="inherit"
         variant="h2"
-        style={{ display: "inline", marginLeft: "0.5rem" }}
+        style={{
+          display: "inline",
+          marginLeft: "0.5rem",
+          fontSize: props.smaller ? "1.2rem" : "1.5rem",
+        }}
       >
         {project.title}
       </Typography>
@@ -46,10 +57,12 @@ function ProjectTitle(props) {
 
 ProjectTitle.propTypes = {
   onClick: PropTypes.func,
+  smaller: PropTypes.bool,
 };
 
 ProjectTitle.defaultProps = {
   onClick: () => {},
+  smaller: false,
 };
 
 export default ProjectTitle;

@@ -6,8 +6,19 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle
+  DialogTitle,
+  withStyles,
 } from "@material-ui/core";
+
+const RedButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.error.contrastText,
+    background: theme.palette.error.light,
+    "&:hover": {
+      backgroundColor: theme.palette.error.dark,
+    },
+  },
+}))(Button);
 
 function CustomModal(props) {
   return (
@@ -25,7 +36,12 @@ function CustomModal(props) {
         <Button onClick={props.onClose} color="secondary" variant="outlined">
           {props.cancelLabel}
         </Button>
-        {props.onConfirm !== null && (
+        {props.onConfirm !== null && props.error && (
+          <RedButton onClick={props.onConfirm} variant="contained">
+            {props.confirmLabel}
+          </RedButton>
+        )}
+        {props.onConfirm !== null && !props.error && (
           <Button
             onClick={props.onConfirm}
             color="secondary"
@@ -51,7 +67,8 @@ CustomModal.propTypes = {
   confirmLabel: PropTypes.string.isRequired,
   fullWidth: PropTypes.bool,
   maxWidth: PropTypes.string,
-  noCloseOutsideModal: PropTypes.bool
+  noCloseOutsideModal: PropTypes.bool,
+  error: PropTypes.bool,
 };
 
 CustomModal.defaultProps = {
@@ -64,7 +81,8 @@ CustomModal.defaultProps = {
   confirmLabel: "Oui",
   fullWidth: false,
   noCloseOutsideModal: false,
-  maxWidth: "sm"
+  maxWidth: "sm",
+  error: false,
 };
 
 export default CustomModal;

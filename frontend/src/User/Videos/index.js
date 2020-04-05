@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 import Inverted from "../../components/Inverted";
@@ -8,7 +8,6 @@ import { UserServiceContext } from "../../services/UserService";
 import { ThemesServiceContext } from "../../services/ThemesService";
 import WorkInProgressCard from "./components/WorkInProgressCard";
 import "./videos.css";
-import { Redirect } from "react-router";
 
 function Videos(props) {
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);

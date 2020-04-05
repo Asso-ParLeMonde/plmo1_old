@@ -98,10 +98,16 @@ function Steps(props) {
     }
   };
 
+  const handleProjectTitleClick = () => {
+    props.history.push(`/create/edit-project/${project.id}`);
+  };
+
   return (
     <div>
       <Hidden smDown>
-        {props.activeStep > 0 && <ProjectTitle />}
+        {props.activeStep > 0 && (
+          <ProjectTitle onClick={handleProjectTitleClick} />
+        )}
         <Stepper activeStep={props.activeStep} alternativeLabel>
           {steps.map((step, index) => (
             <Step
@@ -135,7 +141,9 @@ function Steps(props) {
             </Button>
           }
         />
-        {props.activeStep > 0 && <ProjectTitle />}
+        {props.activeStep > 0 && (
+          <ProjectTitle onClick={handleProjectTitleClick} smaller />
+        )}
       </Hidden>
     </div>
   );
