@@ -24,6 +24,9 @@ function MoreInfo(props) {
         case "PDF":
           url = "/statistics/PDFs/repartition";
           break;
+        case "PROJECTS":
+          url = "/statistics/projects/repartition";
+          break;
       }
 
       const fetchDataRequest = await axiosLoggedRequest({
@@ -67,6 +70,8 @@ function MoreInfo(props) {
       case "CLASS":
         return <Bar data={chartData} options={options} />;
       case "PDF":
+        return <Line data={chartData} options={options} />;
+      case "PROJECTS":
         return <Line data={chartData} options={options} />;
     }
   };
