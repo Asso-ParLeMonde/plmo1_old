@@ -1,0 +1,25 @@
+.wip-container {
+  width: 289px;
+  height: 170px;
+  padding: 22px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: none;
+  border-radius: 8px;
+  position: relative;
+  background-image: url("../../../images/video_strip.svg");
+}
+.wip-container:hover,
+button:focus > .wip-container {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.18),
+    0 5px 6px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.theme-name {
+  position: absolute;
+  bottom: 24px;
+  left: 6px;
+  font-size: 0.8rem;
+}

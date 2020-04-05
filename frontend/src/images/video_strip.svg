@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="289px" height="170px" viewBox="0 0 289 170" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>Video strip background</title>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-5">
+            <rect id="Rectangle-3" fill="#79C3A5" x="0" y="0" width="289" height="170" rx="8"></rect>
+            <rect id="Rectangle-3" fill="#FFFFFF" x="4" y="22" width="282" height="126" rx="2"></rect>
+            <g id="Group-3" transform="translate(4.000000, 4.000000)" fill="#FFFFFF">
+                <rect id="Rectangle-3" x="0" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="16" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="32" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="48" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="64" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="80" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="96" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="112" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="128" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="144" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="160" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="176" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="192" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="208" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="224" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="240" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="256" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="272" y="0" width="10" height="14" rx="2"></rect>
+            </g>
+            <g id="Group-3" transform="translate(4.000000, 152.000000)" fill="#FFFFFF">
+                <rect id="Rectangle-3" x="0" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="16" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="32" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="48" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="64" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="80" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="96" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="112" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="128" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="144" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="160" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="176" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="192" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="208" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="224" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="240" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="256" y="0" width="10" height="14" rx="2"></rect>
+                <rect id="Rectangle-3" x="272" y="0" width="10" height="14" rx="2"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

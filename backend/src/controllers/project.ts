@@ -83,7 +83,7 @@ export class ProjectController extends Controller {
       return;
     }
 
-    const projects = await getRepository(Project).find({ where: { user: { id: req.user.id } } });
+    const projects = await getRepository(Project).find({ where: { user: { id: req.user.id } }, relations: ["theme"] });
     res.sendJSON(projects);
   }
 
