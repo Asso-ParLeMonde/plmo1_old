@@ -191,6 +191,10 @@ main
   .text-center
     h1(style='margin: 0.5rem 0')
       | Plan de tournage
+  if projectId !== null
+    .text-center
+      h2(style='margin: 0 0 0.5rem 0')
+        | #{projectTitle}
   div
     h2
       | Description g&eacute;n&eacute;rale :
@@ -221,11 +225,12 @@ main
                   .plan-number #{count}
               .plan-description
                 | #{plan.description}
-  div
-    h2
-      | À votre caméra !
-    .content
-      p
-        | Flashez le code QR suivant pour accéder directement à l'application et démarrer le tournage.
-      div.text-center(style="margin-top: 1rem;")
-        img(alt="qrcode" style="width:4cm;height:4cm" src=QRCode)
+  if projectId !== null
+    div
+      h2
+        | À votre caméra !
+      .content
+        p
+          | Flashez le code QR suivant pour accéder directement à l'application et démarrer le tournage.
+        div.text-center(style="margin-top: 1rem;")
+          img(alt="qrcode" style="width:4cm;height:4cm" src=QRCode)

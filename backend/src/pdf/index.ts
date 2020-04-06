@@ -20,6 +20,8 @@ interface PDFMapping {
     scenarioDescription: string;
     questions: Array<Question>;
     pseudo?: string;
+    projectId: number | null;
+    projectTitle: string | null;
   };
 }
 type PDFOptions<P extends PDF> = PDFMapping[P];
@@ -31,7 +33,7 @@ type pdfData = {
 };
 async function getTemplateData<P extends PDF>(pdf: P, options: PDFOptions<P>): Promise<pdfData | undefined> {
   if (pdf === PDF.PLAN_DE_TOURNAGE) {
-    const QRCode = await getQRCodeURL("https://par-le-monde-1.herokuapp.com/create/4-to-your-camera"); // TODO, put projectID in url
+    const QRCode = options.projectId === null ? "" : await getQRCodeURL(`https://par-le-monde-1.herokuapp.com/create/3-storyboard-and-filming-schedule?project=${options.projectId}`);
     return {
       pugFile: "plan_de_tournage.pug",
       filename: "Plan_de_tournage",

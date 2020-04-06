@@ -43,6 +43,7 @@ function Partie4(props) {
       method: "POST",
       url: "/projects/pdf",
       data: {
+        projectId: project.id,
         themeId: project.themeId,
         scenarioId: project.scenarioId,
         scenarioName: project.scenarioName,
@@ -60,6 +61,11 @@ function Partie4(props) {
     event.preventDefault();
     props.history.push("/create");
   };
+
+  const url =
+    project.id === null
+      ? null
+      : `https://par-le-monde-1.herokuapp.com/create/3-storyboard-and-filming-schedule?project=${project.id}`;
 
   return (
     <div>
@@ -119,16 +125,17 @@ function Partie4(props) {
               </Button>
             </div>
 
-            <Typography variant="h2" style={{ margin: "1rem 0" }}>
-              Flashez ce code QR pour accéder directement à l&apos;application
-              et commencer à filmer !
-            </Typography>
-            <div className="text-center">
-              <QRCode
-                size={192}
-                value="https://par-le-monde-1.herokuapp.com/create/4-to-your-camera"
-              />
-            </div>
+            {url !== null && (
+              <>
+                <Typography variant="h2" style={{ margin: "1rem 0" }}>
+                  Flashez ce code QR pour accéder directement à
+                  l&apos;application et commencer à filmer !
+                </Typography>
+                <div className="text-center">
+                  <QRCode size={192} value={url} />
+                </div>
+              </>
+            )}
           </div>
         </React.Fragment>
       )}

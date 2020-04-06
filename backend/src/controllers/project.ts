@@ -42,6 +42,7 @@ export class ProjectController extends Controller {
   public async getProjectPDF(req: Request, res: Response): Promise<void> {
     const languageCode: string = req.body.languageCode || "fr";
     const theme: Theme | undefined = await getCustomRepository(ThemeRepository).findOneWithLabels(req.body.themeId || 0);
+    const project: Project | undefined = await getRepository(Project).findOne(req.body.projectId || 0);
     let scenario: Scenario | undefined = await getRepository(Scenario).findOne({
       where: {
         id: req.body.scenarioId || 0,
@@ -69,6 +70,8 @@ export class ProjectController extends Controller {
       scenarioDescription: scenario.description,
       pseudo: req.user !== undefined ? req.user.pseudo : undefined,
       questions,
+      projectId: project !== undefined ? project.id : null,
+      projectTitle: project !== undefined ? project.title : null,
     });
     //For PDF Download statistics
     const pdfEntry = new PDFDownload();
