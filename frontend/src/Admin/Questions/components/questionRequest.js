@@ -1,78 +1,82 @@
-async function postQuestion(axiosLoggedRequest, newQuestion, setRes) {
-  const request = await axiosLoggedRequest({
-    method: "POST",
-    url: "/questions",
-    data: newQuestion
-  });
+import { updateNotificationResponse } from "../../components/updateNotificationResponse";
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la creation de la question"
-    });
+const path = "/admin/questions";
 
-    return true;
-  }
-
-  return false;
-}
-
-async function putQuestion(
+async function postAdminQuestion(
   axiosLoggedRequest,
-  inheritedQuestion,
-  newQuestion,
-  setRes
+  question,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateQuestions
 ) {
   const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `/questions/${inheritedQuestion.id}`,
-    data: {
-      scenarioId: newQuestion.scenarioId,
-      question: newQuestion.question,
-      isDefault: true
-    }
+    url: "/questions/",
+    data: question,
   });
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la modification de la question"
-    });
-
-    return true;
-  }
-
-  return false;
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateQuestions,
+    history,
+    path
+  );
 }
 
-async function updateQuestion(
+async function putAdminQuestion(
   axiosLoggedRequest,
-  requestType,
-  inheritedQuestion,
-  newQuestion,
-  setRes
+  question,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateQuestions
 ) {
-  let error = false;
+  const request = await axiosLoggedRequest({
+    method: "PUT",
+    url: `/questions/${question.id}`,
+    data: question,
+  });
 
-  switch (requestType) {
-    default:
-      break;
-    case "POST":
-      error = await postQuestion(axiosLoggedRequest, newQuestion, setRes);
-      break;
-    case "PUT":
-      error = await putQuestion(
-        axiosLoggedRequest,
-        inheritedQuestion,
-        newQuestion,
-        setRes
-      );
-      break;
-  }
-
-  return error;
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateQuestions,
+    history,
+    path
+  );
 }
 
-export { updateQuestion };
+async function deleteAdminQuestion(
+  axiosLoggedRequest,
+  question,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateQuestions
+) {
+  const request = await axiosLoggedRequest({
+    method: "DELETE",
+    url: `/questions/${question.id}`,
+  });
+
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateQuestions,
+    history,
+    path
+  );
+}
+
+export { postAdminQuestion, putAdminQuestion, deleteAdminQuestion };

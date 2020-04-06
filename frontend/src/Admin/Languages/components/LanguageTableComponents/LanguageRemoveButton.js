@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
 import { UserServiceContext } from "../../../../services/UserService";
 import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
+import { deleteAdminLanguage } from "../languageRequest";
 
 function LanguageRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -13,33 +14,20 @@ function LanguageRemoveButton(props) {
   const [res, setRes] = useState({
     complete: false,
     error: false,
-    message: ""
+    message: "",
   });
 
   async function handleRemove(event) {
     event.preventDefault();
-    const request = await axiosLoggedRequest({
-      method: "DELETE",
-      url: `/languages/${props.language.id}`
-    });
-
-    if (request.error === true && request.complete === true) {
-      setRes({
-        error: true,
-        complete: true,
-        message: "Erreur lors de la suppression de la langue"
-      });
-    }
-
-    if (request.error === false && request.complete === true) {
-      setRes({
-        error: false,
-        complete: true,
-        message: "Succès lors de la suppression de la langue"
-      });
-    }
-
-    updateLanguages();
+    await deleteAdminLanguage(
+      axiosLoggedRequest,
+      props.language,
+      setRes,
+      "Succès lors de la suppression de la langue",
+      "Erreur lors de la suppression de la langue",
+      props.history,
+      updateLanguages
+    );
   }
 
   return (
@@ -58,7 +46,7 @@ LanguageRemoveButton.propTypes = {
   language: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(LanguageRemoveButton);

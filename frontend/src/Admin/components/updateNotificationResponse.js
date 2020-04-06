@@ -1,22 +1,17 @@
-async function handleRequest(
-  axiosLoggedRequest,
-  user,
+function updateNotificationResponse(
+  request,
   setRes,
   successMessage,
   errorMessage,
+  updateElements,
   history,
-  updateUsers
+  path
 ) {
-  const request = await axiosLoggedRequest({
-    method: "DELETE",
-    url: `/users/${user.id}`
-  });
-
   if (request.error === true && request.complete === true) {
     setRes({
       error: true,
       complete: true,
-      message: errorMessage
+      message: errorMessage,
     });
   }
 
@@ -24,12 +19,12 @@ async function handleRequest(
     setRes({
       error: false,
       complete: true,
-      message: successMessage
+      message: successMessage,
     });
   }
 
-  updateUsers().catch();
-  history.push("/admin/users");
+  updateElements().catch();
+  history.push(path);
 }
 
-export { handleRequest };
+export { updateNotificationResponse };

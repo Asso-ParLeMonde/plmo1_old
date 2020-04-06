@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
-import { updateQuestion } from "../questionRequest";
+import { postAdminQuestion, putAdminQuestion } from "../questionRequest";
 import { QuestionsContext } from "../..";
 import { UserServiceContext } from "../../../../services/UserService";
 
@@ -11,7 +11,7 @@ const DEFAULT_QUESTION = {
   question: null,
   isDefault: true,
   scenarioId: 0,
-  languageCode: "fr"
+  languageCode: "fr",
 };
 
 function QuestionModal(props) {
@@ -23,13 +23,13 @@ function QuestionModal(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   useEffect(() => {
     setNewQuestion({
       ...newQuestion,
-      scenarioId: props.scenarioId || props.question.scenarioId
+      scenarioId: props.scenarioId || props.question.scenarioId,
     });
     // eslint-disable-next-line
   }, [props.scenarioId, props.question]);
@@ -41,13 +41,13 @@ function QuestionModal(props) {
       case "QUESTION":
         setNewQuestion({
           ...newQuestion,
-          question: event.target.value.slice(0, 280)
+          question: event.target.value.slice(0, 280),
         });
         break;
       case "LANGUAGECODE":
         setNewQuestion({
           ...newQuestion,
-          languageCode: event.code
+          languageCode: event.code,
         });
         break;
     }
@@ -58,20 +58,24 @@ function QuestionModal(props) {
 
     let error = false;
     if (props.question) {
-      error = await updateQuestion(
+      await putAdminQuestion(
         axiosLoggedRequest,
-        "PUT",
-        props.question,
         newQuestion,
-        setRes
+        setRes,
+        "Succès lors de la modification de la question",
+        "Erreur lors de la modification de la question",
+        props.history,
+        updateQuestions
       );
     } else {
-      error = await updateQuestion(
+      await postAdminQuestion(
         axiosLoggedRequest,
-        "POST",
-        props.question,
         newQuestion,
-        setRes
+        setRes,
+        "Succès lors de la création de la question",
+        "Erreur lors de la création de la question",
+        props.history,
+        updateQuestions
       );
     }
 
@@ -79,7 +83,7 @@ function QuestionModal(props) {
       setRes({
         error: false,
         complete: true,
-        message: "Succès lors de la création de la question"
+        message: "Succès lors de la création de la question",
       });
     }
 
@@ -115,7 +119,7 @@ QuestionModal.propTypes = {
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
   history: PropTypes.object.isRequired,
-  scenarioId: PropTypes.number
+  scenarioId: PropTypes.number,
 };
 
 export default QuestionModal;

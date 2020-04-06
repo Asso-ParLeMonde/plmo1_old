@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { UserServiceContext } from "../../../../services/UserService";
 import { UsersServiceContext } from "../../../../services/UsersService";
 import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
-import { deleteUser } from "../userRequest";
+import { deleteAdminUser } from "../userRequest";
 
 function UserRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -14,16 +14,16 @@ function UserRemoveButton(props) {
   const [res, setRes] = useState({
     complete: false,
     error: false,
-    message: ""
+    message: "",
   });
 
   async function handleRemove(event) {
     event.preventDefault();
-    await deleteUser(
+    await deleteAdminUser(
       axiosLoggedRequest,
       props.user,
       setRes,
-      "Success lors de la suppression de l'utilisateur",
+      "Succès lors de la suppression de l'utilisateur",
       "Erreur lors de la suppression de l'utilisateur",
       props.history,
       updateUsers
@@ -46,7 +46,7 @@ UserRemoveButton.propTypes = {
   user: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(UserRemoveButton);

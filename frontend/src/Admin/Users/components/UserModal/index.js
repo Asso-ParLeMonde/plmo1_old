@@ -2,9 +2,9 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
 import { UsersServiceContext } from "../../../../services/UsersService";
-import { updateUser } from "../userRequest";
+import { putAdminUser, postAdminUser } from "../userRequest";
 import CreateAccountForm, {
-  DEFAULT_USER
+  DEFAULT_USER,
 } from "../../../../components/CreateAccountForm";
 import {
   Dialog,
@@ -12,7 +12,7 @@ import {
   DialogContent,
   makeStyles,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
 import Notifications from "../../../../components/Notifications";
 import { UserServiceContext } from "../../../../services/UserService";
@@ -23,8 +23,8 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: "8px 24px"
-  }
+    padding: "8px 24px",
+  },
 }));
 
 function UserModal(props) {
@@ -36,38 +36,32 @@ function UserModal(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   async function handleConfirmation() {
-    let error = false;
     if (props.user) {
-      error = await updateUser(
+      await putAdminUser(
         axiosLoggedRequest,
-        "PUT",
-        props.user,
         newUser,
-        setRes
+        setRes,
+        "Succès lors dans la modification de l'utilisateur",
+        "Erreur lors de la modification de la utilisateur",
+        props.history,
+        updateUsers
       );
     } else {
-      error = await updateUser(
+      await postAdminUser(
         axiosLoggedRequest,
-        "POST",
-        props.user,
         newUser,
-        setRes
+        setRes,
+        "Succès lors dans la creation de l'utilisateur",
+        "Erreur lors de la creation de la utilisateur",
+        props.history,
+        updateUsers
       );
     }
 
-    if (error === false) {
-      setRes({
-        error: false,
-        complete: true,
-        message: "Success lors dans la creation de l'utilisateur"
-      });
-    }
-
-    updateUsers().catch();
     handleCloseModal();
   }
 
@@ -111,7 +105,7 @@ UserModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default UserModal;

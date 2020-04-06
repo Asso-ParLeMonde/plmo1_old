@@ -1,10 +1,10 @@
 import { updateNotificationResponse } from "../../components/updateNotificationResponse";
 
-const path = "/admin/users";
+const path = "/admin/languages";
 
-async function postAdminUser(
+async function postAdminLanguage(
   axiosLoggedRequest,
-  user,
+  language,
   setRes,
   successMessage,
   errorMessage,
@@ -13,8 +13,8 @@ async function postAdminUser(
 ) {
   const request = await axiosLoggedRequest({
     method: "PUT",
-    url: "/users/",
-    data: user,
+    url: "/languages/",
+    data: language,
   });
 
   updateNotificationResponse(
@@ -28,44 +28,18 @@ async function postAdminUser(
   );
 }
 
-async function putAdminUser(
+async function deleteAdminLanguage(
   axiosLoggedRequest,
-  user,
+  language,
   setRes,
   successMessage,
   errorMessage,
   history,
-  updateUsers
-) {
-  const request = await axiosLoggedRequest({
-    method: "PUT",
-    url: `/users/${user.id}`,
-    data: user,
-  });
-
-  updateNotificationResponse(
-    request,
-    setRes,
-    successMessage,
-    errorMessage,
-    updateUsers,
-    history,
-    path
-  );
-}
-
-async function deleteAdminUser(
-  axiosLoggedRequest,
-  user,
-  setRes,
-  successMessage,
-  errorMessage,
-  history,
-  updateUsers
+  updateLanguages
 ) {
   const request = await axiosLoggedRequest({
     method: "DELETE",
-    url: `/users/${user.id}`,
+    url: `/languages/${language.id}`,
   });
 
   updateNotificationResponse(
@@ -73,10 +47,10 @@ async function deleteAdminUser(
     setRes,
     successMessage,
     errorMessage,
-    updateUsers,
+    updateLanguages,
     history,
     path
   );
 }
 
-export { postAdminUser, putAdminUser, deleteAdminUser };
+export { postAdminLanguage, deleteAdminLanguage };

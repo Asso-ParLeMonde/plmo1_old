@@ -4,15 +4,15 @@ import PropTypes from "prop-types";
 import { ThemesServiceContext } from "../../../../services/ThemesService";
 import { UserServiceContext } from "../../../../services/UserService";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
-import { updateTheme } from "../themeRequest";
+import { postAdminTheme, putAdminTheme } from "../themeRequest";
 
 const DEFAULT_THEME = {
   id: undefined,
   names: {
-    fr: ""
+    fr: "",
   },
   image: undefined,
-  published: undefined
+  published: undefined,
 };
 
 function ThemeModal(props) {
@@ -23,7 +23,7 @@ function ThemeModal(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   function handleChange(enumCase, event) {
@@ -35,14 +35,14 @@ function ThemeModal(props) {
           ...newTheme,
           names: {
             ...newTheme.names,
-            [event.target.id]: event.target.value
-          }
+            [event.target.id]: event.target.value,
+          },
         });
         break;
       case "IMAGE":
         setNewTheme({
           ...newTheme,
-          image: event.target.files[0]
+          image: event.target.files[0],
         });
         break;
     }
@@ -51,34 +51,27 @@ function ThemeModal(props) {
   async function handleConfirmation(event) {
     event.preventDefault();
 
-    let error = false;
     if (props.theme) {
-      error = await updateTheme(
+      await putAdminTheme(
         axiosLoggedRequest,
-        "PUT",
-        props.theme,
         newTheme,
-        setRes
+        setRes,
+        "Succès lors dans la modification du thème",
+        "Erreur lors dans la modification du thème",
+        props.history,
+        updateThemes
       );
     } else {
-      error = await updateTheme(
+      await postAdminTheme(
         axiosLoggedRequest,
-        "POST",
-        props.theme,
         newTheme,
-        setRes
+        setRes,
+        "Succès lors dans la creation du thème",
+        "Erreur lors dans la creation du thème",
+        props.history,
+        updateThemes
       );
     }
-
-    if (error === false) {
-      setRes({
-        error: false,
-        complete: true,
-        message: "Succès lors dans la creation du theme"
-      });
-    }
-
-    updateThemes().catch();
     handleCloseModal();
   }
 
@@ -107,7 +100,7 @@ ThemeModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default ThemeModal;

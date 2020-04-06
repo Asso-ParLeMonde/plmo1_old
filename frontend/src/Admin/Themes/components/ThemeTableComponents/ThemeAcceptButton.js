@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
 import { UserServiceContext } from "../../../../services/UserService";
-import { handleRequest } from "./ThemeButtonRequests";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
+import { putPublishedAdminTheme } from "../themeRequest";
 
 function ThemeAcceptButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -14,14 +14,13 @@ function ThemeAcceptButton(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   async function handleAcceptation(event) {
     event.preventDefault();
-    await handleRequest(
+    await putPublishedAdminTheme(
       axiosLoggedRequest,
-      "PUT",
       props.theme,
       setRes,
       "Succès lors de la modification du theme",
@@ -46,7 +45,7 @@ ThemeAcceptButton.propTypes = {
   theme: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ThemeAcceptButton);
