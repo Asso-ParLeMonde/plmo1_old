@@ -23,3 +23,21 @@ export async function deleteImage(image: Image): Promise<void> {
     return await providers[provider].deleteImage(image.uuid, image.localPath);
   }
 }
+
+export async function uploadFile(filename: string, filedata: Buffer): Promise<void> {
+  const provider: string = process.env.STOCKAGE_PROVIDER_NAME || "local";
+  if (providers[provider] === undefined) {
+    return;
+  } else {
+    return await providers[provider].uploadFile(filename, filedata);
+  }
+}
+
+export async function downloadFile(filename: string): Promise<Buffer | null> {
+  const provider: string = process.env.STOCKAGE_PROVIDER_NAME || "local";
+  if (providers[provider] === undefined) {
+    return null;
+  } else {
+    return await providers[provider].getFile(filename);
+  }
+}

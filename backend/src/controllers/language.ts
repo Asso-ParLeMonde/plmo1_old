@@ -1,12 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { getRepository, getCustomRepository } from "typeorm";
 import { Language } from "../entities/language";
-import { Controller, del, get, post, put } from "./controller";
+import { Controller, del, get, post, put, oneFile } from "./controller";
 import { UserType } from "../entities/user";
 import { Question } from "../entities/question";
 import { Scenario } from "../entities/scenario";
 import { ThemeRepository } from "../customRepositories/themeRepository";
 import { Theme } from "../entities/theme";
+import { downloadFile, uploadFile } from "../fileUpload";
+import { localesFR, LocaleFile, translationsToFile, fileToTranslations } from "../translations";
 
 export class LanguageController extends Controller {
   constructor() {
@@ -92,5 +94,65 @@ export class LanguageController extends Controller {
     await Promise.all(putOperations);
 
     res.status(204).send();
+  }
+
+  @get({ path: "/:value/json" })
+  public async getJSONLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
+    if (language === undefined) {
+      next();
+      return;
+    }
+
+    const JSONlanguageBuffer: Buffer | null = await downloadFile(`locales/${language.value}.json`);
+    if (JSONlanguageBuffer === null) {
+      if (language.value === "fr") {
+        res.sendJSON(localesFR);
+        return;
+      }
+      next();
+      return;
+    }
+    res.sendJSON(JSON.parse(JSONlanguageBuffer.toString()));
+  }
+
+  @get({ path: "/:value/po" })
+  public async getPOLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
+    if (language === undefined) {
+      next();
+      return;
+    }
+
+    const JSONlanguageBuffer: Buffer | null = await downloadFile(`locales/${language.value}.json`);
+    const JSONFRlanguageBuffer: Buffer | null = await downloadFile("locales/fr.json");
+
+    const translationsFR = { ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
+    const translations = (language.value === "fr" ? translationsFR : JSONlanguageBuffer !== null ? JSON.parse(JSONlanguageBuffer.toString()) : {}) as LocaleFile;
+
+    const url = await translationsToFile(language.value, translations, translationsFR);
+    res.sendJSON({ url });
+  }
+
+  @oneFile({ path: "/:value/po" })
+  public async addPOTranslations(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (!req.file.buffer) {
+      next();
+      return;
+    }
+
+    const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
+    if (language === undefined) {
+      next();
+      return;
+    }
+
+    const JSONFRlanguageBuffer: Buffer | null = await downloadFile("locales/fr.json");
+    const translationsFR = { ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
+
+    const newTranslations = fileToTranslations(req.file.buffer, translationsFR);
+
+    await uploadFile(`locales/${language.value}.json`, Buffer.from(JSON.stringify(newTranslations), "utf-8"));
+    res.sendJSON({ success: true });
   }
 }

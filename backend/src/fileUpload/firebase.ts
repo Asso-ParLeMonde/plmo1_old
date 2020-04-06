@@ -68,4 +68,22 @@ export class FirebaseUtils extends Provider {
       logger.error(`File ${filename} not found !`);
     }
   }
+
+  public async getFile(filename: string): Promise<Buffer | null> {
+    let fileBuffer: Buffer | null = null;
+    try {
+      fileBuffer = (await this.bucket.file(filename).download())[0];
+    } catch (e) {
+      logger.error(`File ${filename} not found !`);
+    }
+    return fileBuffer;
+  }
+
+  public async uploadFile(filename: string, filedata: Buffer): Promise<void> {
+    try {
+      await this.bucket.file(filename).save(filedata);
+    } catch (e) {
+      logger.error(`Error while uploading ${filename}.`);
+    }
+  }
 }
