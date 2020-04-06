@@ -42,6 +42,7 @@ export class ProjectController extends Controller {
   public async getProjectPDF(req: Request, res: Response): Promise<void> {
     const languageCode: string = req.body.languageCode || "fr";
     const theme: Theme | undefined = await getCustomRepository(ThemeRepository).findOneWithLabels(req.body.themeId || 0);
+    const project: Project | undefined = await getRepository(Project).findOne(req.body.projectId || 0);
     let scenario: Scenario | undefined = await getRepository(Scenario).findOne({
       where: {
         id: req.body.scenarioId || 0,
@@ -69,6 +70,8 @@ export class ProjectController extends Controller {
       scenarioDescription: scenario.description,
       pseudo: req.user !== undefined ? req.user.pseudo : undefined,
       questions,
+      projectId: project !== undefined ? project.id : null,
+      projectTitle: project !== undefined ? project.title : null,
     });
     //For PDF Download statistics
     const pdfEntry = new PDFDownload();
@@ -83,7 +86,7 @@ export class ProjectController extends Controller {
       return;
     }
 
-    const projects = await getRepository(Project).find({ where: { user: { id: req.user.id } } });
+    const projects = await getRepository(Project).find({ where: { user: { id: req.user.id } }, relations: ["theme"] });
     res.sendJSON(projects);
   }
 
@@ -177,6 +180,9 @@ export class ProjectController extends Controller {
 
     if (req.body.title !== undefined) {
       project.title = req.body.title;
+      if (project.title.length === 0) {
+        throw new AppError("Title should not be empty", ErrorCode.INVALID_DATA);
+      }
       await getRepository(Project).save(project);
     }
     res.sendJSON(project);

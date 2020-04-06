@@ -13,15 +13,16 @@ const ProjectServiceContext = React.createContext(undefined, undefined);
 
 const DEFAULT_PROJECT = {
   id: null,
+  title: "",
   themeId: null,
   themeName: "",
   scenarioId: null,
   scenarioName: "",
   languageCode: "fr",
-  questions: []
+  questions: [],
 };
 
-const getInitialState = path => {
+const getInitialState = (path) => {
   if (
     path.slice(0, 26) !== "/create/2-questions-choice" &&
     path.slice(0, 41) !== "/create/3-storyboard-and-filming-schedule" &&
@@ -32,7 +33,7 @@ const getInitialState = path => {
   const lastProject = JSON.parse(localStorage.getItem("lastProject")) || {};
   const initialProject = {
     ...DEFAULT_PROJECT,
-    ...lastProject
+    ...lastProject,
   };
   initialProject.questions = initialProject.questions.sort((a, b) =>
     a.index > b.index ? 1 : -1
@@ -50,16 +51,16 @@ function ProjectService(props) {
   const [modalCallback, setModalCallback] = useState(() => () => {});
   const [hasError, setHasError] = useState(false);
 
-  const getDefaultQuestions = async scenarioId => {
+  const getDefaultQuestions = async (scenarioId) => {
     if (scenarioId === null || typeof scenarioId === "string") {
       return;
     }
     const response = await axiosLoggedRequest({
       method: "GET",
-      url: `/scenarios/${scenarioId}_${project.languageCode}/questions/?isDefault=true`
+      url: `/scenarios/${scenarioId}_${project.languageCode}/questions/?isDefault=true`,
     });
     if (!response.error) {
-      updateProject({ questions: response.data, id: null });
+      updateProject({ questions: response.data, id: null, title: "" });
     }
   };
 
@@ -71,7 +72,7 @@ function ProjectService(props) {
     ) {
       getDefaultQuestions(updatedProject.scenarioId).catch();
     }
-    setProject(previousProject => {
+    setProject((previousProject) => {
       localStorage.setItem(
         "lastProject",
         JSON.stringify({ ...previousProject, ...updatedProject })
@@ -80,25 +81,26 @@ function ProjectService(props) {
     });
   };
 
-  const updateProjectFromId = async projectId => {
+  const updateProjectFromId = async (projectId) => {
     if (!isLoggedIn()) {
       return;
     }
     const response = await axiosLoggedRequest({
       method: "GET",
-      url: `/projects/${projectId}`
+      url: `/projects/${projectId}`,
     });
     if (!response.error) {
       updateProject(
         {
           id: response.data.id,
+          title: response.data.title,
           themeId: response.data.theme.id,
           scenarioId: response.data.scenario.id,
           scenarioName: response.data.scenario.name,
           languageCode: response.data.scenario.languageCode,
           questions: response.data.questions.sort((a, b) =>
             a.index > b.index ? 1 : -1
-          )
+          ),
         },
         false
       );
@@ -107,7 +109,7 @@ function ProjectService(props) {
     }
   };
 
-  const askSaveProject = callback => {
+  const askSaveProject = (callback) => {
     setModalCallback(() => callback);
     setShowSaveModal(true);
   };
@@ -119,16 +121,16 @@ function ProjectService(props) {
     const response = await axiosLoggedRequest({
       method: "POST",
       url: "/projects",
-      data: project
+      data: project,
     });
     if (!response.error) {
       updateProject({
         id: response.data.id,
-        questions: response.data.questions
+        questions: response.data.questions,
       });
       return {
         id: response.data.id,
-        questions: response.data.questions
+        questions: response.data.questions,
       };
     } else {
       console.log(response.data);
@@ -152,7 +154,9 @@ function ProjectService(props) {
         props.history.push("/");
       } else {
         const theme = themesRequest.data[themeIndex];
-        updateProject({ themeId: theme.id, themeName: theme.names.fr });
+        updateProject({
+          themeName: theme.names.fr,
+        });
       }
     }
     // eslint-disable-next-line
@@ -161,7 +165,7 @@ function ProjectService(props) {
   useEffect(() => {
     // get project when projectId is not null
     const locationParams = qs.parse(props.location.search, {
-      ignoreQueryPrefix: true
+      ignoreQueryPrefix: true,
     });
     const projectId = parseInt(locationParams.project, 10) || project.id || 0;
     if (projectId !== 0) {
@@ -178,14 +182,14 @@ function ProjectService(props) {
     // eslint-disable-next-line
   }, []);
 
-  const handleToggleModal = save => async () => {
+  const handleToggleModal = (save) => async () => {
     if (save && (project.title || "").length === 0) {
       setHasError(true);
       return;
     }
 
     setHasError(false);
-    setShowSaveModal(s => !s);
+    setShowSaveModal((s) => !s);
     let savedProject = null;
     if (save) {
       savedProject = await saveProject();
@@ -195,10 +199,10 @@ function ProjectService(props) {
     }
   };
 
-  const updateProjectTitle = event => {
+  const updateProjectTitle = (event) => {
     event.preventDefault();
     updateProject({
-      title: event.target.value.slice(0, 200)
+      title: event.target.value.slice(0, 200),
     });
     setHasError(false);
   };
@@ -257,7 +261,7 @@ ProjectService.propTypes = {
   children: PropTypes.any,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 const ProjectServiceProvider = withRouter(ProjectService);

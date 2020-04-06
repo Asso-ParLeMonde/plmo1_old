@@ -12,7 +12,7 @@ import {
   Button,
   Backdrop,
   CircularProgress,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/core/SvgIcon/SvgIcon";
 import VideocamIcon from "@material-ui/icons/Videocam";
@@ -22,11 +22,11 @@ import Steps from "../../components/Steps";
 import Inverted from "../../../components/Inverted";
 import { UserServiceContext } from "../../../services/UserService";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 }));
 
 function Partie4(props) {
@@ -36,19 +36,20 @@ function Partie4(props) {
   const questions = getQuestions(project);
   const [isLoading, setIsLoading] = useState(false);
 
-  const generatePDF = async event => {
+  const generatePDF = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     const response = await axiosLoggedRequest({
       method: "POST",
       url: "/projects/pdf",
       data: {
+        projectId: project.id,
         themeId: project.themeId,
         scenarioId: project.scenarioId,
         scenarioName: project.scenarioName,
         scenarioDescription: "",
-        questions
-      }
+        questions,
+      },
     });
     setIsLoading(false);
     if (response.complete && !response.error) {
@@ -56,10 +57,15 @@ function Partie4(props) {
     }
   };
 
-  const handleHome = event => {
+  const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
   };
+
+  const url =
+    project.id === null
+      ? null
+      : `https://par-le-monde-1.herokuapp.com/create/3-storyboard-and-filming-schedule?project=${project.id}`;
 
   return (
     <div>
@@ -83,7 +89,7 @@ function Partie4(props) {
             style={{
               maxWidth: "1000px",
               margin: "auto",
-              paddingBottom: "2rem"
+              paddingBottom: "2rem",
             }}
           >
             <Typography color="primary" variant="h1">
@@ -93,7 +99,7 @@ function Partie4(props) {
                 color="primary"
                 style={{
                   transform: "translateY(0.5rem)",
-                  marginLeft: "1.5rem"
+                  marginLeft: "1.5rem",
                 }}
               />
             </Typography>
@@ -119,16 +125,17 @@ function Partie4(props) {
               </Button>
             </div>
 
-            <Typography variant="h2" style={{ margin: "1rem 0" }}>
-              Flashez ce code QR pour accéder directement à l&apos;application
-              et commencer à filmer !
-            </Typography>
-            <div className="text-center">
-              <QRCode
-                size={192}
-                value="https://par-le-monde-1.herokuapp.com/create/4-to-your-camera"
-              />
-            </div>
+            {url !== null && (
+              <>
+                <Typography variant="h2" style={{ margin: "1rem 0" }}>
+                  Flashez ce code QR pour accéder directement à
+                  l&apos;application et commencer à filmer !
+                </Typography>
+                <div className="text-center">
+                  <QRCode size={192} value={url} />
+                </div>
+              </>
+            )}
           </div>
         </React.Fragment>
       )}
@@ -139,7 +146,7 @@ function Partie4(props) {
 Partie4.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Partie4);
