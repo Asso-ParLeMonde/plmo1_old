@@ -21,8 +21,8 @@ function LanguageModal(props) {
 
   const handleChange = (selectedOption) => {
     setNewLanguage({
-      label: selectedOption.name,
-      value: selectedOption.code,
+      label: (selectedOption || {}).name || "",
+      value: (selectedOption || {}).code || "",
     });
   };
 
