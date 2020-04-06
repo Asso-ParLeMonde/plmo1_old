@@ -46,11 +46,13 @@ export class StatisticsController extends Controller {
   @get({ path: "/basics" })
   public async getBasicsStatistics(_req: Request, res: Response): Promise<void> {
     const classNb = await getRepository(User).count({ where: [{ type: UserType.CLASS }] });
+
     const countries = await createQueryBuilder()
       .select("DISTINCT country")
       .from(School, "school")
       .getRawMany();
     const countriesNb = countries.length;
+
     const projectsNb = await getRepository(Project).count();
     const pdfsNb = await getRepository(PDFDownload).count();
 
