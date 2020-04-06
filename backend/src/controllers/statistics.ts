@@ -46,9 +46,11 @@ export class StatisticsController extends Controller {
   @get({ path: "/basics" })
   public async getBasicsStatistics(_req: Request, res: Response): Promise<void> {
     const classNb = await getRepository(User).count({ where: [{ type: UserType.CLASS }] });
-    const countriesNb = await createQueryBuilder(School)
-      .distinctOn(["country"])
-      .getCount();
+    const countries = await createQueryBuilder()
+      .select("DISTINCT country")
+      .from(School, "school")
+      .getRawMany();
+    const countriesNb = countries.length;
     const projectsNb = await getRepository(Project).count();
     const pdfsNb = await getRepository(PDFDownload).count();
 
@@ -112,10 +114,11 @@ export class StatisticsController extends Controller {
 
   @get({ path: "/countries" })
   public async getCountryStatistiques(_req: Request, res: Response): Promise<void> {
-    const countriesNb = await getRepository(School)
-      .createQueryBuilder("school")
-      .distinctOn(["school.country"])
-      .getCount();
+    const countries = await createQueryBuilder()
+      .select("DISTINCT country")
+      .from(School, "school")
+      .getRawMany();
+    const countriesNb = countries.length;
 
     res.sendJSON({ countriesNb });
   }
