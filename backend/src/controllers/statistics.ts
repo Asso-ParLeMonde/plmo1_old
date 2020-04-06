@@ -4,6 +4,39 @@ import { getRepository, createQueryBuilder } from "typeorm";
 import { PDFDownload } from "../entities/pdfDownload";
 import { User, UserType } from "../entities/user";
 import { School } from "../entities/school";
+import { Project } from "../entities/project";
+
+interface Data {
+  label: string;
+  nb: string;
+}
+
+interface ReformatDataObject {
+  [key: string]: number;
+}
+
+function reformatDateLabels(data: Data[]): Data[] {
+  const reformatDataObject: ReformatDataObject = {};
+
+  data.forEach(d => {
+    const date = d.label.toString().slice(0, 10);
+    if (reformatDataObject[date]) {
+      reformatDataObject[date] += parseInt(d.nb);
+    } else {
+      reformatDataObject[date] = parseInt(d.nb);
+    }
+  });
+
+  const datesKeys = Object.keys(reformatDataObject);
+
+  const reformatDataResult: Data[] = [];
+
+  datesKeys.forEach(dk => {
+    reformatDataResult.push({ label: dk, nb: reformatDataObject[dk].toString() });
+  });
+
+  return reformatDataResult;
+}
 
 export class StatisticsController extends Controller {
   constructor() {
@@ -16,14 +49,29 @@ export class StatisticsController extends Controller {
     const countriesNb = await createQueryBuilder(School)
       .distinctOn(["country"])
       .getCount();
-    const projectsNb = 0;
+    const projectsNb = await getRepository(Project).count();
     const pdfsNb = await getRepository(PDFDownload).count();
+
     res.sendJSON({ classNb, countriesNb, projectsNb, pdfsNb });
   }
 
   @get({ path: "/projects" })
-  public getProjectStatistiques(_req: Request, res: Response): void {
-    res.sendJSON({ projectsNb: 0 });
+  public async getProjectStatistiques(_req: Request, res: Response): Promise<void> {
+    const projectsNb = await getRepository(Project).count();
+    res.sendJSON(projectsNb);
+  }
+
+  @get({ path: "/projects/repartition" })
+  public async getProjectsRepartitionStatistiques(_req: Request, res: Response): Promise<void> {
+    const projectsRepartition = await getRepository(Project)
+      .createQueryBuilder("project")
+      .select("project.date AS label")
+      .addSelect("COUNT(*) AS nb")
+      .groupBy("project.date")
+      .getRawMany();
+
+    const response = reformatDateLabels(projectsRepartition);
+    res.sendJSON(response);
   }
 
   @get({ path: "/PDFs" })
@@ -40,7 +88,9 @@ export class StatisticsController extends Controller {
       .addSelect("COUNT(*) AS nb")
       .groupBy("pdfDownload.date")
       .getRawMany();
-    res.sendJSON(pdfRepartition);
+
+    const response = reformatDateLabels(pdfRepartition);
+    res.sendJSON(response);
   }
 
   @get({ path: "/classrooms" })
