@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne, OneToMany, CreateDateColumn } from "typeorm";
 import { Theme } from "./theme";
 import { Scenario } from "./scenario";
 import { Question } from "./question";
@@ -11,6 +11,9 @@ export class Project {
 
   @Column({ type: "varchar", length: 200, nullable: true })
   public title: string;
+
+  @CreateDateColumn()
+  public date: Date;
 
   @ManyToOne(() => Theme)
   public theme: Theme;
