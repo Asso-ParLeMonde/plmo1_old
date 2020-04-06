@@ -84,14 +84,20 @@ function UserModal(props) {
             user={newUser}
             currentUserPseudo={newUser.pseudo}
             setUser={setNewUser}
-            submit={handleConfirmation}
             admin={true}
-            buttonLabel={"Confirmer le nouvel utilisateur"}
           />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseModal} variant="outlined">
             Annuler
+          </Button>
+          <Button
+            onClick={handleConfirmation}
+            variant="contained"
+            color="primary"
+            autoFocus
+          >
+            Confirmer
           </Button>
         </DialogActions>
       </Dialog>
