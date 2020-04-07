@@ -8,6 +8,8 @@ import ScenarioAcceptButton from "../../../Scenarios/components/ScenarioTableCom
 import ScenarioRemoveButton from "../../../Scenarios/components/ScenarioTableComponents/ScenarioRemoveButton";
 import ScenarioQuestionModal from "../../../Scenarios/components/ScenarioTableComponents/ScenarioQuestionsModal";
 import LanguageRemoveButton from "../../../Languages/components/LanguageTableComponents/LanguageRemoveButton";
+import LanguageDownloadButton from "../../../Languages/components/LanguageTableComponents/LanguageDownloadButton";
+import LanguageUploadButton from "../../../Languages/components/LanguageTableComponents/LanguageUploadButton";
 import QuestionModifyButton from "../../../Questions/components/QuestionTableComponents/QuestionModifyButton";
 import QuestionAcceptButton from "../../../Questions/components/QuestionTableComponents/QuestionAcceptButton";
 import QuestionRemoveButton from "../../../Questions/components/QuestionTableComponents/QuestionRemoveButton";
@@ -61,9 +63,20 @@ export function typedActionButtons(type, element, validIcon, invalidIcon) {
 
     case "LANGUAGE":
       if (element.value === "fr") {
-        return;
+        return (
+          <>
+            <LanguageDownloadButton language={element} />
+            <LanguageUploadButton language={element} />
+          </>
+        );
       }
-      return <LanguageRemoveButton icon={invalidIcon} language={element} />;
+      return (
+        <>
+          <LanguageDownloadButton language={element} />
+          <LanguageUploadButton language={element} />
+          <LanguageRemoveButton icon={invalidIcon} language={element} />
+        </>
+      );
 
     case "USER":
       return (
