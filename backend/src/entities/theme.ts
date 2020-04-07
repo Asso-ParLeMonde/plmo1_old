@@ -17,6 +17,9 @@ export class Theme {
   @Column()
   public labelID: number;
 
+  @Column()
+  public order: number;
+
   @Column({ default: false })
   public isPublished: boolean;
 

@@ -15,9 +15,9 @@ export async function addPlan(
   const newPlan = {
     url: null,
     description: "",
-    index: question.plans.reduce((i, p) => (p.index > i ? p.index : i), 0) + 1
+    index: question.plans.reduce((i, p) => (p.index > i ? p.index : i), 0) + 1,
   };
-  console.log(question.id);
+
   if (isLoggedIn() && project.id !== null && question.id !== null) {
     const response = await axiosLoggedRequest({
       method: "POST",
@@ -25,8 +25,8 @@ export async function addPlan(
       data: {
         description: newPlan.description,
         questionId: question.id,
-        index: newPlan.index
-      }
+        index: newPlan.index,
+      },
     });
 
     if (response.error) {
@@ -39,7 +39,7 @@ export async function addPlan(
   question.plans.push(newPlan);
   questions[questionIndex] = question;
   updateProject({
-    questions
+    questions,
   });
 }
 
@@ -63,8 +63,8 @@ export async function editPlan(
       method: "PUT",
       url: `/plans/${plan.id}`,
       data: {
-        description: plan.description
-      }
+        description: plan.description,
+      },
     });
   }
 }
@@ -89,7 +89,7 @@ export async function deletePlan(
   if (isLoggedIn() && project.id !== null && question.id !== null) {
     const response = await axiosLoggedRequest({
       method: "DELETE",
-      url: `/plans/${plan.id}`
+      url: `/plans/${plan.id}`,
     });
 
     if (response.error) {
@@ -100,7 +100,7 @@ export async function deletePlan(
   question.plans.splice(planIndex, 1);
   questions[questionIndex] = question;
   updateProject({
-    questions
+    questions,
   });
 }
 
@@ -113,7 +113,7 @@ async function uploadTemporaryImage(axiosLoggedRequest, imageBlob) {
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
       url: "/plans/temp-image",
-      data: bodyFormData
+      data: bodyFormData,
     });
     if (!response.error) {
       return response.data.path || null;
@@ -134,7 +134,7 @@ async function uploadImage(axiosLoggedRequest, imageBlob, planId) {
       method: "POST",
       headers: { "Content-Type": "multipart/form-data" },
       url: `/plans/${planId}/image`,
-      data: bodyFormData
+      data: bodyFormData,
     });
     if (!response.error) {
       return response.data.url || null;
@@ -176,6 +176,6 @@ export async function uploadPlanImage(
 
   questions[questionIndex].plans[planIndex] = plan;
   updateProject({
-    questions
+    questions,
   });
 }

@@ -11,11 +11,11 @@ import TableBodyComponent from "./TableBodyComponent";
 const useStyles = makeStyles(() => ({
   root: {
     width: "100%",
-    overflowX: "auto"
+    overflowX: "auto",
   },
   table: {
-    minWidth: 650
-  }
+    minWidth: 650,
+  },
 }));
 
 function TableComponent(props) {
@@ -28,6 +28,7 @@ function TableComponent(props) {
         <TableBodyComponent
           type={props.type}
           elements={props.elements}
+          setElements={props.setElements}
           validIcon={props.validIcon}
           invalidIcon={props.invalidIcon}
         />
@@ -37,11 +38,18 @@ function TableComponent(props) {
 }
 
 TableComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE", "USER"])
-    .isRequired,
+  type: PropTypes.oneOf([
+    "THEMEDND",
+    "THEME",
+    "SCENARIO",
+    "QUESTION",
+    "LANGUAGE",
+    "USER",
+  ]).isRequired,
   elements: PropTypes.array.isRequired,
+  setElements: PropTypes.func,
   validIcon: PropTypes.object,
-  invalidIcon: PropTypes.object
+  invalidIcon: PropTypes.object,
 };
 
 export default TableComponent;

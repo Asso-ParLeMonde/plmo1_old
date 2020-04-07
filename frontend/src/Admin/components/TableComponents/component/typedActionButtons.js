@@ -32,6 +32,19 @@ export function typedActionButtons(type, element, validIcon, invalidIcon) {
         </React.Fragment>
       );
 
+    case "THEMEDND":
+      return (
+        <React.Fragment>
+          {element.isPublished && (
+            <ThemeModifyButton icon={validIcon} theme={element} />
+          )}
+          {!element.isPublished && (
+            <ThemeAcceptButton icon={validIcon} theme={element} />
+          )}
+          <ThemeRemoveButton icon={invalidIcon} theme={element} />
+        </React.Fragment>
+      );
+
     case "SCENARIO":
       return (
         <React.Fragment>

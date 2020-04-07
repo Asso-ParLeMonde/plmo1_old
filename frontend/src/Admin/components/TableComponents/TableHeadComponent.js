@@ -6,13 +6,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   thead: {
-    backgroundColor: theme.palette.primary.main
+    backgroundColor: theme.palette.primary.main,
   },
   th: {
-    color: "white"
-  }
+    color: "white",
+  },
 }));
 
 function TableHeadComponent(props) {
@@ -25,6 +25,9 @@ function TableHeadComponent(props) {
       default:
         break;
       case "THEME":
+        titles = ["Id", "Titre"];
+        break;
+      case "THEMEDND":
         titles = ["Id", "Titre"];
         break;
       case "SCENARIO":
@@ -63,8 +66,14 @@ function TableHeadComponent(props) {
 }
 
 TableHeadComponent.propTypes = {
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE", "USER"])
-    .isRequired
+  type: PropTypes.oneOf([
+    "THEMEDND",
+    "THEME",
+    "SCENARIO",
+    "QUESTION",
+    "LANGUAGE",
+    "USER",
+  ]).isRequired,
 };
 
 export default TableHeadComponent;

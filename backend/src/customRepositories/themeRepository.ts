@@ -58,7 +58,8 @@ export class ThemeRepository extends Repository<Theme> {
       .select("theme")
       .from(Theme, "theme")
       .leftJoinAndSelect("theme.image", "image")
-      .leftJoinAndMapMany("theme.labels", "label", "label", "theme.labelID = label.id");
+      .leftJoinAndMapMany("theme.labels", "label", "label", "theme.labelID = label.id")
+      .orderBy("theme.order", "ASC");
     if (params.isPublished !== null) {
       entitiesQuery = entitiesQuery.where("theme.isPublished = :isPublished", params);
     }
