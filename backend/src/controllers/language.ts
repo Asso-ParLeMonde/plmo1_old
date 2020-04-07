@@ -113,7 +113,7 @@ export class LanguageController extends Controller {
       next();
       return;
     }
-    res.sendJSON(JSON.parse(JSONlanguageBuffer.toString()));
+    res.sendJSON({ ...localesFR, ...JSON.parse(JSONlanguageBuffer.toString()) });
   }
 
   @get({ path: "/:value/po" })

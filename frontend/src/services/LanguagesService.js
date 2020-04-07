@@ -9,13 +9,13 @@ function LanguagesServiceProvider({ children }) {
     data: null,
     pending: null,
     error: null,
-    complete: null
+    complete: null,
   });
 
   const updateLanguages = useCallback(async () => {
     const languagesRequest = await axiosRequest({
       method: "GET",
-      url: "/languages"
+      url: "/languages",
     });
     setGetLanguages(languagesRequest);
   }, []);
@@ -32,7 +32,7 @@ function LanguagesServiceProvider({ children }) {
 }
 
 LanguagesServiceProvider.propTypes = {
-  children: PropTypes.any
+  children: PropTypes.any,
 };
 
 export { LanguagesServiceContext, LanguagesServiceProvider };
