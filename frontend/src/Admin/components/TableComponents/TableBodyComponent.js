@@ -104,7 +104,14 @@ function TableBodyComponent(props) {
                       >
                         {typedBody().map((info, index) => {
                           return (
-                            <TableCell key={index}>
+                            <TableCell
+                              key={index}
+                              style={{
+                                width: `calc((100%-100px)/${
+                                  typedBody().length
+                                })`,
+                              }}
+                            >
                               {getElementInformation(el, info)}
                             </TableCell>
                           );
