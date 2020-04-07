@@ -1,124 +1,146 @@
-async function themeImagePOSTRequest(
+import { updateNotificationResponse } from "../../components/updateNotificationResponse";
+
+const path = "/admin/themes";
+
+async function postImageAdminTheme(
   axiosLoggedRequest,
-  newTheme,
-  requestedThemeId,
-  setRes
+  theme,
+  request,
+  errorMessage
 ) {
-  const bodyFormData = new FormData();
-  bodyFormData.append("image", newTheme.image);
+  if (
+    !request.error &&
+    theme.image !== undefined &&
+    theme.image !== null &&
+    theme.image.path === undefined
+  ) {
+    const bodyFormData = new FormData();
+    bodyFormData.append("image", theme.image);
 
-  const requestImage = await axiosLoggedRequest({
-    method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
-    url: `/themes/${requestedThemeId}/image`,
-    data: bodyFormData
-  });
-
-  if (requestImage.error === true && requestImage.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la modification de l'image du theme"
+    const requestImage = await axiosLoggedRequest({
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      url: `/themes/${request.data.id}/image`,
+      data: bodyFormData,
     });
 
-    return true;
+    if (requestImage.error !== request.error) {
+      request.error = true;
+      errorMessage = "Erreur lors de l'enregistrement de l'image";
+    }
   }
-
-  return false;
 }
 
-async function postTheme(axiosLoggedRequest, newTheme, setRes) {
+async function postAdminTheme(
+  axiosLoggedRequest,
+  theme,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateThemes
+) {
   const request = await axiosLoggedRequest({
     method: "POST",
     url: "/themes",
-    data: {
-      names: newTheme.names,
-      isPublished: true
-    }
+    data: theme,
   });
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la creation du theme"
-    });
+  await postImageAdminTheme(axiosLoggedRequest, theme, request);
 
-    return [undefined, true];
-  }
-
-  return [request.data.id, false];
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateThemes,
+    history,
+    path
+  );
 }
 
-async function putTheme(axiosLoggedRequest, inheritedTheme, newTheme, setRes) {
+async function putAdminTheme(
+  axiosLoggedRequest,
+  theme,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateThemes
+) {
   const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `/themes/${inheritedTheme.id}`,
-    data: {
-      names: newTheme.names,
-      isPublished: true
-    }
+    url: `/themes/${theme.id}`,
+    data: theme,
   });
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la modification du theme"
-    });
+  await postImageAdminTheme(axiosLoggedRequest, theme, request);
 
-    return [undefined, true];
-  }
-
-  return [request.data.id, false];
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateThemes,
+    history,
+    path
+  );
 }
 
-async function updateTheme(
+async function putPublishedAdminTheme(
   axiosLoggedRequest,
-  requestType,
-  inheritedTheme,
-  newTheme,
-  setRes
+  theme,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateThemes
 ) {
-  let error = false;
-  let requestedThemeId = undefined;
+  const request = await axiosLoggedRequest({
+    method: "PUT",
+    url: `/themes/${theme.id}`,
+    data: { ...theme, isPublished: true },
+  });
 
-  switch (requestType) {
-    default:
-      break;
-    case "POST":
-      [requestedThemeId, error] = await postTheme(
-        axiosLoggedRequest,
-        newTheme,
-        setRes
-      );
-      break;
-    case "PUT":
-      [requestedThemeId, error] = await putTheme(
-        axiosLoggedRequest,
-        inheritedTheme,
-        newTheme,
-        setRes
-      );
-      break;
-  }
-
-  if (
-    (requestType === "PUT" || requestType === "POST") &&
-    error === false &&
-    newTheme.image !== undefined &&
-    newTheme.image !== null &&
-    newTheme.image.path === undefined
-  ) {
-    error = await themeImagePOSTRequest(
-      axiosLoggedRequest,
-      newTheme,
-      requestedThemeId,
-      setRes
-    );
-  }
-
-  return error;
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateThemes,
+    history,
+    path
+  );
 }
 
-export { updateTheme };
+async function deleteAdminTheme(
+  axiosLoggedRequest,
+  theme,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateThemes
+) {
+  const request = await axiosLoggedRequest({
+    method: "DELETE",
+    url: `/themes/${theme.id}`,
+  });
+
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateThemes,
+    history,
+    path
+  );
+}
+
+export {
+  postAdminTheme,
+  putAdminTheme,
+  putPublishedAdminTheme,
+  deleteAdminTheme,
+};

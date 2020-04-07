@@ -7,7 +7,7 @@ import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 function ScenarioSelector(props) {
   const scenarios = useContext(ScenariosServiceContext).getScenarios.data || [];
 
-  function handleLanguageSelection(event) {
+  function handleScenarioSelection(event) {
     props.setSelectedScenario(event.target.value);
   }
 
@@ -16,7 +16,7 @@ function ScenarioSelector(props) {
       labelId="demo-simple-select-label"
       id="demo-simple-select"
       value={props.selectedScenario || ""}
-      onChange={handleLanguageSelection}
+      onChange={handleScenarioSelection}
       fullWidth
     >
       {scenarios.map((s, index) => {
@@ -32,7 +32,7 @@ function ScenarioSelector(props) {
 
 ScenarioSelector.propTypes = {
   selectedScenario: PropTypes.number,
-  setSelectedScenario: PropTypes.func.isRequired
+  setSelectedScenario: PropTypes.func.isRequired,
 };
 
 export default ScenarioSelector;

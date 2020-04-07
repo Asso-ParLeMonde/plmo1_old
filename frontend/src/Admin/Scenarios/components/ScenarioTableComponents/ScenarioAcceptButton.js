@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import { UserServiceContext } from "../../../../services/UserService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
-import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
+import { putDefaultAdminScenario } from "../scenarioRequest";
 
 function ScenarioAcceptButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -14,14 +14,13 @@ function ScenarioAcceptButton(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   async function handleAcceptation(event) {
     event.preventDefault();
-    await handleScenarioButtonRequest(
+    await putDefaultAdminScenario(
       axiosLoggedRequest,
-      "PUT",
       props.scenario,
       setRes,
       "Succès lors de la modification du scenario",
@@ -46,7 +45,7 @@ ScenarioAcceptButton.propTypes = {
   scenario: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ScenarioAcceptButton);

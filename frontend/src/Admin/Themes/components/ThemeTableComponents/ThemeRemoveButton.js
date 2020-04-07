@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 
 import { ThemesServiceContext } from "../../../../services/ThemesService";
 import { UserServiceContext } from "../../../../services/UserService";
-import { handleRequest } from "./ThemeButtonRequests";
 import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
+import { deleteAdminTheme } from "../themeRequest";
 
 function ThemeRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -14,14 +14,13 @@ function ThemeRemoveButton(props) {
   const [res, setRes] = useState({
     complete: false,
     error: false,
-    message: ""
+    message: "",
   });
 
   async function handleRemove(event) {
     event.preventDefault();
-    await handleRequest(
+    await deleteAdminTheme(
       axiosLoggedRequest,
-      "DELETE",
       props.theme,
       setRes,
       "Succès lors de la suppression du theme",
@@ -48,7 +47,7 @@ ThemeRemoveButton.propTypes = {
   icon: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ThemeRemoveButton);

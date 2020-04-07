@@ -1,68 +1,113 @@
-async function postScenario(axiosLoggedRequest, newScenario, setRes) {
+import { updateNotificationResponse } from "../../components/updateNotificationResponse";
+
+const path = "/admin/scenarios";
+
+async function postAdminScenario(
+  axiosLoggedRequest,
+  scenario,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateScenarios
+) {
   const request = await axiosLoggedRequest({
     method: "POST",
     url: "/scenarios",
-    data: {
-      names: newScenario.names,
-      descriptions: newScenario.descriptions,
-      themeId: newScenario.themeId,
-      isDefault: true
-    }
+    data: scenario,
   });
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la creation du scenario"
-    });
-  }
-
-  if (request.error === false && request.complete === true) {
-    setRes({
-      error: false,
-      complete: true,
-      message: "Succès lors dans la creation du scenario"
-    });
-  }
-
-  return;
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateScenarios,
+    history,
+    path
+  );
 }
 
-async function putScenario(
+async function putAdminScenario(
   axiosLoggedRequest,
-  inheritedScenario,
-  newScenario,
-  setRes
+  scenario,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateScenarios
 ) {
   const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `/scenarios/${inheritedScenario.id}`,
-    data: {
-      names: newScenario.names,
-      descriptions: newScenario.descriptions,
-      themeId: newScenario.themeId,
-      isDefault: true
-    }
+    url: `/scenarios/${scenario.id}`,
+    data: scenario,
   });
 
-  if (request.error === true && request.complete === true) {
-    setRes({
-      error: true,
-      complete: true,
-      message: "Erreur lors de la modification du scenario"
-    });
-  }
-
-  if (request.error === false && request.complete === true) {
-    setRes({
-      error: false,
-      complete: true,
-      message: "Succès lors dans la modification du scenario"
-    });
-  }
-
-  return;
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateScenarios,
+    history,
+    path
+  );
 }
 
-export { postScenario, putScenario };
+async function putDefaultAdminScenario(
+  axiosLoggedRequest,
+  scenario,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateScenarios
+) {
+  const request = await axiosLoggedRequest({
+    method: "PUT",
+    url: `/scenarios/${scenario.id}`,
+    data: { ...scenario, isDefault: true },
+  });
+
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateScenarios,
+    history,
+    path
+  );
+}
+
+async function deleteAdminScenario(
+  axiosLoggedRequest,
+  scenario,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateScenarios
+) {
+  const request = await axiosLoggedRequest({
+    method: "DELETE",
+    url: `/themes/${scenario.themeId}/scenarios/${scenario.id}`,
+  });
+
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateScenarios,
+    history,
+    path
+  );
+}
+
+export {
+  postAdminScenario,
+  putAdminScenario,
+  putDefaultAdminScenario,
+  deleteAdminScenario,
+};

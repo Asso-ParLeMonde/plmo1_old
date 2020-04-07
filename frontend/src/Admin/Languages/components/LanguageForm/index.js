@@ -4,15 +4,11 @@ import PropTypes from "prop-types";
 import ChooseLanguages from "../../../components/FormComponents/ChooseLanguage";
 
 function LanguageForm(props) {
-  return (
-    <React.Fragment>
-      <ChooseLanguages handleChange={props.handleChange} />
-    </React.Fragment>
-  );
+  return <ChooseLanguages handleChange={props.handleChange} />;
 }
 
 LanguageForm.propTypes = {
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default LanguageForm;

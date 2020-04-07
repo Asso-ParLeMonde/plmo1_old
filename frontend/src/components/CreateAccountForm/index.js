@@ -10,7 +10,7 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { LanguagesServiceContext } from "../../services/LanguagesService";
@@ -29,13 +29,13 @@ export const DEFAULT_USER = {
   languageCode: "",
   password: "",
   passwordConfirm: "",
-  type: 0 // To be handled by an admin
+  type: 0, // To be handled by an admin
 };
 
 export const TYPES = {
   0: "Classe",
   1: "Admin",
-  2: "Super Admin !"
+  2: "Super Admin !",
 };
 
 // eslint-disable-next-line no-control-regex
@@ -43,18 +43,18 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]
 const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
 const checks = {
-  managerFirstName: value => value.length > 0,
-  managerLastName: value => value.length > 0,
-  mail: value => emailRegex.test(value),
-  pseudo: value => value.length > 0,
-  password: value => strongPassword.test(value),
-  passwordConfirm: (value, user) => value === user.password
+  managerFirstName: (value) => value.length > 0,
+  managerLastName: (value) => value.length > 0,
+  mail: (value) => emailRegex.test(value),
+  pseudo: (value) => value.length > 0,
+  password: (value) => strongPassword.test(value),
+  passwordConfirm: (value, user) => value === user.password,
 };
 
-const isPseudoAvailable = async pseudo => {
+const isPseudoAvailable = async (pseudo) => {
   const response = await axiosRequest({
     method: "GET",
-    url: `/users/test-pseudo/${pseudo}`
+    url: `/users/test-pseudo/${pseudo}`,
   });
   if (response.complete && !response.error) {
     return response.data.available;
@@ -70,7 +70,7 @@ function CreateAccountForm({
   admin,
   submit,
   buttonLabel,
-  slideTop
+  slideTop,
 }) {
   const { getLanguages } = useContext(LanguagesServiceContext);
   const [showPassword, setShowPassword] = useState(false);
@@ -82,12 +82,12 @@ function CreateAccountForm({
     pseudoNotAvailable: false,
     password: false,
     passwordConfirm: false,
-    global: false
+    global: false,
   });
   const languages =
     getLanguages.complete && !getLanguages.error ? getLanguages.data : [];
 
-  const handleInputChange = userKey => event => {
+  const handleInputChange = (userKey) => (event) => {
     event.preventDefault();
     if (userKey === "schoolId") {
       const schoolId = parseInt(event.target.value, 10);
@@ -95,22 +95,22 @@ function CreateAccountForm({
       return;
     }
     setUser({ ...user, [userKey]: event.target.value });
-    setErrors(e => ({ ...e, [userKey]: false, global: false }));
+    setErrors((e) => ({ ...e, [userKey]: false, global: false }));
   };
 
-  const handleInputValidations = userKey => event => {
+  const handleInputValidations = (userKey) => (event) => {
     const value = event.target.value || "";
-    setErrors(e => ({
+    setErrors((e) => ({
       ...e,
-      [userKey]: value.length !== 0 && !checks[userKey](value, user)
+      [userKey]: value.length !== 0 && !checks[userKey](value, user),
     }));
     if (
       userKey === "pseudo" &&
       value.length !== 0 &&
       currentUserPseudo !== user.pseudo
     ) {
-      isPseudoAvailable(value).then(result => {
-        setErrors(e => ({ ...e, pseudoNotAvailable: !result }));
+      isPseudoAvailable(value).then((result) => {
+        setErrors((e) => ({ ...e, pseudoNotAvailable: !result }));
       });
     }
   };
@@ -119,7 +119,7 @@ function CreateAccountForm({
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Check form validity
     const userKeys = ["managerFirstName", "managerLastName", "mail", "pseudo"];
@@ -130,7 +130,7 @@ function CreateAccountForm({
     for (let userKey of userKeys) {
       if (!checks[userKey](user[userKey], user)) {
         isFormValid = false;
-        setErrors(e => ({ ...e, [userKey]: true }));
+        setErrors((e) => ({ ...e, [userKey]: true }));
       }
     }
     if (
@@ -139,11 +139,11 @@ function CreateAccountForm({
       currentUserPseudo !== user.pseudo
     ) {
       isFormValid = false;
-      setErrors(e => ({ ...e, pseudoNotAvailable: true }));
+      setErrors((e) => ({ ...e, pseudoNotAvailable: true }));
     }
 
     if (!isFormValid) {
-      setErrors(e => ({ ...e, global: true }));
+      setErrors((e) => ({ ...e, global: true }));
       slideTop();
       return;
     }
@@ -245,7 +245,7 @@ function CreateAccountForm({
           label="École"
           inputProps={{
             name: "school",
-            id: "school"
+            id: "school",
           }}
         >
           <option aria-label="None" value="" />
@@ -264,7 +264,7 @@ function CreateAccountForm({
         freeSolo
         options={frenchClasses}
         onSelect={handleInputChange("level")}
-        renderInput={params => (
+        renderInput={(params) => (
           <TextField
             {...params}
             label="Niveau de la classe"
@@ -284,10 +284,10 @@ function CreateAccountForm({
           label="Langue de préférence"
           inputProps={{
             name: "languageCode",
-            id: "languageCode"
+            id: "languageCode",
           }}
         >
-          {languages.map(l => (
+          {languages.map((l) => (
             <option value={l.value} key={l.id}>
               {l.label}
             </option>
@@ -305,10 +305,10 @@ function CreateAccountForm({
             label="Type de compte"
             inputProps={{
               name: "type",
-              id: "type"
+              id: "type",
             }}
           >
-            {Object.keys(TYPES).map(typeKey => (
+            {Object.keys(TYPES).map((typeKey) => (
               <option value={typeKey} key={typeKey}>
                 {TYPES[typeKey]}
               </option>
@@ -338,7 +338,7 @@ function CreateAccountForm({
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
             fullWidth
             error={errors.password}
@@ -369,7 +369,7 @@ function CreateAccountForm({
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
             fullWidth
             error={errors.passwordConfirm}
@@ -379,15 +379,17 @@ function CreateAccountForm({
           />
         </React.Fragment>
       )}
-      <Button
-        variant="contained"
-        color={admin ? "primary" : "secondary"}
-        type="submit"
-        value="Submit"
-        onClick={handleSubmit}
-      >
-        {buttonLabel}
-      </Button>
+      {!admin && (
+        <Button
+          variant="contained"
+          color={admin ? "primary" : "secondary"}
+          type="submit"
+          value="Submit"
+          onClick={handleSubmit}
+        >
+          {buttonLabel}
+        </Button>
+      )}
     </form>
   );
 }
@@ -400,7 +402,7 @@ CreateAccountForm.propTypes = {
   noAutoComplete: PropTypes.bool,
   admin: PropTypes.bool,
   buttonLabel: PropTypes.string,
-  slideTop: PropTypes.func
+  slideTop: PropTypes.func,
 };
 
 CreateAccountForm.defaultProps = {
@@ -413,7 +415,7 @@ CreateAccountForm.defaultProps = {
   buttonLabel: "S'inscrire !",
   slideTop: () => {
     window.scrollTo(0, 0);
-  }
+  },
 };
 
 export default CreateAccountForm;
