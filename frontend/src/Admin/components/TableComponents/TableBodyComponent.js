@@ -85,7 +85,7 @@ function TableBodyComponent(props) {
   if (props.type === "THEMEDND") {
     return (
       <DragDropContext onDragEnd={onDragEnd}>
-        <Droppable droppableId="droppable-1">
+        <Droppable droppableId="table">
           {(provided) => (
             <TableBody ref={provided.innerRef} {...provided.droppableProps}>
               {props.elements &&
