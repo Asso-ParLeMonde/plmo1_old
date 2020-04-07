@@ -9,7 +9,7 @@ async function postImageAdminTheme(
   errorMessage
 ) {
   if (
-    request.error &&
+    !request.error &&
     theme.image !== undefined &&
     theme.image !== null &&
     theme.image.path === undefined
@@ -98,7 +98,7 @@ async function putPublishedAdminTheme(
 ) {
   const request = await axiosLoggedRequest({
     method: "PUT",
-    url: `/scenarios/${theme.id}`,
+    url: `/themes/${theme.id}`,
     data: { ...theme, isPublished: true },
   });
 

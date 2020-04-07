@@ -10,15 +10,15 @@ const useStyles = makeStyles(() => ({
   containerNames: {
     display: "flex",
     marginBottom: 16,
-    alignItems: "center"
+    alignItems: "center",
   },
   textFieldLanguage: {
     marginRight: "8px",
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   textFieldNames: {
-    margin: "0px 0px 0px 4px"
-  }
+    margin: "0px 0px 0px 4px",
+  },
 }));
 
 function DefaultNameInput(props) {
@@ -51,7 +51,7 @@ function DefaultNameInput(props) {
         autoFocus
         type="text"
         value={props.newElement.names[props.language.value] || ""}
-        onChange={e => props.handleChange("NAME", e)}
+        onChange={(e) => props.handleChange("NAME", e)}
         fullWidth
         className={classes.textFieldNames}
       />
@@ -73,7 +73,7 @@ DefaultNameInput.propTypes = {
   handleChange: PropTypes.func.isRequired,
   language: PropTypes.object.isRequired,
   selectedLanguageList: PropTypes.array.isRequired,
-  setSelectedLanguageList: PropTypes.func.isRequired
+  setSelectedLanguageList: PropTypes.func.isRequired,
 };
 
 export default DefaultNameInput;

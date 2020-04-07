@@ -25,7 +25,7 @@ function ThemeForm(props) {
 
 ThemeForm.propTypes = {
   theme: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default ThemeForm;

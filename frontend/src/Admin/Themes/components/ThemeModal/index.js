@@ -9,10 +9,10 @@ import { postAdminTheme, putAdminTheme } from "../themeRequest";
 const DEFAULT_THEME = {
   id: undefined,
   names: {
-    fr: "",
+    fr: undefined,
   },
   image: undefined,
-  published: undefined,
+  isPublished: true,
 };
 
 function ThemeModal(props) {
@@ -48,9 +48,7 @@ function ThemeModal(props) {
     }
   }
 
-  async function handleConfirmation(event) {
-    event.preventDefault();
-
+  async function handleConfirmation() {
     if (props.theme) {
       await putAdminTheme(
         axiosLoggedRequest,

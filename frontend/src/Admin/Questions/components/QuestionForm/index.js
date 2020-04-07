@@ -10,13 +10,13 @@ function QuestionForm(props) {
 
   const allowLanguages = () => {
     const currentScenario = scenarios.find(
-      s => s.id === props.question.scenarioId
+      (s) => s.id === props.question.scenarioId
     );
 
     return Object.keys(currentScenario.names);
   };
 
-  const handleLanguageCode = selectedLanguage => {
+  const handleLanguageCode = (selectedLanguage) => {
     props.handleChange("LANGUAGECODE", selectedLanguage);
   };
 
@@ -37,7 +37,7 @@ function QuestionForm(props) {
 
 QuestionForm.propTypes = {
   question: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default QuestionForm;
