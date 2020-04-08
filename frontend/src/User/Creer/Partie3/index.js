@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Route, Switch, withRouter } from "react-router";
+import { useTranslation } from "react-i18next";
 
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
@@ -13,10 +14,11 @@ import EditPlan from "./EditPlan";
 import DrawPlan from "./DrawPlan";
 
 function Partie3(props) {
+  const { t } = useTranslation();
   const { project, updateProject } = useContext(ProjectServiceContext);
   const questions = getQuestions(project);
 
-  const handleHome = event => {
+  const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
   };
@@ -38,7 +40,7 @@ function Partie3(props) {
               aria-label="breadcrumb"
             >
               <Link color="inherit" href="/create" onClick={handleHome}>
-                Tout les thèmes
+                {t("all_themes")}
               </Link>
               <Typography color="textPrimary">{project.themeName}</Typography>
             </Breadcrumbs>
@@ -88,7 +90,7 @@ function Partie3(props) {
 Partie3.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Partie3);

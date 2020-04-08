@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Typography, withStyles, IconButton } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
+import { useTranslation } from "react-i18next";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
 
@@ -13,6 +14,7 @@ const StyledEditButton = withStyles((theme) => ({
 }))(IconButton);
 
 function ProjectTitle(props) {
+  const { t } = useTranslation();
   const { project } = useContext(ProjectServiceContext);
 
   if (project.id === null) {
@@ -29,7 +31,7 @@ function ProjectTitle(props) {
           fontSize: props.smaller ? "1.2rem" : "1.5rem",
         }}
       >
-        Projet :
+        {t("project")}
       </Typography>
       <Typography
         color="inherit"

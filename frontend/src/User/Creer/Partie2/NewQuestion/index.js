@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useTranslation, Trans } from "react-i18next";
 
 import { Hidden, Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -13,22 +14,23 @@ import { UserServiceContext } from "../../../../services/UserService";
 import { addQuestion } from "../../components/questionRequest";
 
 function NewQuestion(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const { project, updateProject } = useContext(ProjectServiceContext);
   const [hasError, setHasError] = useState(false);
   const [newQuestion, setNewQuestion] = useState("");
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault();
     setNewQuestion(event.target.value.slice(0, 280));
   };
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice`);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (newQuestion.length === 0) {
       setHasError(true);
@@ -51,10 +53,13 @@ function NewQuestion(props) {
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
         <Typography color="primary" variant="h1">
-          <Inverted round>2</Inverted> Mes <Inverted>questions</Inverted>
+          <Inverted round>2</Inverted>{" "}
+          <Trans i18nKey="part2_title">
+            Mes <Inverted>questions</Inverted>
+          </Trans>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Ajouter une question
+          {t("part2_add_question")}
         </Typography>
         <Typography color="inherit" variant="h2" style={{ marginTop: "1rem" }}>
           <div>
@@ -66,7 +71,7 @@ function NewQuestion(props) {
               className={hasError ? "shake" : ""}
               id="scenarioDescription"
               multiline
-              placeholder="Ma question"
+              placeholder={t("part2_add_question_placeholder")}
               fullWidth
               style={{ marginTop: "0.5rem" }}
               variant="outlined"
@@ -91,14 +96,14 @@ function NewQuestion(props) {
               href={`/create/2-questions-choice`}
               onClick={handleBack}
             >
-              Annuler
+              {t("cancel")}
             </Button>
             <Button
               variant="contained"
               color="secondary"
               onClick={handleSubmit}
             >
-              Ajouter
+              {t("add")}
             </Button>
           </div>
         </Hidden>
@@ -109,7 +114,7 @@ function NewQuestion(props) {
             onClick={handleSubmit}
             style={{ width: "100%", marginTop: "2rem" }}
           >
-            Ajouter
+            {t("add")}
           </Button>
         </Hidden>
       </div>
@@ -122,7 +127,7 @@ NewQuestion.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default withRouter(NewQuestion);

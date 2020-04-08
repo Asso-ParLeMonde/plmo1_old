@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import {
   TextField,
   FormControl,
@@ -72,6 +73,7 @@ function CreateAccountForm({
   buttonLabel,
   slideTop,
 }) {
+  const { t } = useTranslation();
   const { getLanguages } = useContext(LanguagesServiceContext);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({
@@ -172,8 +174,7 @@ function CreateAccountForm({
     >
       {errors.global && (
         <Typography variant="caption" color="error">
-          Votre inscription comporte des erreurs, veuillez les corriger pour
-          continuer.
+          {t("signup_error_msg")}
         </Typography>
       )}
       <TextField
@@ -181,47 +182,47 @@ function CreateAccountForm({
         name="firstname"
         type="text"
         color="secondary"
-        label="Prénom du professeur"
+        label={t("signup_firstname")}
         value={user.managerFirstName || ""}
         onChange={handleInputChange("managerFirstName")}
         variant="outlined"
         fullWidth
         error={errors.managerFirstName}
-        helperText={errors.managerFirstName ? "Requis" : ""}
+        helperText={errors.managerFirstName ? t("signup_required") : ""}
       />
       <TextField
         id="lastname"
         name="lastname"
         type="text"
         color="secondary"
-        label="Nom du professeur"
+        label={t("signup_lastname")}
         value={user.managerLastName || ""}
         onChange={handleInputChange("managerLastName")}
         variant="outlined"
         fullWidth
         error={errors.managerLastName}
-        helperText={errors.managerLastName ? "Requis" : ""}
+        helperText={errors.managerLastName ? t("signup_required") : ""}
       />
       <TextField
         id="email"
         name="email"
         type="email"
         color="secondary"
-        label="E-mail du professeur"
+        label={t("signup_email")}
         value={user.mail || ""}
         onChange={handleInputChange("mail")}
         onBlur={handleInputValidations("mail")}
         variant="outlined"
         fullWidth
         error={errors.mail}
-        helperText={errors.mail ? "Adresse e-mail non valide." : ""}
+        helperText={errors.mail ? t("signup_email_error") : ""}
       />
       <TextField
         id="username"
         name="username"
         type="text"
         color="secondary"
-        label="Pseudo de la classe"
+        label={t("signup_pseudo")}
         value={user.pseudo || ""}
         onChange={handleInputChange("pseudo")}
         onBlur={handleInputValidations("pseudo")}
@@ -230,31 +231,31 @@ function CreateAccountForm({
         error={errors.pseudo || errors.pseudoNotAvailable}
         helperText={
           (errors.pseudo
-            ? "Requis | "
+            ? `${t("signup_required")} | `
             : errors.pseudoNotAvailable
-            ? "Pseudo déjà utilisé |"
-            : "") + "Utilisé pour la connection par les élèves."
+            ? `${t("signup_pseudo_error")} |`
+            : "") + t("signup_pseudo_help")
         }
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="school">École</InputLabel>
+        <InputLabel htmlFor="school">{t("signup_school")}</InputLabel>
         <Select
           native
           value={user.schoolId === undefined ? "" : user.schoolId}
           onChange={handleInputChange("schoolId")}
-          label="École"
+          label={t("signup_school")}
           inputProps={{
             name: "school",
             id: "school",
           }}
         >
           <option aria-label="None" value="" />
-          <option value={0}>Mon école n&apos;apparait pas dans la liste</option>
+          <option value={0}>{t("signup_school_missing")}</option>
         </Select>
         {user.schoolId === 0 && (
           <FormHelperText>
             <Link href="#" target="_blank">
-              Ajouter mon école ?
+              {t("signup_school_add")}
             </Link>
           </FormHelperText>
         )}
@@ -267,7 +268,7 @@ function CreateAccountForm({
         renderInput={(params) => (
           <TextField
             {...params}
-            label="Niveau de la classe"
+            label={t("signup_level")}
             value={user.level || ""}
             onChange={handleInputChange("level")}
             variant="outlined"
@@ -276,12 +277,12 @@ function CreateAccountForm({
         )}
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="languageCode">Langue de préférence</InputLabel>
+        <InputLabel htmlFor="languageCode">{t("signup_language")}</InputLabel>
         <Select
           native
           value={user.languageCode}
           onChange={handleInputChange("languageCode")}
-          label="Langue de préférence"
+          label={t("signup_language")}
           inputProps={{
             name: "languageCode",
             id: "languageCode",
@@ -297,12 +298,12 @@ function CreateAccountForm({
 
       {admin ? (
         <FormControl variant="outlined" color="secondary">
-          <InputLabel htmlFor="type">Type de compte</InputLabel>
+          <InputLabel htmlFor="type">{t("signup_type")}</InputLabel>
           <Select
             native
             value={user.type || 0}
             onChange={handleInputChange("type")}
-            label="Type de compte"
+            label={t("signup_type")}
             inputProps={{
               name: "type",
               id: "type",
@@ -322,7 +323,7 @@ function CreateAccountForm({
             color="secondary"
             id="password"
             name="password"
-            label="Mot de passe"
+            label={t("login_password")}
             value={user.password || ""}
             onChange={handleInputChange("password")}
             onBlur={handleInputValidations("password")}
@@ -342,18 +343,14 @@ function CreateAccountForm({
             }}
             fullWidth
             error={errors.password}
-            helperText={
-              errors.password
-                ? "Mot de passe trop faible. Il doit contenir au moins 8 charactères avec des lettres minuscules, majuscules et des chiffres."
-                : ""
-            }
+            helperText={errors.password ? t("signup_password_error") : ""}
           />
           <TextField
             type={showPassword ? "text" : "password"}
             color="secondary"
             id="passwordComfirm"
             name="passwordComfirm"
-            label="Confirmer le mot de passe"
+            label={t("signup_password_confirm")}
             value={user.passwordConfirm || ""}
             onChange={handleInputChange("passwordConfirm")}
             onBlur={handleInputValidations("passwordConfirm")}
@@ -374,7 +371,7 @@ function CreateAccountForm({
             fullWidth
             error={errors.passwordConfirm}
             helperText={
-              errors.passwordConfirm ? "Mots de passe différents." : ""
+              errors.passwordConfirm ? t("signup_password_confirm_error") : ""
             }
           />
         </React.Fragment>
@@ -387,7 +384,7 @@ function CreateAccountForm({
           value="Submit"
           onClick={handleSubmit}
         >
-          {buttonLabel}
+          {buttonLabel || t("signup_button")}
         </Button>
       )}
     </form>
@@ -412,7 +409,7 @@ CreateAccountForm.defaultProps = {
   submit: () => {},
   noAutoComplete: false,
   admin: false,
-  buttonLabel: "S'inscrire !",
+  buttonLabel: "",
   slideTop: () => {
     window.scrollTo(0, 0);
   },

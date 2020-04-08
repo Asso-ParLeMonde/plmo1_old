@@ -1,14 +1,15 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import {withRouter} from "react-router";
+import { withRouter } from "react-router";
 
-import { withStyles } from '@material-ui/core/styles';
-import BottomNavigation from '@material-ui/core/BottomNavigation';
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import { withStyles } from "@material-ui/core/styles";
+import BottomNavigation from "@material-ui/core/BottomNavigation";
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import { useTranslation } from "react-i18next";
 
 import "./bottomNavBar.css";
 
-const StyledTab = withStyles(theme => ({
+const StyledTab = withStyles((theme) => ({
   root: {
     fill: "#808080",
     color: "#808080",
@@ -20,11 +21,15 @@ const StyledTab = withStyles(theme => ({
 }))(BottomNavigationAction);
 
 function BottomNavBar(props) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = React.useState(0);
 
   useEffect(() => {
     const index = props.tabs.reduce(
-      (i1, tab, i2) => (tab.path.split('/')[1] === props.location.pathname.split('/')[1] ? i2 : i1),
+      (i1, tab, i2) =>
+        tab.path.split("/")[1] === props.location.pathname.split("/")[1]
+          ? i2
+          : i1,
       -1
     );
     setActiveTab(index + 1);
@@ -33,7 +38,7 @@ function BottomNavBar(props) {
 
   return (
     <React.Fragment>
-      <div style={{height: "60px"}}/>
+      <div style={{ height: "60px" }} />
       <BottomNavigation
         value={activeTab}
         onChange={(event, newValue) => {
@@ -42,14 +47,19 @@ function BottomNavBar(props) {
         showLabels
         className="bottom-navbar"
       >
-        <StyledTab label="" style={{ display: "none" }}/>
+        <StyledTab label="" style={{ display: "none" }} />
         {props.tabs.map((tab, index) => (
-          <StyledTab label={tab.label} icon={tab.icon} href={tab.path} key={index} onClick={(event) => {
-            event.preventDefault();
-            props.history.push(tab.path);
-          }}/>
-          ))
-        }
+          <StyledTab
+            label={t(tab.label)}
+            icon={tab.icon}
+            href={tab.path}
+            key={index}
+            onClick={(event) => {
+              event.preventDefault();
+              props.history.push(tab.path);
+            }}
+          />
+        ))}
       </BottomNavigation>
     </React.Fragment>
   );

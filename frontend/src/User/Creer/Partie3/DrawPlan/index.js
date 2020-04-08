@@ -2,13 +2,14 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import qs from "query-string";
+import { useTranslation } from "react-i18next";
 
 import {
   Button,
   Typography,
   Backdrop,
   CircularProgress,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
@@ -16,14 +17,15 @@ import Canvas from "./components/canvas";
 import { uploadPlanImage } from "../../components/planRequest";
 import { UserServiceContext } from "../../../../services/UserService";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: "#fff"
-  }
+    color: "#fff",
+  },
 }));
 
 function DrawPlan(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const classes = useStyles();
   const canvasRef = useRef(null);
@@ -45,14 +47,14 @@ function DrawPlan(props) {
     );
   }, [props.location.search]);
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(
       `/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`
     );
   };
 
-  const handleConfirm = async event => {
+  const handleConfirm = async (event) => {
     event.preventDefault();
     setIsLoading(true);
     try {
@@ -79,13 +81,14 @@ function DrawPlan(props) {
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
         <Typography color="primary" variant="h1">
-          <Inverted round>3</Inverted> Dessinez votre plan
+          <Inverted round>3</Inverted> {t("draw_plan_title")}
         </Typography>
         <Typography variant="h2">
-          <span>Question :</span> {question.question}
+          <span>{t("part3_question")}</span> {question.question}
         </Typography>
         <Typography variant="h2">
-          <span>Plan numéro :</span> {question.planStartIndex + planIndex}
+          <span>{t("part3_plan_number")}</span>{" "}
+          {question.planStartIndex + planIndex}
         </Typography>
 
         <Canvas ref={canvasRef} />
@@ -107,7 +110,7 @@ function DrawPlan(props) {
             href="/create/3-storyboard-and-filming-schedule"
             onClick={handleBack}
           >
-            Annuler
+            {t("cancel")}
           </Button>
           <Button
             as="a"
@@ -117,7 +120,7 @@ function DrawPlan(props) {
             href={`/create/3-storyboard-and-filming-schedule/edit?question=${questionIndex}&plan=${planIndex}`}
             onClick={handleConfirm}
           >
-            Enregistrer
+            {t("save")}
           </Button>
         </div>
       </div>
@@ -131,7 +134,7 @@ DrawPlan.propTypes = {
   history: PropTypes.object.isRequired,
   questions: PropTypes.array.isRequired,
   updateProject: PropTypes.func.isRequired,
-  project: PropTypes.object.isRequired
+  project: PropTypes.object.isRequired,
 };
 
 export default withRouter(DrawPlan);

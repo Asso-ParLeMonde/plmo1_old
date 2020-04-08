@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import {
   Button,
@@ -21,6 +22,7 @@ const RedButton = withStyles((theme) => ({
 }))(Button);
 
 function CustomModal(props) {
+  const { t } = useTranslation();
   return (
     <Dialog
       open={props.open}
@@ -34,11 +36,11 @@ function CustomModal(props) {
       <DialogContent>{props.children}</DialogContent>
       <DialogActions>
         <Button onClick={props.onClose} color="secondary" variant="outlined">
-          {props.cancelLabel}
+          {props.cancelLabel || t("cancel")}
         </Button>
         {props.onConfirm !== null && props.error && (
           <RedButton onClick={props.onConfirm} variant="contained">
-            {props.confirmLabel}
+            {props.confirmLabel || t("yes")}
           </RedButton>
         )}
         {props.onConfirm !== null && !props.error && (
@@ -47,7 +49,7 @@ function CustomModal(props) {
             color="secondary"
             variant="contained"
           >
-            {props.confirmLabel}
+            {props.confirmLabel || t("yes")}
           </Button>
         )}
       </DialogActions>
@@ -77,8 +79,8 @@ CustomModal.defaultProps = {
   onConfirm: null,
   title: "",
   children: <div />,
-  cancelLabel: "Annuler",
-  confirmLabel: "Oui",
+  cancelLabel: "",
+  confirmLabel: "",
   fullWidth: false,
   noCloseOutsideModal: false,
   maxWidth: "sm",

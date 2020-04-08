@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { useTranslation } from "react-i18next";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
@@ -12,9 +13,10 @@ import AllQuestions from "./AllQuestions";
 import EditQuestion from "./EditQuestion";
 
 function Partie2(props) {
+  const { t } = useTranslation();
   const { project } = useContext(ProjectServiceContext);
 
-  const handleHome = event => {
+  const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
   };
@@ -29,7 +31,7 @@ function Partie2(props) {
               aria-label="breadcrumb"
             >
               <Link color="inherit" href="/create" onClick={handleHome}>
-                Tout les thèmes
+                {t("all_themes")}
               </Link>
               <Typography color="textPrimary">{project.themeName}</Typography>
             </Breadcrumbs>
@@ -40,7 +42,7 @@ function Partie2(props) {
           <Switch>
             <Route
               path="/create/2-questions-choice/new"
-              render={props => (
+              render={(props) => (
                 <NewQuestion
                   {...props}
                   themeId={project.themeId}
@@ -50,7 +52,7 @@ function Partie2(props) {
             />
             <Route
               path="/create/2-questions-choice/edit"
-              render={props => (
+              render={(props) => (
                 <EditQuestion
                   {...props}
                   themeId={project.themeId}
@@ -60,7 +62,7 @@ function Partie2(props) {
             />
             <Route
               path="/create/2-questions-choice"
-              render={props => (
+              render={(props) => (
                 <AllQuestions
                   {...props}
                   themeId={project.themeId}
@@ -78,7 +80,7 @@ function Partie2(props) {
 Partie2.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Partie2);

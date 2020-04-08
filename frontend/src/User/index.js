@@ -28,38 +28,38 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const userTabs = [
   {
-    label: "Créer",
+    label: "create",
     path: "/create",
-    icon: <CreateLogo />
+    icon: <CreateLogo />,
   },
   {
-    label: "Mes vidéos",
+    label: "my_videos",
     path: "/my-videos",
-    icon: <MoviesLogo />
+    icon: <MoviesLogo />,
   },
   {
-    label: "Inspiration",
+    label: "inspiration",
     path: "/inspiration",
-    icon: <LightLogo />
+    icon: <LightLogo />,
   },
   {
-    label: "Réglages",
+    label: "settings",
     path: "/settings",
-    icon: <SettingsLogo />
-  }
+    icon: <SettingsLogo />,
+  },
 ];
 
 const defaultTabs = [
   {
-    label: "Créer",
+    label: "create",
     path: "/create",
-    icon: <CreateLogo />
+    icon: <CreateLogo />,
   },
   {
-    label: "Je me connecte !",
+    label: "login",
     path: "/login",
-    icon: <AccountCircleIcon />
-  }
+    icon: <AccountCircleIcon />,
+  },
 ];
 
 function User() {

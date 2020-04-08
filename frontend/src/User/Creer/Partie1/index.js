@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 
 import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import { useTranslation } from "react-i18next";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
 import useAxios from "../../../services/useAxios";
@@ -12,13 +13,14 @@ import NewScenario from "./NewScenario";
 import AllScenarios from "./AllScenarios";
 
 function Partie1(props) {
+  const { t } = useTranslation();
   const { project, updateProject } = useContext(ProjectServiceContext);
 
   // Get scenarios
   const [scenarios, setScenarios] = useState([]);
   const [localScenarios, setLocalScenarios] = useState(
     (JSON.parse(localStorage.getItem("scenarios")) || []).filter(
-      s => s.themeId === project.themeId
+      (s) => s.themeId === project.themeId
     )
   );
   const allScenarios = [...scenarios, ...localScenarios];
@@ -27,7 +29,7 @@ function Partie1(props) {
     url:
       project.themeId === null
         ? null
-        : `/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}&isDefault=true&user`
+        : `/themes/${project.themeId}/scenarios?languageCode=${project.languageCode}&isDefault=true&user`,
   });
   useEffect(() => {
     if (getScenarios.complete && !getScenarios.error) {
@@ -37,12 +39,12 @@ function Partie1(props) {
 
   const isNewScenario = props.location.pathname.indexOf("new") !== -1;
 
-  const handleHome = event => {
+  const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
   };
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(`/create/1-scenario-choice?themeId=${project.themeId}`);
   };
@@ -51,14 +53,14 @@ function Partie1(props) {
     return <Redirect to="/create" />;
   }
 
-  const addLocalScenario = newScenario => {
+  const addLocalScenario = (newScenario) => {
     newScenario.id = `local_${localScenarios.length + 1}`;
     newScenario.isDefault = false;
     localScenarios.push(newScenario);
     setLocalScenarios(localScenarios);
     updateProject({
       scenarioId: newScenario.id,
-      scenarioName: newScenario.name
+      scenarioName: newScenario.name,
     });
     localStorage.setItem("scenarios", JSON.stringify(localScenarios));
   };
@@ -71,7 +73,7 @@ function Partie1(props) {
           aria-label="breadcrumb"
         >
           <Link color="inherit" href="/create" onClick={handleHome}>
-            Tout les thèmes
+            {t("all_themes")}
           </Link>
           {isNewScenario && (
             <Link
@@ -83,7 +85,7 @@ function Partie1(props) {
             </Link>
           )}
           <Typography color="textPrimary">
-            {isNewScenario ? "Nouveau scénario" : project.themeName}
+            {isNewScenario ? t("new_scenario_path") : project.themeName}
           </Typography>
         </Breadcrumbs>
       </Hidden>
@@ -93,7 +95,7 @@ function Partie1(props) {
       <Switch>
         <Route
           path="/create/1-scenario-choice/new"
-          render={props => (
+          render={(props) => (
             <NewScenario
               {...props}
               themeId={project.themeId}
@@ -103,7 +105,7 @@ function Partie1(props) {
         />
         <Route
           path="/create/1-scenario-choice/"
-          render={props => (
+          render={(props) => (
             <AllScenarios
               {...props}
               themeId={project.themeId}
@@ -120,7 +122,7 @@ function Partie1(props) {
 Partie1.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Partie1);

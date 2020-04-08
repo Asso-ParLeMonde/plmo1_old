@@ -20,35 +20,35 @@ import Statistics from "./Statistics";
 const useStyles = makeStyles(() => ({
   container: {
     paddingTop: 32,
-    paddingBottom: 32
-  }
+    paddingBottom: 32,
+  },
 }));
 
 const tabs = [
   {
     label: "Thèmes",
-    path: "/admin/themes"
+    path: "/admin/themes",
   },
   {
     label: "Scenarios",
-    path: "/admin/scenarios"
+    path: "/admin/scenarios",
   },
   {
     label: "Questions",
-    path: "/admin/questions"
+    path: "/admin/questions",
   },
   {
     label: "Users",
-    path: "/admin/users"
+    path: "/admin/users",
   },
   {
     label: "Statistiques",
-    path: "/admin/statistics"
+    path: "/admin/statistics",
   },
   {
     label: "Langues",
-    path: "/admin/languages"
-  }
+    path: "/admin/languages",
+  },
 ];
 
 function Admin() {
@@ -69,16 +69,16 @@ function Admin() {
         display: "flex",
         flexDirection: "column",
         minHeight: "100vh",
-        backgroundColor: "#eee"
+        backgroundColor: "#eee",
       }}
     >
       <Navbar
         title={"Administrateur : Par Le monde"}
         tabs={[
           {
-            label: "App",
-            path: "/"
-          }
+            label: "app",
+            path: "/",
+          },
         ]}
         homeLink="/admin"
       />
@@ -87,7 +87,7 @@ function Admin() {
           backgroundColor: "#eee",
           flex: 1,
           display: "flex",
-          height: "100%"
+          height: "100%",
         }}
       >
         <AdminDrawer tabs={tabs} />

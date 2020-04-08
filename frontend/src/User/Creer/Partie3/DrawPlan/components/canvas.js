@@ -1,20 +1,25 @@
-import React, {useEffect, useRef, useState, forwardRef, useImperativeHandle} from "react";
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
+import { useTranslation } from "react-i18next";
 
-import {
-  IconButton, withStyles, Tooltip,
-} from "@material-ui/core";
-import UndoIcon from '@material-ui/icons/Undo';
-import RedoIcon from '@material-ui/icons/Redo';
-import ClearIcon from '@material-ui/icons/Clear';
-import BorderColorIcon from '@material-ui/icons/BorderColor';
-import AdjustIcon from '@material-ui/icons/Adjust';
+import { IconButton, withStyles, Tooltip } from "@material-ui/core";
+import UndoIcon from "@material-ui/icons/Undo";
+import RedoIcon from "@material-ui/icons/Redo";
+import ClearIcon from "@material-ui/icons/Clear";
+import BorderColorIcon from "@material-ui/icons/BorderColor";
+import AdjustIcon from "@material-ui/icons/Adjust";
 
 import "./canvas.css";
 import ColorModal from "./ColorModal";
 import SizeModal from "./SizeModal";
 import ClearModal from "./ClearModal";
 
-const ActionButton = withStyles( {
+const ActionButton = withStyles({
   root: {
     border: "1px solid",
     borderBottom: "none",
@@ -25,6 +30,7 @@ const ActionButton = withStyles( {
 const sizes = [2, 4, 8];
 
 function Canvas(_, ref) {
+  const { t } = useTranslation();
   const canvasRef = useRef(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [paths, setPaths] = useState([]);
@@ -46,10 +52,10 @@ function Canvas(_, ref) {
     const resize = () => {
       setClear(true);
     };
-    window.addEventListener('resize', resize);
+    window.addEventListener("resize", resize);
     return () => {
-      window.removeEventListener('resize', resize);
-    }
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   // Resize canvas
@@ -70,12 +76,23 @@ function Canvas(_, ref) {
     };
   };
 
-  const drawPath = (x1, y1, x2, y2, isNew, save, specificColor, specificSize) => {
+  const drawPath = (
+    x1,
+    y1,
+    x2,
+    y2,
+    isNew,
+    save,
+    specificColor,
+    specificSize
+  ) => {
     if (ctx === null) return;
-    const delta = (specificSize !== undefined ? sizes[specificSize] : sizes[size]) / 4;
+    const delta =
+      (specificSize !== undefined ? sizes[specificSize] : sizes[size]) / 4;
     ctx.beginPath();
     ctx.strokeStyle = specificColor || color;
-    ctx.lineWidth = specificSize !== undefined ? sizes[specificSize] : sizes[size];
+    ctx.lineWidth =
+      specificSize !== undefined ? sizes[specificSize] : sizes[size];
     ctx.lineCap = "round";
     ctx.moveTo(x1 - delta, y1 - delta);
     ctx.lineTo(x2 - delta, y2 - delta);
@@ -83,11 +100,16 @@ function Canvas(_, ref) {
     ctx.closePath();
 
     if (!save) return;
-    const allPaths = [ ...paths ];
+    const allPaths = [...paths];
     if (isNew) {
-      allPaths.push({ color, size, lines: [[x1, y1, x2, y2]]});
+      allPaths.push({ color, size, lines: [[x1, y1, x2, y2]] });
     } else {
-      (allPaths[paths.length - 1] || { lines: [] }).lines.push([x1, y1, x2, y2]);
+      (allPaths[paths.length - 1] || { lines: [] }).lines.push([
+        x1,
+        y1,
+        x2,
+        y2,
+      ]);
     }
     setPaths(allPaths);
   };
@@ -149,7 +171,7 @@ function Canvas(_, ref) {
   const handleOpenModalClear = () => {
     setShowModalClear(true);
   };
-  const handleCloseModalClear = confirm => () => {
+  const handleCloseModalClear = (confirm) => () => {
     setShowModalClear(false);
     if (confirm) {
       setPaths([]);
@@ -160,9 +182,12 @@ function Canvas(_, ref) {
 
   useImperativeHandle(ref, () => ({
     getBlob() {
-      if (ctx === null) return new Promise((_, reject) => { reject() });
-      return new Promise(resolve => {
-        canvasRef.current.toBlob(function(blob) {
+      if (ctx === null)
+        return new Promise((_, reject) => {
+          reject();
+        });
+      return new Promise((resolve) => {
+        canvasRef.current.toBlob(function (blob) {
           resolve(blob);
         });
       });
@@ -173,33 +198,53 @@ function Canvas(_, ref) {
     <div>
       <div className="draw-canvas-container-max-width">
         <div>
-          <div role="group"
-               className="actions-buttons-container"
-               aria-label="outlined primary button group">
-            <Tooltip title="Couleur">
-              <ActionButton aria-label="select color" onClick={handleOpenModalColor}>
-                <BorderColorIcon style={{ color, stroke: `${color === 'white' ? '#444' : 'none'}` }}/>
+          <div
+            role="group"
+            className="actions-buttons-container"
+            aria-label="outlined primary button group"
+          >
+            <Tooltip title={t("tool_color")}>
+              <ActionButton
+                aria-label={t("tool_color")}
+                onClick={handleOpenModalColor}
+              >
+                <BorderColorIcon
+                  style={{
+                    color,
+                    stroke: `${color === "white" ? "#444" : "none"}`,
+                  }}
+                />
               </ActionButton>
             </Tooltip>
-            <Tooltip title="Éppaiseur">
-              <ActionButton aria-label="select size" onClick={handleOpenModalSize}>
+            <Tooltip title={t("tool_stroke_width")}>
+              <ActionButton
+                aria-label={t("tool_stroke_width")}
+                onClick={handleOpenModalSize}
+              >
                 <AdjustIcon />
               </ActionButton>
             </Tooltip>
-            <Tooltip title="Revenir en arrière">
-              <ActionButton aria-label="undo" onClick={handleUndo}>
-                <UndoIcon color="secondary"/>
+            <Tooltip title={t("tool_go_back")}>
+              <ActionButton aria-label={t("tool_go_back")} onClick={handleUndo}>
+                <UndoIcon color="secondary" />
               </ActionButton>
             </Tooltip>
-            <Tooltip title="Revenir en avant">
-              <ActionButton aria-label="redo" style={{ borderRight: "1px solid" }} onClick={handleRedo}>
-                <RedoIcon color="secondary"/>
+            <Tooltip title={t("tool_go_forward")}>
+              <ActionButton
+                aria-label={t("tool_go_forward")}
+                style={{ borderRight: "1px solid" }}
+                onClick={handleRedo}
+              >
+                <RedoIcon color="secondary" />
               </ActionButton>
             </Tooltip>
             <div style={{ flex: 1 }} />
-            <Tooltip title="Tout effacer">
-              <ActionButton aria-label="clear canvas" onClick={handleOpenModalClear}>
-                <ClearIcon color="error"/>
+            <Tooltip title={t("tool_clear")}>
+              <ActionButton
+                aria-label={t("tool_clear")}
+                onClick={handleOpenModalClear}
+              >
+                <ClearIcon color="error" />
               </ActionButton>
             </Tooltip>
           </div>
@@ -216,10 +261,17 @@ function Canvas(_, ref) {
         </div>
       </div>
 
-      <ColorModal open={showModalColor} setOpen={setShowModalColor} setColor={setColor} />
-      <SizeModal open={showModalSize} setOpen={setShowModalSize} setSize={setSize} />
+      <ColorModal
+        open={showModalColor}
+        setOpen={setShowModalColor}
+        setColor={setColor}
+      />
+      <SizeModal
+        open={showModalSize}
+        setOpen={setShowModalSize}
+        setSize={setSize}
+      />
       <ClearModal open={showModalClear} onClear={handleCloseModalClear} />
-
     </div>
   );
 }

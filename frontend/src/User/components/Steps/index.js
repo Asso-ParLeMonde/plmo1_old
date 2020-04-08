@@ -14,31 +14,30 @@ import {
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import { ProjectServiceContext } from "../../../services/ProjectService";
 import ProjectTitle from "../ProjectTitle";
+import { useTranslation } from "react-i18next";
 
 import "./steps.css";
 
 const steps = [
   {
-    name: (activeStep, project) =>
-      activeStep > 0
-        ? project.scenarioName || "Choix du scénario"
-        : "Choix du scénario",
+    name: (t, activeStep, project) =>
+      activeStep > 0 ? project.scenarioName || t("step1") : t("step1"),
     back: "/create/1-scenario-choice",
   },
   {
-    name: () => "Choix des questions",
+    name: (t) => t("step2"),
     back: "/create/2-questions-choice",
   },
   {
-    name: () => "Storyboard et plan de tournage",
+    name: (t) => t("step3"),
     back: "/create/3-storyboard-and-filming-schedule",
   },
   {
-    name: () => "A votre caméra !",
+    name: (t) => t("step4"),
     back: "/create",
   },
   {
-    name: () => "Résultat final",
+    name: (t) => t("step5"),
     back: "/create",
   },
 ];
@@ -62,6 +61,7 @@ const StyleMobileStepper = withStyles((theme) => ({
 }))(MobileStepper);
 
 function Steps(props) {
+  const { t } = useTranslation();
   const { project } = useContext(ProjectServiceContext);
   const [isNewPage, setIsNewPage] = useState(false);
   const [isDrawPage, setIsDrawPage] = useState(false);
@@ -111,11 +111,11 @@ function Steps(props) {
         <Stepper activeStep={props.activeStep} alternativeLabel>
           {steps.map((step, index) => (
             <Step
-              key={step.name(props.activeStep, project)}
+              key={step.name(t, props.activeStep, project)}
               style={{ cursor: "pointer" }}
               onClick={handleBack(index)}
             >
-              <StepLabel>{step.name(props.activeStep, project)}</StepLabel>
+              <StepLabel>{step.name(t, props.activeStep, project)}</StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -137,7 +137,7 @@ function Steps(props) {
               className="back-button"
             >
               <KeyboardArrowLeft />
-              Retour
+              {t("back")}
             </Button>
           }
         />

@@ -8,6 +8,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import "./ThemeCard.css";
 import { Typography } from "@material-ui/core";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { AppLanguageServiceContext } from "../../../../services/AppLanguageService";
 
 const colors = [
   "rgb(96, 105, 243)",
@@ -20,7 +21,10 @@ const colors = [
 
 function ThemeCard(props) {
   const img = useRef(null);
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const { updateProject } = useContext(ProjectServiceContext);
+
+  const themeName = props.theme.names[selectedLanguage] || props.theme.names.fr;
 
   useEffect(() => {
     if (props.theme.image !== undefined && props.theme.image !== null) {
@@ -55,7 +59,7 @@ function ThemeCard(props) {
           <CardMedia
             ref={img}
             component="img"
-            alt={`picture of ${props.theme.names.fr} theme`}
+            alt={`picture of ${themeName} theme`}
             image="/classe_default.png"
           />
         ) : (
@@ -65,9 +69,7 @@ function ThemeCard(props) {
           />
         )}
       </Paper>
-      <Typography className="theme-card-title">
-        {props.theme.names.fr}
-      </Typography>
+      <Typography className="theme-card-title">{themeName}</Typography>
     </a>
   );
 }

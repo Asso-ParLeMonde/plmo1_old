@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useTranslation, Trans } from "react-i18next";
 
 import {
   Hidden,
   Typography,
   Button,
   TextField,
-  FormHelperText
+  FormHelperText,
 } from "@material-ui/core";
 import ArrowForwardIcon from "@material-ui/icons/ArrowForwardIos";
 
@@ -16,12 +17,13 @@ import { ProjectServiceContext } from "../../../../services/ProjectService";
 import { UserServiceContext } from "../../../../services/UserService";
 
 function NewScenario(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const [newScenario, setNewScenario] = useState({
     name: "",
     description: "",
     languageCode: "fr",
-    themeId: props.themeId
+    themeId: props.themeId,
   });
   const [hasError, setHasError] = useState(false);
   const { updateProject } = useContext(ProjectServiceContext);
@@ -30,17 +32,17 @@ function NewScenario(props) {
     const response = await axiosLoggedRequest({
       url: `/themes/${newScenario.themeId}/scenarios`,
       method: "POST",
-      data: newScenario
+      data: newScenario,
     });
     if (!response.error) {
       updateProject({
         scenarioId: response.data.id,
-        scenarioName: newScenario.name
+        scenarioName: newScenario.name,
       });
     }
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (newScenario.name.length === 0) {
       setHasError(true);
@@ -58,26 +60,26 @@ function NewScenario(props) {
     }
   };
 
-  const handleChange = inputType => event => {
+  const handleChange = (inputType) => (event) => {
     switch (inputType) {
       default:
         break;
       case "NAME":
         setNewScenario({
           ...newScenario,
-          name: event.target.value.slice(0, 50)
+          name: event.target.value.slice(0, 50),
         });
         break;
       case "DESCRIPTION":
         setNewScenario({
           ...newScenario,
-          description: event.target.value.slice(0, 280)
+          description: event.target.value.slice(0, 280),
         });
         break;
     }
   };
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(`/create/1-scenario-choice`);
   };
@@ -86,11 +88,15 @@ function NewScenario(props) {
     <div>
       <div>
         <Typography color="primary" variant="h1">
-          <Inverted round>1</Inverted> Crée ton nouveau{" "}
-          <Inverted>scénario</Inverted> !
+          <Inverted round>1</Inverted>{" "}
+          <Trans i18nKey="new_scenario_title">
+            Crée ton nouveau <Inverted>scénario</Inverted> !
+          </Trans>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Choisis ton titre<span style={{ color: "red" }}>*</span> :
+          <Trans i18nKey="new_scenario_title_label">
+            Choisis ton titre<span style={{ color: "red" }}>*</span> :
+          </Trans>
           <div>
             <TextField
               value={newScenario.name || ""}
@@ -99,7 +105,7 @@ function NewScenario(props) {
               error={hasError}
               className={hasError ? "shake" : ""}
               id="scenarioName"
-              placeholder="Mon scénario"
+              placeholder={t("new_scenario_title_placeholder")}
               fullWidth
               style={{ marginTop: "0.5rem" }}
               variant="outlined"
@@ -110,7 +116,7 @@ function NewScenario(props) {
         </Typography>
 
         <Typography color="inherit" variant="h2" style={{ marginTop: "1rem" }}>
-          Fais en une rapide description :
+          {t("new_scenario_desc_label")}
           <div>
             <TextField
               value={newScenario.description || ""}
@@ -118,7 +124,7 @@ function NewScenario(props) {
               required
               id="scenarioDescription"
               multiline
-              placeholder="Ma description"
+              placeholder={t("new_scenario_desc_placeholder")}
               fullWidth
               style={{ marginTop: "0.5rem" }}
               variant="outlined"
@@ -144,7 +150,7 @@ function NewScenario(props) {
                 href={`/create/1-scenario-choice?themeId=${props.themeId}`}
                 onClick={handleBack}
               >
-                Annuler
+                {t("cancel")}
               </Button>
               <Button
                 variant="contained"
@@ -152,7 +158,7 @@ function NewScenario(props) {
                 onClick={handleSubmit}
                 endIcon={<ArrowForwardIcon />}
               >
-                Suivant
+                {t("next")}
               </Button>
             </div>
           </Hidden>
@@ -163,7 +169,7 @@ function NewScenario(props) {
               style={{ width: "100%", marginTop: "2rem" }}
               onClick={handleSubmit}
             >
-              Suivant
+              {t("next")}
             </Button>
           </Hidden>
         </Typography>
@@ -177,7 +183,7 @@ NewScenario.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  addLocalScenario: PropTypes.func.isRequired
+  addLocalScenario: PropTypes.func.isRequired,
 };
 
 export default withRouter(NewScenario);

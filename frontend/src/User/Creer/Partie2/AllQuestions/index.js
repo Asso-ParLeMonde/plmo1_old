@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useTranslation, Trans } from "react-i18next";
 
 import { Typography, Button, Hidden } from "@material-ui/core";
 
@@ -12,12 +13,13 @@ import { editQuestion, deleteQuestion } from "../../components/questionRequest";
 import { addPlan } from "../../components/planRequest";
 
 function AllQuestions(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const { project, updateProject, askSaveProject } = useContext(
     ProjectServiceContext
   );
 
-  const saveQuestionsOrder = questions => {
+  const saveQuestionsOrder = (questions) => {
     if (!isLoggedIn() || project.id === null) {
       return;
     }
@@ -38,17 +40,17 @@ function AllQuestions(props) {
     Promise.all(requests).catch();
   };
 
-  const setQuestions = questions => {
+  const setQuestions = (questions) => {
     updateProject({ questions });
     if (
-      project.questions.map(q => q.id).join(",") !==
-      questions.map(q => q.id).join(",")
+      project.questions.map((q) => q.id).join(",") !==
+      questions.map((q) => q.id).join(",")
     ) {
       saveQuestionsOrder(questions);
     }
   };
 
-  const delQuestion = async index => {
+  const delQuestion = async (index) => {
     await deleteQuestion(
       axiosLoggedRequest,
       isLoggedIn,
@@ -58,12 +60,12 @@ function AllQuestions(props) {
     );
   };
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice/new`);
   };
 
-  const goNext = async p => {
+  const goNext = async (p) => {
     const createOnePlanPromises = [];
     for (const [index, question] of p.questions.entries()) {
       if ((question.plans || []).length === 0) {
@@ -76,10 +78,10 @@ function AllQuestions(props) {
     props.history.push(`/create/3-storyboard-and-filming-schedule`);
   };
 
-  const handleNext = event => {
+  const handleNext = (event) => {
     event.preventDefault();
     if (project.id === null) {
-      askSaveProject(p => {
+      askSaveProject((p) => {
         goNext(p).catch();
       });
     } else {
@@ -91,11 +93,13 @@ function AllQuestions(props) {
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
         <Typography color="primary" variant="h1">
-          <Inverted round>2</Inverted> Mes <Inverted>questions</Inverted>
+          <Inverted round>2</Inverted>{" "}
+          <Trans i18nKey="part2_title">
+            Mes <Inverted>questions</Inverted>
+          </Trans>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Pour structurer votre scénario, nous vous proposons de sélectionner
-          les questions qui feraient sens.
+          {t("part2_desc")}
         </Typography>
         <Button
           component="a"
@@ -106,10 +110,10 @@ function AllQuestions(props) {
           style={{
             textTransform: "none",
             fontWeight: "500",
-            marginTop: "2rem"
+            marginTop: "2rem",
           }}
         >
-          Ajouter une question
+          {t("add_question")}
         </Button>
         <QuestionsList
           questions={project.questions}
@@ -127,7 +131,7 @@ function AllQuestions(props) {
               variant="contained"
               style={{ width: "200px" }}
             >
-              Suivant
+              {t("next")}
             </Button>
           </div>
         </Hidden>
@@ -140,7 +144,7 @@ function AllQuestions(props) {
             variant="contained"
             style={{ width: "100%", marginTop: "2rem" }}
           >
-            Suivant
+            {t("next")}
           </Button>
         </Hidden>
       </div>
@@ -153,7 +157,7 @@ AllQuestions.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default withRouter(AllQuestions);

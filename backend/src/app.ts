@@ -50,6 +50,9 @@ async function main(): Promise<void> {
   /* --- Public pdf --- */
   backRouter.use(`/pdf`, express.static(path.join(__dirname, "pdf/generated")));
 
+  /* --- Public locales --- */
+  backRouter.use(`/locales`, express.static(path.join(__dirname, "locales")));
+
   /* --- 404 Errors --- */
   backRouter.use((_, res: Response) => {
     res.status(404).send("Error 404 - Not found.");

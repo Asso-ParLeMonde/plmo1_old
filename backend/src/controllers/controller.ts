@@ -139,6 +139,19 @@ export function tempImage(data: decoratorParams & imageParams = { ...defaultPara
   };
 }
 
+export function oneFile({ path, userType }: decoratorParams = defaultParams) {
+  return function getDecorator(target: Controller, _: string, propertyDesciptor: PropertyDescriptor): PropertyDescriptor {
+    const method: RequestHandler = propertyDesciptor.value;
+    if (target.router === undefined) {
+      target.router = Router({ mergeParams: true });
+    }
+    const storage = multer.memoryStorage();
+    const upload = multer({ storage });
+    target.router.post(path || "", authenticate(userType), upload.single("file"), handleErrors(method));
+    return propertyDesciptor;
+  };
+}
+
 export abstract class Controller {
   public router: Router;
   public path: string;
