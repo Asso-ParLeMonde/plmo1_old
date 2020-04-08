@@ -8,6 +8,7 @@ declare module "express-serve-static-core" {
     imageID: number | undefined;
     image: Image | undefined;
     user: User | undefined;
+    query: any;
   }
   interface Response {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
