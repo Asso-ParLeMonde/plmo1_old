@@ -8,7 +8,8 @@ import EditIcon from "@material-ui/icons/Edit";
 import AddButton from "../components/Buttons/AddButton";
 import TableCard from "../components/TableCard";
 import { ThemesServiceContext } from "../../services/ThemesService";
-import ChangeOrderButton from "./components/ChangeOrderButton";
+import ChangeOrderButton from "./components/themeButtons/ChangeOrderButton";
+import ResetOrderButton from "./components/themeButtons/ResetOrderButton";
 
 function Themes() {
   const { getThemes: themesRequest } = useContext(ThemesServiceContext);
@@ -37,7 +38,10 @@ function Themes() {
           link="/admin/themes/new"
           modalTitle="Creation d'un nouveau theme"
         />
-        <ChangeOrderButton themesList={themesList} />
+        <div style={{ display: "flex" }}>
+          <ResetOrderButton themes={themes} setThemesList={setThemesList} />
+          <ChangeOrderButton themesList={themesList} />
+        </div>
       </TableCard>
 
       <TableCard
