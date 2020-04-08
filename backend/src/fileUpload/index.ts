@@ -1,11 +1,13 @@
 import { FirebaseUtils } from "./firebase";
 import { LocalUtils } from "./local";
+import { AwsS3 } from "./s3";
 import { Provider } from "./provider";
 import { Image } from "../entities/image";
 
 const providers: { [p: string]: Provider } = {
   firebase: new FirebaseUtils(),
   local: new LocalUtils(),
+  s3: new AwsS3(),
 };
 
 export async function uploadImage(filename: string, filePath: string): Promise<string | null> {

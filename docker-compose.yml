@@ -20,6 +20,7 @@ services:
       - "5000:5000"
     links:
       - mariaDB
+      - minio
     env_file:
       - ./backend/.env
     restart: always
@@ -36,3 +37,12 @@ services:
       - "33060:33060"
     volumes:
       - ./backend/mariaDB:/var/lib/mysql
+
+  minio:
+    image: minio/minio
+    restart: always
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./backend/data:/data
+    command: server /data
