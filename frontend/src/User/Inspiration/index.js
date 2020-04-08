@@ -1,10 +1,14 @@
 import React from "react";
-import {Typography} from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 function Inspiration() {
+  const { t } = useTranslation();
   return (
     <div>
-      <Typography color="primary" variant="h1">Inspiration</Typography>
+      <Typography color="primary" variant="h1">
+        {t("inspiration")}
+      </Typography>
     </div>
   );
 }

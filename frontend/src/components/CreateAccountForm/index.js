@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 import {
   TextField,
   FormControl,
@@ -10,7 +11,7 @@ import {
   InputAdornment,
   IconButton,
   Button,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { LanguagesServiceContext } from "../../services/LanguagesService";
@@ -29,13 +30,13 @@ export const DEFAULT_USER = {
   languageCode: "",
   password: "",
   passwordConfirm: "",
-  type: 0 // To be handled by an admin
+  type: 0, // To be handled by an admin
 };
 
 export const TYPES = {
   0: "Classe",
   1: "Admin",
-  2: "Super Admin !"
+  2: "Super Admin !",
 };
 
 // eslint-disable-next-line no-control-regex
@@ -43,18 +44,18 @@ const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]
 const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/;
 
 const checks = {
-  managerFirstName: value => value.length > 0,
-  managerLastName: value => value.length > 0,
-  mail: value => emailRegex.test(value),
-  pseudo: value => value.length > 0,
-  password: value => strongPassword.test(value),
-  passwordConfirm: (value, user) => value === user.password
+  managerFirstName: (value) => value.length > 0,
+  managerLastName: (value) => value.length > 0,
+  mail: (value) => emailRegex.test(value),
+  pseudo: (value) => value.length > 0,
+  password: (value) => strongPassword.test(value),
+  passwordConfirm: (value, user) => value === user.password,
 };
 
-const isPseudoAvailable = async pseudo => {
+const isPseudoAvailable = async (pseudo) => {
   const response = await axiosRequest({
     method: "GET",
-    url: `/users/test-pseudo/${pseudo}`
+    url: `/users/test-pseudo/${pseudo}`,
   });
   if (response.complete && !response.error) {
     return response.data.available;
@@ -70,8 +71,9 @@ function CreateAccountForm({
   admin,
   submit,
   buttonLabel,
-  slideTop
+  slideTop,
 }) {
+  const { t } = useTranslation();
   const { getLanguages } = useContext(LanguagesServiceContext);
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({
@@ -82,12 +84,12 @@ function CreateAccountForm({
     pseudoNotAvailable: false,
     password: false,
     passwordConfirm: false,
-    global: false
+    global: false,
   });
   const languages =
     getLanguages.complete && !getLanguages.error ? getLanguages.data : [];
 
-  const handleInputChange = userKey => event => {
+  const handleInputChange = (userKey) => (event) => {
     event.preventDefault();
     if (userKey === "schoolId") {
       const schoolId = parseInt(event.target.value, 10);
@@ -95,22 +97,22 @@ function CreateAccountForm({
       return;
     }
     setUser({ ...user, [userKey]: event.target.value });
-    setErrors(e => ({ ...e, [userKey]: false, global: false }));
+    setErrors((e) => ({ ...e, [userKey]: false, global: false }));
   };
 
-  const handleInputValidations = userKey => event => {
+  const handleInputValidations = (userKey) => (event) => {
     const value = event.target.value || "";
-    setErrors(e => ({
+    setErrors((e) => ({
       ...e,
-      [userKey]: value.length !== 0 && !checks[userKey](value, user)
+      [userKey]: value.length !== 0 && !checks[userKey](value, user),
     }));
     if (
       userKey === "pseudo" &&
       value.length !== 0 &&
       currentUserPseudo !== user.pseudo
     ) {
-      isPseudoAvailable(value).then(result => {
-        setErrors(e => ({ ...e, pseudoNotAvailable: !result }));
+      isPseudoAvailable(value).then((result) => {
+        setErrors((e) => ({ ...e, pseudoNotAvailable: !result }));
       });
     }
   };
@@ -119,7 +121,7 @@ function CreateAccountForm({
     setShowPassword(!showPassword);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Check form validity
     const userKeys = ["managerFirstName", "managerLastName", "mail", "pseudo"];
@@ -130,7 +132,7 @@ function CreateAccountForm({
     for (let userKey of userKeys) {
       if (!checks[userKey](user[userKey], user)) {
         isFormValid = false;
-        setErrors(e => ({ ...e, [userKey]: true }));
+        setErrors((e) => ({ ...e, [userKey]: true }));
       }
     }
     if (
@@ -139,11 +141,11 @@ function CreateAccountForm({
       currentUserPseudo !== user.pseudo
     ) {
       isFormValid = false;
-      setErrors(e => ({ ...e, pseudoNotAvailable: true }));
+      setErrors((e) => ({ ...e, pseudoNotAvailable: true }));
     }
 
     if (!isFormValid) {
-      setErrors(e => ({ ...e, global: true }));
+      setErrors((e) => ({ ...e, global: true }));
       slideTop();
       return;
     }
@@ -172,8 +174,7 @@ function CreateAccountForm({
     >
       {errors.global && (
         <Typography variant="caption" color="error">
-          Votre inscription comporte des erreurs, veuillez les corriger pour
-          continuer.
+          {t("signup_error_msg")}
         </Typography>
       )}
       <TextField
@@ -181,47 +182,47 @@ function CreateAccountForm({
         name="firstname"
         type="text"
         color="secondary"
-        label="Prénom du professeur"
+        label={t("signup_firstname")}
         value={user.managerFirstName || ""}
         onChange={handleInputChange("managerFirstName")}
         variant="outlined"
         fullWidth
         error={errors.managerFirstName}
-        helperText={errors.managerFirstName ? "Requis" : ""}
+        helperText={errors.managerFirstName ? t("signup_required") : ""}
       />
       <TextField
         id="lastname"
         name="lastname"
         type="text"
         color="secondary"
-        label="Nom du professeur"
+        label={t("signup_lastname")}
         value={user.managerLastName || ""}
         onChange={handleInputChange("managerLastName")}
         variant="outlined"
         fullWidth
         error={errors.managerLastName}
-        helperText={errors.managerLastName ? "Requis" : ""}
+        helperText={errors.managerLastName ? t("signup_required") : ""}
       />
       <TextField
         id="email"
         name="email"
         type="email"
         color="secondary"
-        label="E-mail du professeur"
+        label={t("signup_email")}
         value={user.mail || ""}
         onChange={handleInputChange("mail")}
         onBlur={handleInputValidations("mail")}
         variant="outlined"
         fullWidth
         error={errors.mail}
-        helperText={errors.mail ? "Adresse e-mail non valide." : ""}
+        helperText={errors.mail ? t("signup_email_error") : ""}
       />
       <TextField
         id="username"
         name="username"
         type="text"
         color="secondary"
-        label="Pseudo de la classe"
+        label={t("signup_pseudo")}
         value={user.pseudo || ""}
         onChange={handleInputChange("pseudo")}
         onBlur={handleInputValidations("pseudo")}
@@ -230,31 +231,31 @@ function CreateAccountForm({
         error={errors.pseudo || errors.pseudoNotAvailable}
         helperText={
           (errors.pseudo
-            ? "Requis | "
+            ? `${t("signup_required")} | `
             : errors.pseudoNotAvailable
-            ? "Pseudo déjà utilisé |"
-            : "") + "Utilisé pour la connection par les élèves."
+            ? `${t("signup_pseudo_error")} |`
+            : "") + t("signup_pseudo_help")
         }
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="school">École</InputLabel>
+        <InputLabel htmlFor="school">{t("signup_school")}</InputLabel>
         <Select
           native
           value={user.schoolId === undefined ? "" : user.schoolId}
           onChange={handleInputChange("schoolId")}
-          label="École"
+          label={t("signup_school")}
           inputProps={{
             name: "school",
-            id: "school"
+            id: "school",
           }}
         >
           <option aria-label="None" value="" />
-          <option value={0}>Mon école n&apos;apparait pas dans la liste</option>
+          <option value={0}>{t("signup_school_missing")}</option>
         </Select>
         {user.schoolId === 0 && (
           <FormHelperText>
             <Link href="#" target="_blank">
-              Ajouter mon école ?
+              {t("signup_school_add")}
             </Link>
           </FormHelperText>
         )}
@@ -264,10 +265,10 @@ function CreateAccountForm({
         freeSolo
         options={frenchClasses}
         onSelect={handleInputChange("level")}
-        renderInput={params => (
+        renderInput={(params) => (
           <TextField
             {...params}
-            label="Niveau de la classe"
+            label={t("signup_level")}
             value={user.level || ""}
             onChange={handleInputChange("level")}
             variant="outlined"
@@ -276,18 +277,18 @@ function CreateAccountForm({
         )}
       />
       <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="languageCode">Langue de préférence</InputLabel>
+        <InputLabel htmlFor="languageCode">{t("signup_language")}</InputLabel>
         <Select
           native
           value={user.languageCode}
           onChange={handleInputChange("languageCode")}
-          label="Langue de préférence"
+          label={t("signup_language")}
           inputProps={{
             name: "languageCode",
-            id: "languageCode"
+            id: "languageCode",
           }}
         >
-          {languages.map(l => (
+          {languages.map((l) => (
             <option value={l.value} key={l.id}>
               {l.label}
             </option>
@@ -297,18 +298,18 @@ function CreateAccountForm({
 
       {admin ? (
         <FormControl variant="outlined" color="secondary">
-          <InputLabel htmlFor="type">Type de compte</InputLabel>
+          <InputLabel htmlFor="type">{t("signup_type")}</InputLabel>
           <Select
             native
             value={user.type || 0}
             onChange={handleInputChange("type")}
-            label="Type de compte"
+            label={t("signup_type")}
             inputProps={{
               name: "type",
-              id: "type"
+              id: "type",
             }}
           >
-            {Object.keys(TYPES).map(typeKey => (
+            {Object.keys(TYPES).map((typeKey) => (
               <option value={typeKey} key={typeKey}>
                 {TYPES[typeKey]}
               </option>
@@ -322,7 +323,7 @@ function CreateAccountForm({
             color="secondary"
             id="password"
             name="password"
-            label="Mot de passe"
+            label={t("login_password")}
             value={user.password || ""}
             onChange={handleInputChange("password")}
             onBlur={handleInputValidations("password")}
@@ -338,22 +339,18 @@ function CreateAccountForm({
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
             fullWidth
             error={errors.password}
-            helperText={
-              errors.password
-                ? "Mot de passe trop faible. Il doit contenir au moins 8 charactères avec des lettres minuscules, majuscules et des chiffres."
-                : ""
-            }
+            helperText={errors.password ? t("signup_password_error") : ""}
           />
           <TextField
             type={showPassword ? "text" : "password"}
             color="secondary"
             id="passwordComfirm"
             name="passwordComfirm"
-            label="Confirmer le mot de passe"
+            label={t("signup_password_confirm")}
             value={user.passwordConfirm || ""}
             onChange={handleInputChange("passwordConfirm")}
             onBlur={handleInputValidations("passwordConfirm")}
@@ -369,12 +366,12 @@ function CreateAccountForm({
                     {showPassword ? <Visibility /> : <VisibilityOff />}
                   </IconButton>
                 </InputAdornment>
-              )
+              ),
             }}
             fullWidth
             error={errors.passwordConfirm}
             helperText={
-              errors.passwordConfirm ? "Mots de passe différents." : ""
+              errors.passwordConfirm ? t("signup_password_confirm_error") : ""
             }
           />
         </React.Fragment>
@@ -386,7 +383,7 @@ function CreateAccountForm({
         value="Submit"
         onClick={handleSubmit}
       >
-        {buttonLabel}
+        {buttonLabel || t("signup_button")}
       </Button>
     </form>
   );
@@ -400,7 +397,7 @@ CreateAccountForm.propTypes = {
   noAutoComplete: PropTypes.bool,
   admin: PropTypes.bool,
   buttonLabel: PropTypes.string,
-  slideTop: PropTypes.func
+  slideTop: PropTypes.func,
 };
 
 CreateAccountForm.defaultProps = {
@@ -410,10 +407,10 @@ CreateAccountForm.defaultProps = {
   submit: () => {},
   noAutoComplete: false,
   admin: false,
-  buttonLabel: "S'inscrire !",
+  buttonLabel: "",
   slideTop: () => {
     window.scrollTo(0, 0);
-  }
+  },
 };
 
 export default CreateAccountForm;

@@ -3,18 +3,20 @@ import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { Button, Link, TextField, Typography } from "@material-ui/core";
 import { axiosRequest } from "../../components/axiosRequest";
+import { useTranslation } from "react-i18next";
 
 const errorMessages = {
-  0: "Une erreur inconnue est survenue. Veuillez réessayer plus tard...",
-  1: "E-mail invalide"
+  0: "login_unknown_error",
+  1: "login_email_error",
 };
 
 function ResetPassword(props) {
+  const { t } = useTranslation();
   const [email, setEmail] = useState("");
   const [errorCode, setErrorCode] = useState(-1);
   const [successMsg, setSuccessMsg] = useState("");
 
-  const handleUserNameInputChange = event => {
+  const handleUserNameInputChange = (event) => {
     setEmail(event.target.value);
     setErrorCode(-1);
   };
@@ -26,19 +28,17 @@ function ResetPassword(props) {
       method: "POST",
       url: "/login/reset-password",
       data: {
-        email
-      }
+        email,
+      },
     });
     if (response.error && response.complete) {
       setErrorCode(response.data.errorCode);
     } else {
-      setSuccessMsg(
-        "Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !"
-      );
+      setSuccessMsg("forgot_password_success");
     }
   };
 
-  const handleLinkClick = path => event => {
+  const handleLinkClick = (path) => (event) => {
     event.preventDefault();
     props.history.push(path);
   };
@@ -46,18 +46,18 @@ function ResetPassword(props) {
   return (
     <div className="text-center">
       <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>
-        Réinitialiser le mot de passe
+        {t("forgot_password_title")}
       </Typography>
       <form className="login-form" noValidate autoComplete="off">
         {errorCode === 0 && (
           <Typography variant="caption" color="error">
-            {errorMessages[0]}
+            {t(errorMessages[0])}
           </Typography>
         )}
 
         {successMsg.length > 0 && (
           <Typography variant="caption" color="primary">
-            {successMsg}
+            {t(successMsg)}
           </Typography>
         )}
 
@@ -66,22 +66,22 @@ function ResetPassword(props) {
           name="username"
           type="text"
           color="secondary"
-          label="E-mail ou pseudo de la classe"
+          label={t("login_username")}
           value={email}
           onChange={handleUserNameInputChange}
           variant="outlined"
           fullWidth
           error={errorCode === 1}
-          helperText={errorCode === 1 ? errorMessages[1] : null}
+          helperText={errorCode === 1 ? t(errorMessages[1]) : null}
         />
 
         <Button variant="contained" color="secondary" onClick={submit}>
-          Réinitialiser
+          {t("forgot_password_button")}
         </Button>
 
         <div className="text-center">
           <Link href="/login" onClick={handleLinkClick("/login")}>
-            Se connecter
+            {t("login_connect")}
           </Link>
         </div>
       </form>
@@ -92,7 +92,7 @@ function ResetPassword(props) {
 ResetPassword.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ResetPassword);

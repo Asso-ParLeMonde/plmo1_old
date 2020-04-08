@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import qs from "query-string";
+import { useTranslation } from "react-i18next";
 import {
   Typography,
   TextField,
@@ -10,7 +11,7 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
-  Link
+  Link,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { UserServiceContext } from "../../services/UserService";
@@ -18,19 +19,20 @@ import { UserServiceContext } from "../../services/UserService";
 import "./login.css";
 
 const errorMessages = {
-  0: "Une erreur inconnue est survenue. Veuillez réessayer plus tard...",
-  1: "E-mail ou pseudo invalide",
-  2: "Mot de passe invalide",
-  3: "Compte bloqué, trop de tentatives de connexion. Veuillez réinitialiser votre mot de passe."
+  0: "login_unknown_error",
+  1: "login_username_error",
+  2: "login_password_error",
+  3: "login_account_error",
 };
 
 function Login(props) {
+  const { t } = useTranslation();
   const { login } = useContext(UserServiceContext);
   const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useState({
     username: "",
     password: "",
-    localSave: false
+    localSave: false,
   });
   const [errorCode, setErrorCode] = useState(-1);
   const [redirect, setRedirect] = useState("/");
@@ -48,14 +50,14 @@ function Login(props) {
     }
   }, [props.location.search]);
 
-  const handleUserNameInputChange = event => {
+  const handleUserNameInputChange = (event) => {
     setUser({ ...user, username: event.target.value });
     if (errorCode === 1) {
       setErrorCode(-1);
     }
   };
 
-  const handlePasswordInputChange = event => {
+  const handlePasswordInputChange = (event) => {
     setUser({ ...user, password: event.target.value });
     if (errorCode === 2) {
       setErrorCode(-1);
@@ -70,18 +72,18 @@ function Login(props) {
     setShowPassword(!showPassword);
   };
 
-  const submit = async event => {
+  const submit = async (event) => {
     event.preventDefault();
     setErrorCode(-1);
     const response = await login(user.username, user.password, user.localSave);
     if (response.success) {
       props.history.push(redirect);
     } else {
-      setErrorCode(response.errorCode);
+      setErrorCode(response.errorCode || 0);
     }
   };
 
-  const handleLinkClick = path => event => {
+  const handleLinkClick = (path) => (event) => {
     event.preventDefault();
     props.history.push(path);
   };
@@ -89,14 +91,14 @@ function Login(props) {
   return (
     <div className="text-center">
       <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>
-        {redirect === "/admin"
-          ? "Connexion à votre compte"
-          : "Connexion à votre compte classe"}
+        {redirect.slice(0, 6) === "/admin"
+          ? t("login_title_admin")
+          : t("login_title")}
       </Typography>
       <form className="login-form" noValidate>
         {(errorCode === 0 || errorCode === 3) && (
           <Typography variant="caption" color="error">
-            {errorMessages[errorCode]}
+            {t(errorMessages[errorCode])}
           </Typography>
         )}
         <TextField
@@ -104,20 +106,20 @@ function Login(props) {
           name="username"
           type="text"
           color="secondary"
-          label="E-mail ou pseudo de la classe"
+          label={t("login_username")}
           value={user.username}
           onChange={handleUserNameInputChange}
           variant="outlined"
           fullWidth
           error={errorCode === 1}
-          helperText={errorCode === 1 ? errorMessages[1] : null}
+          helperText={errorCode === 1 ? t(errorMessages[1]) : null}
         />
         <TextField
           type={showPassword ? "text" : "password"}
           color="secondary"
           id="password"
           name="password"
-          label="Mot de passe"
+          label={t("login_password")}
           value={user.password}
           onChange={handlePasswordInputChange}
           variant="outlined"
@@ -132,11 +134,11 @@ function Login(props) {
                   {showPassword ? <Visibility /> : <VisibilityOff />}
                 </IconButton>
               </InputAdornment>
-            )
+            ),
           }}
           fullWidth
           error={errorCode === 2}
-          helperText={errorCode === 2 ? errorMessages[2] : null}
+          helperText={errorCode === 2 ? t(errorMessages[2]) : null}
         />
         <div>
           <FormControlLabel
@@ -147,7 +149,7 @@ function Login(props) {
                 value={user.localSave}
               />
             }
-            label="Se souvenir de moi"
+            label={t("login_remember_me")}
           />
         </div>
         <Button
@@ -157,20 +159,20 @@ function Login(props) {
           value="Submit"
           onClick={submit}
         >
-          Se connecter
+          {t("login_connect")}
         </Button>
         <div className="text-center">
           <Link
             href="/reset-password"
             onClick={handleLinkClick("/reset-password")}
           >
-            Mot de passe oublié ?
+            {t("login_forgot_password")}
           </Link>
         </div>
         <div className="text-center">
-          Nouveau sur Par Le Monde ?{" "}
+          {t("login_new")}{" "}
           <Link href="/signup" onClick={handleLinkClick("/signup")}>
-            S&apos;inscrire
+            {t("login_signup")}
           </Link>
         </div>
       </form>
@@ -181,7 +183,7 @@ function Login(props) {
 Login.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(Login);
