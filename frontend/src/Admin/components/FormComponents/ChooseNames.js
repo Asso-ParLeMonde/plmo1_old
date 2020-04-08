@@ -8,12 +8,12 @@ import { LanguagesServiceContext } from "../../../services/LanguagesService";
 
 const useStyles = makeStyles(() => ({
   title: {
-    fontSize: 16
+    fontSize: 16,
   },
   buttonContainer: {
     display: "flex",
-    justifyContent: "flex-end"
-  }
+    justifyContent: "flex-end",
+  },
 }));
 
 function ChooseNames(props) {
@@ -23,7 +23,7 @@ function ChooseNames(props) {
 
   function namesInputs() {
     let inputs = [];
-    const languages = languagesContext.filter(l =>
+    const languages = languagesContext.filter((l) =>
       props.selectedLanguageList.includes(l.value)
     );
 
@@ -61,7 +61,7 @@ ChooseNames.propTypes = {
   selectedLanguageList: PropTypes.array.isRequired,
   setSelectedLanguageList: PropTypes.func.isRequired,
   newElement: PropTypes.object.isRequired,
-  handleChange: PropTypes.func.isRequired
+  handleChange: PropTypes.func.isRequired,
 };
 
 export default ChooseNames;

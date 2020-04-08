@@ -43,7 +43,7 @@ ChooseContainer.propTypes = {
   newElement: PropTypes.object.isRequired,
   handleChange: PropTypes.func.isRequired,
   selectedLanguageList: PropTypes.array.isRequired,
-  setSelectedLanguageList: PropTypes.func.isRequired
+  setSelectedLanguageList: PropTypes.func.isRequired,
 };
 
 export default ChooseContainer;

@@ -3,19 +3,19 @@ import PropTypes from "prop-types";
 
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
-import { postScenario, putScenario } from "../scenarioRequest";
+import { postAdminScenario, putAdminScenario } from "../scenarioRequest";
 import { UserServiceContext } from "../../../../services/UserService";
 
 const DEFAULT_SCENARIO = {
   id: null,
   names: {
-    fr: null
+    fr: null,
   },
   descriptions: {
-    fr: null
+    fr: null,
   },
   themeId: null,
-  isDefault: true
+  isDefault: true,
 };
 
 function ScenarioModal(props) {
@@ -28,7 +28,7 @@ function ScenarioModal(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
   function handleChange(enumCase, event) {
@@ -40,8 +40,8 @@ function ScenarioModal(props) {
           ...newScenario,
           names: {
             ...newScenario.names,
-            [event.target.id]: event.target.value
-          }
+            [event.target.id]: event.target.value,
+          },
         });
         break;
       case "DESCRIPTION":
@@ -49,14 +49,14 @@ function ScenarioModal(props) {
           ...newScenario,
           descriptions: {
             ...newScenario.descriptions,
-            [event.target.id]: event.target.value
-          }
+            [event.target.id]: event.target.value,
+          },
         });
         break;
       case "THEMEID":
         setNewScenario({
           ...newScenario,
-          themeId: event.target.value
+          themeId: event.target.value,
         });
         break;
     }
@@ -66,17 +66,27 @@ function ScenarioModal(props) {
     event.preventDefault();
 
     if (props.scenario) {
-      await putScenario(
+      await putAdminScenario(
         axiosLoggedRequest,
-        props.scenario,
         newScenario,
-        setRes
+        setRes,
+        "Succès lors dans la modification du scenario",
+        "Erreur lors de la modification du scenario",
+        props.history,
+        updateScenarios
       );
     } else {
-      await postScenario(axiosLoggedRequest, newScenario, setRes);
+      await postAdminScenario(
+        axiosLoggedRequest,
+        newScenario,
+        setRes,
+        "Succès lors dans la creation du scenario",
+        "Erreur lors de la creation du scenario",
+        props.history,
+        updateScenarios
+      );
     }
 
-    updateScenarios().catch();
     handleCloseModal();
   }
 
@@ -105,7 +115,7 @@ ScenarioModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default ScenarioModal;

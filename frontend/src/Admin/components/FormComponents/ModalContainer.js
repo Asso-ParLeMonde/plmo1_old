@@ -9,52 +9,19 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 import "./formComponents.css";
-import LanguageForm from "../../Languages/components/LanguageForm";
 import Notifications from "../../../components/Notifications";
-import ThemeForm from "../../Themes/components/ThemeForm";
-import ScenarioForm from "../../Scenarios/components/ScenarioForm";
-import QuestionForm from "../../Questions/components/QuestionForm";
+import ShowCorrectForm from "./components/ModalComponents/ShowCorrectForm";
 
 const useStyles = makeStyles(() => ({
   dialogContent: {
     display: "flex",
     flexDirection: "column",
-    padding: "8px 24px 24px"
-  }
+    padding: "8px 24px 24px",
+  },
 }));
 
 function ModalContainer(props) {
   const classes = useStyles();
-
-  function showCorrectForm() {
-    switch (props.formDescription) {
-      default:
-        return <div />;
-      case "THEME":
-        return (
-          <ThemeForm
-            theme={props.newElement}
-            handleChange={props.handleChange}
-          />
-        );
-      case "SCENARIO":
-        return (
-          <ScenarioForm
-            scenario={props.newElement}
-            handleChange={props.handleChange}
-          />
-        );
-      case "QUESTION":
-        return (
-          <QuestionForm
-            question={props.newElement}
-            handleChange={props.handleChange}
-          />
-        );
-      case "LANGUAGE":
-        return <LanguageForm handleChange={props.handleChange} />;
-    }
-  }
 
   return (
     <React.Fragment>
@@ -65,7 +32,11 @@ function ModalContainer(props) {
       >
         <DialogTitle id="alert-dialog-title">{props.modalTitle}</DialogTitle>
         <DialogContent className={classes.dialogContent}>
-          {showCorrectForm()}
+          <ShowCorrectForm
+            formDescription={props.formDescription}
+            newElement={props.newElement}
+            handleChange={props.handleChange}
+          />
         </DialogContent>
         <DialogActions>
           <Button onClick={props.handleCloseModal} variant="outlined">
@@ -94,7 +65,7 @@ ModalContainer.propTypes = {
   formDescription: PropTypes.string.isRequired,
   handleCloseModal: PropTypes.func.isRequired,
   handleConfirmation: PropTypes.func.isRequired,
-  res: PropTypes.object.isRequired
+  res: PropTypes.object.isRequired,
 };
 
 export default ModalContainer;

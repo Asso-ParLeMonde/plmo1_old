@@ -4,8 +4,8 @@ import PropTypes from "prop-types";
 
 import { ScenariosServiceContext } from "../../../../services/ScenariosService";
 import { UserServiceContext } from "../../../../services/UserService";
-import { handleScenarioButtonRequest } from "./ScenarioButtonRequests";
 import DefaultDeleteButton from "../../../components/DefaultDeleteButton";
+import { deleteAdminScenario } from "../scenarioRequest";
 
 function ScenarioRemoveButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -14,14 +14,13 @@ function ScenarioRemoveButton(props) {
   const [res, setRes] = useState({
     complete: false,
     error: false,
-    message: ""
+    message: "",
   });
 
   async function handleRemove(event) {
     event.preventDefault();
-    await handleScenarioButtonRequest(
+    await deleteAdminScenario(
       axiosLoggedRequest,
-      "DELETE",
       props.scenario,
       setRes,
       "Succès lors de la suppression du scenario",
@@ -47,7 +46,7 @@ ScenarioRemoveButton.propTypes = {
   scenario: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default withRouter(ScenarioRemoveButton);

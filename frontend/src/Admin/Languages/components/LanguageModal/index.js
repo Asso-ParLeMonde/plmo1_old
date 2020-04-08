@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import ModalContainer from "../../../components/FormComponents/ModalContainer";
 import { LanguagesServiceContext } from "../../../../services/LanguagesService";
 import { UserServiceContext } from "../../../../services/UserService";
+import { postAdminUser } from "../../../Users/components/userRequest";
 
 function LanguageModal(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -15,42 +16,26 @@ function LanguageModal(props) {
   const [res, setRes] = useState({
     error: false,
     complete: false,
-    message: ""
+    message: "",
   });
 
-  const handleChange = selectedOption => {
+  const handleChange = (selectedOption) => {
     setNewLanguage({
-      label: selectedOption.name,
-      value: selectedOption.code
+      label: (selectedOption || {}).name || "",
+      value: (selectedOption || {}).code || "",
     });
   };
 
   async function handleConfirmation(event) {
-    event.preventDefault();
-
-    const request = await axiosLoggedRequest({
-      method: "POST",
-      url: "/languages",
-      data: newLanguage
-    });
-
-    if (request.error === true && request.complete === true) {
-      setRes({
-        error: true,
-        complete: true,
-        message: "Erreur lors de la creation de la langue"
-      });
-    }
-
-    if (request.error === false && request.complete === true) {
-      setRes({
-        error: false,
-        complete: true,
-        message: "Succès lors de la création de la langue"
-      });
-    }
-
-    updateLanguages().catch();
+    await postAdminUser(
+      axiosLoggedRequest,
+      newLanguage,
+      setRes,
+      "Succès lors de la création de la langue",
+      "Erreur lors de la creation de la langue",
+      props.history,
+      updateLanguages
+    );
     handleCloseModal();
   }
 
@@ -79,7 +64,7 @@ LanguageModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   setIsOpen: PropTypes.func.isRequired,
   modalTitle: PropTypes.string.isRequired,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 export default LanguageModal;

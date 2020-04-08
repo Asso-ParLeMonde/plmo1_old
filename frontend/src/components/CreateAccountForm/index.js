@@ -376,15 +376,17 @@ function CreateAccountForm({
           />
         </React.Fragment>
       )}
-      <Button
-        variant="contained"
-        color={admin ? "primary" : "secondary"}
-        type="submit"
-        value="Submit"
-        onClick={handleSubmit}
-      >
-        {buttonLabel || t("signup_button")}
-      </Button>
+      {!admin && (
+        <Button
+          variant="contained"
+          color={admin ? "primary" : "secondary"}
+          type="submit"
+          value="Submit"
+          onClick={handleSubmit}
+        >
+          {buttonLabel || t("signup_button")}
+        </Button>
+      )}
     </form>
   );
 }
