@@ -25,7 +25,7 @@ export class ThemeScenariosController extends Controller {
     const conditions: { where: { theme: { id: number }; languageCode?: string; isDefault?: boolean } } = { where: { theme: { id: themeId } } };
     let conditions2: { where: [{ theme: { id: number }; languageCode?: string; isDefault?: boolean }, { theme: { id: number }; user: { id: number } }] };
     if (req.query.languageCode !== undefined) {
-      conditions.where.languageCode = req.query.languageCode;
+      conditions.where.languageCode = req.query.languageCode as string;
     }
     if (req.query.isDefault !== undefined) {
       conditions.where.isDefault = req.query.isDefault === "true";
