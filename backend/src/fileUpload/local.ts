@@ -62,7 +62,6 @@ export class LocalUtils extends Provider {
           .slice(0, -1)
           .join("/"),
       );
-      console.log(directory);
       await fs.mkdirs(directory);
       await new Promise((resolve, reject) => {
         fs.writeFile(path.join(__dirname, "../..", "dist/files", filename), filedata, err => {

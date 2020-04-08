@@ -10,11 +10,8 @@ function Reglages() {
     AppLanguageServiceContext
   );
   const { getLanguages } = useContext(LanguagesServiceContext);
-
-  let languages = [];
-  if (getLanguages.complete && !getLanguages.error) {
-    languages = getLanguages.data;
-  }
+  const languages =
+    getLanguages.complete && !getLanguages.error ? getLanguages.data : [];
 
   const handleLanguageChange = (event) => {
     setSelectedLanguage(event.target.value);
