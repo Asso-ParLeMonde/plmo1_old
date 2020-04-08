@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { withRouter, Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { Typography, TextField, Button, withStyles } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 import { UserServiceContext } from "../../../services/UserService";
 import Notifications from "../../../components/Notifications";
@@ -15,6 +16,7 @@ const RedButton = withStyles((theme) => ({
 }))(Button);
 
 function EditProjet(props) {
+  const { t } = useTranslation();
   const { isLoggedIn, axiosLoggedRequest } = useContext(UserServiceContext);
   const projectId = parseInt(props.location.pathname.split("/")[3], 10) || 0;
   const [project, setProject] = useState(null);
@@ -123,7 +125,7 @@ function EditProjet(props) {
             variant="h1"
             style={{ display: "inline" }}
           >
-            Projet :
+            {t("project")}
           </Typography>
           <Typography
             color="inherit"
@@ -145,7 +147,7 @@ function EditProjet(props) {
               name="project-name"
               type="text"
               color="secondary"
-              label="Nom du projet"
+              label={t("project_name")}
               value={project.title || ""}
               onChange={handleEditTitle}
               variant="outlined"
@@ -162,11 +164,11 @@ function EditProjet(props) {
               value="Submit"
               onClick={handleSaveProject}
             >
-              Enregistrer
+              {t("save")}
             </Button>
 
             <RedButton variant="outlined" onClick={toggleDeleteModal(false)}>
-              Supprimer le projet
+              {t("project_delete")}
             </RedButton>
 
             <Button
@@ -175,16 +177,16 @@ function EditProjet(props) {
               onClick={handleGoBack}
               style={{ margin: "4rem 0 2rem 0" }}
             >
-              Retour
+              {t("back")}
             </Button>
           </form>
         </div>
       </div>
       <CustomModal
         open={showDeleteModal}
-        title="Supprimer le projet ?"
-        cancelLabel="Annuler"
-        confirmLabel="Supprimer le projet"
+        title={t("project_delete_title")}
+        cancelLabel={t("cancel")}
+        confirmLabel={t("project_delete_confirm")}
         onClose={toggleDeleteModal(false)}
         onConfirm={toggleDeleteModal(true)}
         ariaLabelledBy="delete-project-title"
@@ -194,10 +196,9 @@ function EditProjet(props) {
       >
         <div id="delete-project-desc">
           <p>
-            Voulez-vous vraiment supprimer le projet{" "}
-            <strong>{project.title}</strong> ?
+            {t("project_delete_desc1", { projectName: project.title })}
             <br />
-            Attention ! Cette action est irréversible !
+            {t("project_delete_desc2")}
           </p>
         </div>
       </CustomModal>

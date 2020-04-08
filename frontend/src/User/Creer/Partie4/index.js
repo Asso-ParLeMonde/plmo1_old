@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import QRCode from "qrcode.react";
 import { getQuestions } from "../../../util/questions";
+import { useTranslation, Trans } from "react-i18next";
 
 import {
   Breadcrumbs,
@@ -30,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Partie4(props) {
+  const { t } = useTranslation();
   const classes = useStyles();
   const { axiosLoggedRequest } = useContext(UserServiceContext);
   const { project } = useContext(ProjectServiceContext);
@@ -77,7 +79,7 @@ function Partie4(props) {
               aria-label="breadcrumb"
             >
               <Link color="inherit" href="/create" onClick={handleHome}>
-                Tout les thèmes
+                {t("all_themes")}
               </Link>
               <Typography color="textPrimary">{project.themeName}</Typography>
             </Breadcrumbs>
@@ -93,7 +95,10 @@ function Partie4(props) {
             }}
           >
             <Typography color="primary" variant="h1">
-              <Inverted round>4</Inverted> À votre <Inverted>caméra</Inverted> !
+              <Inverted round>4</Inverted>{" "}
+              <Trans i18nKey="part4_title">
+                À votre <Inverted>caméra</Inverted> !
+              </Trans>
               <VideocamIcon
                 fontSize="large"
                 color="primary"
@@ -112,7 +117,7 @@ function Partie4(props) {
               <CircularProgress color="inherit" />
             </Backdrop>
             <Typography variant="h2" style={{ marginBottom: "1rem" }}>
-              Téléchargez votre plan de tournage :
+              {t("part4_subtitle1")}
             </Typography>
             <div className="text-center">
               <Button
@@ -121,15 +126,14 @@ function Partie4(props) {
                 color="secondary"
                 onClick={generatePDF}
               >
-                plan de tournage
+                {t("part4_pdf_button")}
               </Button>
             </div>
 
             {url !== null && (
               <>
                 <Typography variant="h2" style={{ margin: "1rem 0" }}>
-                  Flashez ce code QR pour accéder directement à
-                  l&apos;application et commencer à filmer !
+                  {t("part4_subtitle2")}
                 </Typography>
                 <div className="text-center">
                   <QRCode size={192} value={url} />

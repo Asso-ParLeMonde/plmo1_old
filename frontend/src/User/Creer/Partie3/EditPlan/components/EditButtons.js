@@ -1,18 +1,26 @@
-import React, {useRef, useState} from "react";
+import React, { useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
-import {Backdrop, Button, CircularProgress, Hidden, makeStyles, Typography} from "@material-ui/core";
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
-import CreateIcon from '@material-ui/icons/Create';
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  Hidden,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
+import CreateIcon from "@material-ui/icons/Create";
 
-import Camera from 'react-html5-camera-photo';
-import 'react-html5-camera-photo/build/css/index.css';
+import Camera from "react-html5-camera-photo";
+import "react-html5-camera-photo/build/css/index.css";
 
 import "./upload-plan.css";
 import UploadPlan from "./UploadPlan";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   verticalLine: {
     backgroundColor: theme.palette.secondary.main,
     flex: 1,
@@ -30,11 +38,12 @@ const useStyles = makeStyles(theme => ({
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
+    color: "#fff",
   },
 }));
 
 function EditButtons(props) {
+  const { t } = useTranslation();
   const classes = useStyles();
 
   const inputRef = useRef(null);
@@ -66,10 +75,12 @@ function EditButtons(props) {
 
   const handleDraw = (event) => {
     event.preventDefault();
-    props.history.push(`/create/3-storyboard-and-filming-schedule/draw?question=${props.questionIndex}&plan=${props.planIndex}`);
+    props.history.push(
+      `/create/3-storyboard-and-filming-schedule/draw?question=${props.questionIndex}&plan=${props.planIndex}`
+    );
   };
 
-  const toggleShowCamera = show => () => {
+  const toggleShowCamera = (show) => () => {
     setShowCamera(show);
   };
 
@@ -82,25 +93,31 @@ function EditButtons(props) {
   if (showCamera) {
     content = (
       <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-        <Camera onTakePhoto={handlePhotoTaken}/>
+        <Camera onTakePhoto={handlePhotoTaken} />
         <Button
           variant="outlined"
           color="secondary"
           className="mobile-full-width"
           onClick={toggleShowCamera(false)}
         >
-          Annuler
+          {t("cancel")}
         </Button>
       </div>
     );
   } else if (imageUrl !== null && imageUrl.length > 0) {
-    content = <UploadPlan imageUrl={imageUrl} handleClearInput={handleClearInput} handleSubmit={submitImage}/>;
+    content = (
+      <UploadPlan
+        imageUrl={imageUrl}
+        handleClearInput={handleClearInput}
+        handleSubmit={submitImage}
+      />
+    );
   } else {
     content = (
       <React.Fragment>
         <Hidden smDown>
           <Typography color="inherit" variant="h2">
-            Pour créer votre plan vous pouvez soit l&apos;importer, soit le prendre en photo ou le dessiner en ligne !
+            {t("part3_plan_edit_title_desktop")}
           </Typography>
           <div className="edit-plans-container">
             <Button
@@ -108,60 +125,81 @@ function EditButtons(props) {
               color="secondary"
               component="label"
               htmlFor="plan-img-upload"
-              style={{textTransform: "none"}}
+              style={{ textTransform: "none" }}
               startIcon={<CloudUploadIcon />}
-            >Importez une image</Button>
+            >
+              {t("import_image")}
+            </Button>
             <div className="or-vertical-divider">
               <div className={classes.verticalLine} />
-              <span className={classes.secondaryColor}>OU</span>
+              <span className={classes.secondaryColor}>
+                {t("or").toUpperCase()}
+              </span>
               <div className={classes.verticalLine} />
             </div>
             <Button
-              variant="outlined" color="secondary"
-              style={{textTransform: "none"}}
+              variant="outlined"
+              color="secondary"
+              style={{ textTransform: "none" }}
               onClick={toggleShowCamera(true)}
               startIcon={<PhotoCameraIcon />}
-            >Prendre une photo</Button>
+            >
+              {t("take_picture")}
+            </Button>
             <div className="or-vertical-divider">
               <div className={classes.verticalLine} />
-              <span className={classes.secondaryColor}>OU</span>
+              <span className={classes.secondaryColor}>
+                {t("or").toUpperCase()}
+              </span>
               <div className={classes.verticalLine} />
             </div>
             <Button
               component="a"
               variant="outlined"
               color="secondary"
-              style={{textTransform: "none"}}
+              style={{ textTransform: "none" }}
               startIcon={<CreateIcon />}
               href={`/create/3-storyboard-and-filming-schedule/draw?question=${props.questionIndex}&plan=${props.planIndex}`}
               onClick={handleDraw}
-            >Dessiner le plan</Button>
+            >
+              {t("draw_plan")}
+            </Button>
           </div>
         </Hidden>
         <Hidden mdUp>
           <Typography color="inherit" variant="h2">
-            Pour créer votre plan vous pouvez l&apos;importer ou le prendre en photo !
+            {t("part3_plan_edit_title_mobile")}
           </Typography>
-          <div className="edit-plans-container-mobile" style={{ marginTop: "1rem" }}>
+          <div
+            className="edit-plans-container-mobile"
+            style={{ marginTop: "1rem" }}
+          >
             <Button
               variant="outlined"
               component="label"
               htmlFor="plan-img-upload"
               color="secondary"
-              style={{textTransform: "none", width: "100%"}}
+              style={{ textTransform: "none", width: "100%" }}
               startIcon={<CloudUploadIcon />}
-            >Importez une image</Button>
+            >
+              {t("import_image")}
+            </Button>
             <div className="or-horizontal-divider">
               <div className={classes.horizontalLine} />
-              <span className={classes.secondaryColor}>OU</span>
+              <span className={classes.secondaryColor}>
+                {t("or").toUpperCase()}
+              </span>
               <div className={classes.horizontalLine} />
             </div>
             <Button
-              variant="outlined" color="secondary"
-              style={{textTransform: "none"}}
+              variant="outlined"
+              color="secondary"
+              style={{ textTransform: "none" }}
               onClick={toggleShowCamera(true)}
               startIcon={<PhotoCameraIcon />}
-            >Prendre une photo</Button>
+            >
+              {t("take_picture")}
+            </Button>
           </div>
         </Hidden>
       </React.Fragment>
@@ -174,7 +212,14 @@ function EditButtons(props) {
         <CircularProgress color="inherit" />
       </Backdrop>
       {content}
-      <input id="plan-img-upload" type="file" accept="image/*" onChange={handleInputchange} ref={inputRef} style={{display: "none"}}/>
+      <input
+        id="plan-img-upload"
+        type="file"
+        accept="image/*"
+        onChange={handleInputchange}
+        ref={inputRef}
+        style={{ display: "none" }}
+      />
     </React.Fragment>
   );
 }

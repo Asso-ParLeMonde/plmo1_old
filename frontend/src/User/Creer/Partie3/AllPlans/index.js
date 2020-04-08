@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
+import { useTranslation, Trans } from "react-i18next";
 import {
   Button,
   Dialog,
@@ -9,7 +10,7 @@ import {
   DialogContentText,
   DialogTitle,
   Hidden,
-  Typography
+  Typography,
 } from "@material-ui/core";
 
 import Inverted from "../../../../components/Inverted";
@@ -18,21 +19,22 @@ import Scene from "./components/scene";
 import { UserServiceContext } from "../../../../services/UserService";
 
 function AllPlans(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const [deleteIndexes, setDeleteIndexes] = useState({
     questionIndex: -1,
     planIndex: -1,
-    showNumber: 0
+    showNumber: 0,
   });
   const showDeleteModal =
     deleteIndexes.questionIndex !== -1 && deleteIndexes.planIndex !== -1;
 
-  const handleNext = event => {
+  const handleNext = (event) => {
     event.preventDefault();
     props.history.push(`/create/4-to-your-camera`);
   };
 
-  const handleAddPlan = questionIndex => async event => {
+  const handleAddPlan = (questionIndex) => async (event) => {
     event.preventDefault();
     await addPlan(
       axiosLoggedRequest,
@@ -43,22 +45,22 @@ function AllPlans(props) {
     );
   };
 
-  const handleRemovePlan = questionIndex => planIndex => event => {
+  const handleRemovePlan = (questionIndex) => (planIndex) => (event) => {
     event.preventDefault();
     event.stopPropagation();
     setDeleteIndexes({
       questionIndex,
       planIndex,
-      showNumber: props.questions[questionIndex].planStartIndex + planIndex
+      showNumber: props.questions[questionIndex].planStartIndex + planIndex,
     });
   };
 
-  const handleCloseModal = confirm => async () => {
+  const handleCloseModal = (confirm) => async () => {
     const { questionIndex, planIndex, showNumber } = deleteIndexes;
     setDeleteIndexes({
       questionIndex: -1,
       planIndex: -1,
-      showNumber
+      showNumber,
     });
     if (!confirm) {
       return;
@@ -79,12 +81,14 @@ function AllPlans(props) {
         style={{ maxWidth: "1000px", margin: "auto", paddingBottom: "2rem" }}
       >
         <Typography color="primary" variant="h1">
-          <Inverted round>3</Inverted> Création du{" "}
-          <Inverted>Storyboard</Inverted> et du{" "}
-          <Inverted>plan de tournage</Inverted>
+          <Inverted round>3</Inverted>{" "}
+          <Trans i18nKey="part3_title">
+            Création du <Inverted>Storyboard</Inverted> et du{" "}
+            <Inverted>plan de tournage</Inverted>
+          </Trans>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Blabla bla...
+          {t("part3_desc")}
         </Typography>
 
         {props.questions.map((q, index) => (
@@ -107,12 +111,13 @@ function AllPlans(props) {
           fullWidth
         >
           <DialogTitle id="delete-dialog-title">
-            Supprimer le plan ?
+            {t("part3_delete_plan_question")}
           </DialogTitle>
           <DialogContent>
             <DialogContentText id="delete-dialog-description">
-              Voulez-vous vraiment supprimer le plan n°{" "}
-              {deleteIndexes.showNumber} ?
+              {t("part3_delete_plan_desc", {
+                planNumber: deleteIndexes.showNumber,
+              })}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -121,14 +126,14 @@ function AllPlans(props) {
               color="secondary"
               variant="outlined"
             >
-              Annuler
+              {t("cancel")}
             </Button>
             <Button
               onClick={handleCloseModal(true)}
               color="secondary"
               variant="contained"
             >
-              Supprimer
+              {t("delete")}
             </Button>
           </DialogActions>
         </Dialog>
@@ -143,7 +148,7 @@ function AllPlans(props) {
               variant="contained"
               style={{ width: "200px" }}
             >
-              Suivant
+              {t("next")}
             </Button>
           </div>
         </Hidden>
@@ -156,7 +161,7 @@ function AllPlans(props) {
             variant="contained"
             style={{ width: "100%", marginTop: "2rem" }}
           >
-            Suivant
+            {t("next")}
           </Button>
         </Hidden>
       </div>
@@ -170,7 +175,7 @@ AllPlans.propTypes = {
   history: PropTypes.object.isRequired,
   questions: PropTypes.array.isRequired,
   project: PropTypes.object.isRequired,
-  updateProject: PropTypes.func.isRequired
+  updateProject: PropTypes.func.isRequired,
 };
 
 export default withRouter(AllPlans);

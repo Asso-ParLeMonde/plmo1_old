@@ -1,23 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
-import {ButtonBase, IconButton, withStyles} from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
+import { ButtonBase, IconButton, withStyles } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 import "./plan.css";
 
-const StyledDeleteButton = withStyles(theme => ({
+const StyledDeleteButton = withStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.error.main,
     color: "white",
-    '&:hover': {
+    "&:hover": {
       backgroundColor: theme.palette.error.light,
-    }
+    },
   },
 }))(IconButton);
 
 function Plan(props) {
-  const buttonStyle = {width: "100%", height: "100%"};
+  const { t } = useTranslation();
+  const buttonStyle = { width: "100%", height: "100%" };
   if (props.plan.url !== null) {
     buttonStyle.backgroundImage = `url('${props.plan.url}')`;
     buttonStyle.backgroundPosition = "center"; /* Center the image */
@@ -35,20 +37,22 @@ function Plan(props) {
       >
         <div className="plan">
           <div className="number">{props.showNumber}</div>
-          <div className="edit">Modifier</div>
-          {
-            props.canDelete && (
-              <div className="delete">
-                <StyledDeleteButton aria-label="delete" size="small" onClick={props.handleDelete}>
-                  <DeleteIcon />
-                </StyledDeleteButton>
-              </div>
-            )
-          }
+          <div className="edit">{t("edit")}</div>
+          {props.canDelete && (
+            <div className="delete">
+              <StyledDeleteButton
+                aria-label={t("delete")}
+                size="small"
+                onClick={props.handleDelete}
+              >
+                <DeleteIcon />
+              </StyledDeleteButton>
+            </div>
+          )}
         </div>
       </ButtonBase>
     </div>
-  )
+  );
 }
 
 Plan.propTypes = {

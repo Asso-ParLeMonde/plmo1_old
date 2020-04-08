@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import CustomModal from "../../../../../components/CustomModal";
 import { ButtonBase } from "@material-ui/core";
@@ -7,7 +8,8 @@ import { ButtonBase } from "@material-ui/core";
 const colors = ["#444", "#eda000", "#79c3a5", "#6065fc", "#c36561"];
 
 function ColorModal(props) {
-  const handleCloseModalColor = color => () => {
+  const { t } = useTranslation();
+  const handleCloseModalColor = (color) => () => {
     props.setOpen(false);
     if (color !== undefined) {
       props.setColor(color);
@@ -20,10 +22,10 @@ function ColorModal(props) {
       ariaDescribedBy="color-dialog-title"
       ariaLabelledBy="color-dialog-description"
       onClose={handleCloseModalColor()}
-      title="Choisissez la couleur du trait"
+      title={t("tool_color_title")}
     >
       <div className="canvas-colors-container" id="color-dialog-description">
-        {colors.map(c => (
+        {colors.map((c) => (
           <ButtonBase
             key={c}
             style={{ backgroundColor: c }}
@@ -42,13 +44,13 @@ function ColorModal(props) {
 ColorModal.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
-  setColor: PropTypes.func
+  setColor: PropTypes.func,
 };
 
 ColorModal.defaultProps = {
   open: false,
   setOpen: () => {},
-  setColor: () => {}
+  setColor: () => {},
 };
 
 export default ColorModal;

@@ -3,6 +3,7 @@ import { withRouter, Redirect } from "react-router";
 import PropTypes from "prop-types";
 import { Typography } from "@material-ui/core";
 import Inverted from "../../components/Inverted";
+import { useTranslation, Trans } from "react-i18next";
 
 import { UserServiceContext } from "../../services/UserService";
 import { ThemesServiceContext } from "../../services/ThemesService";
@@ -10,6 +11,7 @@ import WorkInProgressCard from "./components/WorkInProgressCard";
 import "./videos.css";
 
 function Videos(props) {
+  const { t } = useTranslation();
   const { axiosLoggedRequest, isLoggedIn } = useContext(UserServiceContext);
   const themesRequest = useContext(ThemesServiceContext).getThemes;
   const [projects, setProjects] = useState(null);
@@ -80,10 +82,12 @@ function Videos(props) {
   return (
     <div>
       <Typography color="primary" variant="h1">
-        Mes <Inverted>supers</Inverted> vidéos
+        <Trans i18nKey="my_videos_title">
+          Mes <Inverted>supers</Inverted> vidéos
+        </Trans>
       </Typography>
       <Typography color="inherit" variant="h2">
-        Mes projets en cours
+        {t("my_videos_subtitle1")}
       </Typography>
       <div className="wip-videos">
         {projects.length > 0 ? (
@@ -105,7 +109,7 @@ function Videos(props) {
         )}
       </div>
       <Typography color="inherit" variant="h2">
-        Mes projets terminés
+        {t("my_videos_subtitle2")}
       </Typography>
     </div>
   );

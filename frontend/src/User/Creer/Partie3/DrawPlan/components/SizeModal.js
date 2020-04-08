@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import { ButtonBase } from "@material-ui/core";
 import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
@@ -7,7 +8,8 @@ import FiberManualRecordIcon from "@material-ui/icons/FiberManualRecord";
 import CustomModal from "../../../../../components/CustomModal";
 
 function SizeModal(props) {
-  const handleCloseModalSize = size => () => {
+  const { t } = useTranslation();
+  const handleCloseModalSize = (size) => () => {
     props.setOpen(false);
     if (size !== undefined) {
       props.setSize(size);
@@ -20,7 +22,7 @@ function SizeModal(props) {
       ariaDescribedBy="size-dialog-title"
       ariaLabelledBy="size-dialog-description"
       onClose={handleCloseModalSize()}
-      title="Choisissez l'éppaiseur du trait"
+      title={t("tool_stroke_width_title")}
     >
       <div className="canvas-colors-container" id="size-dialog-description">
         <ButtonBase
@@ -49,13 +51,13 @@ function SizeModal(props) {
 SizeModal.propTypes = {
   open: PropTypes.bool,
   setOpen: PropTypes.func,
-  setSize: PropTypes.func
+  setSize: PropTypes.func,
 };
 
 SizeModal.defaultProps = {
   open: false,
   setOpen: () => {},
-  setSize: () => {}
+  setSize: () => {},
 };
 
 export default SizeModal;

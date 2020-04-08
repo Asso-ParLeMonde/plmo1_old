@@ -1,12 +1,13 @@
-import React, {useRef} from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
-import {Button} from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 import ImgCroppie from "../../../../../components/ImgCroppie";
 
-
 function UploadPlan(props) {
+  const { t } = useTranslation();
   const croppieRef = useRef(null);
 
   const submit = async () => {
@@ -28,13 +29,17 @@ function UploadPlan(props) {
           color="secondary"
           style={{ width: "48%", marginRight: "4%" }}
           onClick={props.handleClearInput}
-        >Annuler</Button>
+        >
+          {t("cancel")}
+        </Button>
         <Button
           variant="contained"
           color="secondary"
           style={{ width: "48%" }}
           onClick={submit}
-        >Enregistrer</Button>
+        >
+          {t("save")}
+        </Button>
       </div>
     </div>
   );

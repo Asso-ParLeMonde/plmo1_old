@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import { DialogContentText } from "@material-ui/core";
 
 import CustomModal from "../../../../../components/CustomModal";
 
 function ClearModal(props) {
+  const { t } = useTranslation();
   return (
     <CustomModal
       open={props.open}
@@ -13,10 +15,10 @@ function ClearModal(props) {
       ariaLabelledBy="clear-dialog-description"
       onClose={props.onClear(false)}
       onConfirm={props.onClear(true)}
-      title="Effacer le canvas ?"
+      title={t("tool_clear_title")}
     >
       <DialogContentText id="clear-dialog-description">
-        Êtes-vous sûr de vouloir effacer totalement le plan ?
+        {t("tool_clear_desc")}
       </DialogContentText>
     </CustomModal>
   );
@@ -24,12 +26,12 @@ function ClearModal(props) {
 
 ClearModal.propTypes = {
   open: PropTypes.bool,
-  onClear: PropTypes.func
+  onClear: PropTypes.func,
 };
 
 ClearModal.defaultProps = {
   open: false,
-  onClear: () => {}
+  onClear: () => {},
 };
 
 export default ClearModal;

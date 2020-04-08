@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { withRouter, Redirect } from "react-router-dom";
 import qs from "query-string";
 import PropTypes from "prop-types";
+import { useTranslation, Trans } from "react-i18next";
 
 import { Hidden, Typography } from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
@@ -14,6 +15,7 @@ import { UserServiceContext } from "../../../../services/UserService";
 import { editQuestion } from "../../components/questionRequest";
 
 function EditQuestion(props) {
+  const { t } = useTranslation();
   const questionIndex = parseInt(
     qs.parse(props.location.search, { ignoreQueryPrefix: true }).question ||
       "-1",
@@ -32,17 +34,17 @@ function EditQuestion(props) {
     return <Redirect to="/create/2-questions-choice" />;
   }
 
-  const handleChange = event => {
+  const handleChange = (event) => {
     event.preventDefault();
     setQuestion(event.target.value.slice(0, 280));
   };
 
-  const handleBack = event => {
+  const handleBack = (event) => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice`);
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (question.length === 0) {
       setHasError(true);
@@ -66,10 +68,13 @@ function EditQuestion(props) {
     <div>
       <div style={{ maxWidth: "1000px", margin: "auto" }}>
         <Typography color="primary" variant="h1">
-          <Inverted round>2</Inverted> Mes <Inverted>questions</Inverted>
+          <Inverted round>2</Inverted>{" "}
+          <Trans i18nKey="part2_title">
+            Mes <Inverted>questions</Inverted>
+          </Trans>
         </Typography>
         <Typography color="inherit" variant="h2">
-          Modifier une question
+          {t("part2_edit_question")}
         </Typography>
         <Typography color="inherit" variant="h2" style={{ marginTop: "1rem" }}>
           <div>
@@ -81,7 +86,7 @@ function EditQuestion(props) {
               className={hasError ? "shake" : ""}
               id="scenarioDescription"
               multiline
-              placeholder="Ma question"
+              placeholder={t("part2_add_question_placeholder")}
               fullWidth
               style={{ marginTop: "0.5rem" }}
               variant="outlined"
@@ -106,14 +111,14 @@ function EditQuestion(props) {
               href={`/create/2-questions-choice`}
               onClick={handleBack}
             >
-              Annuler
+              {t("cancel")}
             </Button>
             <Button
               variant="contained"
               color="secondary"
               onClick={handleSubmit}
             >
-              Modifier
+              {t("edit")}
             </Button>
           </div>
         </Hidden>
@@ -124,7 +129,7 @@ function EditQuestion(props) {
             onClick={handleSubmit}
             style={{ width: "100%", marginTop: "2rem" }}
           >
-            Modifier
+            {t("edit")}
           </Button>
         </Hidden>
       </div>
@@ -137,7 +142,7 @@ EditQuestion.propTypes = {
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
   themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.number.isRequired
+  scenarioId: PropTypes.number.isRequired,
 };
 
 export default withRouter(EditQuestion);
