@@ -17,7 +17,7 @@ export class Theme {
   @Column()
   public labelID: number;
 
-  @Column()
+  @Column({ default: 0 })
   public order: number;
 
   @Column({ default: false })
