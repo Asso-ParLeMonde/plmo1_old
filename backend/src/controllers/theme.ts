@@ -40,8 +40,35 @@ export class ThemesController extends Controller {
     const isPublished = req.body.isPublished || false;
     const theme: Theme = new Theme(); // create a new theme
     theme.isPublished = isPublished;
+
+    const themeNb = await getRepository(Theme)
+      .createQueryBuilder("theme")
+      .getCount();
+    theme.order = themeNb + 1;
+
     await getCustomRepository(ThemeRepository).saveWithLabels(theme, labels); // save new theme
     res.sendJSON(theme); // send new theme
+  }
+
+  @put({ path: "/updateOrder", userType: UserType.CLASS })
+  public async editThemeOrder(req: Request, res: Response, next: NextFunction): Promise<void> {
+    const themeOrder = [];
+    const themes = req.body;
+
+    for (let i = 0; i < req.body.length; i++) {
+      const id: number = parseInt(themes[i].id, 10) || 0;
+      const labels: { [key: string]: string } = themes[i].names || {};
+      const theme: Theme | undefined = await getRepository(Theme).findOne(id);
+      if (theme === undefined) {
+        next();
+        return;
+      }
+
+      theme.order = i;
+      themeOrder.push(getCustomRepository(ThemeRepository).saveWithLabels(theme, labels));
+    }
+
+    res.status(204).send();
   }
 
   @put({ path: "/:id", userType: UserType.PLMO_ADMIN })

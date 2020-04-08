@@ -18,11 +18,14 @@ function TableCard(props) {
         <TableComponent
           type={props.type}
           elements={props.elements}
+          setElements={props.setElements}
           validIcon={props.validIcon}
           invalidIcon={props.invalidIcon}
         />
       </CardContent>
-      <CardActions style={{ paddingLeft: "16px" }}>
+      <CardActions
+        style={{ padding: "0px 16px", justifyContent: "space-between" }}
+      >
         {props.children}
       </CardActions>
     </Card>
@@ -31,12 +34,23 @@ function TableCard(props) {
 
 TableCard.propTypes = {
   children: PropTypes.node,
-  type: PropTypes.oneOf(["THEME", "SCENARIO", "QUESTION", "LANGUAGE", "USER"])
-    .isRequired,
+  type: PropTypes.oneOf([
+    "THEMEDND",
+    "THEME",
+    "SCENARIO",
+    "QUESTION",
+    "LANGUAGE",
+    "USER",
+  ]).isRequired,
   title: PropTypes.string.isRequired,
   elements: PropTypes.array.isRequired,
+  setElements: PropTypes.func,
   validIcon: PropTypes.object.isRequired,
-  invalidIcon: PropTypes.object.isRequired
+  invalidIcon: PropTypes.object.isRequired,
+};
+
+TableCard.defaultProps = {
+  setElements: () => {},
 };
 
 export default TableCard;

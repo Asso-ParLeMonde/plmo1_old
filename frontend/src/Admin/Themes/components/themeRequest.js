@@ -87,6 +87,32 @@ async function putAdminTheme(
   );
 }
 
+async function putOrderAdminTheme(
+  axiosLoggedRequest,
+  themes,
+  setRes,
+  successMessage,
+  errorMessage,
+  history,
+  updateThemes
+) {
+  const request = await axiosLoggedRequest({
+    method: "PUT",
+    url: `/themes/updateOrder`,
+    data: themes,
+  });
+
+  updateNotificationResponse(
+    request,
+    setRes,
+    successMessage,
+    errorMessage,
+    updateThemes,
+    history,
+    path
+  );
+}
+
 async function putPublishedAdminTheme(
   axiosLoggedRequest,
   theme,
@@ -141,6 +167,7 @@ async function deleteAdminTheme(
 export {
   postAdminTheme,
   putAdminTheme,
+  putOrderAdminTheme,
   putPublishedAdminTheme,
   deleteAdminTheme,
 };
