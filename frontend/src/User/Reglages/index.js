@@ -1,11 +1,27 @@
 import React, { useContext } from "react";
-import { Typography, Select, FormControl, InputLabel } from "@material-ui/core";
+import {
+  Typography,
+  Select,
+  FormControl,
+  InputLabel,
+  Button,
+  withStyles,
+} from "@material-ui/core";
 import { AppLanguageServiceContext } from "../../services/AppLanguageService";
 import { LanguagesServiceContext } from "../../services/LanguagesService";
 import { useTranslation } from "react-i18next";
+import { UserServiceContext } from "../../services/UserService";
+
+const RedButton = withStyles((theme) => ({
+  root: {
+    color: theme.palette.error.main,
+    borderColor: theme.palette.error.main,
+  },
+}))(Button);
 
 function Reglages() {
   const { t } = useTranslation();
+  const { logout } = useContext(UserServiceContext);
   const { selectedLanguage, setSelectedLanguage } = useContext(
     AppLanguageServiceContext
   );
@@ -55,6 +71,20 @@ function Reglages() {
             </>
           )}
         </form>
+        <Typography
+          color="inherit"
+          variant="h2"
+          style={{ margin: "2rem 0 1rem 0" }}
+        >
+          {t("logout_title")}
+        </Typography>
+        <RedButton
+          variant="outlined"
+          className="mobile-full-width"
+          onClick={logout}
+        >
+          {t("logout_button")}
+        </RedButton>
       </div>
     </div>
   );
