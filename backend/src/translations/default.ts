@@ -76,6 +76,8 @@ export const localesFR = {
   //--- settings ---
   change_language: "Changer la langue de l'application :",
   language: "Langue",
+  logout_title: "Se déconnecter :",
+  logout_button: "Se déconnecter",
   //--- buttons ---
   add_question: "Ajouter une question",
   import_image: "Importer une image",

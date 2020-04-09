@@ -1,13 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import * as argon2 from "argon2";
-import { getRepository } from "typeorm";
+import { getRepository, MoreThan } from "typeorm";
 import { User } from "../entities/user";
 import { Controller, post } from "./controller";
 import { logger } from "../utils/logger";
 import { generateTemporaryPassword, isPasswordValid } from "../utils/utils";
 import { AppError, ErrorCode } from "../middlewares/handleErrors";
 import { sendMail, Email } from "../emails";
+import { Token } from "../entities/token";
+import { v4 as uuidv4 } from "uuid";
 
 const secret: string = process.env.APP_SECRET || "";
 
@@ -25,12 +27,14 @@ export class LoginController extends Controller {
 
     const password = req.body.password;
     const username = req.body.username;
+    const askForReshreshToken = req.body.getRefreshToken === true;
     const user = await getRepository(User).findOne({
       where: [{ mail: username }, { pseudo: username }],
     });
     if (user === undefined) {
       throw new AppError("Invalid username", ErrorCode.INVALID_USERNAME);
     }
+
     let isPasswordCorrect: boolean = false;
     try {
       isPasswordCorrect = await argon2.verify(user.passwordHash, password);
@@ -51,8 +55,18 @@ export class LoginController extends Controller {
       await getRepository(User).save(user);
     }
 
-    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send user
+    const accessToken = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+
+    if (askForReshreshToken) {
+      const rToken = uuidv4();
+      const refreshToken = new Token();
+      refreshToken.token = await argon2.hash(rToken);
+      refreshToken.userId = user.id;
+      await getRepository(Token).save(refreshToken);
+      res.sendJSON({ user: user.userWithoutPassword(), accessToken, refreshToken: `${refreshToken.id}-${rToken}` });
+    } else {
+      res.sendJSON({ user: user.userWithoutPassword(), accessToken });
+    }
   }
 
   @post({ path: "/reset-password" })
@@ -112,8 +126,8 @@ export class LoginController extends Controller {
     await getRepository(User).save(user);
 
     // login user
-    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send new user
+    const accessToken = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), accessToken }); // send new user
   }
 
   @post({ path: "/verify-email" })
@@ -149,7 +163,57 @@ export class LoginController extends Controller {
     await getRepository(User).save(user);
 
     // login user
-    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-    res.sendJSON({ user: user.userWithoutPassword(), token: token });
+    const accessToken = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), accessToken });
+  }
+
+  @post({ path: "/token" })
+  public async getAccessToken(req: Request, res: Response): Promise<void> {
+    if (req.body.refreshToken === undefined || req.body.refreshToken === null || typeof req.body.refreshToken !== "string") {
+      throw new AppError("Invalid refresh token", ErrorCode.INVALID_PASSWORD);
+    }
+
+    const refreshTokenID: string = req.body.refreshToken.split("-")[0];
+    const refreshTokenToken: string = req.body.refreshToken.slice(refreshTokenID.length + 1);
+    const expiredDate = new Date(new Date().getTime() - 31536000000); // now minus 1year
+    const refreshToken = await getRepository(Token).findOne({
+      where: {
+        id: parseInt(refreshTokenID, 10) || 0,
+        userId: req.body.userId || 0,
+        date: MoreThan(expiredDate),
+      },
+    });
+
+    if (refreshToken === undefined || !(await argon2.verify(refreshToken.token, refreshTokenToken))) {
+      throw new AppError("Invalid refresh token", ErrorCode.INVALID_PASSWORD);
+    }
+
+    const accessToken = jwt.sign({ userId: refreshToken.userId }, secret, { expiresIn: "1h" });
+    res.sendJSON({ accessToken });
+  }
+
+  @post({ path: "/token/reject" })
+  public async rejectAccessToken(req: Request, res: Response): Promise<void> {
+    if (req.body.refreshToken === undefined || req.body.refreshToken === null || typeof req.body.refreshToken !== "string") {
+      res.status(204).send();
+      return;
+    }
+
+    const refreshTokenID: string = req.body.refreshToken.split("-")[0];
+    const refreshTokenToken: string = req.body.refreshToken.slice(refreshTokenID.length + 1);
+    const refreshToken = await getRepository(Token).findOne({
+      where: {
+        id: refreshTokenID,
+        userId: req.body.userId || 0,
+      },
+    });
+
+    if (refreshToken === undefined || !(await argon2.verify(refreshToken.token, refreshTokenToken))) {
+      res.status(204).send();
+      return;
+    }
+
+    await getRepository(Token).delete(refreshToken.id);
+    res.status(204).send();
   }
 }
