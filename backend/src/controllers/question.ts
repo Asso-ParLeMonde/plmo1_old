@@ -7,9 +7,9 @@ import { UserType } from "../entities/user";
 import { Project } from "../entities/project";
 
 function getOptions(req: Request): { isDefault?: boolean; scenarioId?: number; languageCode?: string } {
-  const isDefault: string | undefined = req.query.isDefault || undefined;
-  const scenarioId: number | undefined = parseInt(req.query.scenarioId || "", 10) || undefined;
-  const languageCode: string | undefined = req.query.languageCode || undefined;
+  const isDefault: string | undefined = (req.query.isDefault as string | undefined) || undefined;
+  const scenarioId: number | undefined = parseInt((req.query.scenarioId as string | undefined) || "", 10) || undefined;
+  const languageCode: string | undefined = (req.query.languageCode as string | undefined) || undefined;
 
   const where: { isDefault?: boolean; scenarioId?: number; languageCode?: string } = {};
   if (isDefault !== undefined) {
