@@ -50,6 +50,14 @@ const userTabs = [
   },
 ];
 
+const admin_tabs = [
+  {
+    label: "admin",
+    path: "/admin",
+    icon: <SupervisorAccountIcon />,
+  },
+];
+
 const defaultTabs = [
   {
     label: "create",
@@ -66,24 +74,17 @@ const defaultTabs = [
 function User() {
   const { user } = useContext(UserServiceContext);
 
-  useEffect(() => {
-    if (user.type > 0) {
-      userTabs.splice(3, 0, {
-        label: "admin",
-        path: "/admin",
-        icon: <SupervisorAccountIcon />,
-      });
-    }
-  }, []);
+  const tabs =
+    user === null
+      ? defaultTabs
+      : user.type > 0
+      ? [...userTabs, ...adminTabs]
+      : userTabs;
 
   return (
     <React.Fragment>
       <Hidden smDown>
-        <Navbar
-          title={"Par Le monde"}
-          tabs={user === null ? defaultTabs : userTabs}
-          homeLink="/"
-        />
+        <Navbar title={"Par Le monde"} tabs={tabs} homeLink="/" />
       </Hidden>
       <main>
         <Container maxWidth="lg">
