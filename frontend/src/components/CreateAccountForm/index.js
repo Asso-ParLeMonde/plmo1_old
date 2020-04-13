@@ -171,6 +171,7 @@ function CreateAccountForm({
       className="signup-form"
       noValidate
       autoComplete={noAutoComplete ? "off" : ""}
+      style={admin ? { overflow: "auto", padding: "8px 24px" } : {}}
     >
       {errors.global && (
         <Typography variant="caption" color="error">

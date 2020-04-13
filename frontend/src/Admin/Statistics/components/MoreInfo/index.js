@@ -84,7 +84,7 @@ function MoreInfo(props) {
 }
 
 MoreInfo.propTypes = {
-  type: PropTypes.oneOf(["CLASS", "COUNTRY", "PROJECTS", "PDF"]).isRequired,
+  type: PropTypes.oneOf(["CLASS", "PROJECTS", "PDF"]).isRequired,
 };
 
 export default MoreInfo;

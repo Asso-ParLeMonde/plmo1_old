@@ -7,8 +7,31 @@ const DEFAULT_STATISTICS = {
   classNb: 0,
   countriesNb: 0,
   projectsNb: 0,
-  pdfsNb: 0
+  pdfsNb: 0,
 };
+
+const STATISTICS_OPTIONS = [
+  {
+    title: "Nombre de classes inscrites",
+    value: "classNb",
+    type: "CLASS",
+  },
+  {
+    title: "Nombre de pays qui utilisent le service",
+    value: "countriesNb",
+    type: "COUNTRY",
+  },
+  {
+    title: "Nombre de projets crées",
+    value: "projectsNb",
+    type: "PROJECTS",
+  },
+  {
+    title: "Nombre de téléchargement de plans de tournage",
+    value: "pdfsNb",
+    type: "PDF",
+  },
+];
 
 function Statistics() {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -18,7 +41,7 @@ function Statistics() {
     const getStatistics = async () => {
       const statisticsRequest = await axiosLoggedRequest({
         method: "GET",
-        url: "/statistics/basics"
+        url: "/statistics/basics",
       });
 
       if (
@@ -34,26 +57,16 @@ function Statistics() {
 
   return (
     <div>
-      <StatisticsCard
-        title="Nombre de classes inscrites"
-        value={statistics.classNb}
-        type="CLASS"
-      />
-      <StatisticsCard
-        title="Nombre de pays qui utilisent le service"
-        value={statistics.countriesNb}
-        type="COUNTRY"
-      />
-      <StatisticsCard
-        title="Nombre de projets crées"
-        value={statistics.projectsNb}
-        type="PROJECTS"
-      />
-      <StatisticsCard
-        title="Nombre de téléchargement de plans de tournage"
-        value={statistics.pdfsNb}
-        type="PDF"
-      />
+      {STATISTICS_OPTIONS.map((s, index) => {
+        return (
+          <StatisticsCard
+            key={index}
+            title={s.title}
+            value={statistics[s.value]}
+            type={s.type}
+          />
+        );
+      })}
     </div>
   );
 }
