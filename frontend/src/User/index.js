@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
