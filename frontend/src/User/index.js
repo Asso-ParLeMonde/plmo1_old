@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import Hidden from "@material-ui/core/Hidden";
 import Container from "@material-ui/core/Container";
@@ -25,6 +25,7 @@ import { ReactComponent as MoviesLogo } from "../images/movies.svg";
 import { ReactComponent as LightLogo } from "../images/light.svg";
 import { ReactComponent as SettingsLogo } from "../images/settings.svg";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 const userTabs = [
   {
@@ -64,6 +65,16 @@ const defaultTabs = [
 
 function User() {
   const { user } = useContext(UserServiceContext);
+
+  useEffect(() => {
+    if (user.type > 0) {
+      userTabs.splice(3, 0, {
+        label: "admin",
+        path: "/admin",
+        icon: <SupervisorAccountIcon />,
+      });
+    }
+  }, []);
 
   return (
     <React.Fragment>
