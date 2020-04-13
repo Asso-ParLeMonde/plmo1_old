@@ -50,7 +50,7 @@ const userTabs = [
   },
 ];
 
-const admin_tabs = [
+const adminTabs = [
   {
     label: "admin",
     path: "/admin",
