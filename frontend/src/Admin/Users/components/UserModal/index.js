@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    padding: "8px 24px",
+    padding: "0",
   },
 }));
 
