@@ -25,6 +25,7 @@ import { ReactComponent as MoviesLogo } from "../images/movies.svg";
 import { ReactComponent as LightLogo } from "../images/light.svg";
 import { ReactComponent as SettingsLogo } from "../images/settings.svg";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import SupervisorAccountIcon from "@material-ui/icons/SupervisorAccount";
 
 const userTabs = [
   {
@@ -49,6 +50,14 @@ const userTabs = [
   },
 ];
 
+const adminTabs = [
+  {
+    label: "admin",
+    path: "/admin",
+    icon: <SupervisorAccountIcon />,
+  },
+];
+
 const defaultTabs = [
   {
     label: "create",
@@ -65,14 +74,17 @@ const defaultTabs = [
 function User() {
   const { user } = useContext(UserServiceContext);
 
+  const tabs =
+    user === null
+      ? defaultTabs
+      : user.type > 0
+      ? [...userTabs, ...adminTabs]
+      : userTabs;
+
   return (
     <React.Fragment>
       <Hidden smDown>
-        <Navbar
-          title={"Par Le monde"}
-          tabs={user === null ? defaultTabs : userTabs}
-          homeLink="/"
-        />
+        <Navbar title={"Par Le monde"} tabs={tabs} homeLink="/" />
       </Hidden>
       <main>
         <Container maxWidth="lg">
