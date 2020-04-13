@@ -42,19 +42,14 @@ function StatisticsCard(props) {
           <span>{props.value}</span>
         </Typography>
 
-        {isMoreInfoOpen && props.type !== "COUNTRY" ? (
+        {isMoreInfoOpen && (
           <div style={{ transition: "height 1s" }}>
-            <MoreInfo type={props.type} />
+            {props.type === "COUNTRY" ? (
+              <MapInfo />
+            ) : (
+              <MoreInfo type={props.type} />
+            )}
           </div>
-        ) : (
-          <div style={{ transition: "height 1s" }} />
-        )}
-        {isMoreInfoOpen && props.type === "COUNTRY" ? (
-          <div style={{ transition: "height 1s" }}>
-            <MapInfo />
-          </div>
-        ) : (
-          <div style={{ transition: "height 1s" }} />
         )}
       </CardContent>
       <CardActions

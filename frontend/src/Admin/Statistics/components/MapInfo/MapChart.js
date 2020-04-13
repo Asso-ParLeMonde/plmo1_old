@@ -36,15 +36,15 @@ const MapChart = ({ setTooltipContent }) => {
   const colorScale = scaleQuantile()
     .domain(data.map((d) => d.nb))
     .range([
-      "#ffedea",
-      "#ffcec5",
-      "#ffad9f",
-      "#ff8a75",
-      "#ff5533",
-      "#e2492d",
-      "#be3d26",
-      "#9a311f",
-      "#782618",
+      "#cee9de",
+      "#b5decd",
+      "#9dd3bd",
+      "#91cdb5",
+      "#79c3a5",
+      "#64a0088",
+      "#4e7d6a",
+      "#37594b",
+      "#16241e",
     ]);
 
   return (
@@ -65,7 +65,7 @@ const MapChart = ({ setTooltipContent }) => {
                   <Geography
                     key={geo.rsmKey}
                     geography={geo}
-                    fill={cur ? colorScale(cur.nb) : "#EEE"}
+                    fill={cur ? colorScale(cur.nb) : "#e0e0e0"}
                     onMouseEnter={() => {
                       const newTooltipContent = cur
                         ? `${NAME} ${cur.nb}`
@@ -76,10 +76,6 @@ const MapChart = ({ setTooltipContent }) => {
                       setTooltipContent("");
                     }}
                     style={{
-                      default: {
-                        fill: "#d6d6da",
-                        outline: "none",
-                      },
                       hover: {
                         fill: "#6065fc",
                         outline: "none",
