@@ -65,6 +65,11 @@ const defaultTabs = [
     icon: <CreateLogo />,
   },
   {
+    label: "settings",
+    path: "/settings",
+    icon: <SettingsLogo />,
+  },
+  {
     label: "login",
     path: "/login",
     icon: <AccountCircleIcon />,
