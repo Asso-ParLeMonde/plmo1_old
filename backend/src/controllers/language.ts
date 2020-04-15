@@ -123,7 +123,6 @@ export class LanguageController extends Controller {
     }
 
     const localesFR = JSON.parse(req.body.locales || "{}");
-    console.log(localesFR);
     const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
     if (language === undefined) {
       next();
