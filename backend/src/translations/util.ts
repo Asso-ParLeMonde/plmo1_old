@@ -17,14 +17,17 @@ export type translationObject = {
   headers: undefined | { [key: string]: string };
   translations: {
     [key: string]: {
-      [key: string]: {
-        msgid: string;
-        comments?: { [key: string]: string };
-        msgid_plural?: string;
-        msgstr: string[];
-      };
+      [key: string]: SingleTranslation;
     };
   };
+};
+
+export type SingleTranslation = {
+  msgid: string;
+  msgctxt?: string;
+  comments?: { [key: string]: string };
+  msgid_plural?: string;
+  msgstr: string[];
 };
 
 /**

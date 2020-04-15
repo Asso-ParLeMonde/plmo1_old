@@ -1,5 +1,5 @@
 /* eslint-disable */
-export const localesFR = {
+export const locales = {
   //--- navbar ---
   create: "Créer",
   my_videos: "Mes vidéos",
@@ -7,6 +7,7 @@ export const localesFR = {
   settings: "Réglages",
   login: "Je me connecte !",
   app: "Application",
+  admin: "Admin",
   //--- theme page ---
   create_theme_title: "Sur quel <1>thème</1> sera votre vidéo ?",
   //--- part 1 ---
@@ -25,7 +26,8 @@ export const localesFR = {
   new_scenario_desc_placeholder: "Ma description",
   //--- part2 ---
   part2_title: "Mes <1>questions</1>",
-  part2_desc: "Pour structurer votre scénario, nous vous proposons de sélectionner les questions qui feraient sens.",
+  part2_desc:
+    "Pour structurer votre scénario, nous vous proposons de sélectionner les questions qui feraient sens.",
   part2_add_question: "Ajouter une question",
   part2_edit_question: "Modifier une question",
   part2_add_question_placeholder: "Ma question",
@@ -34,14 +36,17 @@ export const localesFR = {
   part3_desc: "Lorem ipsum...",
   part3_add_plan: "Ajouter un plan",
   part3_delete_plan_question: "Supprimer le plan ?",
-  part3_delete_plan_desc: "Voulez-vous vraiment supprimer le plan n° {{planNumber}} ?",
+  part3_delete_plan_desc:
+    "Voulez-vous vraiment supprimer le plan n° {{planNumber}} ?",
   part3_edit_plan: "Créez votre plan",
   part3_question: "Question :",
   part3_plan_number: "Plan numéro :",
   part3_plan_desc: "Description du plan :",
   part3_plan_desc_placeholder: "lorem iiiii",
-  part3_plan_edit_title_desktop: "Pour créer votre plan vous pouvez soit l'importer, soit le prendre en photo ou le dessiner en ligne !",
-  part3_plan_edit_title_mobile: "Pour créer votre plan vous pouvez l'importer ou le prendre en photo !",
+  part3_plan_edit_title_desktop:
+    "Pour créer votre plan vous pouvez soit l'importer, soit le prendre en photo ou le dessiner en ligne !",
+  part3_plan_edit_title_mobile:
+    "Pour créer votre plan vous pouvez l'importer ou le prendre en photo !",
   part3_plan_image: "Dessin du plan :",
   part3_change_image: "Changer le dessin",
   part3_change_image_title: "Changer le dessin du plan",
@@ -60,13 +65,15 @@ export const localesFR = {
   part4_title: "À votre <1>caméra</1> !",
   part4_subtitle1: "Téléchargez votre plan de tournage :",
   part4_pdf_button: "Plan de tournage",
-  part4_subtitle2: "Flashez ce code QR pour accéder directement à l'application et commencer à filmer !",
+  part4_subtitle2:
+    "Flashez ce code QR pour accéder directement à l'application et commencer à filmer !",
   //--- project ---
   project: "Projet :",
   project_name: "Nom du projet",
   project_delete: "Supprimer le projet",
   project_delete_title: "Supprimer le projet ?",
-  project_delete_desc1: "Voulez-vous vraiment supprimer le projet <strong>{{projetName}}</strong> ?",
+  project_delete_desc1:
+    "Voulez-vous vraiment supprimer le projet <strong>{{projetName}}</strong> ?",
   project_delete_desc2: "Attention ! Cette action est irréversible !",
   project_delete_confirm: "Supprimer le projet",
   //--- my videos ---
@@ -112,12 +119,15 @@ export const localesFR = {
   login_forgot_password: "Mot de passe oublié ?",
   login_new: "Nouveau sur Par Le Monde ?",
   login_signup: "S'inscrire",
-  login_account_error: "Compte bloqué, trop de tentatives de connexion. Veuillez réinitialiser votre mot de passe.",
-  login_unknown_error: "Une erreur inconnue est survenue. Veuillez réessayer plus tard...",
+  login_account_error:
+    "Compte bloqué, trop de tentatives de connexion. Veuillez réinitialiser votre mot de passe.",
+  login_unknown_error:
+    "Une erreur inconnue est survenue. Veuillez réessayer plus tard...",
   login_email_error: "E-mail invalide.",
   //--- signup ---
   signup_title: "Création du compte classe",
-  signup_error_msg: "Votre inscription comporte des erreurs, veuillez les corriger pour continuer.",
+  signup_error_msg:
+    "Votre inscription comporte des erreurs, veuillez les corriger pour continuer.",
   signup_required: "Requis",
   signup_firstname: "Prénom du professeur",
   signup_lastname: "Nom du professeur",
@@ -132,7 +142,8 @@ export const localesFR = {
   signup_level: "Niveau de la classe",
   signup_language: "Langue de préférence",
   signup_type: "Type de compte",
-  signup_password_error: "Mot de passe trop faible. Il doit contenir au moins 8 charactères avec des lettres minuscules, majuscules et des chiffres.",
+  signup_password_error:
+    "Mot de passe trop faible. Il doit contenir au moins 8 charactères avec des lettres minuscules, majuscules et des chiffres.",
   signup_password_confirm: "Confirmer le mot de passe",
   signup_password_confirm_error: "Mots de passe différents.",
   signup_button: "S'inscrire !",
@@ -140,11 +151,13 @@ export const localesFR = {
   //--- forgot password ---
   forgot_password_title: "Réinitialiser le mot de passe",
   forgot_password_button: "Réinitialiser",
-  forgot_password_success: "Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !",
+  forgot_password_success:
+    "Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !",
   //--- update password ---
   update_password: "Nouveau mot de passe",
   update_password_error: "Veuillez corriger les problèmes pour continuer.",
-  update_password_un_error: "Une erreur est survenue, veuillez réessayer en réinitialisant à nouveau votre mot de passe où contactez le support.",
+  update_password_un_error:
+    "Une erreur est survenue, veuillez réessayer en réinitialisant à nouveau votre mot de passe où contactez le support.",
   //--- misc ---
   or: "ou",
   yes: "oui",

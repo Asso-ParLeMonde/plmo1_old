@@ -1,10 +1,15 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { locales } from "./defaultLocales";
 
 i18n.use(initReactI18next).init({
-  resources: {},
+  resources: {
+    default: {
+      translations: locales,
+    },
+  },
   load: "currentOnly",
-  fallbackLng: "fr",
+  fallbackLng: "default",
   debug: true, //process.env.REACT_APP_DEBUG === "true",
   ns: ["translations"],
   defaultNS: "translations",

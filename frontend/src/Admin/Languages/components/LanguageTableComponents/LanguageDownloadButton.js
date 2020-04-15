@@ -5,6 +5,7 @@ import GetAppIcon from "@material-ui/icons/GetApp";
 import { UserServiceContext } from "../../../../services/UserService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import Notifications from "../../../../components/Notifications";
+import { locales } from "../../../../util/defaultLocales";
 
 function LanguageDownloadButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -18,8 +19,11 @@ function LanguageDownloadButton(props) {
   async function handleDownload(event) {
     event.preventDefault();
     const request = await axiosLoggedRequest({
-      method: "GET",
+      method: "PUT",
       url: `/languages/${props.language.value}/po`,
+      data: {
+        locales,
+      },
     });
 
     if (request.error === true && request.complete === true) {

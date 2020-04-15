@@ -7,6 +7,7 @@ import { UserServiceContext } from "../../../../services/UserService";
 import DefaultButton from "../../../components/Buttons/DefaultButton";
 import CustomModal from "../../../../components/CustomModal";
 import Notifications from "../../../../components/Notifications";
+import { locales } from "../../../../util/defaultLocales";
 
 function LanguageUploadButton(props) {
   const { axiosLoggedRequest } = useContext(UserServiceContext);
@@ -24,6 +25,7 @@ function LanguageUploadButton(props) {
     }
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("locales", JSON.stringify(locales));
 
     const request = await axiosLoggedRequest({
       method: "POST",

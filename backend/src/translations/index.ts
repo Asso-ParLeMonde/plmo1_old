@@ -2,17 +2,9 @@ import fs from "fs-extra";
 import * as path from "path";
 import { parse } from "./po2json";
 import compile from "./json2po";
-import { translationObject } from "./util";
-export { localesFR } from "./default";
+import { translationObject, SingleTranslation } from "./util";
 
 export type LocaleFile = { [key: string]: string };
-
-type SingleTranslation = {
-  msgid: string;
-  comments?: { [key: string]: string };
-  msgid_plural?: string;
-  msgstr: string[];
-};
 
 export async function translationsToFile(language: string, translations: LocaleFile, frenchTranslations: LocaleFile): Promise<string> {
   const object: translationObject = {
@@ -45,6 +37,7 @@ export async function translationsToFile(language: string, translations: LocaleF
     const singleTranslation: SingleTranslation = {
       msgid: frenchTranslations[key],
       msgstr: [translations[key] || ""],
+      msgctxt: key,
     };
     const pluralKey = `${key}_plural`;
     if (frenchTranslations[pluralKey]) {
@@ -52,7 +45,8 @@ export async function translationsToFile(language: string, translations: LocaleF
       singleTranslation.msgid_plural = frenchTranslations[pluralKey];
       singleTranslation.msgstr.push(translations[pluralKey] || "");
     }
-    object.translations[""][singleTranslation.msgid] = singleTranslation;
+    object.translations[key] = {};
+    object.translations[key][singleTranslation.msgid] = singleTranslation;
   }
 
   const directory: string = path.join(__dirname, "../..", "dist/locales");
@@ -73,18 +67,19 @@ export async function translationsToFile(language: string, translations: LocaleF
 export function fileToTranslations(filebuffer: Buffer, frenchTranslations: LocaleFile): LocaleFile {
   const object: translationObject = parse(filebuffer);
   const translations: LocaleFile = {};
-  if (!object.translations[""]) {
-    return translations;
-  }
-  const newTranslations = object.translations[""];
+  const newTranslations = object.translations;
 
   for (const key of Object.keys(frenchTranslations)) {
     if (key.endsWith("_plural")) {
       continue;
     }
 
-    if (newTranslations[frenchTranslations[key]] !== undefined) {
-      const data: SingleTranslation = newTranslations[frenchTranslations[key]];
+    if (newTranslations[key] !== undefined && newTranslations[key][frenchTranslations[key]] !== undefined) {
+      const data: SingleTranslation = newTranslations[key][frenchTranslations[key]];
+      if ((data.msgstr[0] || "").length === 0) {
+        continue;
+      }
+
       translations[key] = data.msgstr[0] || "";
       if (data.msgid_plural) {
         translations[`${key}_plural`] = data.msgstr[1] || "";
