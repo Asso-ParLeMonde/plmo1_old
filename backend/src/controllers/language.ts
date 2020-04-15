@@ -8,7 +8,7 @@ import { Scenario } from "../entities/scenario";
 import { ThemeRepository } from "../customRepositories/themeRepository";
 import { Theme } from "../entities/theme";
 import { downloadFile, uploadFile } from "../fileUpload";
-import { localesFR, LocaleFile, translationsToFile, fileToTranslations } from "../translations";
+import { LocaleFile, translationsToFile, fileToTranslations } from "../translations";
 
 export class LanguageController extends Controller {
   constructor() {
@@ -96,29 +96,10 @@ export class LanguageController extends Controller {
     res.status(204).send();
   }
 
-  @get({ path: "/:value/json" })
-  public async getJSONLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
-    if (language === undefined) {
-      next();
-      return;
-    }
-
-    const JSONlanguageBuffer: Buffer | null = await downloadFile(`locales/${language.value}.json`);
-    if (JSONlanguageBuffer === null) {
-      if (language.value === "fr") {
-        res.sendJSON(localesFR);
-        return;
-      }
-      next();
-      return;
-    }
-    res.sendJSON({ ...localesFR, ...JSON.parse(JSONlanguageBuffer.toString()) });
-  }
-
-  @get({ path: "/:value/po" })
+  @put({ path: "/:value/po" })
   public async getPOLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
     const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
+    const localesFR = req.body.locales || {};
     if (language === undefined) {
       next();
       return;
@@ -141,6 +122,7 @@ export class LanguageController extends Controller {
       return;
     }
 
+    const localesFR = JSON.parse(req.body.locales || "{}");
     const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
     if (language === undefined) {
       next();

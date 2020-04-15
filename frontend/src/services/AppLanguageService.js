@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 async function loadLanguage(language) {
   const response = await axiosRequest({
     method: "GET",
-    url: `/languages/${language}/json`,
+    url: `/locales/${language}.json`,
   });
   if (!response.error) {
     return response.data;

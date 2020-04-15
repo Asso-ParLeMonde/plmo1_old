@@ -21,7 +21,7 @@ const RedButton = withStyles((theme) => ({
 
 function Reglages() {
   const { t } = useTranslation();
-  const { logout } = useContext(UserServiceContext);
+  const { isLoggedIn, logout } = useContext(UserServiceContext);
   const { selectedLanguage, setSelectedLanguage } = useContext(
     AppLanguageServiceContext
   );
@@ -49,7 +49,11 @@ function Reglages() {
               >
                 {t("change_language")}
               </Typography>
-              <FormControl variant="outlined">
+              <FormControl
+                variant="outlined"
+                style={{ minWidth: "15rem" }}
+                className="mobile-full-width"
+              >
                 <InputLabel htmlFor="language">{t("language")}</InputLabel>
                 <Select
                   native
@@ -71,20 +75,24 @@ function Reglages() {
             </>
           )}
         </form>
-        <Typography
-          color="inherit"
-          variant="h2"
-          style={{ margin: "2rem 0 1rem 0" }}
-        >
-          {t("logout_title")}
-        </Typography>
-        <RedButton
-          variant="outlined"
-          className="mobile-full-width"
-          onClick={logout}
-        >
-          {t("logout_button")}
-        </RedButton>
+        {isLoggedIn() && (
+          <>
+            <Typography
+              color="inherit"
+              variant="h2"
+              style={{ margin: "2rem 0 1rem 0" }}
+            >
+              {t("logout_title")}
+            </Typography>
+            <RedButton
+              variant="outlined"
+              className="mobile-full-width"
+              onClick={logout}
+            >
+              {t("logout_button")}
+            </RedButton>
+          </>
+        )}
       </div>
     </div>
   );

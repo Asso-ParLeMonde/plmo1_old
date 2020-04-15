@@ -44,6 +44,7 @@ function ThemeCard(props) {
       themeId: props.themeId,
       id: null,
       title: "",
+      languageCode: selectedLanguage || "fr",
     });
     props.history.push(`/create/1-scenario-choice`);
   };
