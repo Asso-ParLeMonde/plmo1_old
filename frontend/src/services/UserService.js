@@ -3,6 +3,7 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { axiosRequest } from "../components/axiosRequest";
 import Notifications from "../components/Notifications";
+import { useTranslation } from "react-i18next";
 
 const UserServiceContext = React.createContext(undefined, undefined);
 
@@ -29,20 +30,10 @@ function getCacheToken() {
 }
 
 function UserServiceProviderWithRouter(props) {
+  const { t } = useTranslation();
   const [user, setUser] = useState(getCacheUser());
   const [token, setToken] = useState(getCacheToken());
   const [res, setRes] = useState({ complete: false });
-
-  useEffect(() => {
-    if (user !== null) {
-      setRes({
-        complete: true,
-        error: false,
-        message: `Bienvenue ${user.pseudo} !`,
-      });
-    }
-    // eslint-disable-next-line
-  }, [user]);
 
   const updateToken = (user, accessToken) => {
     setToken(accessToken || "");
@@ -84,6 +75,12 @@ function UserServiceProviderWithRouter(props) {
     if (localSave && response.data.refreshToken) {
       localStorage.setItem("refreshToken", response.data.refreshToken || "");
     }
+
+    setRes({
+      complete: true,
+      error: false,
+      message: t("welcome_message", { pseudo: response.data.user.pseudo }),
+    });
 
     return {
       success: true,

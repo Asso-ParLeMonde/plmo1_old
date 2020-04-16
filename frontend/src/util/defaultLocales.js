@@ -80,6 +80,12 @@ export const locales = {
     "Voulez-vous vraiment supprimer le projet <strong>{{projetName}}</strong> ?",
   project_delete_desc2: "Attention ! Cette action est irréversible !",
   project_delete_confirm: "Supprimer le projet",
+  project_save_title: "Sauvegarder le projet ?",
+  project_save_cancel: "Ne pas sauvegarder",
+  project_save_confirm: "Sauvegarder le projet",
+  project_save_desc:
+    "Enregistrer le projet vous permettra de le retrouver dans l'onglet \"Mes vidéos\" et également dans l'application Par Le Monde.",
+  project_save_label: "Nom du projet",
   //--- my videos ---
   my_videos_title: "Mes <1>super</1> vidéos",
   my_videos_subtitle1: "Mes projets en cours",
@@ -165,4 +171,5 @@ export const locales = {
   //--- misc ---
   or: "ou",
   yes: "oui",
+  welcome_message: "Bienvenue {{pseudo}} !",
 };
