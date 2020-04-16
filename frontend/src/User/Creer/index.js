@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { ProjectServiceProvider } from "../../services/ProjectService";
 
 import Theme from "./Theme";
+import NewTheme from "./Theme/NewTheme";
 import Partie1 from "./Partie1";
 import Partie2 from "./Partie2";
 import Partie3 from "./Partie3";
@@ -27,6 +28,7 @@ function Creer() {
               path="/create/edit-project/:projectId"
               component={EditProject}
             />
+            <Route path="/create/new-theme" component={NewTheme} />
             <Route path="/create" component={Theme} />
           </Switch>
         </ProjectServiceProvider>

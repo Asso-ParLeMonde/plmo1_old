@@ -140,12 +140,13 @@ function ProjectService(props) {
 
   useEffect(() => {
     // update theme name when themeId change
-    if (
-      project.themeId !== null &&
-      themesRequest.complete &&
-      !themesRequest.error
-    ) {
-      const themeIndex = themesRequest.data.reduce(
+    let themes = JSON.parse(localStorage.getItem("localThemes")) || [];
+    if (themesRequest.complete && !themesRequest.error) {
+      themes.unshift(...themesRequest.data);
+    }
+
+    if (project.themeId !== null) {
+      const themeIndex = themes.reduce(
         (i1, t, i2) => (t.id === project.themeId ? i2 : i1),
         -1
       );
@@ -153,7 +154,7 @@ function ProjectService(props) {
         updateProject({ themeId: null, scenarioId: null });
         props.history.push("/");
       } else {
-        const theme = themesRequest.data[themeIndex];
+        const theme = themes[themeIndex];
         updateProject({
           themeName: theme.names.fr,
         });

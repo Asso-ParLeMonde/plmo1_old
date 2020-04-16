@@ -51,6 +51,7 @@ function UserServiceProviderWithRouter(props) {
     localStorage.setItem("accessToken", accessToken || "");
     localStorage.setItem("expiresAt", new Date().getTime() + 3540000);
     localStorage.removeItem("scenarios");
+    localStorage.removeItem("localThemes");
   };
 
   /**

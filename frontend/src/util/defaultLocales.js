@@ -10,6 +10,10 @@ export const locales = {
   admin: "Admin",
   //--- theme page ---
   create_theme_title: "Sur quel <1>thème</1> sera votre vidéo ?",
+  create_new_theme: "Ajouter votre thème",
+  new_theme_title: "Créer votre <1>thème</1> :",
+  new_theme_title_label: "Nom du thème<1>*</1>:",
+  new_theme_title_placeholder: "Nouveau thème",
   //--- part 1 ---
   part1_title: "Quel <1>scénario</1> choisir ?",
   part1_subtitle1: "Voici quelques vidéos qui peuvent vous inspirer",

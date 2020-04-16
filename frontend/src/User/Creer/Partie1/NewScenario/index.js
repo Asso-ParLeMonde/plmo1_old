@@ -86,7 +86,13 @@ function NewScenario(props) {
 
   return (
     <div>
-      <div>
+      <div
+        style={{
+          maxWidth: "1000px",
+          margin: "auto",
+          paddingBottom: "2rem",
+        }}
+      >
         <Typography color="primary" variant="h1">
           <Inverted round>1</Inverted>{" "}
           <Trans i18nKey="new_scenario_title">
@@ -182,7 +188,7 @@ NewScenario.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeId: PropTypes.number.isRequired,
+  themeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   addLocalScenario: PropTypes.func.isRequired,
 };
 

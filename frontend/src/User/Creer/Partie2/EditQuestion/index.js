@@ -141,8 +141,6 @@ EditQuestion.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.number.isRequired,
 };
 
 export default withRouter(EditQuestion);
