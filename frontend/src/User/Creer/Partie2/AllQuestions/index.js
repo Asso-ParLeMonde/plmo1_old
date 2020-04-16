@@ -80,7 +80,7 @@ function AllQuestions(props) {
 
   const handleNext = (event) => {
     event.preventDefault();
-    if (project.id === null) {
+    if (project.id === null && isLoggedIn()) {
       askSaveProject((p) => {
         goNext(p).catch();
       });

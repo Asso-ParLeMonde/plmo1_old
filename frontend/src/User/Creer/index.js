@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Switch } from "react-router-dom";
 import { ProjectServiceProvider } from "../../services/ProjectService";
 
-import Theme from "./Theme";
+import Theme from "./Theme/AllThemes";
 import NewTheme from "./Theme/NewTheme";
 import Partie1 from "./Partie1";
 import Partie2 from "./Partie2";

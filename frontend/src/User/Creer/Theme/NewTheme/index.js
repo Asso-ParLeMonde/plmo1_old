@@ -19,12 +19,14 @@ import { AppLanguageServiceContext } from "../../../../services/AppLanguageServi
 import { UserServiceContext } from "../../../../services/UserService";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
 import Inverted from "../../../../components/Inverted";
+import { ThemesServiceContext } from "../../../../services/ThemesService";
 
 function NewTheme(props) {
   const { t } = useTranslation();
-  const { isLoggedIn } = useContext(UserServiceContext);
+  const { isLoggedIn, axiosLoggedRequest } = useContext(UserServiceContext);
   const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const { updateProject } = useContext(ProjectServiceContext);
+  const { addTheme } = useContext(ThemesServiceContext);
   const [themeName, setThemeName] = useState("");
   const [hasError, setHasError] = useState(false);
 
@@ -39,7 +41,7 @@ function NewTheme(props) {
     setHasError(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (themeName.length === 0) {
       setHasError(true);
       return;
@@ -57,7 +59,21 @@ function NewTheme(props) {
       localThemes.push(newTheme);
       localStorage.setItem("localThemes", JSON.stringify(localThemes));
     } else {
-      // TODO
+      const response = await axiosLoggedRequest({
+        method: "POST",
+        url: "/themes",
+        data: {
+          names: newTheme.names,
+          isPublished: false,
+          userId: true,
+        },
+      });
+      if (!response.error) {
+        newTheme.id = response.data.id;
+        addTheme(newTheme);
+      } else {
+        return;
+      }
     }
     updateProject({
       themeId: newTheme.id,

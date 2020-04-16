@@ -5,7 +5,7 @@ import { Image } from "../entities/image";
 import { Theme } from "../entities/theme";
 import { deleteImage } from "../fileUpload";
 import { Controller, del, get, oneImage, post, put } from "./controller";
-import { UserType } from "../entities/user";
+import { UserType, User } from "../entities/user";
 
 export class ThemesController extends Controller {
   constructor() {
@@ -15,9 +15,16 @@ export class ThemesController extends Controller {
   @get()
   public async getThemes(req: Request, res: Response): Promise<void> {
     const { query } = req;
-    const params: { isPublished: boolean | null } = { isPublished: null };
+    const params: { isPublished: boolean | null; userId: number | null } = { isPublished: null, userId: null };
     if (query.isPublished !== undefined) {
-      params.isPublished = query.isPublished === "true";
+      if (query.isPublished === "null") {
+        params.isPublished = null;
+      } else {
+        params.isPublished = query.isPublished === "true";
+      }
+    }
+    if ((query.userId !== undefined || query.user !== undefined) && req.user !== undefined) {
+      params.userId = req.user.id;
     }
     const themes: Theme[] = await getCustomRepository(ThemeRepository).findAll(params);
     res.sendJSON(themes);
@@ -41,10 +48,15 @@ export class ThemesController extends Controller {
     const theme: Theme = new Theme(); // create a new theme
     theme.isPublished = isPublished;
 
-    const themeNb = await getRepository(Theme)
-      .createQueryBuilder("theme")
-      .getCount();
-    theme.order = themeNb + 1;
+    if (theme.isPublished) {
+      const themeNb = await getRepository(Theme).count({ where: { isPublished: true } });
+      theme.order = themeNb + 1;
+    }
+
+    if (req.body.userId !== undefined && req.user !== undefined) {
+      theme.user = new User();
+      theme.user.id = req.user.id;
+    }
 
     await getCustomRepository(ThemeRepository).saveWithLabels(theme, labels); // save new theme
     res.sendJSON(theme); // send new theme

@@ -1,7 +1,8 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
 import { Image } from "./image";
 import { Label } from "./label";
 import { Scenario } from "./scenario";
+import { User } from "./user";
 
 @Entity()
 export class Theme {
@@ -26,6 +27,9 @@ export class Theme {
   @OneToOne(() => Image, { onDelete: "SET NULL" })
   @JoinColumn()
   public image: Image;
+
+  @ManyToOne(() => User)
+  public user: User;
 
   public labels: Label[];
   public names: { [key: string]: string };

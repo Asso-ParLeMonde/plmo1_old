@@ -6,13 +6,13 @@ import { Trans } from "react-i18next";
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
 
-import { ThemesServiceContext } from "../../../services/ThemesService";
-import { ProjectServiceContext } from "../../../services/ProjectService";
-import { AppLanguageServiceContext } from "../../../services/AppLanguageService";
-import ThemeCard from "./components/ThemeCard";
-import Inverted from "../../../components/Inverted";
+import { ThemesServiceContext } from "../../../../services/ThemesService";
+import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { AppLanguageServiceContext } from "../../../../services/AppLanguageService";
+import ThemeCard from "../components/ThemeCard";
+import Inverted from "../../../../components/Inverted";
 
-import "./theme.css";
+import "../theme.css";
 
 const useStyles = makeStyles((theme) => ({
   container: {

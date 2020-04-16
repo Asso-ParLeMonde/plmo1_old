@@ -45,8 +45,8 @@ function UserServiceProviderWithRouter(props) {
   }, [user]);
 
   const updateToken = (user, accessToken) => {
-    setUser(user || null);
     setToken(accessToken || "");
+    setUser(user || null);
     localStorage.setItem("user", JSON.stringify(user || null));
     localStorage.setItem("accessToken", accessToken || "");
     localStorage.setItem("expiresAt", new Date().getTime() + 3540000);
