@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import { axiosRequest } from "../components/axiosRequest";
