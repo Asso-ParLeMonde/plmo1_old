@@ -35,6 +35,8 @@ export const locales = {
   part2_add_question: "Ajouter une question",
   part2_edit_question: "Modifier une question",
   part2_add_question_placeholder: "Ma question",
+  part2_delete_question_title: "Supprimer la question ?",
+  part2_delete_question_desc: "Voulez-vous vraiment supprimer la question :",
   //--- part3 ---
   part3_title: "Création du <1>Storyboard</1> et du <1>plan de tournage</1>",
   part3_desc: "Lorem ipsum...",
@@ -90,6 +92,8 @@ export const locales = {
   my_videos_title: "Mes <1>super</1> vidéos",
   my_videos_subtitle1: "Mes projets en cours",
   my_videos_subtitle2: "Mes projets terminés",
+  my_videos_empty: "Vous n'avez pas encore de projet en cours. En créer un ?",
+  my_videos_themes: "Thème :",
   //--- settings ---
   change_language: "Changer la langue de l'application :",
   language: "Langue",

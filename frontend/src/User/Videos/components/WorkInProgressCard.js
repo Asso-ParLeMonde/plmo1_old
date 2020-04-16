@@ -1,10 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { Typography, ButtonBase } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 import "./workInProgressCard.css";
 
 function WorkInProgressCard(props) {
+  const { t } = useTranslation();
+
   return (
     <ButtonBase
       focusRipple
@@ -17,7 +20,7 @@ function WorkInProgressCard(props) {
         </Typography>
         {props.theme !== null && (
           <div className="theme-name">
-            <label>Thème : </label>
+            <label>{t("my_videos_themes")}</label>{" "}
             {(props.theme.names || {}).fr}
           </div>
         )}

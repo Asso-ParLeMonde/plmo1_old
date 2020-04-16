@@ -103,7 +103,7 @@ function Videos(props) {
           </React.Fragment>
         ) : (
           <WorkInProgressCard
-            title="Vous n'avez pas encore de projet en cours. En créer un ?"
+            title={t("my_videos_empty")}
             onClick={handleNewProjectClick}
           />
         )}
