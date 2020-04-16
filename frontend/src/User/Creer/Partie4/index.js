@@ -15,7 +15,7 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import NavigateNextIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import VideocamIcon from "@material-ui/icons/Videocam";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
