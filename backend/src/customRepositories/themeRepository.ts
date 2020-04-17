@@ -63,10 +63,18 @@ export class ThemeRepository extends Repository<Theme> {
     if (params.isPublished !== null) {
       entitiesQuery = entitiesQuery.where("theme.isPublished = :isPublished", params);
       if (params.userId !== null) {
-        entitiesQuery = entitiesQuery.orWhere("theme.userId = :userId", params);
+        if (process.env.DB_TYPE && process.env.DB_TYPE === "postgres") {
+          entitiesQuery = entitiesQuery.orWhere('theme."userId" = :userId', params);
+        } else {
+          entitiesQuery = entitiesQuery.orWhere("theme.userId = :userId", params);
+        }
       }
     } else if (params.userId !== null) {
-      entitiesQuery = entitiesQuery.where("theme.userId = :userId", params);
+      if (process.env.DB_TYPE && process.env.DB_TYPE === "postgres") {
+        entitiesQuery = entitiesQuery.where('theme."userId" = :userId', params);
+      } else {
+        entitiesQuery = entitiesQuery.where("theme.userId = :userId", params);
+      }
     }
     const entities: Theme[] = await entitiesQuery.getMany();
     for (const entity of entities) {

@@ -12,8 +12,8 @@ async function postAdminQuestion(
   updateQuestions
 ) {
   const request = await axiosLoggedRequest({
-    method: "PUT",
-    url: "/questions/",
+    method: "POST",
+    url: "/questions",
     data: question,
   });
 
