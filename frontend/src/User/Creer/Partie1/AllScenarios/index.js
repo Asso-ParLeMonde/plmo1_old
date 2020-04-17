@@ -50,13 +50,13 @@ function Scenarios(props) {
             {props.scenarios.map((scenario, index) => (
               <ScenarioCard
                 key={index}
-                stepNumber={0}
                 title={scenario.name}
                 scenarioId={scenario.id}
                 path={`/create/2-questions-choice?themeId=${props.themeId}&scenarioId=${scenario.id}`}
                 shortPath={`/create/2-questions-choice`}
                 history={props.history}
                 description={scenario.description}
+                stepNumber={parseInt(scenario.questionsCount, 10) || 0}
               />
             ))}
           </div>

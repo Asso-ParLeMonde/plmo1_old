@@ -3,14 +3,15 @@ import PropTypes from "prop-types";
 import { ReactComponent as Arrow } from "../../../../images/right-arrow.svg";
 import { Typography, makeStyles } from "@material-ui/core";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
+import { useTranslation } from "react-i18next";
 
 import "./card.css";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   greenBorder: {
     borderColor: (theme.palette.secondary || {}).main,
-    border: "1px solid"
-  }
+    border: "1px solid",
+  },
 }));
 
 function ScenarioCard({
@@ -20,12 +21,13 @@ function ScenarioCard({
   path,
   scenarioId,
   history,
-  shortPath
+  shortPath,
 }) {
+  const { t } = useTranslation();
   const classes = useStyles();
   const { updateProject } = useContext(ProjectServiceContext);
 
-  const handleClick = event => {
+  const handleClick = (event) => {
     event.preventDefault();
     updateProject({ scenarioId, scenarioName: title });
     history.push(shortPath);
@@ -46,9 +48,10 @@ function ScenarioCard({
       <div>
         <p>{description}</p>
       </div>
-      <div className="steps">
-        {stepNumber} étape{stepNumber > 1 && "s"}
-      </div>
+      {stepNumber > 0 && (
+        <div className="steps">{t("step", { count: stepNumber })}</div>
+      )}
+
       <div className="arrow">
         <Arrow />
       </div>
@@ -63,11 +66,11 @@ ScenarioCard.propTypes = {
   history: PropTypes.object.isRequired,
   path: PropTypes.string.isRequired,
   shortPath: PropTypes.string.isRequired,
-  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 ScenarioCard.defaultProps = {
-  stepNumber: 0
+  stepNumber: 0,
 };
 
 export default ScenarioCard;

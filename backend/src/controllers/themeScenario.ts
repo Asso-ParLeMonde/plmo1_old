@@ -22,21 +22,20 @@ export class ThemeScenariosController extends Controller {
   @get()
   public async getScenarios(req: Request, res: Response): Promise<void> {
     const themeId: number = parseInt(req.params.themeId, 10) || 0;
-    const conditions: { where: { theme: { id: number }; languageCode?: string; isDefault?: boolean } } = { where: { theme: { id: themeId } } };
-    let conditions2: { where: [{ theme: { id: number }; languageCode?: string; isDefault?: boolean }, { theme: { id: number }; user: { id: number } }] };
+    const params: { themeId: number; languageCode?: string; isDefault?: boolean; userId?: number } = { themeId };
+
     if (req.query.languageCode !== undefined) {
-      conditions.where.languageCode = req.query.languageCode as string;
+      params.languageCode = req.query.languageCode as string;
     }
     if (req.query.isDefault !== undefined) {
-      conditions.where.isDefault = req.query.isDefault === "true";
+      params.isDefault = req.query.isDefault === "true";
     }
-    let scenarios: Scenario[];
-    if (req.query.user !== undefined && req.user !== undefined) {
-      conditions2 = { where: [conditions.where, { theme: { id: themeId }, user: { id: req.user.id } }] };
-      scenarios = await getRepository(Scenario).find(conditions2);
-    } else {
-      scenarios = await getRepository(Scenario).find(conditions);
+    if ((req.query.user !== undefined || req.query.userId !== undefined) && req.user !== undefined) {
+      params.userId = req.user.id;
     }
+
+    const scenarios: Scenario[] = await getCustomRepository(ScenarioRepository).findWithQuestionsCount(params);
+
     res.sendJSON(scenarios);
   }
 
