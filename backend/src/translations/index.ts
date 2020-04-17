@@ -1,8 +1,12 @@
 import fs from "fs-extra";
 import * as path from "path";
+import i18next, { TFunction } from "i18next";
 import { parse } from "./po2json";
 import compile from "./json2po";
 import { translationObject, SingleTranslation } from "./util";
+import { downloadFile } from "../fileUpload";
+import { defaultLocales } from "./defaultLocales";
+export { defaultLocales } from "./defaultLocales";
 
 export type LocaleFile = { [key: string]: string };
 
@@ -88,4 +92,28 @@ export function fileToTranslations(filebuffer: Buffer, frenchTranslations: Local
   }
 
   return translations;
+}
+
+export async function getI18n(language: string): Promise<TFunction | null> {
+  const JSONlanguageBuffer: Buffer | null = await downloadFile(`locales/${language}.json`);
+  const locales = JSONlanguageBuffer !== null ? JSON.parse(JSONlanguageBuffer.toString()) : {};
+
+  try {
+    const t = await i18next.init({
+      lng: "default",
+      debug: false,
+      resources: {
+        default: {
+          translation: {
+            ...defaultLocales,
+            ...locales,
+          },
+        },
+      },
+    });
+
+    return t;
+  } catch {
+    return null;
+  }
 }

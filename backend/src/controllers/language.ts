@@ -8,7 +8,7 @@ import { Scenario } from "../entities/scenario";
 import { ThemeRepository } from "../customRepositories/themeRepository";
 import { Theme } from "../entities/theme";
 import { downloadFile, uploadFile } from "../fileUpload";
-import { LocaleFile, translationsToFile, fileToTranslations } from "../translations";
+import { LocaleFile, translationsToFile, fileToTranslations, defaultLocales } from "../translations";
 
 export class LanguageController extends Controller {
   constructor() {
@@ -108,7 +108,7 @@ export class LanguageController extends Controller {
     const JSONlanguageBuffer: Buffer | null = await downloadFile(`locales/${language.value}.json`);
     const JSONFRlanguageBuffer: Buffer | null = await downloadFile("locales/fr.json");
 
-    const translationsFR = { ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
+    const translationsFR = { ...defaultLocales, ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
     const translations = (language.value === "fr" ? translationsFR : JSONlanguageBuffer !== null ? JSON.parse(JSONlanguageBuffer.toString()) : {}) as LocaleFile;
 
     const url = await translationsToFile(language.value, translations, translationsFR);
@@ -130,7 +130,7 @@ export class LanguageController extends Controller {
     }
 
     const JSONFRlanguageBuffer: Buffer | null = await downloadFile("locales/fr.json");
-    const translationsFR = { ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
+    const translationsFR = { ...defaultLocales, ...localesFR, ...(JSONFRlanguageBuffer !== null ? JSON.parse(JSONFRlanguageBuffer.toString()) : {}) } as LocaleFile;
 
     const newTranslations = fileToTranslations(req.file.buffer, translationsFR);
 

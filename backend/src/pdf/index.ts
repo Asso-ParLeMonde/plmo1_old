@@ -6,6 +6,7 @@ import pug from "pug";
 import { logger } from "../utils/logger";
 import { getBase64File, getQRCodeURL } from "../utils/utils";
 import { Question } from "../entities/question";
+import { getI18n } from "../translations";
 
 const logoFont = getBase64File(path.join(__dirname, "templates/littledays.woff"));
 const userLogo = getBase64File(path.join(__dirname, "templates/face.png"));
@@ -43,14 +44,19 @@ async function getTemplateData<P extends PDF>(pdf: P, options: PDFOptions<P>): P
   return undefined;
 }
 
-export async function htmlToPDF<P extends PDF>(pdf: P, options: PDFOptions<P>): Promise<string | undefined> {
+export async function htmlToPDF<P extends PDF>(pdf: P, options: PDFOptions<P>, language: string = "fr"): Promise<string | undefined> {
   const templateData = await getTemplateData(pdf, options);
   if (templateData === undefined) {
     logger.info(`PDF ${pdf} not found!`);
     return undefined;
   }
+  const t = await getI18n(language);
+  if (t === null) {
+    logger.info(`Could not load translations for PDF!`);
+    return undefined;
+  }
   const filename: string = templateData.filename;
-  const html = pug.renderFile(path.join(__dirname, "templates", templateData.pugFile), { ...templateData.args, logoFont, userLogo });
+  const html = pug.renderFile(path.join(__dirname, "templates", templateData.pugFile), { ...templateData.args, logoFont, userLogo, t });
 
   const id: string = uuidv4();
   const directory: string = path.join(__dirname, "../..", "dist/pdf/generated", id);

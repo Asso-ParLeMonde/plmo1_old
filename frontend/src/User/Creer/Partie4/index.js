@@ -22,6 +22,7 @@ import { ProjectServiceContext } from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
 import Inverted from "../../../components/Inverted";
 import { UserServiceContext } from "../../../services/UserService";
+import { AppLanguageServiceContext } from "../../../services/AppLanguageService";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 function Partie4(props) {
   const { t } = useTranslation();
   const classes = useStyles();
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const { axiosLoggedRequest } = useContext(UserServiceContext);
   const { project } = useContext(ProjectServiceContext);
   const questions = getQuestions(project);
@@ -52,6 +54,7 @@ function Partie4(props) {
         scenarioName: project.scenarioName,
         scenarioDescription: "",
         questions,
+        languageCode: selectedLanguage,
       },
     });
     setIsLoading(false);
