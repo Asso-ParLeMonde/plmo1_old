@@ -16,14 +16,14 @@ async function handleQuestionButtonRequest(
     case "PUT":
       request = await axiosLoggedRequest({
         method: "PUT",
-        url: `/questions/${question.id}_${question.language}`,
-        data: { ...question, isStandard: true }
+        url: `/questions/${question.id}`,
+        data: { ...question, isDefault: true },
       });
       break;
     case "DELETE":
       request = await axiosLoggedRequest({
         method: "DELETE",
-        url: `/questions/${question.id}`
+        url: `/questions/${question.id}`,
       });
       break;
   }
@@ -32,7 +32,7 @@ async function handleQuestionButtonRequest(
     setRes({
       error: true,
       complete: true,
-      message: errorMessage
+      message: errorMessage,
     });
   }
 
@@ -40,7 +40,7 @@ async function handleQuestionButtonRequest(
     setRes({
       error: false,
       complete: true,
-      message: successMessage
+      message: successMessage,
     });
   }
 
