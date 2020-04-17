@@ -78,7 +78,7 @@ export class UserController extends Controller {
       user.verificationHash = await argon2.hash(initEmailPassword);
       // Uncomment next line to block account on registration before email is not verified
       // user.accountRegistration = 3;
-      await sendMail(Email.INVITATION_EMAIL, user.mail, { initCode: initEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName });
+      await sendMail(Email.INVITATION_EMAIL, user.mail, { initCode: initEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName }, user.languageCode);
     }
 
     // new user and not admin
@@ -87,7 +87,7 @@ export class UserController extends Controller {
       user.verificationHash = await argon2.hash(verifyEmailPassword);
       // Uncomment next line to block account on registration before email is not verified
       // user.accountRegistration = 3;
-      await sendMail(Email.VERIFY_EMAIL, user.mail, { verifyCode: verifyEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName });
+      await sendMail(Email.VERIFY_EMAIL, user.mail, { verifyCode: verifyEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName }, user.languageCode);
     }
 
     // save user

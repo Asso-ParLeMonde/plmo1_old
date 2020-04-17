@@ -71,27 +71,27 @@ head
                                     tbody
                                       tr(style='border-collapse: collapse;')
                                         td.esd-block-text(align='center' style='padding: 0;margin: 0;')
-                                          h1(style='margin: 0;line-height: 120%;mso-line-height-rule: exactly;font-family: tahoma, verdana, segoe, sans-serif;font-size: 24px;font-style: normal;font-weight: bold;color: #212121;') Bienvenue !
+                                          h1(style='margin: 0;line-height: 120%;mso-line-height-rule: exactly;font-family: tahoma, verdana, segoe, sans-serif;font-size: 24px;font-style: normal;font-weight: bold;color: #212121;') #{t("email_welcome")}
                                       tr(style='border-collapse: collapse;')
                                         td.esd-block-text.es-p20t(align='left' style='padding: 0;margin: 0;padding-top: 20px;')
                                           p(style='margin: 0;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-size: 16px;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;line-height: 150%;color: #131313;')
-                                            | Bonjour #{firstname} #{lastname},
+                                            | #{t("email_greetings", { firstname, lastname })}
                                             br
-                                            | Pour nous assurer que cette adresse e-mail est bien valide veuillez la vérifier en utilisant le bouton ci-dessous :
+                                            | #{t("email_verify_text")}
                                       tr(style='border-collapse: collapse;')
                                         td.esd-block-button.es-p20t.es-p20b.es-p10r.es-p10l(align='center' style='padding: 0;margin: 0;padding-left: 10px;padding-right: 10px;padding-top: 20px;padding-bottom: 20px;')
                                           span.es-button-border.es-button-border-1584957593702(style='background: #79c3a5;border-radius: 5px;border-style: solid solid solid solid;border-color: #2cb543 #2cb543 #2cb543 #2cb543;border-width: 0px 0px 0px 0px;display: inline-block;width: auto;')
                                             a.es-button.es-button-1584957593689(href=verifyUrl target='_blank' style='background: #79c3a5;border-color: #79c3a5;font-size: 14px;border-radius: 5px;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;text-decoration: none !important;color: #ffffff;border-style: solid;border-width: 10px 20px 10px 20px;display: inline-block;font-weight: normal;font-style: normal;line-height: 120%;width: auto;text-align: center;mso-style-priority: 100 !important;')
-                                              | VÉRIFIER MON ADRESSE EMAIL
+                                              | #{t("email_verify_button")}
                                       tr(style='border-collapse: collapse;')
                                         td.esd-block-text.es-p20t(align='left' style='padding: 0;margin: 0;padding-top: 20px;')
                                           p(style='margin: 0;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-size: 16px;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;line-height: 150%;color: #131313;')
-                                            | La confirmation de votre adresse e-mail permet de protéger vos informations personnelles et de garantir que seul vous pouvez accéder à votre compte.
+                                            | #{t("email_verify_text2")}
                                             br
                                             br
-                                            | Cordialement,
+                                            | #{t("email_end")}
                                             br
-                                            | L&apos;&eacute;quipe Par Le Monde.
+                                            | #{t("email_signature")}
                                             br
                       tr(style='border-collapse: collapse;')
                         td.esd-structure.es-p30t.es-p30r.es-p30l(style='background-color: transparent;padding: 0;margin: 0;padding-top: 30px;padding-left: 30px;padding-right: 30px;' align='left' bgcolor='transparent')
@@ -104,9 +104,9 @@ head
                                       tr(style='border-collapse: collapse;')
                                         td.esd-block-text(align='center' style='padding: 0;margin: 0;')
                                           p(style='font-size: 14px;margin: 0;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;line-height: 150%;color: #131313;')
-                                            | Ce message a &eacute;t&eacute; envoy&eacute; &agrave; 
+                                            | #{t("email_end_text")} 
                                             a(target='_blank' href='mailto:' + receiverEmail style='font-size: 14px;color: rgb(19, 19, 19);-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;text-decoration: underline;') #{receiverEmail}
                                             | .
-                                            | Si vous avez des questions ou ne souhaitez plus recevoir d'emails, 
-                                            a(target='_blank' href='mailto:' + plmoEmail style='font-size: 14px;color: rgb(19, 19, 19);font-weight: 600;text-decoration: none;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;') contactez-nous
+                                            | #{t("email_end_text2")} 
+                                            a(target='_blank' href='mailto:' + plmoEmail style='font-size: 14px;color: rgb(19, 19, 19);font-weight: 600;text-decoration: none;-webkit-text-size-adjust: none;-ms-text-size-adjust: none;mso-line-height-rule: exactly;font-family: roboto, "helvetica neue", helvetica, arial, sans-serif;') #{t("email_contact_link")}
                                             | .

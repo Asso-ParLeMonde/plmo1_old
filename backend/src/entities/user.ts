@@ -12,7 +12,7 @@ export class User {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ type: "varchar", length: 2 })
+  @Column({ type: "varchar", length: 10 })
   public languageCode: string;
 
   @Column({ type: "varchar", length: 50 })

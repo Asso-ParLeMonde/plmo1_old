@@ -164,6 +164,7 @@ export const locales = {
   signup_already: "Compte déjà créé ?",
   //--- forgot password ---
   forgot_password_title: "Réinitialiser le mot de passe",
+  forgot_password_email: "E-mail",
   forgot_password_button: "Réinitialiser",
   forgot_password_success:
     "Un lien pour réinitialiser le mot de passe de votre compte a été envoyé avec succès à votre addresse e-mail !",

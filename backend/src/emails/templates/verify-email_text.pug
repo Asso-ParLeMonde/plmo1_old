@@ -1,16 +1,16 @@
 | Par Le Monde
 | --------------------------------------
 |
-| Bienvenue #{firstname} #{lastname}!
-| Pour nous assurer que cette adresse e-mail est bien valide veuillez la vérifier en utilisant le bouton ci-dessous.
+| #{t("email_greetings", { firstname, lastname })}
+| #{t("email_verify_text")}
 |
 | #{verifyUrl}
 |
-| La confirmation de votre adresse e-mail permet de protéger vos informations personnelles et de garantir que seul vous pouvez accéder à votre compte.
+| #{t("email_verify_text2")}
 |
-| Cordialement,
-| L'équipe Par Le Monde.
+| #{t("email_end")}
+| #{t("email_signature")}
 | #{frontUrl}
 |
 | --------------------------------------
-| Ce message a été envoyé à #{receiverEmail}. Si vous avez des questions ou ne souhaitez plus recevoir d'emails, contactez-nous à l'adresse #{plmoEmail} 
+| #{t("email_end_text")} #{receiverEmail}. #{t("email_end_text2")} #{plmoEmail} 

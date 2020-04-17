@@ -84,7 +84,7 @@ export class LoginController extends Controller {
     await getRepository(User).save(user);
 
     // send mail with verification password
-    await sendMail(Email.RESET_PASSWORD, user.mail, { resetCode: temporaryPassword });
+    await sendMail(Email.RESET_PASSWORD, user.mail, { resetCode: temporaryPassword }, req.body.languageCode || undefined);
     res.sendJSON({ success: true });
   }
 

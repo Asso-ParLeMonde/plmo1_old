@@ -4,6 +4,7 @@ import pug from "pug";
 import path from "path";
 import { logger } from "../utils/logger";
 import { getNodeMailer } from "./nodemailer";
+import { getI18n } from "../translations";
 
 const frontUrl = process.env.FRONT_URL || "http://localhost:3000";
 let transporter: Mail | null = null;
@@ -37,7 +38,7 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
     return {
       filename: "reset-password.pug",
       filenameText: "reset-password_text.pug",
-      subject: "Réinitialisez votre mot de passe",
+      subject: "email_reset_password_subject",
       args: {
         resetUrl: `${frontUrl}/update-password?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.RESET_PASSWORD>).resetCode)}`,
       },
@@ -47,7 +48,7 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
     return {
       filename: "verify-email.pug",
       filenameText: "verify-email_text.pug",
-      subject: "Bienvenue! - Vérifiez votre adresse email",
+      subject: "email_verify_subject",
       args: {
         verifyUrl: `${frontUrl}/verify?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.VERIFY_EMAIL>).verifyCode)}`,
         firstname: (options as EmailOptions<Email.VERIFY_EMAIL>).firstname,
@@ -55,11 +56,11 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
       },
     };
   }
-  if (email === Email.VERIFY_EMAIL) {
+  if (email === Email.INVITATION_EMAIL) {
     return {
       filename: "invite-email.pug",
       filenameText: "invite-email_text.pug",
-      subject: "Bienvenue! - Initialiser votre adresse email",
+      subject: "email_invite_subject",
       args: {
         initUrl: `${frontUrl}/update-password?email=${encodeURI(receiverEmail)}&verify-token=${encodeURI((options as EmailOptions<Email.INVITATION_EMAIL>).initCode)}`,
         firstname: (options as EmailOptions<Email.INVITATION_EMAIL>).firstname,
@@ -70,7 +71,7 @@ function getTemplateData<E extends Email>(email: E, receiverEmail: string, optio
   return undefined;
 }
 
-export async function sendMail<E extends Email>(email: E, receiverEmail: string, options: EmailOptions<E>): Promise<void> {
+export async function sendMail<E extends Email>(email: E, receiverEmail: string, options: EmailOptions<E>, language: string = "fr"): Promise<void> {
   if (transporter === null) {
     logger.error("Could not send mail, transporter is null!");
     return;
@@ -86,6 +87,11 @@ export async function sendMail<E extends Email>(email: E, receiverEmail: string,
     logger.info(`Template ${email} not found!`);
     return undefined;
   }
+  const t = await getI18n(language);
+  if (t === null) {
+    logger.info(`Could not load locales for email ${email}!`);
+    return undefined;
+  }
 
   // Compile text and html
   const pugOptions = {
@@ -94,6 +100,7 @@ export async function sendMail<E extends Email>(email: E, receiverEmail: string,
     frontUrl,
     receiverEmail,
     plmoEmail: "contact@parlemonde.fr",
+    t,
   };
   const html = pug.renderFile(path.join(__dirname, "templates", templateData.filename), pugOptions);
   const text = pug.renderFile(path.join(__dirname, "templates", templateData.filenameText), pugOptions);
@@ -102,7 +109,7 @@ export async function sendMail<E extends Email>(email: E, receiverEmail: string,
   const info = await transporter.sendMail({
     from: '"Par Le Monde" <no-reply@parlemonde.fr>', // sender address
     to: receiverEmail, // receiver address
-    subject: templateData.subject, // Subject line
+    subject: t(templateData.subject), // Subject line
     text, // plain text body
     html, // html body
     attachments: [
@@ -115,5 +122,7 @@ export async function sendMail<E extends Email>(email: E, receiverEmail: string,
   });
 
   logger.info(`Message sent: ${info.messageId}`);
-  logger.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`); // Preview only available when sending through an Ethereal account
+  if (nodemailer.getTestMessageUrl(info)) {
+    logger.info(`Preview URL: ${nodemailer.getTestMessageUrl(info)}`); // Preview only available when sending through an Ethereal account
+  }
 }
