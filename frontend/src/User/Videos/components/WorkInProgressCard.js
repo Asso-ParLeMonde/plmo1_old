@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 import { Typography, ButtonBase } from "@material-ui/core";
 import { useTranslation } from "react-i18next";
 
 import "./workInProgressCard.css";
+import { AppLanguageServiceContext } from "../../../services/AppLanguageService";
 
 function WorkInProgressCard(props) {
   const { t } = useTranslation();
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
+
+  const names = props.theme.names || { fr: "" };
+  const themeName = names[selectedLanguage] || names.fr;
 
   return (
     <ButtonBase
@@ -20,8 +25,7 @@ function WorkInProgressCard(props) {
         </Typography>
         {props.theme !== null && (
           <div className="theme-name">
-            <label>{t("my_videos_themes")}</label>{" "}
-            {(props.theme.names || {}).fr}
+            <label>{t("my_videos_themes")}</label> {themeName}
           </div>
         )}
       </div>
