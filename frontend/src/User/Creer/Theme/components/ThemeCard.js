@@ -1,13 +1,12 @@
-import React, { useContext, useEffect, useRef } from "react";
-import { withRouter } from "react-router";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import PropTypes from "prop-types";
+import { useTranslation } from "react-i18next";
 
 import Paper from "@material-ui/core/Paper";
 import CardMedia from "@material-ui/core/CardMedia";
 
 import "./ThemeCard.css";
 import { Typography } from "@material-ui/core";
-import { ProjectServiceContext } from "../../../../services/ProjectService";
 import { AppLanguageServiceContext } from "../../../../services/AppLanguageService";
 
 const colors = [
@@ -21,42 +20,42 @@ const colors = [
 
 function ThemeCard(props) {
   const img = useRef(null);
+  const { t } = useTranslation();
   const { selectedLanguage } = useContext(AppLanguageServiceContext);
-  const { updateProject } = useContext(ProjectServiceContext);
+  const [imgHasError, setImgHasError] = useState(false);
 
-  const themeName = props.theme.names[selectedLanguage] || props.theme.names.fr;
+  const themeName =
+    props.theme === null
+      ? t("create_new_theme")
+      : props.theme.names[selectedLanguage] || props.theme.names.fr;
+  const themeUrl =
+    props.theme === null
+      ? "/create/new-theme"
+      : `/create/1-scenario-choice?themeId=${props.themeId}`;
 
   useEffect(() => {
-    if (props.theme.image !== undefined && props.theme.image !== null) {
+    if (
+      props.theme !== null &&
+      props.theme.image !== undefined &&
+      props.theme.image !== null
+    ) {
       const image = new Image();
       image.onload = () => {
         if (img && img.current) {
           img.current.src = image.src;
         }
       };
+      image.onerror = () => {
+        setImgHasError(true);
+      };
       image.src = props.theme.image.path;
     }
-  }, [props.theme.image]);
-
-  const handleSelect = (event) => {
-    event.preventDefault();
-    updateProject({
-      themeId: props.themeId,
-      id: null,
-      title: "",
-      languageCode: selectedLanguage || "fr",
-    });
-    props.history.push(`/create/1-scenario-choice`);
-  };
+  }, [props.theme]);
 
   return (
-    <a
-      className="theme-card-button"
-      href={`/create/1-scenario-choice?themeId=${props.themeId}`}
-      onClick={handleSelect}
-    >
+    <a className="theme-card-button" href={themeUrl} onClick={props.onClick}>
       <Paper className="theme-card-paper">
-        {props.theme.image ? (
+        {props.theme !== null && props.theme.image && !imgHasError ? (
           <CardMedia
             ref={img}
             component="img"
@@ -66,7 +65,14 @@ function ThemeCard(props) {
         ) : (
           <div
             className="theme-card-default"
-            style={{ backgroundColor: colors[props.themeId % 6] }}
+            style={{
+              backgroundColor:
+                colors[
+                  (typeof props.themeId === "string"
+                    ? parseInt(props.themeId.split("_")[1], 10) || 0
+                    : props.themeId) % 6
+                ],
+            }}
           />
         )}
       </Paper>
@@ -76,11 +82,9 @@ function ThemeCard(props) {
 }
 
 ThemeCard.propTypes = {
-  themeId: PropTypes.number,
+  themeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   theme: PropTypes.object,
-  match: PropTypes.object.isRequired,
-  location: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
+  onClick: PropTypes.func,
 };
 
 ThemeCard.defaultProps = {
@@ -88,6 +92,7 @@ ThemeCard.defaultProps = {
   theme: {
     image: null,
   },
+  onClick: () => {},
 };
 
-export default withRouter(ThemeCard);
+export default ThemeCard;

@@ -7,27 +7,29 @@ import {
   DialogContent,
   DialogContentText,
   DialogActions,
-  Button
+  Button,
 } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
 
 import QuestionEdit from "../QuestionEdit";
 
 function QuestionsList(props) {
+  const { t } = useTranslation();
   const [deleteIndex, setDeleteIndex] = useState(-1);
 
-  const handleDelete = index => event => {
+  const handleDelete = (index) => (event) => {
     event.preventDefault();
     setDeleteIndex(index);
   };
 
-  const handleClose = remove => async () => {
+  const handleClose = (remove) => async () => {
     if (remove) {
       await props.deleteQuestion(deleteIndex);
     }
     setDeleteIndex(-1);
   };
 
-  const handleEdit = index => event => {
+  const handleEdit = (index) => (event) => {
     event.preventDefault();
     props.history.push(`/create/2-questions-choice/edit?question=${index}`);
   };
@@ -60,11 +62,11 @@ function QuestionsList(props) {
         fullWidth
       >
         <DialogTitle id="delete-dialog-title">
-          Supprimer la question ?
+          {t("part2_delete_question_title")}
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="delete-dialog-description">
-            Voulez-vous vraiment supprimer la question :
+            {t("part2_delete_question_desc")}
             <br />
             <br />
             &quot;{(props.questions[deleteIndex] || {}).question}&quot; ?
@@ -76,14 +78,14 @@ function QuestionsList(props) {
             color="secondary"
             variant="outlined"
           >
-            Annuler
+            {t("cancel")}
           </Button>
           <Button
             onClick={handleClose(true)}
             color="secondary"
             variant="contained"
           >
-            Supprimer
+            {t("delete")}
           </Button>
         </DialogActions>
       </Dialog>
@@ -95,11 +97,11 @@ QuestionsList.propTypes = {
   questions: PropTypes.array.isRequired,
   setQuestions: PropTypes.func.isRequired,
   deleteQuestion: PropTypes.func,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
 };
 
 QuestionsList.defaultProps = {
-  deleteQuestion: () => {}
+  deleteQuestion: () => {},
 };
 
 export default QuestionsList;

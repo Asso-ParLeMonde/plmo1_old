@@ -80,7 +80,7 @@ function AllQuestions(props) {
 
   const handleNext = (event) => {
     event.preventDefault();
-    if (project.id === null) {
+    if (project.id === null && isLoggedIn()) {
       askSaveProject((p) => {
         goNext(p).catch();
       });
@@ -156,8 +156,6 @@ AllQuestions.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeId: PropTypes.number.isRequired,
-  scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
 
 export default withRouter(AllQuestions);

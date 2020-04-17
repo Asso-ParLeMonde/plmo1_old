@@ -52,7 +52,7 @@ export class ThemeRepository extends Repository<Theme> {
     delete theme.labelID;
   }
 
-  public async findAll(params: { isPublished: boolean | null }): Promise<Array<Theme>> {
+  public async findAll(params: { isPublished: boolean | null; userId: number | null }): Promise<Array<Theme>> {
     let entitiesQuery: SelectQueryBuilder<Theme> = this.manager
       .createQueryBuilder()
       .select("theme")
@@ -62,6 +62,11 @@ export class ThemeRepository extends Repository<Theme> {
       .orderBy("theme.order", "ASC");
     if (params.isPublished !== null) {
       entitiesQuery = entitiesQuery.where("theme.isPublished = :isPublished", params);
+      if (params.userId !== null) {
+        entitiesQuery = entitiesQuery.orWhere("theme.userId = :userId", params);
+      }
+    } else if (params.userId !== null) {
+      entitiesQuery = entitiesQuery.where("theme.userId = :userId", params);
     }
     const entities: Theme[] = await entitiesQuery.getMany();
     for (const entity of entities) {

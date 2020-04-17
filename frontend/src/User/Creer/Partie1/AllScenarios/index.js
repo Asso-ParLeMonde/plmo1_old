@@ -70,7 +70,7 @@ Scenarios.propTypes = {
   match: PropTypes.object.isRequired,
   location: PropTypes.object.isRequired,
   history: PropTypes.object.isRequired,
-  themeId: PropTypes.number.isRequired,
+  themeId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   scenarios: PropTypes.array,
 };
 

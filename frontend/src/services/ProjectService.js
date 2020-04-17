@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import qs from "query-string";
+import { useTranslation } from "react-i18next";
 
 import { TextField } from "@material-ui/core";
 
 import { ThemesServiceContext } from "./ThemesService";
 import { UserServiceContext } from "./UserService";
+import { AppLanguageServiceContext } from "./AppLanguageService";
 import CustomModal from "../components/CustomModal";
 
 const ProjectServiceContext = React.createContext(undefined, undefined);
@@ -42,7 +44,9 @@ const getInitialState = (path) => {
 };
 
 function ProjectService(props) {
+  const { t } = useTranslation();
   const { isLoggedIn, axiosLoggedRequest } = useContext(UserServiceContext);
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const themesRequest = useContext(ThemesServiceContext).getThemes;
   const [project, setProject] = useState(() =>
     getInitialState(props.location.pathname)
@@ -140,12 +144,15 @@ function ProjectService(props) {
 
   useEffect(() => {
     // update theme name when themeId change
+    let themes = JSON.parse(localStorage.getItem("localThemes")) || [];
+
     if (
       project.themeId !== null &&
       themesRequest.complete &&
       !themesRequest.error
     ) {
-      const themeIndex = themesRequest.data.reduce(
+      themes.unshift(...themesRequest.data);
+      const themeIndex = themes.reduce(
         (i1, t, i2) => (t.id === project.themeId ? i2 : i1),
         -1
       );
@@ -153,9 +160,9 @@ function ProjectService(props) {
         updateProject({ themeId: null, scenarioId: null });
         props.history.push("/");
       } else {
-        const theme = themesRequest.data[themeIndex];
+        const theme = themes[themeIndex];
         updateProject({
-          themeName: theme.names.fr,
+          themeName: theme.names[selectedLanguage] || theme.names.fr,
         });
       }
     }
@@ -214,9 +221,9 @@ function ProjectService(props) {
       {props.children}
       <CustomModal
         open={showSaveModal}
-        title="Sauvegarder le projet ?"
-        cancelLabel="Ne pas sauvegarder"
-        confirmLabel="Sauvegarder le projet"
+        title={t("project_save_title")}
+        cancelLabel={t("project_save_cancel")}
+        confirmLabel={t("project_save_confirm")}
         onClose={handleToggleModal(false)}
         onConfirm={handleToggleModal(true)}
         noCloseOutsideModal
@@ -225,10 +232,7 @@ function ProjectService(props) {
         fullWidth
       >
         <div id="save-project-form">
-          <p>
-            Enregistrer le projet vous permettra de le retrouver dans l'onglet
-            "Mes vidéos" et également dans l'application Par Le Monde.
-          </p>
+          <p>{t("project_save_desc")}</p>
           <form
             className="project-form"
             noValidate
@@ -240,14 +244,14 @@ function ProjectService(props) {
               name="project-name"
               type="text"
               color="secondary"
-              label="Nom du projet"
+              label={t("project_save_label")}
               value={project.title || ""}
               onChange={updateProjectTitle}
               variant="outlined"
               size="small"
               className={hasError ? "shake" : ""}
               error={hasError}
-              helperText={hasError ? "Requis" : ""}
+              helperText={hasError ? t("signup_required") : ""}
               fullWidth
             />
           </form>

@@ -61,7 +61,9 @@ function Videos(props) {
     return (
       <div>
         <Typography color="primary" variant="h1">
-          Mes <Inverted>supers</Inverted> vidéos
+          <Trans i18nKey="my_videos_title">
+            Mes <Inverted>supers</Inverted> vidéos
+          </Trans>
         </Typography>
       </div>
     );
@@ -103,7 +105,7 @@ function Videos(props) {
           </React.Fragment>
         ) : (
           <WorkInProgressCard
-            title="Vous n'avez pas encore de projet en cours. En créer un ?"
+            title={t("my_videos_empty")}
             onClick={handleNewProjectClick}
           />
         )}

@@ -10,6 +10,10 @@ export const locales = {
   admin: "Admin",
   //--- theme page ---
   create_theme_title: "Sur quel <1>thème</1> sera votre vidéo ?",
+  create_new_theme: "Ajouter votre thème",
+  new_theme_title: "Créer votre <1>thème</1> :",
+  new_theme_title_label: "Nom du thème<1>*</1>:",
+  new_theme_title_placeholder: "Nouveau thème",
   //--- part 1 ---
   part1_title: "Quel <1>scénario</1> choisir ?",
   part1_subtitle1: "Voici quelques vidéos qui peuvent vous inspirer",
@@ -31,6 +35,8 @@ export const locales = {
   part2_add_question: "Ajouter une question",
   part2_edit_question: "Modifier une question",
   part2_add_question_placeholder: "Ma question",
+  part2_delete_question_title: "Supprimer la question ?",
+  part2_delete_question_desc: "Voulez-vous vraiment supprimer la question :",
   //--- part3 ---
   part3_title: "Création du <1>Storyboard</1> et du <1>plan de tournage</1>",
   part3_desc: "Lorem ipsum...",
@@ -76,10 +82,18 @@ export const locales = {
     "Voulez-vous vraiment supprimer le projet <strong>{{projetName}}</strong> ?",
   project_delete_desc2: "Attention ! Cette action est irréversible !",
   project_delete_confirm: "Supprimer le projet",
+  project_save_title: "Sauvegarder le projet ?",
+  project_save_cancel: "Ne pas sauvegarder",
+  project_save_confirm: "Sauvegarder le projet",
+  project_save_desc:
+    "Enregistrer le projet vous permettra de le retrouver dans l'onglet \"Mes vidéos\" et également dans l'application Par Le Monde.",
+  project_save_label: "Nom du projet",
   //--- my videos ---
   my_videos_title: "Mes <1>super</1> vidéos",
   my_videos_subtitle1: "Mes projets en cours",
   my_videos_subtitle2: "Mes projets terminés",
+  my_videos_empty: "Vous n'avez pas encore de projet en cours. En créer un ?",
+  my_videos_themes: "Thème :",
   //--- settings ---
   change_language: "Changer la langue de l'application :",
   language: "Langue",
@@ -161,4 +175,5 @@ export const locales = {
   //--- misc ---
   or: "ou",
   yes: "oui",
+  welcome_message: "Bienvenue {{pseudo}} !",
 };

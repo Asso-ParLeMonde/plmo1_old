@@ -15,7 +15,7 @@ import {
   CircularProgress,
   makeStyles,
 } from "@material-ui/core";
-import NavigateNextIcon from "@material-ui/core/SvgIcon/SvgIcon";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import VideocamIcon from "@material-ui/icons/Videocam";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
@@ -47,6 +47,7 @@ function Partie4(props) {
       data: {
         projectId: project.id,
         themeId: project.themeId,
+        themeName: project.themeName,
         scenarioId: project.scenarioId,
         scenarioName: project.scenarioName,
         scenarioDescription: "",
