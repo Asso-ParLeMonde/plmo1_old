@@ -47,6 +47,7 @@ function Partie4(props) {
       data: {
         projectId: project.id,
         themeId: project.themeId,
+        themeName: project.themeName,
         scenarioId: project.scenarioId,
         scenarioName: project.scenarioName,
         scenarioDescription: "",

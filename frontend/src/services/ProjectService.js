@@ -8,6 +8,7 @@ import { TextField } from "@material-ui/core";
 
 import { ThemesServiceContext } from "./ThemesService";
 import { UserServiceContext } from "./UserService";
+import { AppLanguageServiceContext } from "./AppLanguageService";
 import CustomModal from "../components/CustomModal";
 
 const ProjectServiceContext = React.createContext(undefined, undefined);
@@ -45,6 +46,7 @@ const getInitialState = (path) => {
 function ProjectService(props) {
   const { t } = useTranslation();
   const { isLoggedIn, axiosLoggedRequest } = useContext(UserServiceContext);
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const themesRequest = useContext(ThemesServiceContext).getThemes;
   const [project, setProject] = useState(() =>
     getInitialState(props.location.pathname)
@@ -160,7 +162,7 @@ function ProjectService(props) {
       } else {
         const theme = themes[themeIndex];
         updateProject({
-          themeName: theme.names.fr,
+          themeName: theme.names[selectedLanguage] || theme.names.fr,
         });
       }
     }

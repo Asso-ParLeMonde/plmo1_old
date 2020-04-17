@@ -41,7 +41,7 @@ export class ProjectController extends Controller {
   @post({ path: "/pdf" })
   public async getProjectPDF(req: Request, res: Response): Promise<void> {
     const languageCode: string = req.body.languageCode || "fr";
-    const theme: Theme | undefined = await getCustomRepository(ThemeRepository).findOneWithLabels(req.body.themeId || 0);
+    let theme: Theme | undefined = await getCustomRepository(ThemeRepository).findOneWithLabels(parseInt(req.body.themeId, 10) || 0);
     const project: Project | undefined = await getRepository(Project).findOne(req.body.projectId || 0);
     let scenario: Scenario | undefined = await getRepository(Scenario).findOne({
       where: {
@@ -50,7 +50,14 @@ export class ProjectController extends Controller {
       },
     });
     if (theme === undefined) {
-      throw new AppError("Invalid data", ErrorCode.INVALID_DATA);
+      if (req.body.themeName !== undefined) {
+        theme = new Theme();
+        theme.names = {
+          fr: req.body.themeName,
+        };
+      } else {
+        throw new AppError("Invalid data", ErrorCode.INVALID_DATA);
+      }
     }
     if (scenario === undefined) {
       if (req.body.scenarioName !== undefined && req.body.scenarioDescription !== undefined) {
