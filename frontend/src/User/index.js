@@ -96,6 +96,7 @@ function User() {
           <ThemesServiceProvider isPublished={true}>
             <Switch>
               <Route path="/create" component={Create} />
+              <Redirect path="/creer" to="/create" />
               <Redirect exact from="/" to="/create" />
               <Route path="/my-videos" component={Videos} />
               <Route path="/inspiration" component={Inspiration} />
