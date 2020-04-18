@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Route, Switch, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
+import { Breadcrumbs, Hidden, Link } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import { useTranslation } from "react-i18next";
 
@@ -21,6 +21,11 @@ function Partie2(props) {
     props.history.push("/create");
   };
 
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push("/create/1-scenario-choice");
+  };
+
   return (
     <div>
       {project.themeId !== null && project.scenarioId !== null && (
@@ -33,7 +38,13 @@ function Partie2(props) {
               <Link color="inherit" href="/create" onClick={handleHome}>
                 {t("all_themes")}
               </Link>
-              <Typography color="textPrimary">{project.themeName}</Typography>
+              <Link
+                color="inherit"
+                href={`/create/1-scenario-choice`}
+                onClick={handleBack}
+              >
+                {project.themeName}
+              </Link>
             </Breadcrumbs>
           </Hidden>
 

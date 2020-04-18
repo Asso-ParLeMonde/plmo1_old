@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import QRCode from "qrcode.react";
-import { getQuestions } from "../../../util/questions";
+import { getQuestions } from "../../../util";
 import { useTranslation, Trans } from "react-i18next";
 
 import {
@@ -68,6 +68,11 @@ function Partie4(props) {
     props.history.push("/create");
   };
 
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push("/create/1-scenario-choice");
+  };
+
   const url =
     project.id === null
       ? null
@@ -85,7 +90,13 @@ function Partie4(props) {
               <Link color="inherit" href="/create" onClick={handleHome}>
                 {t("all_themes")}
               </Link>
-              <Typography color="textPrimary">{project.themeName}</Typography>
+              <Link
+                color="inherit"
+                href={`/create/1-scenario-choice`}
+                onClick={handleBack}
+              >
+                {project.themeName}
+              </Link>
             </Breadcrumbs>
           </Hidden>
 

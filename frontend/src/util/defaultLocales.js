@@ -39,7 +39,8 @@ export const locales = {
   part2_delete_question_desc: "Voulez-vous vraiment supprimer la question :",
   //--- part3 ---
   part3_title: "Création du <1>Storyboard</1> et du <1>plan de tournage</1>",
-  part3_desc: "Lorem ipsum...",
+  part3_desc:
+    "Ici créez votre storyboard ! C'est une représentation de votre film sous forme de dessins et le résultat final de votre vidéo sera l'assemblage de ces plans les uns après les autres.\n",
   part3_add_plan: "Ajouter un plan",
   part3_delete_plan_question: "Supprimer le plan ?",
   part3_delete_plan_desc:
@@ -48,7 +49,8 @@ export const locales = {
   part3_question: "Question :",
   part3_plan_number: "Plan numéro :",
   part3_plan_desc: "Description du plan :",
-  part3_plan_desc_placeholder: "lorem iiiii",
+  part3_plan_desc_placeholder:
+    "Ici, vous pouvez décrire comment vous allez filmer ce plan.\nPar exemple :\n\tQUI ? quels élèves sont impliqués dans le tournage de ce plan ?\n\tCOMMENT ? Comment sont répartis les rôles entre élèves ? (qui tient la caméra, qui surveille le cadre, qui apparaît à l'écran ?)\n\tQUOI ? Que vont faire ou dire vos élèves ?\n\tQUAND ? À quelle date vous allez filmer ce plan ?\n\tOÙ ? Dans quel lieu allez-vous tourner ce plan ?",
   part3_plan_edit_title_desktop:
     "Pour créer votre plan vous pouvez soit l'importer, soit le prendre en photo ou le dessiner en ligne !",
   part3_plan_edit_title_mobile:

@@ -22,6 +22,7 @@ function ScenarioCard({
   scenarioId,
   history,
   shortPath,
+  isNew,
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -39,6 +40,7 @@ function ScenarioCard({
       tabIndex="0"
       href={path}
       onClick={handleClick}
+      style={isNew ? { backgroundColor: "#f0fafa" } : {}}
     >
       <div>
         <Typography color="primary" variant="h3">
@@ -67,10 +69,12 @@ ScenarioCard.propTypes = {
   path: PropTypes.string.isRequired,
   shortPath: PropTypes.string.isRequired,
   scenarioId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  isNew: PropTypes.bool,
 };
 
 ScenarioCard.defaultProps = {
   stepNumber: 0,
+  isNew: false,
 };
 
 export default ScenarioCard;

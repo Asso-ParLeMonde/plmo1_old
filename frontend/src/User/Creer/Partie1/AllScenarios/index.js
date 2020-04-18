@@ -46,6 +46,7 @@ function Scenarios(props) {
               shortPath={`/create/1-scenario-choice/new`}
               scenarioId={0}
               description={t("new_scenario_card_desc")}
+              isNew
             />
             {props.scenarios.map((scenario, index) => (
               <ScenarioCard
