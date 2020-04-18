@@ -4,12 +4,12 @@ import { locales } from "./defaultLocales";
 
 i18n.use(initReactI18next).init({
   resources: {
-    default: {
+    "fr-FR": {
       translations: locales,
     },
   },
   load: "currentOnly",
-  fallbackLng: "default",
+  fallbackLng: "fr-FR",
   debug: true, //process.env.REACT_APP_DEBUG === "true",
   ns: ["translations"],
   defaultNS: "translations",

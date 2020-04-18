@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router";
 import { Button, Link, TextField, Typography } from "@material-ui/core";
 import { axiosRequest } from "../../components/axiosRequest";
 import { useTranslation } from "react-i18next";
+import { AppLanguageServiceContext } from "../../services/AppLanguageService";
 
 const errorMessages = {
   0: "login_unknown_error",
@@ -12,6 +13,7 @@ const errorMessages = {
 
 function ResetPassword(props) {
   const { t } = useTranslation();
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const [email, setEmail] = useState("");
   const [errorCode, setErrorCode] = useState(-1);
   const [successMsg, setSuccessMsg] = useState("");
@@ -29,6 +31,7 @@ function ResetPassword(props) {
       url: "/login/reset-password",
       data: {
         email,
+        languageCode: selectedLanguage,
       },
     });
     if (response.error && response.complete) {
@@ -66,7 +69,7 @@ function ResetPassword(props) {
           name="username"
           type="text"
           color="secondary"
-          label={t("login_username")}
+          label={t("forgot_password_email")}
           value={email}
           onChange={handleUserNameInputChange}
           variant="outlined"

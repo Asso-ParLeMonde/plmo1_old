@@ -1,16 +1,16 @@
 | Par Le Monde
 | --------------------------------------
 |
-| Bienvenue #{firstname} #{lastname}!
-| Vous avez été invité à rejoindre le site de création de vidéos de Par Le Monde. Vous pouvez créer votre mot de passe en cliquant sur le lien ci-dessous :
+| #{t("email_greetings", { firstname, lastname })}
+| #{t("email_invite_text")}
 |
 | #{initUrl}
 |
-| La création d'un mot de passe est nécessaire pour finaliser l'inscription et pouvoir accéder à la création de vos vidéos.
+| #{t("email_invite_text2")}
 |
-| Cordialement,
-| L'équipe Par Le Monde.
+| #{t("email_end")}
+| #{t("email_signature")}
 | #{frontUrl}
 |
 | --------------------------------------
-| Ce message a été envoyé à #{receiverEmail}. Si vous avez des questions ou ne souhaitez plus recevoir d'emails, contactez-nous à l'adresse #{plmoEmail} 
+| #{t("email_end_text")} #{receiverEmail}. #{t("email_end_text2")} #{plmoEmail} 

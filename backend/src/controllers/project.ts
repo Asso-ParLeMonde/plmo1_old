@@ -71,15 +71,19 @@ export class ProjectController extends Controller {
 
     const questions: Question[] = getQuestionsFromBody(req);
 
-    const url = await htmlToPDF(PDF.PLAN_DE_TOURNAGE, {
-      themeName: theme.names.fr,
-      scenarioName: scenario.name,
-      scenarioDescription: scenario.description,
-      pseudo: req.user !== undefined ? req.user.pseudo : undefined,
-      questions,
-      projectId: project !== undefined ? project.id : null,
-      projectTitle: project !== undefined ? project.title : null,
-    });
+    const url = await htmlToPDF(
+      PDF.PLAN_DE_TOURNAGE,
+      {
+        themeName: theme.names[req.body.languageCode || "fr"] || theme.names.fr,
+        scenarioName: scenario.name,
+        scenarioDescription: scenario.description,
+        pseudo: req.user !== undefined ? req.user.pseudo : undefined,
+        questions,
+        projectId: project !== undefined ? project.id : null,
+        projectTitle: project !== undefined ? project.title : null,
+      },
+      req.body.languageCode || undefined,
+    );
     //For PDF Download statistics
     const pdfEntry = new PDFDownload();
     await getRepository(PDFDownload).save(pdfEntry);

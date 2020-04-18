@@ -190,25 +190,25 @@ header
 main
   .text-center
     h1(style='margin: 0.5rem 0')
-      | Plan de tournage
+      | #{t("pdf_title")}
   if projectId !== null
     .text-center
       h2(style='margin: 0 0 0.5rem 0')
         | #{projectTitle}
   div
     h2
-      | Description g&eacute;n&eacute;rale :
+      | #{t("pdf_subtitle_description")}
     .content
       div(style='margin: 0.1rem 0')
-        label Th&egrave;me :
+        label #{t("pdf_theme")}
         p.inline #{" "}#{themeName}
       div(style='margin: 0.1rem 0')
-        label Sc&eacute;nario :
+        label #{t("pdf_scenario")}
         p.inline #{" "}#{scenarioName}
       p #{scenarioDescription}
   div
     h2
-      | Storyboard :
+      | #{t("pdf_subtitle_storyboard")}
     - let count = 0
     each question, index in questions
       .content.scene
@@ -228,9 +228,9 @@ main
   if projectId !== null
     div
       h2
-        | À votre caméra !
+        | #{t("pdf_subtitle_tocamera")}
       .content
         p
-          | Flashez le code QR suivant pour accéder directement à l'application et démarrer le tournage.
+          | #{t("pdf_tocamera_desc")}
         div.text-center(style="margin-top: 1rem;")
           img(alt="qrcode" style="width:4cm;height:4cm" src=QRCode)

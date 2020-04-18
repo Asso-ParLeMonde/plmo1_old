@@ -3,11 +3,11 @@ import PropTypes from "prop-types";
 import { Route, Switch, withRouter } from "react-router";
 import { useTranslation } from "react-i18next";
 
-import { Breadcrumbs, Hidden, Link, Typography } from "@material-ui/core";
+import { Breadcrumbs, Hidden, Link } from "@material-ui/core";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 
 import { ProjectServiceContext } from "../../../services/ProjectService";
-import { getQuestions } from "../../../util/questions";
+import { getQuestions } from "../../../util";
 import Steps from "../../components/Steps";
 import AllPlans from "./AllPlans";
 import EditPlan from "./EditPlan";
@@ -21,6 +21,11 @@ function Partie3(props) {
   const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
+  };
+
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push("/create/1-scenario-choice");
   };
 
   const updateQuestion = (index, newQuestion) => {
@@ -42,7 +47,13 @@ function Partie3(props) {
               <Link color="inherit" href="/create" onClick={handleHome}>
                 {t("all_themes")}
               </Link>
-              <Typography color="textPrimary">{project.themeName}</Typography>
+              <Link
+                color="inherit"
+                href={`/create/1-scenario-choice`}
+                onClick={handleBack}
+              >
+                {project.themeName}
+              </Link>
             </Breadcrumbs>
           </Hidden>
 

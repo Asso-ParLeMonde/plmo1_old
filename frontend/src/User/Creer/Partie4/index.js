@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import QRCode from "qrcode.react";
-import { getQuestions } from "../../../util/questions";
+import { getQuestions } from "../../../util";
 import { useTranslation, Trans } from "react-i18next";
 
 import {
@@ -22,6 +22,7 @@ import { ProjectServiceContext } from "../../../services/ProjectService";
 import Steps from "../../components/Steps";
 import Inverted from "../../../components/Inverted";
 import { UserServiceContext } from "../../../services/UserService";
+import { AppLanguageServiceContext } from "../../../services/AppLanguageService";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -33,6 +34,7 @@ const useStyles = makeStyles((theme) => ({
 function Partie4(props) {
   const { t } = useTranslation();
   const classes = useStyles();
+  const { selectedLanguage } = useContext(AppLanguageServiceContext);
   const { axiosLoggedRequest } = useContext(UserServiceContext);
   const { project } = useContext(ProjectServiceContext);
   const questions = getQuestions(project);
@@ -52,6 +54,7 @@ function Partie4(props) {
         scenarioName: project.scenarioName,
         scenarioDescription: "",
         questions,
+        languageCode: selectedLanguage,
       },
     });
     setIsLoading(false);
@@ -63,6 +66,11 @@ function Partie4(props) {
   const handleHome = (event) => {
     event.preventDefault();
     props.history.push("/create");
+  };
+
+  const handleBack = (event) => {
+    event.preventDefault();
+    props.history.push("/create/1-scenario-choice");
   };
 
   const url =
@@ -82,7 +90,13 @@ function Partie4(props) {
               <Link color="inherit" href="/create" onClick={handleHome}>
                 {t("all_themes")}
               </Link>
-              <Typography color="textPrimary">{project.themeName}</Typography>
+              <Link
+                color="inherit"
+                href={`/create/1-scenario-choice`}
+                onClick={handleBack}
+              >
+                {project.themeName}
+              </Link>
             </Breadcrumbs>
           </Hidden>
 

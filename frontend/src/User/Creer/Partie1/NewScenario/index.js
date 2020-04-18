@@ -15,6 +15,7 @@ import ArrowForwardIcon from "@material-ui/icons/ArrowForwardIos";
 import Inverted from "../../../../components/Inverted";
 import { ProjectServiceContext } from "../../../../services/ProjectService";
 import { UserServiceContext } from "../../../../services/UserService";
+import { debounce } from "../../../../util";
 
 function NewScenario(props) {
   const { t } = useTranslation();
@@ -26,6 +27,7 @@ function NewScenario(props) {
     themeId: props.themeId,
   });
   const [hasError, setHasError] = useState(false);
+  const [descHasError, setDescHasError] = useState(false);
   const { updateProject } = useContext(ProjectServiceContext);
 
   const postNewScenario = async () => {
@@ -60,6 +62,17 @@ function NewScenario(props) {
     }
   };
 
+  const setDescError = debounce(
+    () => {
+      setDescHasError(true);
+      setTimeout(() => {
+        setDescHasError(false);
+      }, 1000);
+    },
+    1000,
+    true
+  );
+
   const handleChange = (inputType) => (event) => {
     switch (inputType) {
       default:
@@ -71,6 +84,9 @@ function NewScenario(props) {
         });
         break;
       case "DESCRIPTION":
+        if (event.target.value.length > 280) {
+          setDescError();
+        }
         setNewScenario({
           ...newScenario,
           description: event.target.value.slice(0, 280),
@@ -136,10 +152,16 @@ function NewScenario(props) {
               variant="outlined"
               color="secondary"
               autoComplete="off"
+              error={descHasError}
+              className={descHasError ? "shake" : ""}
             />
             <FormHelperText
               id="component-helper-text"
-              style={{ marginLeft: "0.2rem", marginTop: "0.2rem" }}
+              style={{
+                marginLeft: "0.2rem",
+                marginTop: "0.2rem",
+                color: descHasError ? "red" : "inherit",
+              }}
             >
               {newScenario.description.length || 0}/280
             </FormHelperText>

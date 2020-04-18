@@ -30,4 +30,6 @@ export class Scenario {
   public user: User;
 
   public questions: Question[];
+
+  public questionsCount: number;
 }

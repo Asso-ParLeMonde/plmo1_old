@@ -33,7 +33,7 @@ const StyledTab = withStyles((theme) => ({
   root: {
     minHeight: "36px",
     margin: "6px 12px",
-    padding: 0,
+    padding: "0 0.5rem",
     fontFamily: "'Alegreya Sans', sans-serif",
     textTransform: "none",
     fontWeight: "900",
