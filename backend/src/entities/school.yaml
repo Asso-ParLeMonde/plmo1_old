@@ -1,0 +1,32 @@
+components:
+  schemas:
+    School:
+      type: object
+      properties:
+        id:
+          type: integer
+        managerLastName:
+          type: string
+          maxLength: 50
+        managerFirstName:
+          type: string
+          maxLength: 50
+        managerEmail:
+          type: string
+          maxLength: 150
+          format: email
+        name:
+          type: string
+          maxLength: 50
+        street:
+          type: string
+          maxLength: 50
+        postalCode:
+          type: string
+          maxLength: 15
+        city:
+          type: string
+          maxLength: 50
+        country:
+          type: string
+          maxLength: 50

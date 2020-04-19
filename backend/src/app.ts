@@ -6,6 +6,8 @@ import express, { Request, Response, Router } from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import path from "path";
+import swaggerUi from "swagger-ui-express";
+import { apiSpecs } from "./utils/swagger";
 import { Connection } from "typeorm";
 import { removeTrailingSlash } from "./middlewares/trailingSlash";
 import { routes } from "./routes/routes";
@@ -52,6 +54,9 @@ async function main(): Promise<void> {
 
   /* --- Public locales --- */
   backRouter.use(`/locales`, express.static(path.join(__dirname, "locales")));
+
+  /* --- OpenAPI --- */
+  backRouter.use("/api-docs", swaggerUi.serve, swaggerUi.setup(apiSpecs));
 
   /* --- 404 Errors --- */
   backRouter.use((_, res: Response) => {

@@ -1,0 +1,27 @@
+components:
+  schemas:
+    Theme:
+      type: object
+      properties:
+        id:
+          type: integer
+        scenarios:
+          type: array
+          items:
+            $ref: "#/components/schemas/Scenario"
+        labelID:
+          type: integer
+        order:
+          type: integer
+        isPublished:
+          type: boolean
+        image:
+          $ref: "#/components/schemas/Image"
+          nullable: true
+        user:
+          $ref: "#/components/schemas/User"
+          nullable: true
+        names:
+          type: object
+          additionalProperties:
+            type: string

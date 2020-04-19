@@ -1,0 +1,23 @@
+components:
+  schemas:
+    Project:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+          maxLength: 200
+        date:
+          type: string
+          format: date
+        theme:
+          $ref: "#/components/schemas/Theme"
+        scenario:
+          $ref: "#/components/schemas/Scenario"
+        user:
+          $ref: "#/components/schemas/User"
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
