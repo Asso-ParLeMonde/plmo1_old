@@ -10,7 +10,7 @@ function WorkInProgressCard(props) {
   const { t } = useTranslation();
   const { selectedLanguage } = useContext(AppLanguageServiceContext);
 
-  const names = props.theme.names || { fr: "" };
+  const names = (props.theme || {}).names || { fr: "" };
   const themeName = names[selectedLanguage] || names.fr;
 
   return (
