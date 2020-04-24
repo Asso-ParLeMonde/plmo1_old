@@ -1,0 +1,198 @@
+/scenarios:
+  get:
+    tags:
+      - Scenarios
+    summary: Returns a list of scenarios.
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: A JSON array of scenarios.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  themeId:
+                    type: integer
+                  isDefault:
+                    type: boolean
+                  names:
+                    type: object
+                    additionalProperties:
+                      type: string
+                  descriptions:
+                    type: object
+                    additionalProperties:
+                      type: string
+  post:
+    tags:
+      - Scenarios
+    summary: Create a new scenario. For admin only.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - themeId
+              - isDefault
+              - names
+              - descriptions
+            properties:
+              themeId:
+                type: integer
+              isDefault:
+                type: boolean
+              names:
+                type: object
+                additionalProperties:
+                  type: string
+              descriptions:
+                type: object
+                additionalProperties:
+                  type: string
+    responses:
+      200:
+        description: The new scenario.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                themeId:
+                  type: integer
+                isDefault:
+                  type: boolean
+                names:
+                  type: object
+                  additionalProperties:
+                    type: string
+                descriptions:
+                  type: object
+                  additionalProperties:
+                    type: string
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/scenarios/{scenarioId}:
+  get:
+    tags:
+      - Scenarios
+    summary: Return the scenario with scenarioId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: scenarioId
+        in: path
+        required: true
+        description: The ID of the scenario to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object scenario.
+        content:
+          application/json:
+            type: object
+            properties:
+              id:
+                type: integer
+              themeId:
+                type: integer
+              isDefault:
+                type: boolean
+              names:
+                type: object
+                additionalProperties:
+                  type: string
+              descriptions:
+                type: object
+                additionalProperties:
+                  type: string
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Scenarios
+    summary: Update the scenario by scenarioId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: scenarioId
+        in: path
+        required: true
+        description: The ID of the scenario to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - themeId
+              - isDefault
+              - names
+              - descriptions
+            properties:
+              themeId:
+                type: integer
+              isDefault:
+                type: boolean
+              names:
+                type: object
+                additionalProperties:
+                  type: string
+              descriptions:
+                type: object
+                additionalProperties:
+                  type: string
+    responses:
+      200:
+        description: The new scenario.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                themeId:
+                  type: integer
+                isDefault:
+                  type: boolean
+                names:
+                  type: object
+                  additionalProperties:
+                    type: string
+                descriptions:
+                  type: object
+                  additionalProperties:
+                    type: string
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"

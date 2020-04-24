@@ -1,0 +1,186 @@
+/schools:
+  get:
+    tags:
+      - Schools
+    summary: Returns a list of schools.
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: A JSON array of schools.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/School"
+  post:
+    tags:
+      - Schools
+    summary: Create a new school.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - managerFirstName
+              - managerLastName
+              - managerEmail
+              - name
+              - street
+              - postalCode
+              - city
+              - country
+            properties:
+              managerFirstName:
+                type: string
+                description: School manager firstName.
+              managerLastName:
+                type: string
+                description: School manager lastName.
+              managerEmail:
+                type: string
+                description: School manager email.
+              name:
+                type: string
+                description: School name.
+              street:
+                type: string
+                description: School street.
+              postalCode:
+                type: string
+                description: School postalCode.
+              city:
+                type: string
+                description: School city.
+              country:
+                type: string
+                description: School country.
+    responses:
+      200:
+        description: The new school.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/School"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/schools/{schoolId}:
+  get:
+    tags:
+      - Schools
+    summary: Return the school with schoolId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: schoolId
+        in: path
+        required: true
+        description: The ID of the school to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object school.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/School"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Schools
+    summary: Update the school by schoolId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: schoolId
+        in: path
+        required: true
+        description: The ID of the school to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              managerFirstName:
+                type: string
+                description: School manager firstName.
+              managerLastName:
+                type: string
+                description: School manager lastName.
+              managerEmail:
+                type: string
+                description: School manager email.
+              name:
+                type: string
+                description: School name.
+              street:
+                type: string
+                description: School street.
+              postalCode:
+                type: string
+                description: School postalCode.
+              city:
+                type: string
+                description: School city.
+              country:
+                type: string
+                description: School country.
+    responses:
+      200:
+        description: The updated school.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/School"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Schools
+    summary: Delete the school with schoolId. Admin only. !!! Will delete every entities in database related to that school.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: schoolId
+        in: path
+        required: true
+        description: The ID of the school to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: School succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"

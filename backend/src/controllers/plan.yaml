@@ -1,0 +1,220 @@
+/plans:
+  get:
+    tags:
+      - Plans
+    summary: Returns the list of user plans.
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: A JSON array of plans.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Plan"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+  post:
+    tags:
+      - Plans
+    summary: Create a new plan.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - questionId
+            properties:
+              description:
+                type: string
+              index:
+                type: integer
+                description: Index of plan in the list
+              questionId:
+                type: integer
+                description: Id of related question
+    responses:
+      200:
+        description: The new plan.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Plan"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/plans/{planId}:
+  get:
+    tags:
+      - Plans
+    summary: Return the plan with planId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: planId
+        in: path
+        required: true
+        description: The ID of the plan to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object plan.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Plan"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Plans
+    summary: Update the plan by planId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: planId
+        in: path
+        required: true
+        description: The ID of the plan to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              description:
+                type: string
+              index:
+                type: integer
+                description: Index of plan in the list
+    responses:
+      200:
+        description: The updated plan.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Plan"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Plans
+    summary: Delete the plan with planId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: planId
+        in: path
+        required: true
+        description: The ID of the plan to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Plan succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/plans/temp-image:
+  post:
+    tags:
+      - Plans
+    summary: Upload a temporary image for non-login users
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - image
+            properties:
+              image:
+                type: string
+                format: binary
+    responses:
+      200:
+        description: The temporary image.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Image"
+      500:
+        $ref: "#/components/responses/InternalError"
+/plans/{planId}/image:
+  post:
+    tags:
+      - Plans
+    summary: Upload an image for a user plan.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: planId
+        in: path
+        required: true
+        description: The ID of the plan to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - image
+            properties:
+              image:
+                type: string
+                format: binary
+    responses:
+      200:
+        description: The plan with image.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Plan"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"

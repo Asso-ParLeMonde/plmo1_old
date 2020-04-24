@@ -1,0 +1,225 @@
+/themes/{themeId}/scenarios:
+  get:
+    tags:
+      - Scenarios(from theme)
+    summary: Returns a list of scenarios.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - in: query
+        name: isDefault
+        schema:
+          type: boolean
+        description: Query isDefault or not scenarios.
+      - in: query
+        name: languageCode
+        schema:
+          type: string
+        description: Query scenarios by language.
+      - in: query
+        name: user
+        schema:
+          type: boolean
+        description: Query user scenarios. User should be logged in and use bearer auth to retrieve his scenarios. Can be added with default Scenarios.
+    responses:
+      200:
+        description: A JSON array of scenarios.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Scenario"
+  post:
+    tags:
+      - Scenarios(from theme)
+    summary: Create a new scenario.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - languageCode
+              - name
+            properties:
+              languageCode:
+                type: string
+                description: Scenario language, ex('fr')
+              name:
+                type: string
+                description: Scenario name
+              description:
+                type: string
+                description: Scenario description
+              id:
+                type: integer
+                description: Scenario id if translating to another language.
+    responses:
+      200:
+        description: The new scenario.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Scenario"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/themes/{themeId}/scenarios/{scenarioId}_{scenarioLanguageCode}:
+  get:
+    tags:
+      - Scenarios(from theme)
+    summary: Return the scenario with scenarioId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioId
+        in: path
+        required: true
+        description: The ID of the scenario to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioLanguageCode
+        in: path
+        required: true
+        description: The language of the scenario.
+        schema:
+          type: string
+    responses:
+      200:
+        description: The JSON object scenario.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Scenario"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Scenarios(from theme)
+    summary: Update the scenario by scenarioId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioId
+        in: path
+        required: true
+        description: The ID of the scenario to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioLanguageCode
+        in: path
+        required: true
+        description: The language of the scenario.
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                description: Scenario name
+              description:
+                type: string
+                description: Scenario description
+    responses:
+      200:
+        description: The updated scenario.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Scenario"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Scenarios(from theme)
+    summary: Delete the scenario with scenarioId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioId
+        in: path
+        required: true
+        description: The ID of the scenario to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+      - name: scenarioLanguageCode
+        in: path
+        required: true
+        description: The language of the scenario.
+        schema:
+          type: string
+    responses:
+      204:
+        description: Scenario succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"

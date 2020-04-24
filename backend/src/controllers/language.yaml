@@ -1,34 +1,23 @@
-/themes:
+/languages:
   get:
     tags:
-      - Themes
-    summary: Returns a list of themes.
+      - Languages
+    summary: Returns a list of languages.
     security:
       - bearerAuth: []
-    parameters:
-      - in: query
-        name: isPublished
-        schema:
-          type: boolean
-        description: Query isPublished or not themes.
-      - in: query
-        name: user
-        schema:
-          type: boolean
-        description: Query user themes. User should be logged in and use bearer auth to retrieve his themes. Can be added with publishedThemes.
     responses:
       200:
-        description: A JSON array of themes.
+        description: A JSON array of languages.
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: "#/components/schemas/Theme"
+                $ref: "#/components/schemas/Language"
   post:
     tags:
-      - Themes
-    summary: Create a new theme.
+      - Languages
+    summary: Create a new language. For admin only.
     security:
       - bearerAuth: []
     requestBody:
@@ -38,22 +27,22 @@
           schema:
             type: object
             required:
-              - names
+              - label
+              - value
             properties:
-              isPublished:
-                type: boolean
-                description: Only admin user can set this to true.
-              names:
-                type: object
-                additionalProperties:
-                  type: string
+              label:
+                type: string
+                description: Language label, ('french').
+              value:
+                type: string
+                description: Language iso value, ('fr')
     responses:
       200:
-        description: The new theme.
+        description: The new language.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Theme"
+              $ref: "#/components/schemas/Language"
       401:
         $ref: "#/components/responses/Unauthorized"
       403:
@@ -61,42 +50,42 @@
       500:
         $ref: "#/components/responses/InternalError"
 
-/themes/{themeId}:
+/languages/{languageId}:
   get:
     tags:
-      - Themes
-    summary: Return the theme with themeId.
+      - Languages
+    summary: Return the language with languageId.
     security:
       - bearerAuth: []
     parameters:
-      - name: themeId
+      - name: languageId
         in: path
         required: true
-        description: The ID of the theme to return.
+        description: The ID of the language to return.
         schema:
           type: integer
           format: int64
           minimum: 1
     responses:
       200:
-        description: The JSON object theme.
+        description: The JSON object language.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Theme"
+              $ref: "#/components/schemas/Language"
       404:
         $ref: "#/components/responses/NotFound"
   put:
     tags:
-      - Themes
-    summary: Update the theme by themeId. Admin only.
+      - Languages
+    summary: Update the language by languageId. Admin only.
     security:
       - bearerAuth: []
     parameters:
-      - name: themeId
+      - name: languageId
         in: path
         required: true
-        description: The ID of the theme to update.
+        description: The ID of the language to update.
         schema:
           type: integer
           format: int64
@@ -107,23 +96,20 @@
         application/json:
           schema:
             type: object
-            required:
-              - names
             properties:
-              isPublished:
-                type: boolean
-                description: Only admin user can set this to true.
-              names:
-                type: object
-                additionalProperties:
-                  type: string
+              label:
+                type: string
+                description: Language label, ('french').
+              value:
+                type: string
+                description: Language iso value, ('fr')
     responses:
       200:
-        description: The updated theme.
+        description: The updated language.
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Theme"
+              $ref: "#/components/schemas/Language"
       401:
         $ref: "#/components/responses/Unauthorized"
       403:
@@ -134,22 +120,22 @@
         $ref: "#/components/responses/InternalError"
   delete:
     tags:
-      - Themes
-    summary: Delete the theme with themeId. Admin only.
+      - Languages
+    summary: Delete the language with languageId. Admin only. !!! Will delete every entities in database related to that language.
     security:
       - bearerAuth: []
     parameters:
-      - name: themeId
+      - name: languageId
         in: path
         required: true
-        description: The ID of the theme to delete.
+        description: The ID of the language to delete.
         schema:
           type: integer
           format: int64
           minimum: 1
     responses:
       204:
-        description: Theme succesfully deleted.
+        description: Language succesfully deleted.
       401:
         $ref: "#/components/responses/Unauthorized"
       403:
@@ -157,13 +143,20 @@
       500:
         $ref: "#/components/responses/InternalError"
 
-/themes/updateOrder:
+/languages/{languageValue}/po:
   put:
     tags:
-      - Themes
-    summary: Update the order of the published themes. Admin only.
+      - Languages
+    summary: Get the po file url of a language. Admin only.
     security:
       - bearerAuth: []
+    parameters:
+      - name: languageValue
+        in: path
+        required: true
+        description: The value of the language to update. ex('fr')
+        schema:
+          type: string
     requestBody:
       required: true
       content:
@@ -173,66 +166,23 @@
             items:
               type: object
               required:
-                - id
+                - locales
               properties:
-                id:
-                  type: integer
+                locales:
+                  type: object
+                  description: The default locales of the frontend app
+                  additionalProperties:
+                    type: string
     responses:
       200:
-        description: The updated Themes.
+        description: The po file url  for the language.
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                required:
-                  - id
-                properties:
-                  id:
-                    type: integer
-      401:
-        $ref: "#/components/responses/Unauthorized"
-      403:
-        $ref: "#/components/responses/Unauthorized2"
-      500:
-        $ref: "#/components/responses/InternalError"
-
-/themes/{themeId}/image:
-  post:
-    tags:
-      - Themes
-    summary: Update the theme image by themeId. Admin only. (Overwrite existing previous one.)
-    security:
-      - bearerAuth: []
-    parameters:
-      - name: themeId
-        in: path
-        required: true
-        description: The ID of the theme to update.
-        schema:
-          type: integer
-          format: int64
-          minimum: 1
-    requestBody:
-      required: true
-      content:
-        multipart/form-data:
-          schema:
-            type: object
-            required:
-              - image
-            properties:
-              image:
-                type: string
-                format: binary
-    responses:
-      200:
-        description: The new image.
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Image"
+              type: object
+              properties:
+                url:
+                  type: string
       401:
         $ref: "#/components/responses/Unauthorized"
       403:
@@ -241,27 +191,54 @@
         $ref: "#/components/responses/NotFound"
       500:
         $ref: "#/components/responses/InternalError"
-  delete:
+  post:
     tags:
-      - Themes
-    summary: Delete the theme's image with themeId. Admin only.
+      - Languages
+    summary: Update the language locales. Admin only. (Overwrite existing previous one.)
     security:
       - bearerAuth: []
     parameters:
-      - name: themeId
+      - name: languageValue
         in: path
         required: true
-        description: The ID of the theme's image to delete.
+        description: The value of the language to update. ex('fr')
         schema:
-          type: integer
-          format: int64
-          minimum: 1
+          type: string
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - file
+              - locales
+            properties:
+              file:
+                type: string
+                format: binary
+                description: Updated .po file of the language
+              locales:
+                type: object
+                description: The default locales of the frontend app
+                additionalProperties:
+                  type: string
+
     responses:
-      204:
-        description: Image succesfully deleted.
+      200:
+        description: The new image.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
       401:
         $ref: "#/components/responses/Unauthorized"
       403:
         $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
       500:
         $ref: "#/components/responses/InternalError"

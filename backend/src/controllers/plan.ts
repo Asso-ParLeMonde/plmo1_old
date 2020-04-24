@@ -56,7 +56,7 @@ export class PlanController extends Controller {
       return;
     }
 
-    const plans: Plan[] = await getRepository(Plan).find({ relations: ["image"] });
+    const plans: Plan[] = await getRepository(Plan).find({ where: { user: { id: req.user.id } }, relations: ["image"] });
     res.sendJSON(plans);
   }
 

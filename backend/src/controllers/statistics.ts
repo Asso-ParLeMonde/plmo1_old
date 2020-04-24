@@ -43,7 +43,7 @@ export class StatisticsController extends Controller {
     super("statistics");
   }
 
-  @get({ path: "/basics" })
+  @get({ path: "/basics", userType: UserType.ADMIN })
   public async getBasicsStatistics(_req: Request, res: Response): Promise<void> {
     const classNb = await getRepository(User).count({ where: [{ type: UserType.CLASS }] });
 
@@ -59,13 +59,13 @@ export class StatisticsController extends Controller {
     res.sendJSON({ classNb, countriesNb, projectsNb, pdfsNb });
   }
 
-  @get({ path: "/projects" })
+  @get({ path: "/projects", userType: UserType.ADMIN })
   public async getProjectStatistiques(_req: Request, res: Response): Promise<void> {
     const projectsNb = await getRepository(Project).count();
     res.sendJSON(projectsNb);
   }
 
-  @get({ path: "/projects/repartition" })
+  @get({ path: "/projects/repartition", userType: UserType.ADMIN })
   public async getProjectsRepartitionStatistiques(_req: Request, res: Response): Promise<void> {
     const projectsRepartition = await getRepository(Project)
       .createQueryBuilder("project")
@@ -78,13 +78,13 @@ export class StatisticsController extends Controller {
     res.sendJSON(response);
   }
 
-  @get({ path: "/PDFs" })
+  @get({ path: "/PDFs", userType: UserType.ADMIN })
   public async getPDFStatistiques(_req: Request, res: Response): Promise<void> {
     const pdfsNb = await getRepository(PDFDownload).count();
     res.sendJSON(pdfsNb);
   }
 
-  @get({ path: "/PDFs/repartition" })
+  @get({ path: "/PDFs/repartition", userType: UserType.ADMIN })
   public async getPDFsRepartitionStatistiques(_req: Request, res: Response): Promise<void> {
     const pdfRepartition = await getRepository(PDFDownload)
       .createQueryBuilder("pdfDownload")
@@ -97,13 +97,13 @@ export class StatisticsController extends Controller {
     res.sendJSON(response);
   }
 
-  @get({ path: "/classrooms" })
+  @get({ path: "/classrooms", userType: UserType.ADMIN })
   public async getClassroomStatistiques(_req: Request, res: Response): Promise<void> {
     const classNb = await getRepository(User).count({ where: [{ type: UserType.CLASS }] });
     res.sendJSON({ classNb });
   }
 
-  @get({ path: "/classrooms/repartition" })
+  @get({ path: "/classrooms/repartition", userType: UserType.ADMIN })
   public async getClassroomRepartitionStatistiques(_req: Request, res: Response): Promise<void> {
     const classRepartition = await getRepository(User)
       .createQueryBuilder("user")
@@ -114,7 +114,7 @@ export class StatisticsController extends Controller {
     res.sendJSON(classRepartition);
   }
 
-  @get({ path: "/countries" })
+  @get({ path: "/countries", userType: UserType.ADMIN })
   public async getCountryStatistiques(_req: Request, res: Response): Promise<void> {
     const countries = await createQueryBuilder()
       .select("DISTINCT country")
@@ -125,7 +125,7 @@ export class StatisticsController extends Controller {
     res.sendJSON({ countriesNb });
   }
 
-  @get({ path: "/countries/repartition" })
+  @get({ path: "/countries/repartition", userType: UserType.ADMIN })
   public async getCountryRepartitionStatistiques(_req: Request, res: Response): Promise<void> {
     const countriesRepartition = await getRepository(School)
       .createQueryBuilder("school")

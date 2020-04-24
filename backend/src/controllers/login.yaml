@@ -1,0 +1,216 @@
+/login:
+  post:
+    tags:
+      - Login
+    summary: login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - username
+              - password
+            properties:
+              username:
+                type: string
+                description: User email or User pseudo
+              password:
+                type: string
+                format: password
+                description: User password
+              getRefreshToken:
+                type: boolean
+                description: will create and return a refresh token with the access token.
+    responses:
+      200:
+        description: User with access token and refresh token if asked.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: "#/components/schemas/User"
+                accessToken:
+                  type: string
+                  format: JWT
+                refreshToken:
+                  type: string
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/login/reset-password:
+  post:
+    tags:
+      - Login
+    summary: Reset user password, will send an email with a verify token for reseting password.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+                description: User email
+              languageCode:
+                type: string
+                description: frontend selected language for email
+    responses:
+      200:
+        description: Email sent or not.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/login/update-password:
+  post:
+    tags:
+      - Login
+    summary: Update user password after asking for reset.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - password
+              - verifyToken
+            properties:
+              email:
+                type: string
+                description: User email
+              password:
+                type: string
+                format: password
+                description: User new password
+              verifyToken:
+                type: string
+                description: verify token from email
+    responses:
+      200:
+        description: User with access token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: "#/components/schemas/User"
+                accessToken:
+                  type: string
+                  format: JWT
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/login/verify-email:
+  post:
+    tags:
+      - Login
+    summary: Verify user email after registration using verify token sent in email.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - email
+              - verifyToken
+            properties:
+              email:
+                type: string
+                description: User email
+              verifyToken:
+                type: string
+                description: verify token from email
+    responses:
+      200:
+        description: User with access token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  $ref: "#/components/schemas/User"
+                accessToken:
+                  type: string
+                  format: JWT
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/login/token:
+  post:
+    tags:
+      - Login
+    summary: Refresh user access token using refresh token.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - refreshToken
+              - userId
+            properties:
+              refreshToken:
+                type: string
+                description: refreshToken of user
+              userId:
+                type: integer
+                description: User id
+    responses:
+      200:
+        description: User with access token.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                accessToken:
+                  type: string
+                  format: JWT
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/login/token/reject:
+  post:
+    tags:
+      - Login
+    summary: Reject Refresh token.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - refreshToken
+              - userId
+            properties:
+              refreshToken:
+                type: string
+                description: refreshToken of user
+              userId:
+                type: integer
+                description: User id
+    responses:
+      204:
+        description: Success.
+      500:
+        $ref: "#/components/responses/InternalError"
