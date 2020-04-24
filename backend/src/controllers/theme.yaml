@@ -1,0 +1,267 @@
+/themes:
+  get:
+    tags:
+      - Themes
+    summary: Returns a list of themes.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: isPublished
+        schema:
+          type: boolean
+        description: Query isPublished or not themes.
+      - in: query
+        name: user
+        schema:
+          type: boolean
+        description: Query user themes. User should be logged in and use bearer auth to retrieve his themes. Can be added with publishedThemes.
+    responses:
+      200:
+        description: A JSON array of themes.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Theme"
+  post:
+    tags:
+      - Themes
+    summary: Create a new theme.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - names
+            properties:
+              isPublished:
+                type: boolean
+                description: Only admin user can set this to true.
+              names:
+                type: object
+                additionalProperties:
+                  type: string
+    responses:
+      200:
+        description: The new theme.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Theme"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/themes/{themeId}:
+  get:
+    tags:
+      - Themes
+    summary: Return the theme with themeId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object theme.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Theme"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Themes
+    summary: Update the theme by themeId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - names
+            properties:
+              isPublished:
+                type: boolean
+                description: Only admin user can set this to true.
+              names:
+                type: object
+                additionalProperties:
+                  type: string
+    responses:
+      200:
+        description: The updated theme.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Theme"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Themes
+    summary: Delete the theme with themeId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Theme succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/themes/updateOrder:
+  put:
+    tags:
+      - Themes
+    summary: Update the order of the published themes. Admin only.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: integer
+    responses:
+      200:
+        description: The updated Themes.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                required:
+                  - id
+                properties:
+                  id:
+                    type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/themes/{themeId}/image:
+  post:
+    tags:
+      - Themes
+    summary: Update the theme image by themeId. Admin only. (Overwrite existing previous one.)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - image
+            properties:
+              image:
+                type: string
+                format: binary
+    responses:
+      200:
+        description: The new image.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Image"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Themes
+    summary: Delete the theme's image with themeId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: themeId
+        in: path
+        required: true
+        description: The ID of the theme's image to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Image succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"

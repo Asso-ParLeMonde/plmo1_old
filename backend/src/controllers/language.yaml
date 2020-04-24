@@ -1,0 +1,244 @@
+/languages:
+  get:
+    tags:
+      - Languages
+    summary: Returns a list of languages.
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: A JSON array of languages.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Language"
+  post:
+    tags:
+      - Languages
+    summary: Create a new language. For admin only.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - label
+              - value
+            properties:
+              label:
+                type: string
+                description: Language label, ('french').
+              value:
+                type: string
+                description: Language iso value, ('fr')
+    responses:
+      200:
+        description: The new language.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Language"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/languages/{languageId}:
+  get:
+    tags:
+      - Languages
+    summary: Return the language with languageId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: languageId
+        in: path
+        required: true
+        description: The ID of the language to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object language.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Language"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Languages
+    summary: Update the language by languageId. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: languageId
+        in: path
+        required: true
+        description: The ID of the language to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              label:
+                type: string
+                description: Language label, ('french').
+              value:
+                type: string
+                description: Language iso value, ('fr')
+    responses:
+      200:
+        description: The updated language.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Language"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Languages
+    summary: Delete the language with languageId. Admin only. !!! Will delete every entities in database related to that language.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: languageId
+        in: path
+        required: true
+        description: The ID of the language to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Language succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/languages/{languageValue}/po:
+  put:
+    tags:
+      - Languages
+    summary: Get the po file url of a language. Admin only.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: languageValue
+        in: path
+        required: true
+        description: The value of the language to update. ex('fr')
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              required:
+                - locales
+              properties:
+                locales:
+                  type: object
+                  description: The default locales of the frontend app
+                  additionalProperties:
+                    type: string
+    responses:
+      200:
+        description: The po file url  for the language.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  post:
+    tags:
+      - Languages
+    summary: Update the language locales. Admin only. (Overwrite existing previous one.)
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: languageValue
+        in: path
+        required: true
+        description: The value of the language to update. ex('fr')
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            required:
+              - file
+              - locales
+            properties:
+              file:
+                type: string
+                format: binary
+                description: Updated .po file of the language
+              locales:
+                type: object
+                description: The default locales of the frontend app
+                additionalProperties:
+                  type: string
+
+    responses:
+      200:
+        description: The new image.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"

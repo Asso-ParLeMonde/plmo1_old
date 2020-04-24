@@ -93,8 +93,8 @@ export class UserController extends Controller {
     // save user
     await getRepository(User).save(user);
 
-    const token = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
-    res.sendJSON({ user: user.userWithoutPassword(), token: token }); // send user
+    const accessToken = jwt.sign({ userId: user.id }, secret, { expiresIn: "1h" });
+    res.sendJSON({ user: user.userWithoutPassword(), accessToken }); // send user
   }
 
   @put({ path: "/:id", userType: UserType.CLASS })

@@ -1,0 +1,225 @@
+/statistics/basics:
+  get:
+    tags:
+      - Statistics
+    summary: Returns basic statistics.
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: A JSON object of statistics.
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                classNb:
+                  type: integer
+                countriesNb:
+                  type: integer
+                projectsNb:
+                  type: integer
+                pdfsNb:
+                  type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/projects:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of projects
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the number of projects
+        content:
+          application/json:
+            schema:
+              type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/projects/repartition:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of projects in time
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the array of projects  in time
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  nb:
+                    type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/PDFs:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of PDFs
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the number of PDFs
+        content:
+          application/json:
+            schema:
+              type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/PDFs/repartition:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of PDFs in time
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the array of PDFs  in time
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  nb:
+                    type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/classrooms:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of classrooms
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the number of classrooms
+        content:
+          application/json:
+            schema:
+              type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/classrooms/repartition:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of classrooms in time
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the array of classrooms  in time
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  label:
+                    type: string
+                  nb:
+                    type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/countries:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of countries
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the number of countries
+        content:
+          application/json:
+            schema:
+              type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/statistics/countries/repartition:
+  get:
+    tags:
+      - Statistics
+    summary: Returns number of countries in time
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: the array of countries  in time
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  country:
+                    type: string
+                  nb:
+                    type: integer
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"

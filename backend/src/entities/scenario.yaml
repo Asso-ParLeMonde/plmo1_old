@@ -1,0 +1,30 @@
+components:
+  schemas:
+    Scenario:
+      type: object
+      properties:
+        id:
+          type: integer
+        languageCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        name:
+          type: string
+          maxLength: 50
+        theme:
+          type: object
+        isDefault:
+          type: boolean
+        description:
+          type: string
+          maxLength: 280
+        user:
+          $ref: "#/components/schemas/User"
+          nullable: true
+        questions:
+          type: array
+          items:
+            $ref: "#/components/schemas/Question"
+        questionsCount:
+          type: integer

@@ -1,0 +1,175 @@
+/questions:
+  get:
+    tags:
+      - Questions
+    summary: Returns a list of questions.
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: isDefault
+        schema:
+          type: boolean
+        description: Query isDefault or not questions.
+      - in: query
+        name: scenarioId
+        schema:
+          type: integer
+        description: Query questions with specific scenarioId.
+      - in: query
+        name: languageCode
+        schema:
+          type: string
+        description: Query questions with specific languageCode.
+    responses:
+      200:
+        description: A JSON array of questions.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/Question"
+  post:
+    tags:
+      - Questions
+    summary: Create a new question.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - scenarioId
+              - languageCode
+            properties:
+              question:
+                type: string
+                description: the question label
+              scenarioId:
+                type: integer
+                description: the related scenarioID
+              languageCode:
+                type: string
+                description: the related languageCode
+              isDefault:
+                type: string
+                description: is default question. Admin only can set this to true.
+              index:
+                type: integer
+                description: index of question in list
+              projectId:
+                type: integer
+                description: related project
+    responses:
+      200:
+        description: The new question.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"
+
+/questions/{questionId}:
+  get:
+    tags:
+      - Questions
+    summary: Return the question with questionId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: questionId
+        in: path
+        required: true
+        description: The ID of the question to return.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      200:
+        description: The JSON object question.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      404:
+        $ref: "#/components/responses/NotFound"
+  put:
+    tags:
+      - Questions
+    summary: Update the question by questionId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: questionId
+        in: path
+        required: true
+        description: The ID of the question to update.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              question:
+                type: string
+                description: the question label
+              isDefault:
+                type: string
+                description: is default question. Admin only can set this to true.
+              index:
+                type: integer
+                description: index of question in list
+    responses:
+      200:
+        description: The updated question.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Question"
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"
+  delete:
+    tags:
+      - Questions
+    summary: Delete the question with questionId.
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: questionId
+        in: path
+        required: true
+        description: The ID of the question to delete.
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+    responses:
+      204:
+        description: Question succesfully deleted.
+      401:
+        $ref: "#/components/responses/Unauthorized"
+      403:
+        $ref: "#/components/responses/Unauthorized2"
+      500:
+        $ref: "#/components/responses/InternalError"

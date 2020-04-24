@@ -1,0 +1,14 @@
+components:
+  schemas:
+    Label:
+      type: object
+      properties:
+        id:
+          type: integer
+        languageCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        label:
+          type: string
+          maxLength: 50

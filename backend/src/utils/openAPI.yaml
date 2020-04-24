@@ -1,0 +1,39 @@
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    NotFound:
+      description: Ressource not found.
+      content:
+        text/plain:
+          schema:
+            type: string
+            enum: ["Error 404 - Not found."]
+    InternalError:
+      description: Server internal error.
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              errorCode:
+                type: integer
+    Unauthorized:
+      description: Unauthorized.
+      content:
+        text/plain:
+          schema:
+            type: string
+            enum: ["invalid access token"]
+    Unauthorized2:
+      description: Unauthorized.
+      content:
+        text/plain:
+          schema:
+            type: string
+            enum: ["Forbidden"]

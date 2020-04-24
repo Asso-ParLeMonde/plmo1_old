@@ -1,0 +1,25 @@
+/locales/{languageValue}.json:
+  get:
+    tags:
+      - Locales
+    summary: Returns a list of locales.
+    parameters:
+      - name: languageValue
+        in: path
+        required: true
+        description: The value of the language to get. ex('fr')
+        schema:
+          type: string
+    responses:
+      200:
+        description: A JSON dict of locales for translations.
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties:
+                type: string
+      404:
+        $ref: "#/components/responses/NotFound"
+      500:
+        $ref: "#/components/responses/InternalError"

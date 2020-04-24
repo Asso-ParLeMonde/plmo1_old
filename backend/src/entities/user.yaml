@@ -1,0 +1,58 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        languageCode:
+          type: string
+          minLength: 2
+          maxLength: 2
+        managerLastName:
+          type: string
+          maxLength: 50
+        managerFirstName:
+          type: string
+          maxLength: 50
+        mail:
+          type: string
+          maxLength: 150
+          format: email
+        level:
+          type: string
+          maxLength: 50
+        pseudo:
+          type: string
+          maxLength: 50
+        accountRegistration:
+          type: integer
+          description: user account info (0 to 3 account registered, 4 -> account blocked (email not verified or too many invalid connection attempts))
+          enum:
+            - 0
+            - 1
+            - 2
+            - 3
+            - 4
+        passwordHash:
+          type: string
+          maxLength: 95
+          format: password
+        verificationHash:
+          type: string
+          maxLength: 95
+          format: password
+        school:
+          $ref: "#/components/schemas/School"
+          nullable: true
+        type:
+          type: integer
+          description: user type (0 -> class, 1 -> admin_class, 2 -> super_admin)
+          enum:
+            - 0
+            - 1
+            - 2
+          x-enum-varnames:
+            - Class
+            - Admin_Class
+            - Super_Admin

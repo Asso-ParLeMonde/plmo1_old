@@ -1,0 +1,21 @@
+components:
+  schemas:
+    Plan:
+      type: object
+      properties:
+        id:
+          type: integer
+        description:
+          type: string
+          maxLength: 2000
+        index:
+          type: integer
+        question:
+          type: object
+          maxLength: 280
+        image:
+          $ref: "#/components/schemas/Image"
+          nullable: true
+        url:
+          type: string
+          nullable: true

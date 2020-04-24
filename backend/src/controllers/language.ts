@@ -96,7 +96,7 @@ export class LanguageController extends Controller {
     res.status(204).send();
   }
 
-  @put({ path: "/:value/po" })
+  @put({ path: "/:value/po", userType: UserType.PLMO_ADMIN })
   public async getPOLanguage(req: Request, res: Response, next: NextFunction): Promise<void> {
     const language: Language | undefined = await getRepository(Language).findOne({ where: { value: req.params.value } });
     const localesFR = req.body.locales || {};
@@ -115,7 +115,7 @@ export class LanguageController extends Controller {
     res.sendJSON({ url });
   }
 
-  @oneFile({ path: "/:value/po" })
+  @oneFile({ path: "/:value/po", userType: UserType.PLMO_ADMIN })
   public async addPOTranslations(req: Request, res: Response, next: NextFunction): Promise<void> {
     if (!req.file.buffer) {
       next();
