@@ -7,12 +7,13 @@
   "license": "private",
   "private": true,
   "scripts": {
-    "build": "./node_modules/typescript/bin/tsc && yarn copy:templates",
+    "build": "./node_modules/typescript/bin/tsc && yarn copy:templates && yarn copy:swagger",
     "node-start": "node dist/app.js --color",
     "start": "./node_modules/nodemon/bin/nodemon.js",
     "start-dev": "yarn lint && yarn build && yarn node-start",
     "lint": "yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
-    "copy:templates": "./node_modules/cpx/bin/index.js 'src/pdf/templates/*' 'dist/pdf/templates' && ./node_modules/cpx/bin/index.js 'src/emails/templates/*' 'dist/emails/templates'"
+    "copy:templates": "./node_modules/cpx/bin/index.js 'src/pdf/templates/*' 'dist/pdf/templates' && ./node_modules/cpx/bin/index.js 'src/emails/templates/*' 'dist/emails/templates'",
+    "copy:swagger": "./node_modules/cpx/bin/index.js \"src/**/*.yaml\" dist"
   },
   "engines": {
     "node": "12.*"

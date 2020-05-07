@@ -12,7 +12,7 @@ if (process.env.BACKEND_URL) {
 }
 
 const apiOptions: swaggerJSDoc.Options = {
-  apis: ["./src/utils/*.yaml", "./src/controllers/*.yaml", "./src/entities/*.yaml"],
+  apis: ["./dist/utils/*.yaml", "./dist/controllers/*.yaml", "./dist/entities/*.yaml"],
   swaggerDefinition: {
     info: {
       description: "This is the Par Le Monde backend api:\nYou will find here all the docs for the backend API.",
