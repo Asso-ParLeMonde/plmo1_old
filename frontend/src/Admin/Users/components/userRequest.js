@@ -12,8 +12,8 @@ async function postAdminUser(
   updateUsers
 ) {
   const request = await axiosLoggedRequest({
-    method: "PUT",
-    url: "/users/",
+    method: "POST",
+    url: "/users",
     data: user,
   });
 
