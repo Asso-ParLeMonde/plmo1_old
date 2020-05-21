@@ -17,9 +17,9 @@ function VerifyEmail(props) {
   const classes = useStyles();
   const user = {
     email:
-      qs.parse(props.location.search, { ignoreQueryPrefix: true }).email || "",
+      qs.parse(props.location.search.replace(/&amp;/g, "&"), { ignoreQueryPrefix: true }).email || "",
     verifyToken:
-      qs.parse(props.location.search, { ignoreQueryPrefix: true })[
+      qs.parse(props.location.search.replace(/&amp;/g, "&"), { ignoreQueryPrefix: true })[
         "verify-token"
       ] || ""
   };
