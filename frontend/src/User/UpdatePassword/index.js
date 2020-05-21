@@ -26,9 +26,9 @@ function UpdatePassword(props) {
   const { updatePassword } = useContext(UserServiceContext);
   const [user, setUser] = useState({
     email:
-      qs.parse(props.location.search, { ignoreQueryPrefix: true }).email || "",
+      qs.parse(props.location.search.replace(/&amp;/g, "&"), { ignoreQueryPrefix: true }).email || "",
     verifyToken:
-      qs.parse(props.location.search, { ignoreQueryPrefix: true })[
+      qs.parse(props.location.search.replace(/&amp;/g, "&"), { ignoreQueryPrefix: true })[
         "verify-token"
       ] || "",
     password: "",
