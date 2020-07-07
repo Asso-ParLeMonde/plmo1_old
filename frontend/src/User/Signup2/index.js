@@ -56,7 +56,7 @@ function Signup(props) {
 
   const handleSubmit = async (user) => {
     setLoading(true);
-    const response = await signup(user);
+    const response = await signup(user, inviteCode);
     if (response.success) {
       props.history.push("/");
     } else {
@@ -87,6 +87,16 @@ function Signup(props) {
     }
   }, []);
 
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    if (value.startsWith("http://") || value.startsWith("https://")) {
+      setInviteCodeValue(qs.parseUrl(value).query.inviteCode || value);
+    } else {
+      setInviteCodeValue(value);
+    }
+    setInviteCodeError(false);
+  };
+
   useEffect(() => {
     handleInviteFromURL(inviteCodeURL).catch();
   }, [inviteCodeURL, handleInviteFromURL]);
@@ -113,23 +123,20 @@ function Signup(props) {
           style={{ textAlign: "left" }}
         >
           <label style={{ fontWeight: "bold", fontSize: "1rem" }}>
-            Créez votre compte classe avec votre code d'invitation :
+            {t("signup_invite_title")}
           </label>
           <TextField
             id="inviteCode"
             name="inviteCode"
             type="text"
             color="secondary"
-            label={"Saisir votre code d'invitation"}
+            label={t("signup_invite_placeholder")}
             value={inviteCodeValue}
-            onChange={(event) => {
-              setInviteCodeValue(event.target.value);
-              setInviteCodeError(false);
-            }}
+            onChange={handleInputChange}
             variant="outlined"
             fullWidth
             error={inviteCodeError}
-            helperText={inviteCodeError ? "Code d'invitation invalide..." : ""}
+            helperText={inviteCodeError ? t("signup_invite_error") : ""}
             style={{ marginTop: "1rem" }}
           />
           <Button
@@ -139,7 +146,7 @@ function Signup(props) {
             value="Submit"
             onClick={handleInviteCodeSubmit}
           >
-            Continuer
+            {t("continue")}
           </Button>
         </form>
       ) : (

@@ -115,11 +115,12 @@ function UserServiceProviderWithRouter(props) {
    * @param user
    * @returns {Promise<{success: boolean, errorCode: number}>}
    */
-  const signup = async (user) => {
+  const signup = async (user, inviteCode = undefined) => {
     const response = await axiosRequest({
       method: "POST",
       url: "/users",
       data: {
+        inviteCode,
         ...user,
       },
     });
