@@ -171,7 +171,7 @@ function Login(props) {
         </div>
         <div className="text-center">
           {t("login_new")}{" "}
-          <Link href="/signup" onClick={handleLinkClick("/signup")}>
+          <Link href="/signup" onClick={handleLinkClick("/sign-up")}>
             {t("login_signup")}
           </Link>
         </div>

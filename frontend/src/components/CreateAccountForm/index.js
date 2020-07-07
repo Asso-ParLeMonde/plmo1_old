@@ -72,6 +72,7 @@ function CreateAccountForm({
   submit,
   buttonLabel,
   slideTop,
+  invite = false,
 }) {
   const { t } = useTranslation();
   const { getLanguages } = useContext(LanguagesServiceContext);
@@ -124,9 +125,12 @@ function CreateAccountForm({
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Check form validity
-    const userKeys = ["managerFirstName", "managerLastName", "mail", "pseudo"];
+    let userKeys = ["managerFirstName", "managerLastName", "mail", "pseudo"];
     if (!admin) {
       userKeys.push("password", "passwordConfirm");
+    }
+    if (invite) {
+      userKeys = ["mail", "pseudo", "password", "passwordConfirm"];
     }
     let isFormValid = true;
     for (let userKey of userKeys) {
@@ -178,32 +182,36 @@ function CreateAccountForm({
           {t("signup_error_msg")}
         </Typography>
       )}
-      <TextField
-        id="firstname"
-        name="firstname"
-        type="text"
-        color="secondary"
-        label={t("signup_firstname")}
-        value={user.managerFirstName || ""}
-        onChange={handleInputChange("managerFirstName")}
-        variant="outlined"
-        fullWidth
-        error={errors.managerFirstName}
-        helperText={errors.managerFirstName ? t("signup_required") : ""}
-      />
-      <TextField
-        id="lastname"
-        name="lastname"
-        type="text"
-        color="secondary"
-        label={t("signup_lastname")}
-        value={user.managerLastName || ""}
-        onChange={handleInputChange("managerLastName")}
-        variant="outlined"
-        fullWidth
-        error={errors.managerLastName}
-        helperText={errors.managerLastName ? t("signup_required") : ""}
-      />
+      {invite || (
+        <>
+          <TextField
+            id="firstname"
+            name="firstname"
+            type="text"
+            color="secondary"
+            label={t("signup_firstname")}
+            value={user.managerFirstName || ""}
+            onChange={handleInputChange("managerFirstName")}
+            variant="outlined"
+            fullWidth
+            error={errors.managerFirstName}
+            helperText={errors.managerFirstName ? t("signup_required") : ""}
+          />
+          <TextField
+            id="lastname"
+            name="lastname"
+            type="text"
+            color="secondary"
+            label={t("signup_lastname")}
+            value={user.managerLastName || ""}
+            onChange={handleInputChange("managerLastName")}
+            variant="outlined"
+            fullWidth
+            error={errors.managerLastName}
+            helperText={errors.managerLastName ? t("signup_required") : ""}
+          />
+        </>
+      )}
       <TextField
         id="email"
         name="email"
@@ -238,45 +246,49 @@ function CreateAccountForm({
             : "") + t("signup_pseudo_help")
         }
       />
-      <FormControl variant="outlined" color="secondary">
-        <InputLabel htmlFor="school">{t("signup_school")}</InputLabel>
-        <Select
-          native
-          value={user.schoolId === undefined ? "" : user.schoolId}
-          onChange={handleInputChange("schoolId")}
-          label={t("signup_school")}
-          inputProps={{
-            name: "school",
-            id: "school",
-          }}
-        >
-          <option aria-label="None" value="" />
-          <option value={0}>{t("signup_school_missing")}</option>
-        </Select>
-        {user.schoolId === 0 && (
-          <FormHelperText>
-            <Link href="#" target="_blank">
-              {t("signup_school_add")}
-            </Link>
-          </FormHelperText>
-        )}
-      </FormControl>
-      <Autocomplete
-        id="classe"
-        freeSolo
-        options={frenchClasses}
-        onSelect={handleInputChange("level")}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label={t("signup_level")}
-            value={user.level || ""}
-            onChange={handleInputChange("level")}
-            variant="outlined"
-            color="secondary"
+      {invite || (
+        <>
+          <FormControl variant="outlined" color="secondary">
+            <InputLabel htmlFor="school">{t("signup_school")}</InputLabel>
+            <Select
+              native
+              value={user.schoolId === undefined ? "" : user.schoolId}
+              onChange={handleInputChange("schoolId")}
+              label={t("signup_school")}
+              inputProps={{
+                name: "school",
+                id: "school",
+              }}
+            >
+              <option aria-label="None" value="" />
+              <option value={0}>{t("signup_school_missing")}</option>
+            </Select>
+            {user.schoolId === 0 && (
+              <FormHelperText>
+                <Link href="#" target="_blank">
+                  {t("signup_school_add")}
+                </Link>
+              </FormHelperText>
+            )}
+          </FormControl>
+          <Autocomplete
+            id="classe"
+            freeSolo
+            options={frenchClasses}
+            onSelect={handleInputChange("level")}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label={t("signup_level")}
+                value={user.level || ""}
+                onChange={handleInputChange("level")}
+                variant="outlined"
+                color="secondary"
+              />
+            )}
           />
-        )}
-      />
+        </>
+      )}
       <FormControl variant="outlined" color="secondary">
         <InputLabel htmlFor="languageCode">{t("signup_language")}</InputLabel>
         <Select

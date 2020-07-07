@@ -14,6 +14,7 @@ import Reglages from "./Reglages";
 import Videos from "./Videos";
 import Login from "./Login";
 import Signup from "./Signup";
+import Signup2 from "./Signup2";
 import ResetPassword from "./ResetPassword";
 import UpdatePassword from "./UpdatePassword";
 import VerifyEmail from "./VerifyEmail";
@@ -103,6 +104,7 @@ function User() {
               <Route path="/settings" component={Reglages} />
               <Route path="/login" component={Login} />
               <Route path="/signup" component={Signup} />
+              <Route path="/sign-up" component={Signup2} />
               <Route path="/reset-password" component={ResetPassword} />
               <Route path="/update-password" component={UpdatePassword} />
               <Route path="/verify" component={VerifyEmail} />
