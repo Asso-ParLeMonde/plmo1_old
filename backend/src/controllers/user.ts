@@ -127,4 +127,11 @@ export class UserController extends Controller {
     await getRepository(Invite).save(invite);
     res.sendJSON({ inviteCode: invite.token });
   }
+
+  @get({ path: "/check-invite/:inviteCode" })
+  public async isInviteCodeValid(req: Request, res: Response): Promise<void> {
+    const inviteCode: string = req.params.inviteCode || "";
+    const isValid: boolean = (await getRepository(Invite).count({ where: { token: inviteCode } })) > 0;
+    res.sendJSON({ isValid });
+  }
 }

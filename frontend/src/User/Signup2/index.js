@@ -1,6 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
+import qs from "query-string";
+import { withRouter, Redirect } from "react-router";
 import { useTranslation } from "react-i18next";
 import {
   Link,
@@ -8,11 +9,14 @@ import {
   makeStyles,
   Backdrop,
   CircularProgress,
+  TextField,
+  Button,
 } from "@material-ui/core";
 import CreateAccountForm, {
   DEFAULT_USER,
 } from "../../components/CreateAccountForm";
 import { UserServiceContext } from "../../services/UserService";
+import { axiosRequest } from "../../components/axiosRequest";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -21,12 +25,29 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const checkInviteCode = async (code) => {
+  const response = await axiosRequest({
+    method: "GET",
+    url: `/users/check-invite/${code}`,
+  });
+  if (response.complete && !response.error) {
+    return response.data.isValid;
+  }
+  return false;
+};
+
 function Signup(props) {
   const { t } = useTranslation();
   const classes = useStyles();
-  const { signup } = useContext(UserServiceContext);
+  const { isLoggedIn, signup } = useContext(UserServiceContext);
   const [user, setUser] = useState(DEFAULT_USER);
   const [loading, setLoading] = useState(false);
+  const [inviteCode, setInviteCode] = useState(null);
+  const [inviteCodeValue, setInviteCodeValue] = useState("");
+  const [inviteCodeError, setInviteCodeError] = useState(false);
+  const inviteCodeURL =
+    qs.parse(props.location.search, { ignoreQueryPrefix: true }).inviteCode ||
+    "";
 
   const handleLinkClick = (path) => (event) => {
     event.preventDefault();
@@ -44,6 +65,36 @@ function Signup(props) {
     setLoading(false);
   };
 
+  const handleInviteCodeSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!(await checkInviteCode(inviteCodeValue))) {
+      setInviteCodeError(true);
+      return;
+    }
+
+    setInviteCode(inviteCodeValue);
+  };
+
+  const handleInviteFromURL = useCallback(async (code) => {
+    if (code.length > 0) {
+      if (!(await checkInviteCode(code))) {
+        setInviteCodeValue(code);
+        setInviteCodeError(true);
+        return;
+      }
+      setInviteCode(code);
+    }
+  }, []);
+
+  useEffect(() => {
+    handleInviteFromURL(inviteCodeURL).catch();
+  }, [inviteCodeURL, handleInviteFromURL]);
+
+  if (isLoggedIn()) {
+    return <Redirect to="/" />;
+  }
+
   return (
     <div className="text-center">
       <Backdrop className={classes.backdrop} open={loading}>
@@ -53,12 +104,53 @@ function Signup(props) {
       <Typography color="primary" variant="h1" style={{ marginTop: "2rem" }}>
         {t("signup_title")}
       </Typography>
-      <CreateAccountForm
-        user={user}
-        setUser={setUser}
-        submit={handleSubmit}
-        invite
-      />
+
+      {inviteCode === null ? (
+        <form
+          className="signup-form"
+          noValidate
+          autoComplete={"off"}
+          style={{ textAlign: "left" }}
+        >
+          <label style={{ fontWeight: "bold", fontSize: "1rem" }}>
+            Créez votre compte classe avec votre code d'invitation :
+          </label>
+          <TextField
+            id="inviteCode"
+            name="inviteCode"
+            type="text"
+            color="secondary"
+            label={"Saisir votre code d'invitation"}
+            value={inviteCodeValue}
+            onChange={(event) => {
+              setInviteCodeValue(event.target.value);
+              setInviteCodeError(false);
+            }}
+            variant="outlined"
+            fullWidth
+            error={inviteCodeError}
+            helperText={inviteCodeError ? "Code d'invitation invalide..." : ""}
+            style={{ marginTop: "1rem" }}
+          />
+          <Button
+            variant="contained"
+            color="secondary"
+            type="submit"
+            value="Submit"
+            onClick={handleInviteCodeSubmit}
+          >
+            Continuer
+          </Button>
+        </form>
+      ) : (
+        <CreateAccountForm
+          user={user}
+          setUser={setUser}
+          submit={handleSubmit}
+          invite
+        />
+      )}
+
       <div className="text-center" style={{ marginBottom: "2rem" }}>
         {t("signup_already")}{" "}
         <Link href="/login" onClick={handleLinkClick("/login")}>

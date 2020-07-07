@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { withRouter } from "react-router";
+import { withRouter, Redirect } from "react-router";
 import qs from "query-string";
 import { useTranslation } from "react-i18next";
 import {
@@ -27,7 +27,7 @@ const errorMessages = {
 
 function Login(props) {
   const { t } = useTranslation();
-  const { login } = useContext(UserServiceContext);
+  const { login, isLoggedIn } = useContext(UserServiceContext);
   const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useState({
     username: "",
@@ -49,6 +49,10 @@ function Login(props) {
       setRedirect("/");
     }
   }, [props.location.search]);
+
+  if (isLoggedIn()) {
+    return <Redirect to="/" />;
+  }
 
   const handleUserNameInputChange = (event) => {
     setUser({ ...user, username: event.target.value });
