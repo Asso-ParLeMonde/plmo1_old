@@ -15,10 +15,10 @@ export class User {
   @Column({ type: "varchar", length: 2 })
   public languageCode: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ type: "varchar", length: 50, default: "" })
   public managerLastName: string;
 
-  @Column({ type: "varchar", length: 50 })
+  @Column({ type: "varchar", length: 50, default: "" })
   public managerFirstName: string;
 
   @Column({ type: "varchar", length: 150, unique: true })

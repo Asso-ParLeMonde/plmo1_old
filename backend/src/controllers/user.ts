@@ -5,6 +5,7 @@ import * as argon2 from "argon2";
 import { User, UserType } from "../entities/user";
 import { Controller, del, get, post, put } from "./controller";
 import { School } from "../entities/school";
+import { Invite } from "../entities/invite";
 import { isPasswordValid, generateTemporaryPassword } from "../utils/utils";
 import { sendMail, Email } from "../emails";
 
@@ -65,12 +66,25 @@ export class UserController extends Controller {
       throw new Error("Invalid password");
     }
 
+    const fromAdmin = req.user !== undefined && req.user.type === UserType.PLMO_ADMIN;
+    if (!fromAdmin && req.body.inviteCode === undefined) {
+      throw new Error("No invite code was provided.");
+    } else if (!fromAdmin) {
+      const inviteCode: string = req.body.inviteCode || "";
+      const isValid: boolean = (await getRepository(Invite).count({ where: { token: inviteCode } })) > 0;
+      if (!isValid) {
+        throw new Error("Invite code provided is invalid.");
+      } else {
+        await getRepository(Invite).delete({ token: inviteCode });
+      }
+    }
+
     const user: User = new User();
     updateUser(user, req);
     user.passwordHash = await argon2.hash(password || generateTemporaryPassword(12));
     user.type = 0; // type class per default
 
-    if (req.user !== undefined && req.user.type === UserType.PLMO_ADMIN) {
+    if (fromAdmin) {
       if (req.body.type !== undefined) {
         user.type = req.body.type;
       }
@@ -82,13 +96,13 @@ export class UserController extends Controller {
     }
 
     // new user and not admin
-    if (req.user === undefined && user.mail !== undefined && user.mail.length > 0) {
-      const verifyEmailPassword = generateTemporaryPassword(12);
-      user.verificationHash = await argon2.hash(verifyEmailPassword);
-      // Uncomment next line to block account on registration before email is not verified
-      // user.accountRegistration = 3;
-      await sendMail(Email.VERIFY_EMAIL, user.mail, { verifyCode: verifyEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName }, user.languageCode);
-    }
+    // if (req.user === undefined && user.mail !== undefined && user.mail.length > 0) {
+    //   const verifyEmailPassword = generateTemporaryPassword(12);
+    //   user.verificationHash = await argon2.hash(verifyEmailPassword);
+    //   // Uncomment next line to block account on registration before email is not verified
+    //   // user.accountRegistration = 3;
+    //   await sendMail(Email.VERIFY_EMAIL, user.mail, { verifyCode: verifyEmailPassword, firstname: user.managerFirstName, lastname: user.managerLastName }, user.languageCode);
+    // }
 
     // save user
     await getRepository(User).save(user);
@@ -117,5 +131,20 @@ export class UserController extends Controller {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getRepository(User).delete(id);
     res.status(204).send();
+  }
+
+  @get({ path: "/invite", userType: UserType.PLMO_ADMIN })
+  public async getInviteCode(_: Request, res: Response): Promise<void> {
+    const invite = new Invite();
+    invite.token = generateTemporaryPassword(20);
+    await getRepository(Invite).save(invite);
+    res.sendJSON({ inviteCode: invite.token });
+  }
+
+  @get({ path: "/check-invite/:inviteCode" })
+  public async isInviteCodeValid(req: Request, res: Response): Promise<void> {
+    const inviteCode: string = req.params.inviteCode || "";
+    const isValid: boolean = (await getRepository(Invite).count({ where: { token: inviteCode } })) > 0;
+    res.sendJSON({ isValid });
   }
 }

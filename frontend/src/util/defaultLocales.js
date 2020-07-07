@@ -164,6 +164,10 @@ export const locales = {
   signup_password_confirm_error: "Mots de passe différents.",
   signup_button: "S'inscrire !",
   signup_already: "Compte déjà créé ?",
+  signup_invite_title:
+    "Créez votre compte classe avec votre code d'invitation :",
+  signup_invite_placeholder: "Saisir votre code d'invitation",
+  signup_invite_error: "Code d'invitation invalide...",
   //--- forgot password ---
   forgot_password_title: "Réinitialiser le mot de passe",
   forgot_password_email: "E-mail",
