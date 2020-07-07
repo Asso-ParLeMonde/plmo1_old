@@ -1,0 +1,14 @@
+.sharedLink {
+  width: 100%;
+  padding: 0.2rem 0.5rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #ddd;
+  border: 2px solid #bbb;
+}
+
+.sharedLink > span {
+  flex: 1;
+  overflow-x: auto;
+}

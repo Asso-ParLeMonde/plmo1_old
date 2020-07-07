@@ -5,6 +5,7 @@ import * as argon2 from "argon2";
 import { User, UserType } from "../entities/user";
 import { Controller, del, get, post, put } from "./controller";
 import { School } from "../entities/school";
+import { Invite } from "../entities/invite";
 import { isPasswordValid, generateTemporaryPassword } from "../utils/utils";
 import { sendMail, Email } from "../emails";
 
@@ -117,5 +118,13 @@ export class UserController extends Controller {
     const id: number = parseInt(req.params.id, 10) || 0;
     await getRepository(User).delete(id);
     res.status(204).send();
+  }
+
+  @get({ path: "/invite", userType: UserType.PLMO_ADMIN })
+  public async getInviteCode(_: Request, res: Response): Promise<void> {
+    const invite = new Invite();
+    invite.token = generateTemporaryPassword(20);
+    await getRepository(Invite).save(invite);
+    res.sendJSON({ inviteCode: invite.token });
   }
 }
